@@ -1,62 +1,56 @@
-@extends('backend.layouts.app')
+@extends('admin.layout.layout')
 
-@section('content')
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>CPUs</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ Route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">CPUs</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+@section('contents')
+    <div class="pagetitle">
+        <h1>CPU Management</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item active">CPU</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-    <!-- Main content -->
-    <section class="content">
-
-        <!-- Default box -->
+    <section class="section">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">CPUs</h3>
-                <br>
-                <a href="{{ Route('admin.cpu.create') }}" class="btn btn-outline-success">Create</a>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+                <a class="btn btn-outline-primary" href="{{ Route('admin.cpu.create') }}">
+                    <i class="bi bi-plus-circle-fill me-1"></i>
+                    Create New CPU
+                </a>
+
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
-            <div class="card-body p-0">
-                <table class="table table-striped projects">
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="cpusMgmt" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th style="width: 5%">
-                                ID
-                            </th>
-                            <th style="width: 20%">
-                                Name
-                            </th>
-                            {{-- <th style="width: 25%">
-                                Image
-                            </th> --}}
-                            <th style="width: 35%">
-                                Description
-                            </th>
-                            <th>
-                            </th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            {{-- <th>Image</th> --}}
+                            <th>Description</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @foreach ($cpus as $item)
                             <tr>
@@ -78,13 +72,12 @@
                                 </td>
                                 <td class="project-actions text-right">
                                     {{-- <a class="btn btn-outline-primary btn-sm"
-                                        href="{{ Route('cpu.details', $item->slug) }}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        View
-                                    </a> --}}
-                                    <a class="btn btn-outline-info btn-sm"
-                                        href="{{ Route('admin.cpu.edit', $item->id) }}">
+                                    href="{{ Route('cpu.details', $item->slug) }}">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    View
+                                </a> --}}
+                                    <a class="btn btn-outline-info btn-sm" href="{{ Route('admin.cpu.edit', $item->id) }}">
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Edit
@@ -103,15 +96,27 @@
                                 </td>
                             </tr>
                         @endforeach
-
                     </tbody>
+
+                    <tfoot>
+                    </tfoot>
                 </table>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-
     </section>
-    <!-- /.content -->
-</div>
+@endsection
+
+@section('myJs')
+    <script>
+        $(function() {
+            $("#cpusMgmt").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#cpusMgmt_wrapper .col-md-6:eq(0)');
+        });
+    </script>
 @endsection

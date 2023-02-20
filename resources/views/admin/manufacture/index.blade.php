@@ -1,68 +1,61 @@
-@extends('backend.layouts.app')
+@extends('admin.layout.layout')
 
-@section('content')
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Manufactures</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ Route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Manufactures</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+@section('myHead')
+@endsection
 
-    <!-- Main content -->
-    <section class="content">
+@section('contents')
+    <div class="pagetitle">
+        <h1>Manufacture Management</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item active">Manufacture</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-        <!-- Default box -->
+    <section class="section">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Manufactures</h3>
-                <br>
-                <a href="{{ Route('admin.manufacture.create') }}" class="btn btn-outline-success">Create</a>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+                <a class="btn btn-outline-primary" href="{{ Route('admin.manufacture.create') }}">
+                    <i class="bi bi-plus-circle-fill me-1"></i>
+                    Create New Manufacture
+                </a>
+
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
-            <div class="card-body p-0">
-                <table class="table table-striped projects">
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="manufacturesMgmt" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th style="width: 5%">
-                                ID
-                            </th>
-                            <th style="width: 15%">
-                                Name
-                            </th>
-                            <th style="width: 15%">
-                                Address
-                            </th>
-                            <th style="width: 10%">
-                                Phone
-                            </th>
-                            <th style="width: 10%">
-                                Image
-                            </th>
-                            <th style="width: 25%">
-                                Description
-                            </th>
-                            <th>
-                            </th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @foreach ($manufactures as $item)
                             <tr>
@@ -86,11 +79,11 @@
                                 </td>
                                 <td class="project-actions text-right">
                                     {{-- <a class="btn btn-outline-primary btn-sm"
-                                        href="{{ Route('manufacture.details', $item->slug) }}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        View
-                                    </a> --}}
+                                    href="{{ Route('manufacture.details', $item->slug) }}">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    View
+                                </a> --}}
                                     <a class="btn btn-outline-info btn-sm"
                                         href="{{ Route('admin.manufacture.edit', $item->id) }}">
                                         <i class="fas fa-pencil-alt">
@@ -111,15 +104,27 @@
                                 </td>
                             </tr>
                         @endforeach
-
                     </tbody>
+
+                    <tfoot>
+                    </tfoot>
                 </table>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-
     </section>
-    <!-- /.content -->
-</div>
+@endsection
+
+@section('myJs')
+    <script>
+        $(function() {
+            $("#manufacturesMgmt").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#manufacturesMgmt_wrapper .col-md-6:eq(0)');
+        });
+    </script>
 @endsection
