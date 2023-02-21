@@ -3,7 +3,7 @@ export { CartHandler, getParent, updateCart, updateCartHeader };
 
 $ = document.querySelector.bind(document);
 
-export default function CartHandler({
+function CartHandler({
     url = "",
     token = "",
     isUpdate = false,

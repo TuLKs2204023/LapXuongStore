@@ -23,7 +23,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $products->load('images', 'manufacture', 'cpu');
+        $products->load('images', 'manufacture', 'cpu', 'ram');
         return view('admin.product.index')->with(['products' => $products]);
     }
 
@@ -56,9 +56,13 @@ class ProductController extends Controller
 
         // Save Product
         $product = Product::create($proData);
+        $product->refresh();
 
         // Save Price
         $product = $this->processPrice($product, $proData);
+
+        // Save Ram
+        $product = $this->processRam($product, $proData);
 
         // Save Images
         $files = $this->processImage($request);
@@ -121,6 +125,9 @@ class ProductController extends Controller
         if ($proData['price'] != $oldPrice) {
             $product = $this->processPrice($product, $proData);
         }
+
+        // Save Ram
+        $product = $this->processRam($product, $proData);
 
         // Save Image
         $files = $this->processImage($request);

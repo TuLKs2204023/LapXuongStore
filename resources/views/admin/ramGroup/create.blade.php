@@ -55,12 +55,12 @@
 
 @section('contents')
     <div class="pagetitle">
-        <h1>{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture</h1>
+        <h1>{{ $isUpdate ? 'Edit' : 'Create' }} RAM's category</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ Route('admin.manufacture.index') }}">Manufacture</a></li>
-                <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture</li>
+                <li class="breadcrumb-item"><a href="{{ Route('admin.ramGroup.index') }}">RAM's category</a></li>
+                <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Create' }} RAM's category</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -68,7 +68,9 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture Form</h5>
+                <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} RAM's category Form</h5>
+                <hr>
+                <h6 class="card-title">Choose 1 of 2 options: EXACT or RANGE value [from ... - to ...]</h6>
 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -88,51 +90,51 @@
                 @endif
 
                 <!-- Horizontal Form -->
-                <form action="{{ Route($isUpdate ? 'admin.manufacture.update' : 'admin.manufacture.store') }}"
+                <form action="{{ Route($isUpdate ? 'admin.ramGroup.update' : 'admin.ramGroup.store') }}"
                     method="post" class="card-body" enctype="multipart/form-data">
                     @csrf
                     @if ($isUpdate)
                         @method('put')
-                        <input type="hidden" name="id" value="{{ $manufacture->id }}">
+                        <input type="hidden" name="id" value="{{ $ramGroup->id }}">
                     @endif
 
-                    <!-- Name Section -->
+                    <!-- Exact Value Section -->
                     <div class="form-group row mb-3">
-                        <label for="name" class="col-sm-2 col-form-label">Name</label>
+                        <label for="value" class="col-sm-2 col-form-label">Exact Value</label>
                         <div class="col-sm-10">
-                            <input type="text" id="name" name="name" class="form-control"
-                                value="{{ $isUpdate ? $manufacture->name : '' }}">
+                            <input type="text" id="value" name="value" class="form-control"
+                                value="{{ $isUpdate ? $ramGroup->value : '' }}">
                         </div>
-                    </div> <!-- / Name Section -->
+                    </div> <!-- / Exact Value Section -->
 
-                    <!-- Address Section -->
+                    <!-- Min Value Section -->
                     <div class="form-group row mb-3">
-                        <label for="address" class="col-sm-2 col-form-label">Address</label>
+                        <label for="min" class="col-sm-2 col-form-label">Min Value</label>
                         <div class="col-sm-10">
-                            <input type="text" id="address" name="address" class="form-control"
-                                value="{{ $isUpdate ? $manufacture->address : '' }}">
+                            <input type="text" id="min" name="min" class="form-control"
+                                value="{{ $isUpdate ? $ramGroup->min : '' }}">
                         </div>
-                    </div> <!-- / Address Section -->
+                    </div> <!-- / Min Value Section -->
 
-                    <!-- Phone Section -->
+                    <!-- Max Value Section -->
                     <div class="form-group row mb-3">
-                        <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                        <label for="max" class="col-sm-2 col-form-label">Max Value</label>
                         <div class="col-sm-10">
-                            <input type="text" id="phone" name="phone" class="form-control"
-                                value="{{ $isUpdate ? $manufacture->phone : '' }}">
+                            <input type="text" id="max" name="max" class="form-control"
+                                value="{{ $isUpdate ? $ramGroup->max : '' }}">
                         </div>
-                    </div><!-- / Phone Section -->
+                    </div> <!-- / Max Value Section -->
 
                     <!-- Description Section -->
                     <div class="form-group row mb-3">
                         <label for="description" class="col-sm-2 col-form-label">Description</label>
                         <div class="col-sm-10">
-                            <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($manufacture->description) : '' }}</textarea>
+                            <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($ramGroup->description) : '' }}</textarea>
                         </div>
                     </div> <!-- / Description Section -->
 
                     <!-- Image Section -->
-                    <div class="form-group row mb-3">
+                    {{-- <div class="form-group row mb-3">
                         <label for="photo" class="col-sm-2 col-form-label">Image</label>
                         <div class="col-sm-10">
                             <div class="input-group hdtuto control-group lst increment">
@@ -147,22 +149,22 @@
                             </div>
                             <div class="list-images">
                                 @if ($isUpdate)
-                                    @if ($manufacture->image()->count() > 0)
+                                    @if ($ramGroup->image()->count() > 0)
                                         <div class="box-image">
                                             <input type="hidden" name="images_edited[]"
-                                                value="{{ $manufacture->image->url }}"
-                                                id="img-{{ $manufacture->image->id }}">
-                                            <img src="{{ asset('images/' . $manufacture->image->url) }}"
+                                                value="{{ $ramGroup->image->url }}"
+                                                id="img-{{ $ramGroup->image->id }}">
+                                            <img src="{{ asset('images/' . $ramGroup->image->url) }}"
                                                 class="picture-box">
-                                            <div class="wrap-btn-delete"><span data-id="img-{{ $manufacture->image->id }}"
+                                            <div class="wrap-btn-delete"><span data-id="img-{{ $ramGroup->image->id }}"
                                                     class="btn-delete-image">x</span></div>
                                         </div>
-                                        <input type="hidden" name="id" value="{{ $manufacture->id }}">
+                                        <input type="hidden" name="id" value="{{ $ramGroup->id }}">
                                     @endif
                                 @endif
                             </div>
                         </div>
-                    </div> <!-- / Image Section -->
+                    </div> --}} <!-- / Image Section -->
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
@@ -207,14 +209,4 @@
             });
         });
     </script>
-    <script type="module">
-    import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
-    document.addEventListener("readystatechange", (e) => {
-        if (e.target.readyState === "complete") {
-            const customSelect = new CustomSelect({
-                orginialInput: "my-custom-select",
-            });
-        }
-    });
-</script>
 @endsection

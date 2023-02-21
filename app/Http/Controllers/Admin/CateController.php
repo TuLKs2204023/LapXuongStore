@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Http\Traits\ProcessModelData;
 use App\Models\Cates\Cpu;
 use App\Models\Cates\Manufacture;
+use App\Models\Cates\RamGroup;
 
 class CateController extends Controller
 {
@@ -24,7 +25,8 @@ class CateController extends Controller
     {
         $cates = Cate::all();
         $cates->load('cate_group');
-        $cates->loadMorph('cateable', ['manufacture', 'cpu']);
+        $cates->loadMorph('cateable', ['manufacture', 'cpu', 'ramGroup']);
+
         return view('admin.cate.index')->with(['cates' => $cates]);
     }
 
@@ -37,11 +39,16 @@ class CateController extends Controller
     {
         $manufactures = Manufacture::all();
         $manufactures->load('cate');
+        $this->proccessRefresh($manufactures, 1);
+
         $cpus = Cpu::all();
         $cpus->load('cate');
-
-        $this->proccessRefresh($manufactures, 1);
         $this->proccessRefresh($cpus, 3);
+
+        $ramGroups = RamGroup::all();
+        $ramGroups->load('cate');
+        $this->proccessRefresh($ramGroups, 5);
+
 
         return back()->with('success', 'Data refreshed successfully !');
     }

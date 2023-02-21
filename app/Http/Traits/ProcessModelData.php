@@ -3,9 +3,11 @@
 namespace App\Http\Traits;
 
 use App\Models\Product;
+use App\Models\Cates\Ram;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Builder;
 
 trait ProcessModelData
 {
@@ -20,7 +22,15 @@ trait ProcessModelData
     function processPrice(Product $product, array $proData)
     {
         $product->prices()->create(['origin' => $proData['price']]);
-        $product->refresh();
+        $product->push();
+        return $product;
+    }
+
+    function processRam(Product $product, array $proData)
+    {
+        $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);
+        $product->ram_id = $ram->id;
+        $product->push();
         return $product;
     }
 
@@ -62,6 +72,80 @@ trait ProcessModelData
                 File::delete(public_path("images/" . $image->url));
                 $image->delete();
             }
+        }
+    }
+
+    /**
+     * Get the rams for the RamGroup.
+     * 
+     * @param  \Illuminate\Database\Eloquent\Model $groupModel
+     * @param  string $subClass
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    function processCates($groupModel, $subClass)
+    {
+        $groupData = $groupModel->toArray();
+
+        $subModel = 'App\Models\Cates\\' . $subClass;
+
+        $cateCases = [
+            $this->isExactVal($groupData) => function ($query) use ($groupData) {
+                return $query->where('amount', $groupData['value']);
+            },
+            $this->isMinVal($groupData) => function ($query) use ($groupData) {
+                return $query->where('amount', '>=', $groupData['min']);
+            },
+            $this->isMaxVal($groupData) => function ($query) use ($groupData) {
+                return $query->where('amount', '<=', $groupData['max']);
+            },
+            $this->isRangeVal($groupData) => function ($query) use ($groupData) {
+                return $query->where([
+                    ['amount', '>=', $groupData['min']],
+                    ['amount', '<=', $groupData['max']]
+                ]);
+            },
+        ];
+
+        foreach ($cateCases as $key => $case) {
+            if ($key) {
+                return $subModel::where(function (Builder $query) use ($case) {
+                    return $case($query);
+                })->get();
+            }
+        }
+    }
+
+    private function isExactVal(array $proData): bool
+    {
+        if (!empty($proData['value']) && $proData['value'] != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private function isMinVal(array $proData): bool
+    {
+        if ($proData['min'] != 0 && !empty($proData['min'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private function isMaxVal(array $proData): bool
+    {
+        if ($proData['max'] != 0 && !empty($proData['max'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private function isRangeVal(array $proData): bool
+    {
+        if ($proData['min'] != 0 && !empty($proData['min']) && $proData['max'] != 0 && !empty($proData['max'])) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

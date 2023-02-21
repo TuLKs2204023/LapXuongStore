@@ -95,14 +95,17 @@
                         @method('put')
                         <input type="hidden" name="id" value="{{ $product->id }}">
                     @endif
+
+                    <!-- Name section -->
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
                             <input type="text" id="name" name="name" class="form-control"
                                 value="{{ $isUpdate ? $product->name : '' }}">
                         </div>
-                    </div>
+                    </div><!-- / Name section -->
 
+                    <!-- Manufacture section -->
                     <div class="form-group row mb-3">
                         <label for="manufacture_id" class="col-sm-2 col-form-label">Manufacture</label>
                         <div class="col-sm-10">
@@ -118,8 +121,9 @@
                             </div>
                         </div>
                         <span class="form-message"></span>
-                    </div>
+                    </div><!-- / Manufacture section -->
 
+                    <!-- CPU section -->
                     <div class="form-group row mb-3">
                         <label for="cpu_id" class="col-sm-2 col-form-label">CPU</label>
                         <div class="col-sm-10">
@@ -135,23 +139,35 @@
                             </div>
                         </div>
                         <span class="form-message"></span>
-                    </div>
+                    </div><!-- / CPU section -->
 
+                    <!-- Name section -->
+                    <div class="form-group row mb-3">
+                        <label for="ram" class="col-sm-2 col-form-label">RAM (in GB)</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="ram" name="ram" class="form-control"
+                                value="{{ $isUpdate ? $product->ram->amount : '' }}">
+                        </div>
+                    </div><!-- / Name section -->
+
+                    <!-- Price section -->
                     <div class="form-group row mb-3">
                         <label for="price" class="col-sm-2 col-form-label">Price</label>
                         <div class="col-sm-10">
                             <input type="text" id="price" name="price" class="form-control"
                                 value="{{ $isUpdate ? $product->price : '' }}">
                         </div>
-                    </div>
+                    </div><!-- / Price section -->
 
+                    <!-- Description section -->
                     <div class="form-group row mb-3">
                         <label for="description" class="col-sm-2 col-form-label">Description</label>
                         <div class="col-sm-10">
                             <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($product->description) : '' }}</textarea>
                         </div>
-                    </div>
+                    </div><!-- / Description section -->
 
+                    <!-- Images section -->
                     <div class="form-group row mb-3">
                         <label for="photo" class="col-sm-2 col-form-label">Image</label>
                         <div class="col-sm-10">
@@ -161,8 +177,10 @@
                                         class="myfrm form-control hidden">
                                 </div>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-success btn-add-image" type="button"><i
-                                            class="fldemo glyphicon glyphicon-plus"></i>+ Add image</button>
+                                    <button class="btn btn-success btn-add-image" type="button">
+                                        <i class="fldemo glyphicon glyphicon-plus"></i>
+                                        + Add image
+                                    </button>
                                 </div>
                             </div>
                             <div class="list-images">
@@ -180,7 +198,7 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
+                    </div> <!-- / Images section -->
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
@@ -194,44 +212,16 @@
 @endsection
 
 @section('myJs')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".btn-add-image").click(function() {
-                $('#file_upload').trigger('click');
-            });
-
-            $('.list-input-hidden-upload').on('change', '#file_upload', function(event) {
-                let today = new Date();
-                let time = today.getTime();
-                let image = event.target.files[0];
-                let file_name = event.target.files[0].name;
-                let box_image = $('<div class="box-image"></div>');
-                box_image.append('<img src="' + URL.createObjectURL(image) + '" class="picture-box">');
-                box_image.append('<div class="wrap-btn-delete"><span data-id=' + time +
-                    ' class="btn-delete-image">x</span></div>');
-                $(".list-images").append(box_image);
-
-                $(this).removeAttr('id');
-                $(this).attr('id', time);
-                let input_type_file =
-                    '<input type="file" name="photos[]" id="file_upload" multiple class="myfrm form-control hidden">';
-                $('.list-input-hidden-upload').append(input_type_file);
-            });
-
-            $(".list-images").on('click', '.btn-delete-image', function() {
-                let id = $(this).data('id');
-                $('#' + id).remove();
-                $(this).parents('.box-image').remove();
-            });
-        });
-    </script>
     <script type="module">
+    import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
     import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
     document.addEventListener("readystatechange", (e) => {
         if (e.target.readyState === "complete") {
             const customSelect = new CustomSelect({
                 orginialInput: "my-custom-select",
             });
+
+            const filesUpload = new FilesUpload({});
         }
     });
 </script>

@@ -95,21 +95,25 @@
                         @method('put')
                         <input type="hidden" name="id" value="{{ $cpu->id }}">
                     @endif
+
+                    <!-- Name Section -->
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
                             <input type="text" id="name" name="name" class="form-control"
                                 value="{{ $isUpdate ? $cpu->name : '' }}">
                         </div>
-                    </div>
+                    </div><!-- / Name Section -->
 
+                    <!-- Description Section -->
                     <div class="form-group row mb-3">
                         <label for="description" class="col-sm-2 col-form-label">Description</label>
                         <div class="col-sm-10">
                             <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($cpu->description) : '' }}</textarea>
                         </div>
-                    </div>
+                    </div><!-- / Description Section -->
 
+                    <!-- Images Section -->
                     {{-- <div class="form-group row mb-3">
                         <label for="photo" class="col-sm-2 col-form-label">Image</label>
                         <div class="col-sm-10">
@@ -140,7 +144,7 @@
                                 @endif
                             </div>
                         </div>
-                    </div> --}}
+                    </div> --}} <!-- // Images Section -->
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>

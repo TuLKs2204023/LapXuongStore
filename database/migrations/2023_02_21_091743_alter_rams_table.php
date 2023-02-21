@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('cpu_id')->after('manufacture_id')->constrained();
+        Schema::table('rams', function (Blueprint $table) {
+            $table->bigInteger('amount')->unique()->after('id');
+            $table->string('name')->nullable()->change();
+            $table->string('slug')->nullable()->change();
         });
     }
 
