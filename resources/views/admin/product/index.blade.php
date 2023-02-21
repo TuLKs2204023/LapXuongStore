@@ -1,128 +1,132 @@
-@extends('backend.layouts.app')
+@extends('admin.layout.layout')
 
-@section('content')
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Products</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ Route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Products</li>
-                        </ol>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
+@section('myHead')
+@endsection
 
-        <!-- Main content -->
-        <section class="content">
+@section('contents')
+    <div class="pagetitle">
+        <h1>Product Management</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item active">Product</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-            <!-- Default box -->
-            <div class="card">
-                {{-- <div class="card-header">
-                <h3 class="card-title">Products</h3>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-outline-primary" href="{{ Route('admin.product.create') }}">
+                    <i class="bi bi-plus-circle-fill me-1"></i>
+                    Create New Product
+                </a>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div> --}}
-                <div class="card-body p-0">
-                    <table class="table table-striped projects">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%">
-                                    ID
-                                </th>
-                                <th style="width: 15%">
-                                    Name
-                                </th>
-                                <th style="width: 10%">
-                                    Manufacture
-                                </th>
-                                <th style="width: 10%">
-                                    CPU
-                                </th>
-                                <th>
-                                    Price
-                                </th>
-                                <th style="width: 5%">
-                                    Image
-                                </th>
-                                <th style="width: 20%">
-                                    Description
-                                </th>
-                                <th>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($products as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->manufacture->name }}</td>
-                                    <td>{{ $item->cpu->name }}</td>
-                                    <td>{{ $item->price }}</td>
-                                    <td>
-                                        @if (!empty($item->oldestImage))
-                                            <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt=""
-                                                style="width: 80px; height: auto;">
-                                        @endif
-
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
-                                                <li>{{ $subItm }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                    <td class="project-actions text-right">
-                                        <a class="btn btn-outline-primary btn-sm"
-                                            href="{{ Route('product.details', $item->slug) }}">
-                                            <i class="fas fa-folder">
-                                            </i>
-                                            View
-                                        </a>
-                                        <a class="btn btn-outline-info btn-sm"
-                                            href="{{ Route('admin.product.edit', $item->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
-                                        </a>
-                                        <form action="{{ Route('admin.product.destroy') }}" method="post"
-                                            style="display:inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
-                                            </button>
-                                        </form>
-
-                                    </td>
-                                </tr>
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
                             @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                
+                {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
-            <!-- /.card -->
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="productsMgmt" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Manufacture</th>
+                            <th>CPU</th>
+                            <th>Price</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
 
-        </section>
-        <!-- /.content -->
-    </div>
+                    <tbody>
+                        @foreach ($products as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->manufacture->name }}</td>
+                                <td>{{ $item->cpu->name }}</td>
+                                <td>{{ $item->price }}</td>
+                                <td>
+                                    @if (!empty($item->images))
+                                        <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt=""
+                                            style="width: 80px; height: auto;">
+                                    @endif
+
+                                </td>
+                                <td>
+                                    <ul>
+                                        @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
+                                            <li>{{ $subItm }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td class="project-actions text-right">
+                                    <a class="btn btn-outline-primary btn-sm"
+                                        href="{{ Route('product.details', $item->slug) }}">
+                                        <i class="fas fa-folder">
+                                        </i>
+                                        View
+                                    </a>
+                                    <a class="btn btn-outline-info btn-sm"
+                                        href="{{ Route('admin.product.edit', $item->id) }}">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Edit
+                                    </a>
+                                    <form action="{{ Route('admin.product.destroy') }}" method="post"
+                                        style="display:inline-block">
+                                        @csrf
+                                        @method('delete')
+                                        <input type="hidden" name="id" value="{{ $item->id }}">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </section>
+@endsection
+
+@section('myJs')
+    <script>
+        $(function() {
+            $("#productsMgmt").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
+        });
+    </script>
 @endsection

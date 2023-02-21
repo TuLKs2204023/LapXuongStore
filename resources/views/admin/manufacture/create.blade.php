@@ -1,6 +1,6 @@
-@extends('backend.layouts.app')
+@extends('admin.layout.layout')
 
-@section('heads')
+@section('myHead')
     <style>
         .list-images {
             width: 100%;
@@ -53,42 +53,22 @@
     </style>
 @endsection
 
-@section('content')
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Manufactures</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ Route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ Route('admin.manufacture.index') }}">Manufactures</a></li>
-                        <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Create' }} manufacture</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+@section('contents')
+    <div class="pagetitle">
+        <h1>{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ Route('admin.manufacture.index') }}">Manufacture</a></li>
+                <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-    <!-- Main content -->
-    <section class="content">
-
-        <!-- Default box -->
+    <section class="section">
         <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Manufactures</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture Form</h5>
 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -106,101 +86,87 @@
                         {{ session('success') }}
                     </div>
                 @endif
-            </div>
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">General</h3>
 
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
-                                        title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
+                <!-- Horizontal Form -->
+                <form action="{{ Route($isUpdate ? 'admin.manufacture.update' : 'admin.manufacture.store') }}"
+                    method="post" class="card-body" enctype="multipart/form-data">
+                    @csrf
+                    @if ($isUpdate)
+                        @method('put')
+                        <input type="hidden" name="id" value="{{ $manufacture->id }}">
+                    @endif
+                    <div class="form-group row mb-3">
+                        <label for="name" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="name" name="name" class="form-control"
+                                value="{{ $isUpdate ? $manufacture->name : '' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="address" class="col-sm-2 col-form-label">Address</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="address" name="address" class="form-control"
+                                value="{{ $isUpdate ? $manufacture->address : '' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="phone" name="phone" class="form-control"
+                                value="{{ $isUpdate ? $manufacture->phone : '' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="description" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                            <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($manufacture->description) : '' }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <label for="photo" class="col-sm-2 col-form-label">Image</label>
+                        <div class="col-sm-10">
+                            <div class="input-group hdtuto control-group lst increment">
+                                <div class="list-input-hidden-upload">
+                                    <input type="file" name="photos[]" id="file_upload" multiple
+                                        class="myfrm form-control hidden">
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-success btn-add-image" type="button"><i
+                                            class="fldemo glyphicon glyphicon-plus"></i>+ Add image</button>
                                 </div>
                             </div>
-
-                            <form action="{{ Route($isUpdate ? 'admin.manufacture.update' : 'admin.manufacture.store') }}"
-                                method="post" class="card-body" enctype="multipart/form-data">
-                                @csrf
+                            <div class="list-images">
                                 @if ($isUpdate)
-                                    @method('put')
-                                    <input type="hidden" name="id" value="{{ $manufacture->id }}">
+                                    @if ($manufacture->image()->count() > 0)
+                                        <div class="box-image">
+                                            <input type="hidden" name="images_edited[]"
+                                                value="{{ $manufacture->image->url }}"
+                                                id="img-{{ $manufacture->image->id }}">
+                                            <img src="{{ asset('images/' . $manufacture->image->url) }}"
+                                                class="picture-box">
+                                            <div class="wrap-btn-delete"><span data-id="img-{{ $manufacture->image->id }}"
+                                                    class="btn-delete-image">x</span></div>
+                                        </div>
+                                        <input type="hidden" name="id" value="{{ $manufacture->id }}">
+                                    @endif
                                 @endif
-
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" id="name" name="name" class="form-control"
-                                        value="{{ $isUpdate ? $manufacture->name : '' }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="price">Address</label>
-                                    <input type="text" id="address" name="address" class="form-control"
-                                        value="{{ $isUpdate ? $manufacture->address : '' }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="price">Phone</label>
-                                    <input type="text" id="phone" name="phone" class="form-control"
-                                        value="{{ $isUpdate ? $manufacture->phone : '' }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($manufacture->description) : '' }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="photo">Image</label>
-                                    <div class="input-group hdtuto control-group lst increment">
-                                        <div class="list-input-hidden-upload">
-                                            <input type="file" name="photos[]" id="file_upload" multiple
-                                                class="myfrm form-control hidden">
-                                        </div>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-success btn-add-image" type="button"><i
-                                                    class="fldemo glyphicon glyphicon-plus"></i>+ Add image</button>
-                                        </div>
-                                    </div>
-                                    <div class="list-images">
-                                        @if ($isUpdate)
-                                            @if ($manufacture->image()->count() > 0)
-                                                <div class="box-image">
-                                                    <input type="hidden" name="images_edited[]"
-                                                        value="{{ $manufacture->image->url }}"
-                                                        id="img-{{ $manufacture->image->id }}">
-                                                    <img src="{{ asset('images/' . $manufacture->image->url) }}"
-                                                        class="picture-box">
-                                                    <div class="wrap-btn-delete"><span
-                                                            data-id="img-{{ $manufacture->image->id }}"
-                                                            class="btn-delete-image">x</span></div>
-                                                </div>
-                                                <input type="hidden" name="id" value="{{ $manufacture->id }}">
-                                            @endif
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-12">
-                                        <a href="" class="btn btn-outline-secondary">Reset</a>
-                                        <input type="submit" value="{{ $isUpdate ? 'Update' : 'Submit' }}"
-                                            class="btn btn-success">
-                                    </div>
-                                </div>
-                            </form>
-                            <!-- /.card-body -->
+                            </div>
                         </div>
-                        <!-- /.card -->
                     </div>
-                </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </form><!-- End Horizontal Form -->
             </div>
-            <!-- /.card-body -->
         </div>
         <!-- /.card -->
-
     </section>
-    <!-- /.content -->
-</div>
 @endsection
 
 @section('myJs')
@@ -235,4 +201,14 @@
             });
         });
     </script>
+    <script type="module">
+    import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
+    document.addEventListener("readystatechange", (e) => {
+        if (e.target.readyState === "complete") {
+            const customSelect = new CustomSelect({
+                orginialInput: "my-custom-select",
+            });
+        }
+    });
+</script>
 @endsection

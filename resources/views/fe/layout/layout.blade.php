@@ -7,7 +7,7 @@
     <meta name="keywords" content="codelean, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CodeLean | Template</title>
+    <title>LapShop</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/jquery-ui.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" type="text/css">
-    {{-- Css của anh Kiện --}}
+    
     <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/confirmDialog.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">

@@ -23,7 +23,7 @@ use App\Http\Controllers\FE\HomeController as FE_HomeController;
 */
 
 Auth::routes();
-Route::get('/home', [AdminHomeController::class, 'index'])->name('home');
+Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
 
 
 Route::get('/', [FE_HomeController::class, 'index'])->name('feHome');
