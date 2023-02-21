@@ -17,9 +17,23 @@ trait ProcessModelData
         return $proData;
     }
 
+    function processDataWithOutSlug(Request $request)
+    {
+        //Tú tạo
+        $proData = $request->all();
+        return $proData;
+    }
+    
     function processPrice(Product $product, array $proData)
     {
         $product->prices()->create(['origin' => $proData['price']]);
+        $product->refresh();
+        return $product;
+    }
+
+    function processStock(Product $product, array $proData){
+        //Tú tạo
+        $product->stocks()->create(['in_qty' => $proData['in_qty']]);
         $product->refresh();
         return $product;
     }

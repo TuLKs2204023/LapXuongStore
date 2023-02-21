@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +131,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/{id}/edit', [RamController::class, 'edit'])->name('edit');
         Route::put('/update', [RamController::class, 'update'])->name('update');
         Route::delete('/destroy', [RamController::class, 'destroy'])->name('destroy');
+    });
+
+    // STOCK
+    Route::group(['prefix' => 'stock', 'as' => 'stock.'], function () {
+
+        Route::get('/', [StockController::class, 'index'])->name('index');
+        Route::get('/create', [StockController::class, 'create'])->name('create');
+        Route::post('/store', [StockController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [StockController::class, 'edit'])->name('edit');
+        Route::put('/update', [StockController::class, 'update'])->name('update');
+        Route::delete('/destroy', [StockController::class, 'destroy'])->name('destroy');
     });
 
 

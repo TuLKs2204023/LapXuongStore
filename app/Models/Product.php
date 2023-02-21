@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -123,5 +124,16 @@ class Product extends Model
     public function cpu()
     {
         return $this->belongsTo(Cates\Cpu::class, 'cpu_id');
+    }
+
+    /**
+     * Get the stocks that belongs to this product.
+     */
+    public function stocks():HasMany{
+        return $this->hasMany(Stock::class);
+    }
+
+    public function inStock(){
+        return $this::withSum('stocks', 'in_qty')->get();
     }
 }

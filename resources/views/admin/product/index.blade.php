@@ -64,7 +64,7 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->manufacture->name }}</td>
                                 <td>{{ $item->cpu->name }}</td>
-                                <td>{{ $item->price }}</td>
+                                <td>{{ number_format($item->price, 0, ',', '.') }}</td>
                                 <td>
                                     @if (!empty($item->images))
                                         <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt=""
