@@ -92,6 +92,12 @@
                                         </i>
                                         Edit
                                     </a>
+                                    <a class="btn btn-outline-success btn-sm"
+                                        href="{{ Route('admin.stock.details', $item->id) }}">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Stock
+                                    </a>
                                     <form action="{{ Route('admin.product.destroy') }}" method="post"
                                         style="display:inline-block">
                                         @csrf

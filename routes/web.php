@@ -137,6 +137,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::group(['prefix' => 'stock', 'as' => 'stock.'], function () {
 
         Route::get('/', [StockController::class, 'index'])->name('index');
+        Route::get('/{id}/details', [StockController::class, 'stockDetails'])->name('details');
         Route::get('/create', [StockController::class, 'create'])->name('create');
         Route::post('/store', [StockController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [StockController::class, 'edit'])->name('edit');

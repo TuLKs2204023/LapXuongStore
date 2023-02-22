@@ -5,11 +5,11 @@
 
 @section('contents')
     <div class="pagetitle">
-        <h1>Stock Management</h1>
+        <h1>Stock {{ $product->name }} Management</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Stock</li>
+                <li class="breadcrumb-item active">{{ $product->name }}Stock</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -58,23 +58,31 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($products as $item)
-                            @foreach ($item->stocks as $stock)
-                                    <tr>
-                                        <td>{{ $stock->id }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->id }}</td>
-                                        <td>{{ $stock->in_qty }}</td>
-                                        <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
-                                        <td>{{ $stock->out_qty }}</td>
-                                        <td>Still not input</td>
-                                        <td>{{ $stock->created_at }}</td>
-                                    </tr>
-                                    @endforeach
+                        @foreach ($product->stocks as $stock)
+                            <tr>
+                                <td>{{ $stock->id }}</td>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $stock->in_qty }}</td>
+                                <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
+                                <td>{{ $stock->out_qty }}</td>
+                                <td>Still not input</td>
+                                <td>{{ $stock->created_at }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
 
                     <tfoot>
+                        <tr class="table-secondary">
+                            <td colspan="5"></td>
+                            <th  style="text-align: right">Condition</th>
+                            @if ($product->inStock() - $product->outStock() > 0)
+                                <td><button class="btn btn-success rounded-pill">In stock</button></td>
+                            @else
+                                <td><button class="btn btn-danger rounded-pill">Out of stock</button></td>
+                            @endif
+                            <td><span style="font-weight: bolder">{{$product->inStock() - $product->outStock()}}</span> (Items) </td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>

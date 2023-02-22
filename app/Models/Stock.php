@@ -15,4 +15,8 @@ class Stock extends Model
     public function product():BelongsTo{
         return $this->belongsTo(Product::class);
     }
+
+    public function price(){
+        return $this->belongsTo(Price::class);
+    }
 }

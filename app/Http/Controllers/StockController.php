@@ -98,4 +98,11 @@ class StockController extends Controller
         // $stock->delete();
         // return redirect()->route('admin.stock.index');
     }
+
+    public function stockDetails(Request $request){
+        $pid = $request->id;
+        $product = Product::where('id', $pid)->get()->first();
+        $stocks = $product->stocks();
+        return view('admin.stock.details', compact('product', 'stocks'));
+    }
 }
