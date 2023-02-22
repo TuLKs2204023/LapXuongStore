@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stocks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id')->constrained();
-            $table->bigInteger('in_qty')->default(0);
-            $table->bigInteger('out_qty')->default(0);
-            $table->timestamps();
+        Schema::table('prices', function (Blueprint $table) {
+            $table->foreignId('stock_id')->after('product_id')->constrained();
         });
     }
 
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stocks');
+        //
     }
 };

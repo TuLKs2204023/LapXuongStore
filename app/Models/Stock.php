@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class Stock extends Model
 {
@@ -17,6 +18,13 @@ class Stock extends Model
     }
 
     public function price(){
-        return $this->belongsTo(Price::class);
+        return $this->hasOne(Price::class);
     }
+
+    public function getPrice()
+    {
+        return DB::table('prices')
+            ->where('stock_id', $this->id)->first();
+    }
+
 }

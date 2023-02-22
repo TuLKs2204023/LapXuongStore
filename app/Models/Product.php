@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'slug', 'manufacture_id', 'cpu_id', 'ram_id','description'];
+    protected $fillable = ['name', 'slug', 'manufacture_id', 'cpu_id', 'ram_id', 'description'];
 
     /**
      * The accessors to append to the model's array form.
@@ -130,30 +130,44 @@ class Product extends Model
     /**
      * Get the stocks that belongs to this product.
      */
-    public function stocks():HasMany{
+    public function stocks(): HasMany
+    {
         return $this->hasMany(Stock::class);
     }
+    
+    public function latestStock(){
+        return $this->hasMany(Stock::class)->latestOfMany();
+    }
 
-    public function inStock(){
+    public function inStock()
+    {
         $in_qty = 0;
         $in_qty = DB::table('stocks')
-                ->where('product_id', $this->id)
-                ->sum('in_qty');
+            ->where('product_id', $this->id)
+            ->sum('in_qty');
         return $in_qty;
     }
 
-    public function outStock(){
+    public function outStock()
+    {
         $out_qty = 0;
         $out_qty = DB::table('stocks')
-                ->where('product_id', $this->id)
-                ->sum('out_qty');
+            ->where('product_id', $this->id)
+            ->sum('out_qty');
         return $out_qty;
-
-     * Get the RAM that owns this product.
+    }
+    /* Get the RAM that owns this product.
      */
     public function ram()
     {
         return $this->belongsTo(Cates\Ram::class, 'ram_id');
+    }
 
+    /**
+     * Get the user's largest order.
+     */
+    public function getStockById() 
+    {
+        return $this->hasOne(Stock::class)->ofMany('product_id', $this->id);
     }
 }

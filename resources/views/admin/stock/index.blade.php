@@ -22,22 +22,9 @@
                     Add Stock
                 </a>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
@@ -58,20 +45,18 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($products as $item)
-                            @foreach ($item->stocks as $stock)
+                            @foreach ($stocks as $stock)
                                     <tr>
                                         <td>{{ $stock->id }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $stock->product->name }}</td>
+                                        <td>{{ $stock->product->id }}</td>
                                         <td>{{ $stock->in_qty }}</td>
                                         <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
                                         <td>{{ $stock->out_qty }}</td>
                                         <td>Still not input</td>
                                         <td>{{ $stock->created_at }}</td>
-                                    </tr>
-                                    @endforeach
-                        @endforeach
+                                    </tr>  
+                            @endforeach
                     </tbody>
 
                     <tfoot>

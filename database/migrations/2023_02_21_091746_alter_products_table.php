@@ -25,7 +25,7 @@ return new class extends Migration
 
         // Insert ram_id column for 'products' table
         Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('ram_id')->after('cpu_id')->constrained();
+            $table->foreignId('ram_id')->default(1)->after('cpu_id')->constrained();
         });
     }
 
