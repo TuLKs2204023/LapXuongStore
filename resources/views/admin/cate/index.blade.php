@@ -19,22 +19,9 @@
                     Refresh
                 </a>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
@@ -47,7 +34,6 @@
                             <th>Name</th>
                             <th>Cate Group</th>
                             <th>Products</th>
-                            {{-- <th>Image</th> --}}
                             <th>Description</th>
                             {{-- <th>Action</th> --}}
                         </tr>
@@ -59,13 +45,6 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->cate_group->name }}</td>
-                                {{-- <td>
-                                    @if (!empty($item->image))
-                                        <img src="{{ asset('images/' . $item->image->url) }}" alt=""
-                                            style="width: 80px; height: auto;">
-                                    @endif
-
-                                </td> --}}
                                 <td>
                                     <ol>
                                         @if (isset($item->cateable->products))

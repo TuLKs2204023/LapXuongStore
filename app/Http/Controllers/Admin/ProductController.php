@@ -23,7 +23,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $products->load('images', 'manufacture', 'cpu');
+        $products->load('images', 'manufacture', 'cpu', 'ram');
         return view('admin.product.index')->with(['products' => $products]);
     }
 
@@ -37,10 +37,12 @@ class ProductController extends Controller
         $isUpdate = false;
         $manufactures = Manufacture::all();
         $cpus = Cpu::all();
+        $imageFiles = false;
         return view('admin.product.create')->with([
             'isUpdate' => $isUpdate,
             'manufactures' => $manufactures,
             'cpus' => $cpus,
+            'list_images' => $imageFiles
         ]);
     }
 
@@ -54,15 +56,22 @@ class ProductController extends Controller
     {
         $proData = $this->processData($request);
 
+        // Save Ram
+        $proData = $this->processRam($proData);
+
         // Save Product
         $product = Product::create($proData);
+        $product->refresh();
 
         // Save Price
         $product = $this->processPrice($product, $proData);
 
         // Save Images
         $files = $this->processImage($request);
-        if ($files) {
+        if ($files === false) {
+            return back()->with('errors', 'Only image file-type is accepted.');
+        }
+        if ($files !== null) {
             $product->images()->createMany($files);
         }
 
@@ -89,7 +98,7 @@ class ProductController extends Controller
     public function edit(int $id)
     {
         $product = Product::find($id);
-        $imageFiles = $product->images;
+        $imageFiles = $product->images()->exists() ? $product->images : false;
         $isUpdate = true;
         $manufactures = Manufacture::all();
         $cpus = Cpu::all();
@@ -113,8 +122,12 @@ class ProductController extends Controller
         $product = Product::find($request->id);
         $proData = $this->processData($request);
 
+        // Save Ram
+        $proData = $this->processRam($proData);
+
         // Save Product
         $product->update($proData);
+        $product->refresh();
 
         // Save Price
         $oldPrice = $product->price;
@@ -122,16 +135,16 @@ class ProductController extends Controller
             $product = $this->processPrice($product, $proData);
         }
 
-        // Save Image
+        // Save Images
         $files = $this->processImage($request);
-
+        if ($files === false) {
+            return back()->with('errors', 'Only image file-type is accepted.');
+        }
         $images = $product->images;
-
         if (count($images) > 0) {
             $this->removeItems($images, $proData);
         }
-
-        if ($files) {
+        if ($files !== null) {
             $product->images()->createMany($files);
         }
 
