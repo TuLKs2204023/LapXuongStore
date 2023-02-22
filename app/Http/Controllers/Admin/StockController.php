@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\Stock;
 use Illuminate\Http\Request;
 use App\Http\Traits\ProcessModelData;
+use App\Models\Stock;
 
 class StockController extends Controller
 {
@@ -17,8 +18,10 @@ class StockController extends Controller
      */
     public function index()
     {
-        $products = Product::with('stocks')->take(10)->get();
-        return view('admin.stock.index', compact('products'));
+        $products = Product::all();
+        $stocks = Stock::all();
+        // $stocks->load('product');
+        return view('admin.stock.index', compact('stocks', 'products'));
     }
 
     /**
@@ -45,10 +48,14 @@ class StockController extends Controller
 
         $product = Product::where('name', $proData['product_name'])->get()->first();
 
-        // Save price Product
-        $product = $this->processPrice($product, $proData);
         // Save stock for this product
         $product = $this->processStock($product, $proData);
+        
+        // Save price Product
+        $product = $this->processPrice($product, $proData);
+
+        
+        
         return redirect()->route('admin.stock.index');
     }
 

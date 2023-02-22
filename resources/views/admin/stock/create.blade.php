@@ -1,58 +1,5 @@
 @extends('admin.layout.layout')
 
-@section('myHead')
-    <style>
-        .list-images {
-            width: 100%;
-            margin-top: 20px;
-            display: inline-block;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .box-image {
-            position: relative;
-            float: left;
-            margin: 5px 8px;
-        }
-
-        .box-image img {
-            width: auto;
-            height: 120px;
-        }
-
-        .wrap-btn-delete {
-            position: absolute;
-            top: 0;
-            right: 2px;
-            /* height: 2px; */
-            /* font-size: 20px; */
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .wrap-btn-delete span {
-            border-radius: 2px;
-            background-color: rgba(211, 211, 211, 0.7);
-            padding: 0 5.5px;
-        }
-
-        .wrap-btn-delete span:hover {
-            background-color: rgba(128, 128, 128, 0.7);
-        }
-
-        .btn-delete-image {
-            cursor: pointer;
-        }
-
-        .table {
-            width: 15%;
-        }
-
-    </style>
-@endsection
 
 @section('contents')
     <div class="pagetitle">
@@ -71,22 +18,9 @@
             <div class="card-body">
                 <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Add' }} Stock Form</h5>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
                 <!-- Horizontal Form -->
                 <form action="{{ Route($isUpdate ? 'admin.stock.update' : 'admin.stock.store') }}" method="post"

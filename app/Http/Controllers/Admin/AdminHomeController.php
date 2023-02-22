@@ -26,4 +26,8 @@ class AdminHomeController extends Controller
     {
         return view('admin.dashboard');
     }
+
+    public function backFromError(){
+        return back();
+    }
 }

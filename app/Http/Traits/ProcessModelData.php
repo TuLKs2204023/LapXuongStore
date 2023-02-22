@@ -4,10 +4,12 @@ namespace App\Http\Traits;
 
 use App\Models\Product;
 use App\Models\Cates\Ram;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 trait ProcessModelData
 {
@@ -28,7 +30,9 @@ trait ProcessModelData
     
     function processPrice(Product $product, array $proData)
     {
-        $product->prices()->create(['origin' => $proData['price']]);
+        $stock = DB::table('stocks')->where('product_id', $product->id)->get()->last();
+
+        $product->prices()->create(['origin' => $proData['price'], 'stock_id' => $stock->id]);
         $product->push();
         return $product;
     }
@@ -36,10 +40,12 @@ trait ProcessModelData
 
     function processStock(Product $product, array $proData){
         //Tú tạo
-        $product->stocks()->create(['in_qty' => $proData['in_qty']]);
+
+        $product->stocks()->create(['in_qty' => $proData['in_qty'] ]);
         $product->refresh();
         return $product;
-        
+    }
+    
     function processRam(array $proData)
     {
         $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);

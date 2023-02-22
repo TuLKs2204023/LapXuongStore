@@ -131,10 +131,10 @@ class ProductController extends Controller
         $product->refresh();
 
         // Save Price
-        $oldPrice = $product->price;
-        if ($proData['price'] != $oldPrice) {
-            $product = $this->processPrice($product, $proData);
-        }
+        // $oldPrice = $product->price;
+        // if ($proData['price'] != $oldPrice) {
+        //     $product = $this->processPrice($product, $proData);
+        // }
 
         // Save Images
         $files = $this->processImage($request);

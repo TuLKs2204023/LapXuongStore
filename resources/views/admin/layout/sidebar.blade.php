@@ -30,61 +30,41 @@
             </a>
             <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
+                    <!-- Manufacture -->
                     <a href="{{Route('admin.manufacture.index')}}">
                         <i class="bi bi-circle"></i><span>Manufacture</span>
-                    </a>
+                    </a><!--End Manufacture -->
+                    <!-- CPU -->
                     <a href="{{Route('admin.cpu.index')}}">
                         <i class="bi bi-circle"></i><span>CPU</span>
-                    </a>
-
-                    <a href="{{Route('admin.stock.index')}}">
-                        <i class="bi bi-circle"></i><span>Stock</span>
-                    </a>
+                    </a><!--End CPU -->
+                    <!-- RAM -->
                     <a href="{{Route('admin.ramGroup.index')}}">
                         <i class="bi bi-circle"></i><span>RAM</span>
-
-                    </a>
+                    </a><!--End RAM -->
+                    <!-- STOCK -->
+                    <a href="{{Route('admin.stock.index')}}">
+                        <i class="bi bi-circle"></i><span>Stock</span>
+                    </a><!--End STOCK -->
                 </li>
 
             </ul>
         </li><!-- End Forms Nav -->
 
-        <li class="nav-heading">Pages</li>
+        <hr>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>Profile</span>
+            <a class="nav-link" href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-in-left"></i>
+                {{ __('Logout') }}
             </a>
-        </li><!-- End Profile Page Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>F.A.Q</span>
-            </a>
-        </li><!-- End F.A.Q Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-contact.html">
-                <i class="bi bi-envelope"></i>
-                <span>Contact</span>
-            </a>
-        </li><!-- End Contact Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-register.html">
-                <i class="bi bi-card-list"></i>
-                <span>Register</span>
-            </a>
-        </li><!-- End Register Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-login.html">
-                <i class="bi bi-box-arrow-in-right"></i>
-                <span>Login</span>
-            </a>
-        </li><!-- End Login Page Nav -->
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </li><!-- End Logout Page Nav -->
     </ul>
 
 </aside>

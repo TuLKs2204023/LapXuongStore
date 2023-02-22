@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
-use App\Http\Controllers\StockController;
+use App\Http\Controllers\Admin\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +25,7 @@ use App\Http\Controllers\StockController;
 
 Auth::routes();
 Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
+Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
 
 
 Route::get('/', [FE_HomeController::class, 'index'])->name('feHome');
