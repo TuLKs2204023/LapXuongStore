@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'slug', 'manufacture_id', 'cpu_id', 'description'];
+    protected $fillable = ['name', 'slug', 'manufacture_id', 'cpu_id', 'ram_id','description'];
 
     /**
      * The accessors to append to the model's array form.
@@ -148,5 +148,12 @@ class Product extends Model
                 ->where('product_id', $this->id)
                 ->sum('out_qty');
         return $out_qty;
+
+     * Get the RAM that owns this product.
+     */
+    public function ram()
+    {
+        return $this->belongsTo(Cates\Ram::class, 'ram_id');
+
     }
 }

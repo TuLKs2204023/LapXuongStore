@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/confirmDialog.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/filesUpload.css') }}">
 
     @yield('myHead')
 

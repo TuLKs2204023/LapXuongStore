@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\CateController;
-use App\Http\Controllers\Admin\Cates\CpuController;
 use App\Http\Controllers\Admin\Cates\ManufactureController;
-use App\Http\Controllers\Admin\Cates\RamController;
+use App\Http\Controllers\Admin\Cates\CpuController;
+use App\Http\Controllers\Admin\Cates\RamGroupController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,9 +30,6 @@ Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboa
 Route::get('/', [FE_HomeController::class, 'index'])->name('feHome');
 Route::get('/contact', [FE_HomeController::class, 'contact'])->name('contact');
 Route::get('/shop', [FE_HomeController::class, 'shop'])->name('shop');
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 //Data tables
 Route::get('/datatable', function () {
@@ -49,9 +46,7 @@ Route::get('/delete-user/{id}', [UserController::class, 'DeleteUser'])->name('de
 Route::get('/info-user', [UserController::class, 'InfoUser'])->name('infouser');
 Route::get('/edit-byuser/{id}', [UserController::class, 'EditByUser'])->name('editby');
 
-// Anh Kiện
-
-
+// Checkout Order
 Route::get('/display-checkout', [FE_HomeController::class, 'displayCheckout'])->name('displayCheckout');
 
 // Product details
@@ -80,7 +75,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     // Product
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
-
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
         Route::post('/store', [ProductController::class, 'store'])->name('store');
@@ -91,7 +85,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     // Category
     Route::group(['prefix' => 'cate', 'as' => 'cate.'], function () {
-
         Route::get('/', [CateController::class, 'index'])->name('index');
         Route::get('/create', [CateController::class, 'create'])->name('create');
         Route::post('/store', [CateController::class, 'store'])->name('store');
@@ -102,7 +95,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     // Manufacture
     Route::group(['prefix' => 'manufacture', 'as' => 'manufacture.'], function () {
-
         Route::get('/', [ManufactureController::class, 'index'])->name('index');
         Route::get('/create', [ManufactureController::class, 'create'])->name('create');
         Route::post('/store', [ManufactureController::class, 'store'])->name('store');
@@ -113,7 +105,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     // CPU
     Route::group(['prefix' => 'cpu', 'as' => 'cpu.'], function () {
-
         Route::get('/', [CpuController::class, 'index'])->name('index');
         Route::get('/create', [CpuController::class, 'create'])->name('create');
         Route::post('/store', [CpuController::class, 'store'])->name('store');
@@ -122,15 +113,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::delete('/destroy', [CpuController::class, 'destroy'])->name('destroy');
     });
 
-    // RAM
-    Route::group(['prefix' => 'ram', 'as' => 'ram.'], function () {
-
-        Route::get('/', [RamController::class, 'index'])->name('index');
-        Route::get('/create', [RamController::class, 'create'])->name('create');
-        Route::post('/store', [RamController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [RamController::class, 'edit'])->name('edit');
-        Route::put('/update', [RamController::class, 'update'])->name('update');
-        Route::delete('/destroy', [RamController::class, 'destroy'])->name('destroy');
+    // RAM's Group
+    Route::group(['prefix' => 'ramGroup', 'as' => 'ramGroup.'], function () {
+        Route::get('/', [RamGroupController::class, 'index'])->name('index');
+        Route::get('/create', [RamGroupController::class, 'create'])->name('create');
+        Route::post('/store', [RamGroupController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [RamGroupController::class, 'edit'])->name('edit');
+        Route::put('/update', [RamGroupController::class, 'update'])->name('update');
+        Route::delete('/destroy', [RamGroupController::class, 'destroy'])->name('destroy');
     });
 
     // STOCK
@@ -148,4 +138,3 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     // Route::resource('/product', ProductController::class);
 });
-// });
