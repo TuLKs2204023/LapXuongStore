@@ -15,17 +15,17 @@ return new class extends Migration
     public function up()
     {
         // Insert new record for 'rams' table for testing
-        DB::table('rams')->insert(
-            array(
-                'amount' => 1,
-                'name' => '1 GB',
-                'slug' => '1-gb'
-            )
-        );
+        // DB::table('rams')->insert(
+        //     array(
+        //         'amount' => 1,
+        //         'name' => '1 GB',
+        //         'slug' => '1-gb'
+        //     )
+        // );
 
         // Insert ram_id column for 'products' table
         Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('ram_id')->after('cpu_id')->default(1)->constrained();
+            $table->foreignId('ram_id')->after('cpu_id')->constrained();
         });
     }
 

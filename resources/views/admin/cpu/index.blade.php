@@ -19,22 +19,9 @@
                     Create New CPU
                 </a>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
@@ -45,7 +32,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            {{-- <th>Image</th> --}}
                             <th>Description</th>
                             <th>Action</th>
                         </tr>
@@ -56,13 +42,6 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
-                                {{-- <td>
-                                    @if (!empty($item->image))
-                                        <img src="{{ asset('images/' . $item->image->url) }}" alt=""
-                                            style="width: 80px; height: auto;">
-                                    @endif
-
-                                </td> --}}
                                 <td>
                                     <ul>
                                         @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)

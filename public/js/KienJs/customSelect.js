@@ -231,7 +231,10 @@ function CustomSelect(data) {
             parent = parent.parentElement;
         }
     }
-
+    
+    if (!originalInputs[0]) {
+        return false;
+    }
     const formElement = getParent(originalInputs[0], "form");
     formElement.addEventListener("mousemove", (e) => {
         const optsContainer = e.target.closest(".my-custom-select-items");
@@ -239,7 +242,9 @@ function CustomSelect(data) {
         if (optsContainer) {
             scrollBarHover(optsContainer, pageX);
         } else {
-            const inputs = formElement.getElementsByClassName("my-custom-select-items");
+            const inputs = formElement.getElementsByClassName(
+                "my-custom-select-items"
+            );
             Array.from(inputs).forEach((input) => {
                 input.classList.remove("more-width");
             });

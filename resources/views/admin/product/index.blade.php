@@ -22,23 +22,10 @@
                     Create New Product
                 </a>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
             <!-- /.card-header -->
@@ -63,7 +50,7 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>
-                                    @if (!empty($item->images))
+                                    @if (count($item->images) > 0)
                                         <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt=""
                                             style="width: 80px; height: auto;">
                                     @endif
@@ -73,7 +60,7 @@
                                 <td>{{ $item->manufacture->name }}</td>
                                 <td>{{ $item->cpu->name }}</td>
                                 <td>{{ $item->ram->amount }}</td>
-                                <td>{{ $item->price }}</td>
+                                <td>{{ number_format($item->price, 0, ',', '.') }}</td>
                                 {{-- <td>
                                     <ul>
                                         @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)

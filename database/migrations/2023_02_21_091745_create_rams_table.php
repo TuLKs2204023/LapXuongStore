@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('rams', function (Blueprint $table) {
-            $table->bigInteger('amount')->unique()->after('id');
-            $table->string('name')->nullable()->change();
-            $table->string('slug')->nullable()->change();
+        Schema::create('rams', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('amount')->unique();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->string('description')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('rams');
     }
 };

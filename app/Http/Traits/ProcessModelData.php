@@ -26,12 +26,12 @@ trait ProcessModelData
         return $product;
     }
 
-    function processRam(Product $product, array $proData)
+    function processRam(array $proData)
     {
         $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);
-        $product->ram_id = $ram->id;
-        $product->push();
-        return $product;
+        $ram->refresh();
+        $proData['ram_id'] = $ram->id;
+        return $proData;
     }
 
     function processImage(Request $request)
@@ -39,20 +39,24 @@ trait ProcessModelData
         $files = [];
         if ($request->hasfile('photos')) {
             foreach ($request->file('photos') as $file) {
-                $ext = $file->getClientOriginalExtension();
-                if ($ext != 'jpg' && $ext != 'png' && $ext != 'jpeg') {
-                    return back()->with('error', 'Only extension ... accepted.');
+                if (!exif_imagetype($file)) {
+                    return false;
                 }
+                $ext = $file->getClientOriginalExtension();
+                // if ($ext != 'jpg' && $ext != 'png' && $ext != 'jpeg') {
+                //     return back()->with('error', 'Only extension ... accepted.');
+                // }
                 $fileName = time() . rand(1, 10000) . '.' . $ext;
                 $file->move(public_path('images'), $fileName);
                 $files[] = ['url' => $fileName];
             }
             return $files;
         } else {
-            return false;
+            return null;
         }
     }
 
+    // Use jointly with processImage()
     function removeItems($images, $proData)
     {
         $filesRemove = [];
@@ -116,14 +120,22 @@ trait ProcessModelData
         }
     }
 
+    /**
+     * Supporting function for processCate()
+     * 
+     */
     private function isExactVal(array $proData): bool
     {
-        if (!empty($proData['value']) && $proData['value'] != 0) {
+        if ($proData['value'] != 0 && !empty($proData['value'])) {
             return true;
         } else {
             return false;
         }
     }
+    /**
+     * Supporting function for processCate()
+     * 
+     */
     private function isMinVal(array $proData): bool
     {
         if ($proData['min'] != 0 && !empty($proData['min'])) {
@@ -132,6 +144,10 @@ trait ProcessModelData
             return false;
         }
     }
+    /**
+     * Supporting function for processCate()
+     * 
+     */
     private function isMaxVal(array $proData): bool
     {
         if ($proData['max'] != 0 && !empty($proData['max'])) {
@@ -140,6 +156,10 @@ trait ProcessModelData
             return false;
         }
     }
+    /**
+     * Supporting function for processCate()
+     * 
+     */
     private function isRangeVal(array $proData): bool
     {
         if ($proData['min'] != 0 && !empty($proData['min']) && $proData['max'] != 0 && !empty($proData['max'])) {

@@ -19,22 +19,9 @@
                     Create New RAM's category
                 </a>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
