@@ -84,15 +84,6 @@
                         </div>
                     </div><!-- / Name section -->
 
-                    <!-- Price section -->
-                    <div class="form-group row mb-3">
-                        <label for="price" class="col-sm-2 col-form-label">Price</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="price" name="price" class="form-control"
-                                value="{{ $isUpdate ? $product->price : '' }}">
-                        </div>
-                    </div><!-- / Price section -->
-
                     <!-- Description section -->
                     <div class="form-group row mb-3">
                         <label for="description" class="col-sm-2 col-form-label">Description</label>

@@ -9,6 +9,7 @@ use App\Models\Cates\Cpu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Traits\ProcessModelData;
+use App\Models\Stock;
 
 class ProductController extends Controller
 {
@@ -63,8 +64,8 @@ class ProductController extends Controller
         $product = Product::create($proData);
         $product->refresh();
 
-        // Save Price
-        $product = $this->processPrice($product, $proData);
+        // // Save Price
+        // $product = $this->processPrice($product, $proData);
 
         // Save Images
         $files = $this->processImage($request);

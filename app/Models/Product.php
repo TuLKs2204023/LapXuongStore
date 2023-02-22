@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -126,10 +128,32 @@ class Product extends Model
     }
 
     /**
+     * Get the stocks that belongs to this product.
+     */
+    public function stocks():HasMany{
+        return $this->hasMany(Stock::class);
+    }
+
+    public function inStock(){
+        $in_qty = 0;
+        $in_qty = DB::table('stocks')
+                ->where('product_id', $this->id)
+                ->sum('in_qty');
+        return $in_qty;
+    }
+
+    public function outStock(){
+        $out_qty = 0;
+        $out_qty = DB::table('stocks')
+                ->where('product_id', $this->id)
+                ->sum('out_qty');
+        return $out_qty;
+
      * Get the RAM that owns this product.
      */
     public function ram()
     {
         return $this->belongsTo(Cates\Ram::class, 'ram_id');
+
     }
 }

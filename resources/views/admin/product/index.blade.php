@@ -54,7 +54,6 @@
                                         <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt=""
                                             style="width: 80px; height: auto;">
                                     @endif
-
                                 </td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->manufacture->name }}</td>
@@ -80,6 +79,12 @@
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Edit
+                                    </a>
+                                    <a class="btn btn-outline-success btn-sm"
+                                        href="{{ Route('admin.stock.details', $item->id) }}">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Stock
                                     </a>
                                     <form action="{{ Route('admin.product.destroy') }}" method="post"
                                         style="display:inline-block">

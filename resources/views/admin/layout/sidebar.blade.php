@@ -36,8 +36,13 @@
                     <a href="{{Route('admin.cpu.index')}}">
                         <i class="bi bi-circle"></i><span>CPU</span>
                     </a>
+
+                    <a href="{{Route('admin.stock.index')}}">
+                        <i class="bi bi-circle"></i><span>Stock</span>
+                    </a>
                     <a href="{{Route('admin.ramGroup.index')}}">
                         <i class="bi bi-circle"></i><span>RAM</span>
+
                     </a>
                 </li>
 
@@ -80,21 +85,6 @@
                 <span>Login</span>
             </a>
         </li><!-- End Login Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-error-404.html">
-                <i class="bi bi-dash-circle"></i>
-                <span>Error 404</span>
-            </a>
-        </li><!-- End Error 404 Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-blank.html">
-                <i class="bi bi-file-earmark"></i>
-                <span>Blank</span>
-            </a>
-        </li><!-- End Blank Page Nav -->
-
     </ul>
 
 </aside>

@@ -18,4 +18,8 @@ class Price extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public function stock(){
+        return $this->hasOne(Stock::class);
+    }
 }
