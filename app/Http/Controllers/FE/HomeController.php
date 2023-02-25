@@ -13,7 +13,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        
+
         return view('fe.home.index');
     }
 
@@ -198,5 +198,10 @@ class HomeController extends Controller
         $products = Product::all();
         return view('fe.home.shop', compact('products'));
     }
+    public function userProfile(){
+        $user= auth()->user();
+        return view('fe.home.profile', compact('user'));
 
+
+    }
 }

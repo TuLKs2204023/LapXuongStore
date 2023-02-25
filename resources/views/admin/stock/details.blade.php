@@ -15,6 +15,16 @@
     </div><!-- End Page Title -->
 
     <section class="section">
+        @if (auth()->user()->role == 'Customer')
+        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+
+            <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
+
+            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+
+        </section>
+        @endif
+        @if (auth()->user()->role !== 'Customer')
         <div class="card">
             <div class="card-header">
                 <a class="btn btn-outline-primary" href="{{ Route('admin.stock.create') }}">
@@ -25,7 +35,7 @@
                 <!-- Message Section -->
                 @include('components.message')
                 <!-- / Message Section -->
-                
+
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
             <!-- /.card-header -->
@@ -91,3 +101,4 @@
         });
     </script>
 @endsection
+@endif

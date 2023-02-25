@@ -4,7 +4,7 @@
             <div class="ht-left">
                 <div class="mail-service">
                     <i class="fa fa-envelope"></i>
-                    daoducbinh62@gmail.com
+                LapXuongShop@gmail.com
                 </div>
                 <div class="phone-service">
                     <i class="fa fa-phone"></i>
@@ -12,7 +12,20 @@
                 </div>
             </div>
             <div class="ht-right">
-                <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
+            @if (Route::has('login'))
+            @auth
+            @if (auth()->user()->role == 'Customer')
+            <a href="{{ url('profile') }}" class="login-panel">Home</a>
+            @endif
+            @if (auth()->user()->role !== 'Customer')
+            <a href="{{ url('admin') }}" class="login-panel">Home</a>
+            @endif
+            @else
+            <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
+            @endauth
+            @endif
+            <!-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> -->
+
                 <div class="lan-selector">
                     <select name="countries" id="countries" class="language_drop" style="width:300px;">
                         <option value="yt" data-image="front/img/flag-1.jpg" data-imagecss="flag yt"

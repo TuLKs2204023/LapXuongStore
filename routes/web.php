@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
 use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\backend\OdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->n
 Route::get('/', [FE_HomeController::class, 'index'])->name('feHome');
 Route::get('/contact', [FE_HomeController::class, 'contact'])->name('contact');
 Route::get('/shop', [FE_HomeController::class, 'shop'])->name('shop');
+Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userProfile');
+Route::get('/edit-profile/{id}', [UserController::class, 'EditByUser'])->name('editbyuser');
 
 //Data tables
 Route::get('/datatable', function () {
@@ -46,6 +49,10 @@ Route::post('/update-user/{id}', [UserController::class, 'UpdatetUser'])->name('
 Route::get('/delete-user/{id}', [UserController::class, 'DeleteUser'])->name('deleteuser');
 Route::get('/info-user', [UserController::class, 'InfoUser'])->name('infouser');
 Route::get('/edit-byuser/{id}', [UserController::class, 'EditByUser'])->name('editby');
+Route::post('/update-byuser/{id}', [UserController::class, 'UpdateByUser'])->name('updatebyuser');
+
+//Order management
+Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
 
 // Checkout Order
 Route::get('/display-checkout', [FE_HomeController::class, 'displayCheckout'])->name('displayCheckout');
@@ -139,3 +146,4 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
     // Route::resource('/product', ProductController::class);
 });
+// });
