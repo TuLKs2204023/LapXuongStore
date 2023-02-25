@@ -17,10 +17,10 @@
                 <h2 class="form_title title">Create Account</h2>
 
                 <span class="form__span">use email for registration</span>
-                <input class="form__input" type="text" placeholder="FullName" name="name">
-                    <input class="form__input" type="text" placeholder="Email" name="email">
-                    <input class="form__input" type="password" placeholder="Password" name="password">
-                    <input class="form__input" type="password" placeholder="Retype password" name= "password_confirmation">
+                <input class="form__input" type="text" placeholder="FullName" name="name" required>
+                    <input class="form__input" type="email" placeholder="Email" name="email" required>
+                    <input class="form__input" type="password" placeholder="Password" name="password" required>
+                    <input class="form__input" type="password" placeholder="Retype password" name= "password_confirmation" required>
                     <button class="form__button button " type="submit">SIGN UP</button>
             </form>
         </div>
@@ -29,9 +29,9 @@
                 @csrf
                 <h2 class="form_title title">Sign in to Website</h2>
                 <span class="form__span">use your email account</span>
-                <input class="form__input" type="text" placeholder="Email" name="email">
-                <input class="form__input" type="password" placeholder="Password" name="password">
-                <a class="form__link" href="{{ Route('password.request') }}" >Forgot your password?</a>
+                <input class="form__input" type="text" placeholder="Email" name="email" required>
+                <input class="form__input" type="password" placeholder="Password" name="password" required>
+                <a class="form__span" href="{{ Route('password.request') }}" >Forgot your password?</a>
                 <button class="form__button button  type="submit">SIGN IN</button>
             </form>
         </div>

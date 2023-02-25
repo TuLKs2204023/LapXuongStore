@@ -12,7 +12,11 @@ use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
 use App\Http\Controllers\FE\ShopController;
 use App\Http\Controllers\Admin\StockController;
+
+use App\Http\Controllers\backend\OdersController;
+
 use App\Http\Controllers\PromotionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,10 +34,15 @@ Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboa
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
 
 
+
+
+Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userProfile');
+Route::get('/edit-profile/{id}', [UserController::class, 'EditByUser'])->name('editbyuser');
 Route::get('/', [FE_HomeController::class, 'index'])->name('fe.home');
 Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact');
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
 Route::get('/shop/{slug}', [ShopController::class, 'cate'])->name('fe.shop.cate');
+
 
 //Data tables
 Route::get('/datatable', function () {
@@ -49,6 +58,10 @@ Route::post('/update-user/{id}', [UserController::class, 'UpdatetUser'])->name('
 Route::get('/delete-user/{id}', [UserController::class, 'DeleteUser'])->name('deleteuser');
 Route::get('/info-user', [UserController::class, 'InfoUser'])->name('infouser');
 Route::get('/edit-byuser/{id}', [UserController::class, 'EditByUser'])->name('editby');
+Route::post('/update-byuser/{id}', [UserController::class, 'UpdateByUser'])->name('updatebyuser');
+
+//Order management
+Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
 
 // Checkout Order
 Route::get('/display-checkout', [FE_HomeController::class, 'displayCheckout'])->name('displayCheckout');
@@ -151,3 +164,4 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         // Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
     });
 });
+

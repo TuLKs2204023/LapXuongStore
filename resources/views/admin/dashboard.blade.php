@@ -2,11 +2,11 @@
 
 @section('contents')
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Welcome to LapXuongShop , {{auth()->user()->name}} </h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                {{-- <li class="breadcrumb-item active">Dashboard</li> --}}
+                 <li class="breadcrumb-item active">{{auth()->user()->name}} - Dashboard</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->

@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
     <!-- -------------------------------------------------------------------------------- -->
-
+    @yield('myCss')
 </head>
 
 <body>
