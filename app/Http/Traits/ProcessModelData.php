@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 
 use App\Models\Product;
 use App\Models\Cates\Ram;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -26,9 +27,16 @@ trait ProcessModelData
         $proData = $request->all();
         return $proData;
     }
+
+    // function processPrice(Product $product, array $proData){
+    //     $product->prices()->create(['origin' => $proData['price']]);
+    //     $product->refresh();
+    //     return $product;
+    // }
     
-    function processPrice(Product $product, array $proData)
+    function processPriceWithStockId(Product $product, array $proData)
     {
+        // Tú tạo
         $stock = DB::table('stocks')->where('product_id', $product->id)->get()->last();
 
         $product->prices()->create(['origin' => $proData['price'], 'stock_id' => $stock->id]);
@@ -36,12 +44,35 @@ trait ProcessModelData
         return $product;
     }
 
+    function processDescription(Product $product, array $proData){
+        //Tú tạo
+        $product->description()->create([
+            'instruction' => $proData['instruction'],
+            'feature' => $proData['feature'],
+            'weight' => $proData['weight'],
+            'dimension' => $proData['dimension'],
+            'webcam' => $proData['webcam'],
+            'o_s' => $proData['o_s'],
+            'battery' => $proData['battery'],
+            ]);
+        $product->refresh();
+        return $product;
+    }
 
     function processStock(Product $product, array $proData){
         // From 'TU Lele' with ❤❤❤
         $product->stocks()->create(['in_qty' => $proData['in_qty'] ]);
         $product->refresh();
         return $product;
+    }
+
+    function processUsedPromotion(Order $order,string $promotionCode){
+        //Tú tạo
+        $promotionId = DB::table('promotions')->where('code', $promotionCode)->first();
+
+        $order->usedPromotion()->create(['promotion_id' => $promotionId]);
+        $order->refresh();
+        return $order;
     }
     
     function processRam(array $proData)

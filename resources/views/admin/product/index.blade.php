@@ -6,7 +6,7 @@
 @section('contents')
     <div class="pagetitle">
         <h1>Product Management</h1>
-        <nav>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item active">Product</li>
@@ -119,6 +119,7 @@
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
+                "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
         });

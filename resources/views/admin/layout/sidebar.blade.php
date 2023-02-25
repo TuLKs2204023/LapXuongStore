@@ -36,6 +36,13 @@
 
         <!-- Specifications Nav -->
         <li class="nav-item">
+            <a class="nav-link " href="{{Route('admin.promotion.index')}}">
+                <i class="bi bi-menu-button-wide"></i>
+                <span>Promotion</span>
+            </a>
+        </li><!-- End Promotion Nav -->
+
+        <li class="nav-item">
             <!-- specifications header -->
             <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
                 href="#">
@@ -69,7 +76,7 @@
 
         </li><!-- End Forms Nav -->
 
-        <hr>
+        <hr style="opacity: 0.1;">
 
         <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"

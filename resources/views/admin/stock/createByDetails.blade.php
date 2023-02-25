@@ -3,12 +3,12 @@
 
 @section('contents')
     <div class="pagetitle">
-        <h1>{{ $isUpdate ? 'Edit' : 'Add' }} Stock</h1>
+        <h1>{{ $product->subName() }} Stock</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ Route('admin.stock.index') }}">Stock Management</a></li>
-                <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Add' }} Stock</li>
+                <li class="breadcrumb-item active">{{ $product->subName() }} Add Stock</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -16,7 +16,7 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Add' }} Stock Form</h5>
+                <h5 class="card-title">Add Stock Form</h5>
 
                 <!-- Message Section -->
                 @include('components.message')
@@ -26,42 +26,28 @@
                 <form action="{{ Route('admin.stock.store') }}" method="post"
                     class="card-body" enctype="multipart/form-data">
                     @csrf
-
                     <div class="form-group row mb-3">
-                        <label for="product_id" class="col-sm-2 col-form-label">Product Name</label>
-
+                        <label for="product_name" class="col-sm-2 col-form-label">Product Name</label>
                         <div class="col-sm-10">
-                            <div class="my-custom-select">
-                                <select id="product_name" name="product_name" class="form-control" rules="required">
-                                    <option value="">--- Select ---</option>
-                                    @foreach ($products as $item)
-                                        <option
-                                            value="{{ $item->name }}"{{ $isUpdate ? ($product->name == $item->name ? 'selected' : '') : '' }}>
-                                            {{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <input disabled type="text" id="product_name" class="form-control" value="{{$product->name}}">
+                            <input hidden name="product_name" value="{{$product->name}}">
                         </div>
-                        <span class="form-message"></span>
                     </div>
-
                     <div class="form-group row mb-3">
                         <label for="price" class="col-sm-2 col-form-label">Unit Price</label>
                         <div class="col-sm-10">
-                            <input type="text" id="price" name="price" class="form-control"
-                                value="{{ $isUpdate ? $product->price : '' }}">
+                            <input type="text" id="price" name="price" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row mb-3">
                         <label for="in_qty" class="col-sm-2 col-form-label">In Quantity</label>
                         <div class="col-sm-10">
-                            <input type="text" id="in_qty" name="in_qty" class="form-control"
-                                value="{{ $isUpdate ? $product->price : '' }}">
+                            <input type="text" id="in_qty" name="in_qty" class="form-control">
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="reset" class="btn btn-secondary">Reset</button>
                     </div>
                 </form><!-- End Horizontal Form -->
