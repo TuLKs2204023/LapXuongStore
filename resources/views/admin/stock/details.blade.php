@@ -5,11 +5,12 @@
 
 @section('contents')
     <div class="pagetitle">
-        <h1>Stock {{ $product->name }} Management</h1>
-        <nav>
+        <h1>Stocks of {{ $product->subName() }}</h1>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">{{ $product->name }}Stock</li>
+                <li class="breadcrumb-item"><a href="{{ Route('admin.stock.index') }}">Stock Management</a></li>
+                <li class="breadcrumb-item active">{{ $product->subName() }}</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -27,7 +28,7 @@
         @if (auth()->user()->role !== 'Customer')
         <div class="card">
             <div class="card-header">
-                <a class="btn btn-outline-primary" href="{{ Route('admin.stock.create') }}">
+                <a class="btn btn-outline-primary" href="{{ Route('admin.stock.createStockByDetails', $product->id ) }}">
                     <i class="bi bi-plus-circle-fill me-1"></i>
                     Add Stock
                 </a>
@@ -44,8 +45,6 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>P.d Name</th>
-                            <th>P.d ID</th>
                             <th>In Quantity</th>
                             <th>Unit Price</th>
                             <th>Out Quantity</th>
@@ -58,8 +57,6 @@
                         @foreach ($product->stocks as $stock)
                             <tr>
                                 <td>{{ $stock->id }}</td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->id }}</td>
                                 <td>{{ $stock->in_qty }}</td>
                                 <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
                                 <td>{{ $stock->out_qty }}</td>
@@ -71,7 +68,7 @@
 
                     <tfoot>
                         <tr class="table-secondary">
-                            <td colspan="5"></td>
+                            <td colspan="3"></td>
                             <th  style="text-align: right">Condition</th>
                             @if ($product->inStock() - $product->outStock() > 0)
                                 <td><button class="btn btn-success rounded-pill">In stock</button></td>
@@ -96,6 +93,7 @@
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
+                "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
         });

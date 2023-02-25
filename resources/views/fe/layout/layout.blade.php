@@ -24,9 +24,15 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" type="text/css">
 
-    <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
+    <!-- Main Css Styles -->
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+
+    <!-- KIEN Css Styles -->
+    <link rel="stylesheet" href="{{ asset('css/KienCss/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/shop.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/confirmDialog.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
     <!-- -------------------------------------------------------------------------------- -->
     @yield('myCss')
 </head>
@@ -75,6 +81,19 @@
     <script src="{{ asset('frontend/js/jquery.slicknav.js') }}"></script>
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
+
+    <!-- KIEN Js -->
+    <script type="module">
+        import {MyToggle, MyStickyNav} from '{{ asset('/js/KienJs/main.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const myToggle = new MyToggle({});
+                const myStickyNav = new MyStickyNav({});
+            }
+        });
+    </script>
+
     @yield('myJs')
 </body>
 

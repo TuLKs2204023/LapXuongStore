@@ -1,14 +1,14 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
+        <!-- Dashboard Nav -->
         <li class="nav-item">
             <a class="nav-link " href="{{ Route('admin.dashboard') }}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
-        @if (auth()->user()->role !== 'Customer')
-
+        @if (auth()->user()->role == 'Manager')
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.product.index') }}">
                     <i class="bi bi-tags"></i>
@@ -82,21 +82,19 @@
                 </ul>
             </li><!-- End Forms Nav -->
         @endif
-        @if (auth()->user()->role == 'Customer')
-        <li class="nav-item">
-
-            
-            <a class="nav-link " href="{{ Route('admin.cate.index') }}">
-                <i class="bi bi-menu-button-wide"></i>
-                <span>My Recommend</span>
-            </a>
-            <a class="nav-link " href="{{ Route('admin.cate.index') }}">
-                <i class="bi bi-menu-button-wide"></i>
-                <span>My Rating</span>
-            </a>
+       
+======
         </li><!-- End Categories Nav -->
-        @endif
 
+        <!-- Specifications Nav -->
+        <li class="nav-item">
+            <a class="nav-link " href="{{Route('admin.promotion.index')}}">
+                <i class="bi bi-menu-button-wide"></i>
+                <span>Promotion</span>
+            </a>
+        </li><!-- End Promotion Nav -->
+
+        
 
 
     </ul>

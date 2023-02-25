@@ -47,7 +47,7 @@
     <div class="container">
         <div class="inner-header">
             <div class="row">
-                <div class="col-lg-2 col-md-2">
+                <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
                             <img src="front/img/logo3.png" height="30" alt="">
@@ -58,12 +58,12 @@
                     <div class="advanced-search">
                         <button type="button" class="category-btn">All Categories</button>
                         <div class="input-group">
-                            <input type="text" placeholder="What do you need">
+                            <input type="text" placeholder="Type something to search ... ">
                             <button type="button"><i class="ti-search"></i></button>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 text-right">
+                <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">
                         <li class="heart-icon">
                             <a href="#">
@@ -123,46 +123,49 @@
     </div>
     <div class="nav-item">
         <div class="container">
-            <div class="nav-depart">
-                <div class="depart-btn">
+            <div class="nav-categories">
+                <div class="cate-btn my-toggle">
                     <i class="ti-menu"></i>
-                    <span>All Department</span>
-                    <ul class="depart-hover">
-                        <li class="active"><a href="#">Laptop Gaming</a></li>
-                        <li><a href="#">PC Gaming</a></li>
-                        <li><a href="#">Apple</a></li>
-                        <li><a href="#">Màn Hình</a></li>
-                        <li><a href="#">Linh Kiện</a></li>
-                        <li><a href="#">Ghế-Bàn</a></li>
-                        <li><a href="#">Phần Mềm & Mạng</a></li>
-                        <li><a href="#">PC Doanh Nghiệp</a></li>
-                    </ul>
+                    <span>Categories</span>
                 </div>
+                <ul class="category-list my-toggle-content">
+                    @foreach ($cateGroups as $cateGroup)
+                        <li>
+                            <div class="category-list-header">{{ $cateGroup->name }}</div>
+                            <ul>
+                                @foreach ($cateGroup->cates as $cate)
+                                    <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
             <nav class="nav-menu mobile-menu">
                 <ul>
-                    <li class="active"><a href="{{ Route('feHome') }}">Home</a></li>
-                    <li><a href="{{ Route('shop') }}">Shop</a></li>
-                    <li><a href="">Product</a>
+                    <li><a href="{{ Route('fe.home') }}">Home</a></li>
+                    <li><a href="{{ Route('fe.shop.index') }}">Shop</a></li>
+                    {{-- <li><a href="">Product</a>
                         <ul class="dropdown">
                             <li><a href="">Thương Hiệu</a></li>
                             <li><a href="">Giá Bán</a></li>
                             <li><a href="">Mục Đích</a></li>
                         </ul>
-                    </li>
-                    <li><a href="blog.html">Blogs</a></li>
-                    <li><a href="{{ Route('contact') }}">Contact</a></li>
-                    <li><a href="">Pages</a>
+                    </li> --}}
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="{{ Route('fe.contact') }}">Contact Us</a></li>
+                    {{-- <li><a href="">Pages</a>
                         <ul class="dropdown">
                             <li><a href="blog-detail.html">Blog Detail</a></li>
-                            <li><a href="{{ Route('shop') }}">Shopping Cart</a></li>
+                            <li><a href="">Shopping Cart</a></li>
                             <li><a href="{{ Route('checkout') }}">Check Out</a></li>
                             <li><a href="faq.html">Faq</a></li>
                             <li><a href="{{ Route('register') }}">Register</a></li>
                             <li><a href="{{ Route('login') }}">Login</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
         </div>

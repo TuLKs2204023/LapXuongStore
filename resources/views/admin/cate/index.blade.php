@@ -2,9 +2,10 @@
 
 
 @section('contents')
-<div class="pagetitle">
-    <h1>Categories Management</h1>
-        <nav>
+
+    <div class="pagetitle">
+        <h1>Categories Management</h1>
+        <nav style="--bs-breadcrumb-divider: '>';"> 
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item active">Categories</li>
@@ -63,7 +64,7 @@
                                             @endforeach
                                         @endif
                                         @if (method_exists(get_class($item->cateable), 'cateItems'))
-                                            @foreach ($item->cateable->cateItems() as $subItems)
+                                            @foreach ($item->cateable->cateItems()->load('products') as $subItems)
                                                 @foreach ($subItems->products as $product)
                                                     <li>{{ $product->name }}</li>
                                                 @endforeach

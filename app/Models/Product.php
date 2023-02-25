@@ -135,9 +135,15 @@ class Product extends Model
         return $this->hasMany(Stock::class);
     }
     
+     /* Get latest stock this product.
+     */
+    
     public function latestStock(){
         return $this->hasMany(Stock::class)->latestOfMany();
     }
+
+     /* Get amount of in stock this product.
+     */
 
     public function inStock()
     {
@@ -147,6 +153,9 @@ class Product extends Model
             ->sum('in_qty');
         return $in_qty;
     }
+
+     /* Get amount of out stock this product.
+     */
 
     public function outStock()
     {
@@ -163,11 +172,21 @@ class Product extends Model
         return $this->belongsTo(Cates\Ram::class, 'ram_id');
     }
 
-    /**
-     * Get the user's largest order.
+     /* Get the sub name of this product.
      */
-    public function getStockById() 
-    {
-        return $this->hasOne(Stock::class)->ofMany('product_id', $this->id);
+
+    public function subName(){
+        $name = $this->name;
+        $splitName = [];
+        $splitName = (explode('(', $name)); //trả về array
+        $subName = $splitName[0];
+        return $subName;
     }
+
+     /* Get description of this product.
+     */
+
+     public function description(){
+        return $this->hasOne(Description::class);
+     }
 }

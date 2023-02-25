@@ -67,6 +67,9 @@ class ProductController extends Controller
         // // Save Price
         // $product = $this->processPrice($product, $proData);
 
+        //Save Description
+        $product = $this->processDescription($product, $proData);
+
         // Save Images
         $files = $this->processImage($request);
         if ($files === false) {

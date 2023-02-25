@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Order;
-use App\Models\User;
 
 class HomeController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
 
@@ -48,9 +52,9 @@ class HomeController extends Controller
         }
 
         if ($existedKey) {
-            if ($cart[$existedKey]->quantity !== $qty) {
-                $cart[$existedKey]->quantity = $qty;
-            }
+            $cart[$existedKey]->quantity += $qty;
+            // if ($cart[$existedKey]->quantity !== $qty) {
+            // }
         } else {
             $cart[$pid] = $cartItem;
             session()->put('cart', $cart);
@@ -106,7 +110,7 @@ class HomeController extends Controller
         }
         return $total;
     }
-
+    
     public function removeCart(Request $request)
     {
         $cart = session('cart');
@@ -185,23 +189,27 @@ class HomeController extends Controller
         $product = Product::find(1);
         $images = $product->images;
         dd($images);
-        foreach($images as $image) {
+        foreach ($images as $image) {
             echo $image->url;
         }
     }
 
-    public function contact(){
+    public function contact()
+    {
         return view('fe.home.contact');
     }
 
-    public function shop(){
+    public function shop()
+    {
         $products = Product::all();
         return view('fe.home.shop', compact('products'));
     }
+
     public function userProfile(){
         $user= auth()->user();
         return view('fe.home.profile', compact('user'));
 
 
     }
+
 }

@@ -4,7 +4,7 @@
 @section('contents')
     <div class="pagetitle">
         <h1>{{ $isUpdate ? 'Edit' : 'Add' }} Stock</h1>
-        <nav>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ Route('admin.stock.index') }}">Stock Management</a></li>
@@ -33,16 +33,12 @@
                 <!-- / Message Section -->
 
                 <!-- Horizontal Form -->
-                <form action="{{ Route($isUpdate ? 'admin.stock.update' : 'admin.stock.store') }}" method="post"
+                <form action="{{ Route('admin.stock.store') }}" method="post"
                     class="card-body" enctype="multipart/form-data">
                     @csrf
-                    @if ($isUpdate)
-                        @method('put')
-                        <input type="hidden" name="id" value="{{ $product->id }}">
-                    @endif
 
                     <div class="form-group row mb-3">
-                        <label for="manufacture_id" class="col-sm-2 col-form-label">Product Name</label>
+                        <label for="product_id" class="col-sm-2 col-form-label">Product Name</label>
 
                         <div class="col-sm-10">
                             <div class="my-custom-select">

@@ -6,7 +6,7 @@
 @section('contents')
     <div class="pagetitle">
         <h1>Stock Management</h1>
-        <nav>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item active">Stock</li>
@@ -40,7 +40,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="productsMgmt" class="table table-bordered table-striped">
+                <table id="stockManagement" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -58,15 +58,15 @@
                             @foreach ($stocks as $stock)
                                     <tr>
                                         <td>{{ $stock->id }}</td>
-                                        <td>{{ $stock->product->name }}</td>
+                                        <td>{{ $stock->product->subName() }}</td>
                                         <td>{{ $stock->product->id }}</td>
                                         <td>{{ $stock->in_qty }}</td>
                                         <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
                                         <td>{{ $stock->out_qty }}</td>
                                         <td>Still not input</td>
-                                        <td>{{ $stock->created_at }}</td>
-                                    </tr>
-                            @endforeach
+                                        <td>{{ $stock->created_at }}</td> 
+                                    </tr>  
+                            @endforeach            
                     </tbody>
 
                     <tfoot>
@@ -82,12 +82,13 @@
 @section('myJs')
     <script>
         $(function() {
-            $("#productsMgmt").DataTable({
+            $("#stockManagement").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
+                "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#stockManagement_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection
