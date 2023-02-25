@@ -4,7 +4,6 @@ namespace App\Http\Traits;
 
 use App\Models\Product;
 use App\Models\Cates\Ram;
-use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -23,7 +22,7 @@ trait ProcessModelData
 
     function processDataWithOutSlug(Request $request)
     {
-        //Tú tạo
+        // From 'TU Lele' with ❤❤❤
         $proData = $request->all();
         return $proData;
     }
@@ -39,8 +38,7 @@ trait ProcessModelData
 
 
     function processStock(Product $product, array $proData){
-        //Tú tạo
-
+        // From 'TU Lele' with ❤❤❤
         $product->stocks()->create(['in_qty' => $proData['in_qty'] ]);
         $product->refresh();
         return $product;
@@ -77,7 +75,10 @@ trait ProcessModelData
         }
     }
 
-    // Use jointly with processImage()
+    /**
+     * Remove selected items, used jointly with processImage()
+     * 
+     */
     function removeItems($images, $proData)
     {
         $filesRemove = [];
@@ -101,7 +102,7 @@ trait ProcessModelData
     }
 
     /**
-     * Get the rams for the RamGroup.
+     * Get the sub-items for the corresponding Group model.
      * 
      * @param  \Illuminate\Database\Eloquent\Model $groupModel
      * @param  string $subClass

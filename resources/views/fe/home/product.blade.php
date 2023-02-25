@@ -165,7 +165,7 @@
                                     <div class="quantity">
                                         <div class="pro-qty">
                                             <input name="product-quantity" type="text"
-                                                value="{{ session('cart')[$product->id]->quantity ?? 1 }}">
+                                                value="1">
                                         </div>
                                         <a href="#" class="primary-btn pd-cart" data-id="{{ $product->id }}">Add
                                             To Cart</a>

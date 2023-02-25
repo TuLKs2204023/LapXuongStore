@@ -68,7 +68,7 @@ function showSuccessToast() {
         title: "Success",
         message: "Cart item added successfully.",
         type: "success",
-        duration: 4000,
+        duration: 3000,
     });
 }
 function showErrorToast() {
@@ -76,6 +76,6 @@ function showErrorToast() {
         title: "Fail",
         message: "Some errors occurred, please contact the administrator.",
         type: "error",
-        duration: 4000,
+        duration: 3000,
     });
 }
