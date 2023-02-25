@@ -58,7 +58,7 @@ div#myToast > .btn--disabled {
 #myToast {
     margin: auto;
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     right: 20px;
     z-index: 9999999999 !important;
 }
@@ -68,10 +68,11 @@ div#myToast > .btn--disabled {
     grid-template-columns: repeat(1, 1fr);
     min-width: 400px;
     max-width: 450px;
-    background-color: #fff;
     border-radius: 4px;
     margin: 12px 0;
-    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.18);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
     transition: all linear 0.3s;
 }
 .myToast {
@@ -124,13 +125,13 @@ div#myToast > .btn--disabled {
 
 .toast--success {
     /* border-color: #47d864; */
-    border-color: #e7ab3c;
+    border-color: var(--violet);
 }
 .toast--success .toast__icon {
-    color: #e7ab3c;
+    color: var(--violet);
 }
 .toast--success .toast__line {
-    background-color: #e7ab3c;
+    background-color: var(--violet);
 }
 
 .toast--info {

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
+use App\Http\Controllers\FE\ShopController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\PromotionController;
 
@@ -29,9 +30,10 @@ Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboa
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
 
 
-Route::get('/', [FE_HomeController::class, 'index'])->name('feHome');
-Route::get('/contact', [FE_HomeController::class, 'contact'])->name('contact');
-Route::get('/shop', [FE_HomeController::class, 'shop'])->name('shop');
+Route::get('/', [FE_HomeController::class, 'index'])->name('fe.home');
+Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact');
+Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
+Route::get('/shop/{slug}', [ShopController::class, 'cate'])->name('fe.shop.cate');
 
 //Data tables
 Route::get('/datatable', function () {

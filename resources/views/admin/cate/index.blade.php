@@ -53,7 +53,7 @@
                                             @endforeach
                                         @endif
                                         @if (method_exists(get_class($item->cateable), 'cateItems'))
-                                            @foreach ($item->cateable->cateItems() as $subItems)
+                                            @foreach ($item->cateable->cateItems()->load('products') as $subItems)
                                                 @foreach ($subItems->products as $product)
                                                     <li>{{ $product->name }}</li>
                                                 @endforeach
