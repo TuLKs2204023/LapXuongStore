@@ -106,7 +106,7 @@ class HomeController extends Controller
         }
         return $total;
     }
-
+    
     public function removeCart(Request $request)
     {
         $cart = session('cart');

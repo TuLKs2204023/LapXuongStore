@@ -39,9 +39,9 @@
                                 @if (session('cart'))
                                     @foreach (session('cart') as $item)
                                         <tr class="pr-cart-item" data-index="{{ $item->product->id }}">
-                                            <td class="cart-pic first-row"><img
+                                            <td class="cart-pic first-row"><a href="{{Route('product.details', $item->product->slug)}}"><img
                                                     src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                    alt="{{ $item->product->name }}"></td>
+                                                    alt="{{ $item->product->name }}"></a></td>
                                             <td class="cart-title first-row">
                                                 <h5>{{ $item->product->name }}</h5>
                                             </td>
@@ -63,7 +63,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="6">I'm hungry, feed me some laptops please &#128557; </td>
+                                        <td colspan="6"> &#128557; I'm hungry, feed me some laptops please &#128557; </td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -72,15 +72,7 @@
                     <div class="row order-summary">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
-                                <a href="" class="primary-btn continue-shop"> Continue Shopping</a>
-                                <a href="" class="primary-btn up-cart">Update Cart</a>
-                            </div>
-                            <div class="discount-coupon">
-                                <h6>Disscount Codes</h6>
-                                <form action="#" class="coupon-form">
-                                    <input type="text" placeholder="Enter Your Codes">
-                                    <button type="submit" class="site-btn coupon-btn">Apply</button>
-                                </form>
+                                <a href="{{Route('shop')}}" class="primary-btn up-cart"> Continue Shopping</a>
                             </div>
                         </div>
                         <div class="col-lg-4 offset-lg-4">

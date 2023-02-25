@@ -18,10 +18,9 @@ class StockController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        $stocks = Stock::all();
-        // $stocks->load('product');
-        return view('admin.stock.index', compact('stocks', 'products'));
+        $stocks = Stock::all()->sortByDesc('id');
+        // $stocks = Stock::all();
+        return view('admin.stock.index', compact('stocks'));
     }
 
     /**
@@ -51,15 +50,65 @@ class StockController extends Controller
         // Save stock for this product
         $product = $this->processStock($product, $proData);
         
-        // Save price Product
-        $product = $this->processPrice($product, $proData);
+        // Save price for this Product
+        $product = $this->processPriceWithStockId($product, $proData);
 
-        
-        
         return redirect()->route('admin.stock.index');
     }
 
-    /**
+    public function stockDetails(Request $request){
+        
+        $pid = $request->id;
+        $product = Product::where('id', $pid)->get()->first();
+        $stocks = $product->stocks();
+
+        return view('admin.stock.details', compact('product', 'stocks'));
+    }
+
+    public function createStockByDetails(int $id)
+    {
+        $isUpdate = true;
+        $product = Product::find($id);
+
+        return view('admin.stock.createByDetails', compact('product', 'isUpdate'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+        /**
      * Display the specified resource.
      *
      * @param  \App\Models\Stock  $stock
@@ -104,12 +153,5 @@ class StockController extends Controller
         // $stock = Stock::find($request->id);
         // $stock->delete();
         // return redirect()->route('admin.stock.index');
-    }
-
-    public function stockDetails(Request $request){
-        $pid = $request->id;
-        $product = Product::where('id', $pid)->get()->first();
-        $stocks = $product->stocks();
-        return view('admin.stock.details', compact('product', 'stocks'));
     }
 }

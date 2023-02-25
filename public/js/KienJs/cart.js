@@ -135,7 +135,7 @@ function updateCart(
     if (!res.totalQty) {
         const cartContainer = $(cartOrBtnSelector);
         cartContainer.innerHTML = `
-            <li class="pr-cart-item">No product</li>
+            <tr class="pr-cart-item"><td colspan="6">&#128557; Too cold, you're not going to leave me empty, are you? &#128557;</td></tr>
         `;
     }
 }

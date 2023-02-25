@@ -155,8 +155,8 @@
                                     <span>5</span>
                                 </div>
                                 <div class="pd-desc">
-                                    <p>Thương hiệu : <a href="#">{{ $product->manufacture->name }}</a></p>
-                                    <p>Bảo hành 24 tháng chính hãng.</p>
+                                    <p>Manufacture : <a href="#">{{ $product->manufacture->name }}</a></p>
+                                    <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     <h4>{{ number_format($product->price, 0, ',', '.') . ' VND' }}<span>{{ number_format($product->price, 0, ',', '.') . ' VND' }}</span>
                                     </h4>
 
@@ -173,14 +173,13 @@
                                 </div>
                                 <ul class="pd-tags">
                                     <li><span>Categories</span>: Gaming, ASUS</li>
-                                    <li><span>TAGS</span>:GEARVN, LAPTOP, UNDER 1000$</li>
                                 </ul>
                                 <div class="pd-share">
-                                    <div class="p-code">fa506</div>
+                                    <div class="p-code">CODE: {{ $product->id }}</div>
                                     <div class="pd-social">
-                                        <a href=""><i class="ti-facebook"></i></a>
-                                        <a href=""><i class="ti-twitter-alt"></i></a>
-                                        <a href=""><i class="ti-linkedin"></i></a>
+                                        <a href="#"><i class="ti-facebook"></i></a>
+                                        <a href="#"><i class="ti-twitter-alt"></i></a>
+                                        <a href="#"><i class="ti-linkedin"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -201,9 +200,14 @@
                                     <div class="product-content">
                                         <div class="row">
                                             <div class="col-lg-10 b">
-                                                @foreach (preg_split('/\\n/', str_replace('\r', '', $product->description)) as $subItm)
+                                                <h5>Introduction</h5>
+                                                <p>{{ $product->description->instruction }}</p>
+                                                <br>
+                                                <h5>Features</h5>
+                                                @foreach (preg_split('/\\n/', str_replace('\r', '', $product->description->feature)) as $subItm)
                                                     <p>{{ $subItm }}</p>
                                                 @endforeach
+                                                <br>
                                             </div>
                                         </div>
                                     </div>
@@ -236,14 +240,21 @@
 
                                             <tr>
                                                 <td class="p-catagory">Availability</td>
-                                                <td>
-                                                    <div class="p-stock">22 in Stock</div>
-                                                </td>
+                                                @if ($product->inStock() - $product->outStock() > 0)
+                                                    <td>
+                                                        <div class="p-stock">
+                                                            {{ $product->inStock() - $product->outStock() }} in Stock</div>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <div class="p-stock">Out of Stock</div>
+                                                    </td>
+                                                @endif
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Weight</td>
                                                 <td>
-                                                    <div class="p-weight">2.2 kg</div>
+                                                    <div class="p-weight">{{$product->description->weight}} kg</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -256,7 +267,7 @@
                                             <tr>
                                                 <td class="p-catagory">Webcam</td>
                                                 <td>
-                                                    <div class="p-weight">720P HD camera</div>
+                                                    <div class="p-weight">{{$product->description->webcam}} camera</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -274,7 +285,7 @@
                                             <tr>
                                                 <td class="p-catagory">Dimension</td>
                                                 <td>
-                                                    <div class="p-weight">35.9 x 25.6 x 2.28 ~ 2.45 cm</div>
+                                                    <div class="p-weight">{{$product->description->dimension}} cm</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -360,7 +371,7 @@
             </div>
 
         </div>
-    </section>
+    </section>  
 @endsection
 
 
@@ -507,5 +518,4 @@
         }
     });
 </script>
-
 @endsection

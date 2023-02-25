@@ -3,7 +3,7 @@
 @section('contents')
     <div class="pagetitle">
         <h1>RAM's category Management</h1>
-        <nav>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item active">RAM's category </li>

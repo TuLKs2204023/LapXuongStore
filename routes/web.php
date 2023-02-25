@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
 use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\PromotionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,13 +130,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
         Route::get('/', [StockController::class, 'index'])->name('index');
         Route::get('/{id}/details', [StockController::class, 'stockDetails'])->name('details');
+        Route::get('/{id}/create', [StockController::class, 'createStockByDetails'])->name('createStockByDetails');
+        Route::post('/store-details', [StockController::class, 'storeStockByDetails'])->name('storeStockByDetails');
         Route::get('/create', [StockController::class, 'create'])->name('create');
         Route::post('/store', [StockController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [StockController::class, 'edit'])->name('edit');
-        Route::put('/update', [StockController::class, 'update'])->name('update');
-        Route::delete('/destroy', [StockController::class, 'destroy'])->name('destroy');
+        // Route::get('/{id}/edit', [StockController::class, 'edit'])->name('edit');
+        // Route::put('/update', [StockController::class, 'update'])->name('update');
+        // Route::delete('/destroy', [StockController::class, 'destroy'])->name('destroy');
     });
 
-
-    // Route::resource('/product', ProductController::class);
+    //PROMOTION
+    Route::group(['prefix' => 'promotion', 'as' => 'promotion.'], function () {
+        Route::get('/', [PromotionController::class, 'index'])->name('index');
+        // Route::get('/create', [PromotionController::class, 'create'])->name('create');
+        Route::post('/store', [PromotionController::class, 'store'])->name('store');
+        // Route::get('/{id}/edit', [PromotionController::class, 'edit'])->name('edit');
+        // Route::put('/update', [PromotionController::class, 'update'])->name('update');
+        // Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
+    });
 });
