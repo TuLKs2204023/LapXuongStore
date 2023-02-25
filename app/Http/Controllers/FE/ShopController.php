@@ -51,19 +51,9 @@ class ShopController extends Controller
             }
         }
 
-        // Retrieve comments associated to posts or videos with a title like code%...
-        $cates = Cate::whereHasMorph(
-            'catetable',
-            [RamGroup::class,],
-            function (Builder $query) {
-                $query->where('value', '>', '0');
-            }
-        )->get();
-
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
             'cate' => $cate,
-            'cates' => $cates,
             'cateItems' => $cateItems,
             'products' => $products
         ]);

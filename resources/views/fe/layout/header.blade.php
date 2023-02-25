@@ -34,7 +34,7 @@
     <div class="container">
         <div class="inner-header">
             <div class="row">
-                <div class="col-lg-2 col-md-2">
+                <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
                             <img src="front/img/logo3.png" height="30" alt="">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 text-right">
+                <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">
                         <li class="heart-icon">
                             <a href="#">
@@ -133,7 +133,7 @@
             <nav class="nav-menu mobile-menu">
                 <ul>
                     <li><a href="{{ Route('fe.home') }}">Home</a></li>
-                    <li><a href="{{ Route('fe.shop.index')}}">Shop</a></li>
+                    <li><a href="{{ Route('fe.shop.index') }}">Shop</a></li>
                     {{-- <li><a href="">Product</a>
                         <ul class="dropdown">
                             <li><a href="">Thương Hiệu</a></li>

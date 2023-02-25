@@ -6,5 +6,7 @@
     --violet-4th: #dbdffd;
     --blue-dark: #596376;
     --grey-dark: #373737;
+    --grey-dark-60: rgba(0, 0, 0, 0.66);
+    --grey-dark-90: rgba(0, 0, 0, 0.9);
     /* --grey-dark: #252525; */
 }

@@ -1,4 +1,4 @@
-export { MyToggle };
+export { MyToggle, MyStickyNav };
 
 $ = document.querySelector.bind(document);
 
@@ -17,26 +17,26 @@ function MyToggle({
 
         toggle.setAttribute("tabindex", "-1");
         // toggleList.style.width = window.innerWidth * 0.8 + "px";
-        
+
         toggle.addEventListener("click", (e) => {
-            showToggleList(e, toggleList);
+            showToggleList(e, toggle, toggleList);
         });
 
         toggle.addEventListener("focusout", (e) => {
-            toggleList.classList.remove("show");
             toggle.classList.remove("show");
+            toggleList.classList.remove("show");
         });
     }
 
     // To show toggle List
-    function showToggleList(e, toggleList) {
+    function showToggleList(e, toggle, toggleList) {
         e.preventDefault();
         if (!toggleList.matches(".show")) {
+            toggle.classList.add("show");
             toggleList.classList.add("show");
-            e.target.classList.add("show");
         } else {
+            toggle.classList.remove("show");
             toggleList.classList.remove("show");
-            e.target.classList.remove("show");
         }
     }
 
@@ -68,4 +68,24 @@ function MyToggle({
             }
         }
     }
+}
+
+function MyStickyNav({ headerSelector = ".header-section" }) {
+    const headerCont = $(headerSelector);
+    const headerTop = $(headerSelector + " > div:first-child");
+    const headerBody = $(headerSelector + " > div:nth-child(2)");
+
+    const nextEle = headerCont.nextElementSibling;
+    const stickyOffset = headerBody.offsetTop;
+    const headerTopHeight = headerCont.offsetHeight;
+
+    window.addEventListener("scroll", (e) => {
+        if (window.pageYOffset >= stickyOffset) {
+            headerCont.classList.add("sticky");
+            nextEle.style.marginTop = `${headerTopHeight}px`;
+        } else {
+            headerCont.classList.remove("sticky");
+            nextEle.style.marginTop = 0;
+        }
+    });
 }

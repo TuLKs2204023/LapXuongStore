@@ -415,7 +415,7 @@ ol {
 }
 
 .inner-header {
-	padding: 39px 0;
+	padding: 29px 0;
 }
 
 .inner-header .logo {
@@ -664,7 +664,7 @@ ol {
 .nav-item .nav-depart .depart-btn {
 	background: #3b3b3b;
 	color: #ffffff;
-	padding: 14px 84px 14px 18px;
+	padding: 12px 84px 12px 18px;
 	cursor: pointer;
 	position: relative;
 }
@@ -761,9 +761,9 @@ ol {
 	font-weight: 700;
 	display: block;
 	color: #ffffff;
-	border-right: 2px solid #3b3b3b;
+	/* border-right: 2px solid #3b3b3b; */
 	text-transform: uppercase;
-	padding: 16px 42px 15px;
+	padding: 14px 42px 13px;
 	-webkit-transition: all 0.3s;
 	-o-transition: all 0.3s;
 	transition: all 0.3s;
@@ -1829,11 +1829,12 @@ ol {
 }
 
 .filter-widget .filter-range-wrap .price-range.ui-widget-content .ui-slider-handle {
+	top: -7px;
 	height: 16px;
 	width: 16px;
 	border-radius: 50%;
 	background: #ffffff;
-	border: none;
+	border: 2px solid var(--violet);
 	-webkit-box-shadow: 1px 6px 14px -4px #425c6d;
 	box-shadow: 1px 6px 14px -4px #425c6d;
 	outline: none;
@@ -3899,7 +3900,7 @@ ol {
 		padding: 16px 12px 12px 11px;
 	}
 	.nav-item .nav-menu li a {
-		padding: 16px 45px 15px;
+		padding: 14px 45px 13px;
 	}
 }
 
@@ -3919,7 +3920,7 @@ ol {
 		max-width: 64%;
 	}
 	.nav-item .nav-menu li a {
-		padding: 16px 26px 15px;
+		padding: 14px 26px 13px;
 	}
 	.hero-items .owl-nav button[type=button] {
 		left: 5px;
@@ -4031,10 +4032,10 @@ ol {
 		margin-left: 8px;
 	}
 	.nav-item .nav-depart .depart-btn {
-		padding: 14px 40px 14px 18px;
+		padding: 12px 40px 12px 18px;
 	}
 	.nav-item .nav-menu li a {
-		padding: 16px 10px 15px;
+		padding: 14px 10px 13px;
 	}
 	.instagram-photo .insta-item .inside-text h5 {
 		font-size: 14px;
@@ -4107,7 +4108,7 @@ ol {
 		margin-left: 0;
 	}
 	.nav-item .nav-depart .depart-btn {
-		padding: 14px 50px 14px 18px;
+		padding: 12px 50px 12px 18px;
 	}
 	.nav-item {
 		background: transparent;

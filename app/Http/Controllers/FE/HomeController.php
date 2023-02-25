@@ -52,9 +52,9 @@ class HomeController extends Controller
         }
 
         if ($existedKey) {
-            if ($cart[$existedKey]->quantity !== $qty) {
-                $cart[$existedKey]->quantity = $qty;
-            }
+            $cart[$existedKey]->quantity += $qty;
+            // if ($cart[$existedKey]->quantity !== $qty) {
+            // }
         } else {
             $cart[$pid] = $cartItem;
             session()->put('cart', $cart);
