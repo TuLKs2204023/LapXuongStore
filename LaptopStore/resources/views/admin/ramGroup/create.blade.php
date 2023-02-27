@@ -1,0 +1,80 @@
+@extends('admin.layout.layout')
+
+@section('contents')
+    <div class="pagetitle">
+        <h1>{{ $isUpdate ? 'Edit' : 'Create' }} RAM's category</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ Route('admin.ramGroup.index') }}">RAM's category</a></li>
+                <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Create' }} RAM's category</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} RAM's category Form</h5>
+                <hr>
+                <h6 class="card-title">Choose 1 of 2 options: EXACT or RANGE value [from ... - to ...]</h6>
+
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
+
+                <!-- Horizontal Form -->
+                <form action="{{ Route($isUpdate ? 'admin.ramGroup.update' : 'admin.ramGroup.store') }}" method="post"
+                    class="card-body" enctype="multipart/form-data">
+                    @csrf
+                    @if ($isUpdate)
+                        @method('put')
+                        <input type="hidden" name="id" value="{{ $ramGroup->id }}">
+                    @endif
+
+                    <!-- Exact Value Section -->
+                    <div class="form-group row mb-3">
+                        <label for="value" class="col-sm-2 col-form-label">Exact Value</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="value" name="value" class="form-control"
+                                value="{{ $isUpdate ? $ramGroup->value : '' }}">
+                        </div>
+                    </div> <!-- / Exact Value Section -->
+
+                    <!-- Min Value Section -->
+                    <div class="form-group row mb-3">
+                        <label for="min" class="col-sm-2 col-form-label">Min Value</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="min" name="min" class="form-control"
+                                value="{{ $isUpdate ? $ramGroup->min : '' }}">
+                        </div>
+                    </div> <!-- / Min Value Section -->
+
+                    <!-- Max Value Section -->
+                    <div class="form-group row mb-3">
+                        <label for="max" class="col-sm-2 col-form-label">Max Value</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="max" name="max" class="form-control"
+                                value="{{ $isUpdate ? $ramGroup->max : '' }}">
+                        </div>
+                    </div> <!-- / Max Value Section -->
+
+                    <!-- Description Section -->
+                    <div class="form-group row mb-3">
+                        <label for="description" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                            <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($ramGroup->description) : '' }}</textarea>
+                        </div>
+                    </div> <!-- / Description Section -->
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </form><!-- End Horizontal Form -->
+            </div>
+        </div>
+        <!-- /.card -->
+    </section>
+@endsection
+

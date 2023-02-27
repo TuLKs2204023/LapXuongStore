@@ -1,0 +1,172 @@
+.header-section {
+    position: relative;
+    width: 100%;
+    z-index: 999;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.header-section.sticky {
+    position: fixed;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+.header-section.sticky input,
+.header-section.sticky .advanced-search .category-btn {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.header-section .header-top {
+    transform: scaleY(1);
+    transform-origin: top;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.header-section.sticky .header-top {
+    transform: scaleY(0);
+    display: none;
+}
+.header-section .inner-header {
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.header-section.sticky .inner-header {
+    padding: 15px 0;
+}
+.header-section .advanced-search,
+.header-section .nav-right,
+.header-section .nav-categories,
+.header-section .nav-menu {
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    transform: scale(1);
+}
+.header-section.sticky .advanced-search,
+.header-section.sticky .nav-right,
+.header-section.sticky .nav-categories :not(ul, li, ul div, a),
+.header-section.sticky .nav-menu {
+    transform: scale(0.85);
+}
+
+.header-section.sticky .nav-item {
+    height: 41px;
+    background-color: var(--grey-dark-60);
+    /* backdrop-filter: blur(5px); */
+}
+
+.nav-item .container {
+    display: flex;
+    align-items: center;
+}
+.nav-item .nav-categories {
+    position: relative;
+    /* float: left; */
+}
+.nav-categories .category-list.show {
+    /* display: block; */
+    opacity: 1;
+    visibility: visible;
+}
+.nav-categories .cate-btn.show:before {
+    -webkit-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+}
+
+.nav-item .nav-categories .cate-btn {
+    /* background: var(--grey-dark); */
+    color: #ffffff;
+    padding: 12px 84px 12px 18px;
+    cursor: pointer;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.nav-item .nav-categories .cate-btn:hover,
+.nav-item .nav-categories .cate-btn:active {
+    background: var(--violet);
+    color: #ffffff;
+}
+
+.nav-categories .cate-btn:before {
+    position: absolute;
+    color: #ffffff;
+    right: 20px;
+    top: 10px;
+    content: "";
+    font-family: FontAwesome;
+    font-size: 18px;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.nav-categories i {
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.nav-categories span {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 16px;
+}
+
+.nav-categories .category-list {
+    position: absolute;
+    width: max-content;
+    left: 0;
+    top: 55px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9999;
+    background-color: #ffffff;
+    padding-bottom: 29px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    align-content: center;
+    gap: 0px 10px;
+    -webkit-box-shadow: 0 13px 32px rgba(51, 51, 51, 0.1);
+    box-shadow: 0 13px 32px rgba(51, 51, 51, 0.1);
+    border: 1px solid #ebebeb;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.nav-categories .category-list li {
+    list-style: none;
+}
+
+.nav-categories .category-list > li > .category-list-header {
+    font-weight: 800;
+    color: var(--violet) !important;
+}
+
+.nav-categories .category-list li.active a {
+    color: var(--violet);
+}
+
+.nav-categories .category-list li .category-list-header,
+.nav-categories .category-list li a {
+    display: block;
+    font-size: 16px;
+    color: var(--blue-dark);
+    padding: 10px 30px 0px 40px;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.nav-categories .category-list li a:hover {
+    color: var(--violet);
+}
