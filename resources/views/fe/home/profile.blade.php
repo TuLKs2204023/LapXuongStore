@@ -74,7 +74,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="breadcrumb-text">
-                                <a href="{{Route('feHome')}}"><i class="fa fa-home"></i>Home</a>
+                                <a href="{{Route('fe.home')}}"><i class="fa fa-home"></i>Home</a>
                                 <span>{{auth()->user()->name}}</span>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <img src="{{asset('images/'.auth()->user()->image)}}" alt="Admin"
-                                    class="rounded-circle" width="150">
+                                    class="rounded" width="150">
                                 <div class="mt-3">
                                     <h4>{{auth()->user()->name}}</h4>
                                     <p class="text-secondary mb-1">{{auth()->user()->role}}</p>
@@ -183,6 +183,15 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-3">
+                                    <h6 class="mb-0">Gender</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{auth()->user()->gender}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
                                     <h6 class="mb-0">Phone</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
@@ -210,8 +219,10 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-info " target="__blank"
+                                    <a class="btn btn-info "
                                         href="{{ Route('editbyuser',auth()->user()->id) }}">Edit</a>
+                                        <a class="btn btn-info "
+                                        href="{{ Route('passwordUser',auth()->user()->id) }}">Change Password</a>
                                 </div>
                             </div>
                         </div>

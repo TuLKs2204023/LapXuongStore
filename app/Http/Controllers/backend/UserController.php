@@ -114,6 +114,38 @@ class UserController extends Controller
         $edit = DB::table('users')->where('id', $id)->first();
         return view('fe.home.edit-profile', compact('edit'));
     }
+    public function passwordUser($id)
+    {
+        // $edit = User::find($id);
+
+        $edit = DB::table('users')->where('id', $id)->first();
+        return view('fe.home.password-user', compact('edit'));
+    }
+
+    public function EditpasswordUser(Request $request, $id)
+    {
+        $data = array();
+        $data['password'] = Hash::make($request->password);
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        $edit = DB::table('users')->where('id', $id)->update($data);
+        if ($edit) {
+            $notification = array(
+                'message' => 'Successfully updated',
+                'alert-type' => 'success',
+            );
+            return redirect()->route('userProfile')->with($notification);
+        } else {
+
+            $notification = array(
+                'message' => 'Something went wrong,try again',
+                'alert-type' => 'error',
+            );
+            return redirect()->route('userProfile')->with($notification);
+
+
+    }}
+
     /**
      * It updates the user information.
      *
@@ -149,37 +181,6 @@ class UserController extends Controller
                 'alert-type' => 'error',
             );
             return redirect()->route('alluser')->with($notification);
-
-
-
-
-        // $data = array();
-        // $data['name'] = $request->name;
-        // $data['email'] = $request->email;
-        // $data['role'] = $request->role;
-        // $data['gender'] = $request->gender;
-        // $data['address'] = $request->address;
-        // $data['phone'] = $request->phone;
-        // $data['password'] = Hash::make($request->password);
-
-        // $data['created_at'] = date('Y-m-d H:i:s');
-        // $data['updated_at'] = date('Y-m-d H:i:s');
-
-        // $update = DB::table('users')->where('id', $id)->update($data);
-        // if ($update) {
-        //     $notification = array(
-        //         'message' => 'successfully updated user',
-        //         'alert-type' => 'success',
-        //     );
-        //     return redirect()->route('alluser')->with($notification);
-        // } else {
-
-        //     $notification = array(
-        //         'message' => 'Something went wrong,try again',
-        //         'alert-type' => 'error',
-        //     );
-        //     return redirect()->route('alluser')->with($notification);
-        // }
     }}
     public function UpdateByUser(Request $request, $id)
     {
