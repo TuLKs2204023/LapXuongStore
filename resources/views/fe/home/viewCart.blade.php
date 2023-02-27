@@ -72,7 +72,7 @@
                     <div class="row order-summary">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
-                                <a href="{{Route('shop')}}" class="primary-btn up-cart"> Continue Shopping</a>
+                                <a href="{{Route('fe.shop.index')}}" class="primary-btn up-cart"> Continue Shopping</a>
                             </div>
                         </div>
                         <div class="col-lg-4 offset-lg-4">

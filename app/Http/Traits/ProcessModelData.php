@@ -33,10 +33,10 @@ trait ProcessModelData
     //     $product->refresh();
     //     return $product;
     // }
-    
+
     function processPriceWithStockId(Product $product, array $proData)
     {
-        // Tú tạo
+        // From 'TU Lele' with ❤❤❤
         $stock = DB::table('stocks')->where('product_id', $product->id)->get()->last();
 
         $product->prices()->create(['origin' => $proData['price'], 'stock_id' => $stock->id]);
@@ -44,44 +44,50 @@ trait ProcessModelData
         return $product;
     }
 
-    function processDescription(Product $product, array $proData){
-        //Tú tạo
-        $product->description()->create([
-            'instruction' => $proData['instruction'],
-            'feature' => $proData['feature'],
-            'weight' => $proData['weight'],
-            'dimension' => $proData['dimension'],
-            'webcam' => $proData['webcam'],
-            'o_s' => $proData['o_s'],
-            'battery' => $proData['battery'],
-            ]);
-        $product->refresh();
-        return $product;
-    }
-
-    function processStock(Product $product, array $proData){
+    function processDescription(Product $product, array $proData)
+    {
         // From 'TU Lele' with ❤❤❤
-        $product->stocks()->create(['in_qty' => $proData['in_qty'] ]);
+        $product->description()->updateOrCreate(
+            ['product_id' => $product->id],
+            [
+                'weight' => $proData['weight'],
+                'dimension' => $proData['dimension'],
+                'webcam' => $proData['webcam'],
+                'o_s' => $proData['o_s'],
+                'battery' => $proData['battery'],
+                'warranty' => $proData['warranty'],
+                'instruction' => $proData['instruction'],
+                'feature' => $proData['feature'],
+            ]
+        );
         $product->refresh();
         return $product;
     }
 
-    function processUsedPromotion(Order $order,string $promotionCode){
-        //Tú tạo
+    function processStock(Product $product, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
+        $product->stocks()->create(['in_qty' => $proData['in_qty']]);
+        $product->refresh();
+        return $product;
+    }
+
+    function processUsedPromotion(Order $order, string $promotionCode)
+    {
+        // From 'TU Lele' with ❤❤❤
         $promotionId = DB::table('promotions')->where('code', $promotionCode)->first();
 
         $order->usedPromotion()->create(['promotion_id' => $promotionId]);
         $order->refresh();
         return $order;
     }
-    
+
     function processRam(array $proData)
     {
         $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);
         $ram->refresh();
         $proData['ram_id'] = $ram->id;
         return $proData;
-
     }
 
     function processImage(Request $request)
