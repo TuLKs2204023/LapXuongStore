@@ -24,7 +24,25 @@ class AdminHomeController extends Controller
      */
     public function index()
     {
+        if(auth()->user()->role == 'Admin')
+
+            return view('admin.dashboard');
+
+        else{
+            return redirect()->route('fe.home');
+        }
+    }
+    public function manager()
+    {
+
         return view('admin.dashboard');
+
+    }
+    public function customer()
+    {
+
+        return view('fe.home.profile');
+
     }
 
     public function backFromError(){

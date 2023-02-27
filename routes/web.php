@@ -31,13 +31,15 @@ use App\Http\Controllers\PromotionController;
 
 Auth::routes();
 Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
+Route::get('/manager', [AdminHomeController::class, 'manager'])->name('admin.dashboard');
+Route::get('/customer', [AdminHomeController::class, 'customer'])->name('customer');
+
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
 
 
 
 
-Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userProfile');
-Route::get('/edit-profile/{id}', [UserController::class, 'EditByUser'])->name('editbyuser');
+
 Route::get('/', [FE_HomeController::class, 'index'])->name('fe.home');
 Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact');
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
@@ -57,8 +59,11 @@ Route::get('/edit-user/{id}', [UserController::class, 'EditUser'])->name('editus
 Route::post('/update-user/{id}', [UserController::class, 'UpdatetUser'])->name('updateuser');
 Route::get('/delete-user/{id}', [UserController::class, 'DeleteUser'])->name('deleteuser');
 Route::get('/info-user', [UserController::class, 'InfoUser'])->name('infouser');
-Route::get('/edit-byuser/{id}', [UserController::class, 'EditByUser'])->name('editby');
+Route::get('/edit-byuser/{id}', [UserController::class, 'EditByUser'])->name('editbyuser');
 Route::post('/update-byuser/{id}', [UserController::class, 'UpdateByUser'])->name('updatebyuser');
+Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userProfile');
+Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name('passwordUser');
+Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
 
 //Order management
 Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
@@ -98,6 +103,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
         Route::put('/update', [ProductController::class, 'update'])->name('update');
         Route::delete('/destroy', [ProductController::class, 'destroy'])->name('destroy');
+
+
     });
 
     // Category
