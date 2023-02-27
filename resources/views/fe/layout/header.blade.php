@@ -4,7 +4,7 @@
             <div class="ht-left">
                 <div class="mail-service">
                     <i class="fa fa-envelope"></i>
-                LapXuongShop@gmail.com
+                    LapXuongShop@gmail.com
                 </div>
                 <div class="phone-service">
                     <i class="fa fa-phone"></i>
@@ -12,19 +12,19 @@
                 </div>
             </div>
             <div class="ht-right">
-            @if (Route::has('login'))
-            @auth
-            @if (auth()->user()->role == 'Customer')
-            <a href="{{ url('profile') }}" class="login-panel">Home</a>
-            @endif
-            @if (auth()->user()->role !== 'Customer')
-            <a href="{{ url('admin') }}" class="login-panel">Home</a>
-            @endif
-            @else
-            <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-            @endauth
-            @endif
-            <!-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> -->
+                @if (Route::has('login'))
+                    @auth
+                        @if (auth()->user()->role == 'Customer')
+                            <a href="{{ url('profile') }}" class="login-panel">Home</a>
+                        @endif
+                        @if (auth()->user()->role !== 'Customer')
+                            <a href="{{ url('admin') }}" class="login-panel">Home</a>
+                        @endif
+                    @else
+                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
+                    @endauth
+                @endif
+                <!-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> -->
 
                 <div class="lan-selector">
                     <select name="countries" id="countries" class="language_drop" style="width:300px;">
@@ -124,23 +124,10 @@
     <div class="nav-item">
         <div class="container">
             <div class="nav-categories">
-                <div class="cate-btn my-toggle">
+                <div class="cate-btn">
                     <i class="ti-menu"></i>
                     <span>Categories</span>
                 </div>
-                <ul class="category-list my-toggle-content">
-                    @foreach ($cateGroups as $cateGroup)
-                        <li>
-                            <div class="category-list-header">{{ $cateGroup->name }}</div>
-                            <ul>
-                                @foreach ($cateGroup->cates as $cate)
-                                    <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @endforeach
-                </ul>
             </div>
 
             <nav class="nav-menu mobile-menu">
@@ -169,5 +156,21 @@
                 </ul>
             </nav>
         </div>
+    </div>
+    <div class="nav-fake-categories">
+        <div class="cate-btn my-toggle"></div>
+        <ul class="category-list my-toggle-content">
+            @foreach ($cateGroups as $cateGroup)
+                <li>
+                    <div class="category-list-header">{{ $cateGroup->name }}</div>
+                    <ul>
+                        @foreach ($cateGroup->cates as $cate)
+                            <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+            @endforeach
+        </ul>
     </div>
 </header>
