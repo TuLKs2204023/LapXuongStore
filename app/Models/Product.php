@@ -189,4 +189,28 @@ class Product extends Model
      public function description(){
         return $this->hasOne(Description::class);
      }
+
+     /* Get description of this product.
+     */
+
+     public function ratings():HasMany{
+        return $this->hasMany(Rating::class);
+     }
+
+     public function countRates(){
+        $rates = $this->loadCount('ratings');
+        $countRates = $rates->ratings_count;
+
+        // $total = $this->ratings;
+        return $countRates;
+     }
+
+     public function sumRates(){
+        $rates = $this->loadSum('ratings', 'rate');
+        $sumRates = $rates->ratings_sum_rate;
+
+        return $sumRates;
+     }
+
+     
 }

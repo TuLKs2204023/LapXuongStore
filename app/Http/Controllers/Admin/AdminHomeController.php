@@ -46,6 +46,6 @@ class AdminHomeController extends Controller
     }
 
     public function backFromError(){
-        return redirect()->route('feHome');
+        return redirect()->route('fe.home');
     }
 }
