@@ -14,9 +14,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <a href="index.html"><i class="fa fa-home"></i>Home</a>
-                        <a href="shop.html">Shop</a>
-                        <span>Detail</span>
+                        <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i> Home</a>
+                        <a href="{{ Route('fe.shop.index') }}">Shop</a>
+                        <span>Detail: {{ $product->name }}</span>
                     </div>
                 </div>
             </div>
@@ -160,7 +160,9 @@
                                 </div>
                                 <div class="pd-desc">
                                     <p>Manufacture : <a href="#">{{ $product->manufacture->name }}</a></p>
-                                    <p>Genuine warranty : {{ $product->description->warranty }} months</p>
+                                    @if (isset($product->description->warranty))
+                                        <p>Genuine warranty : {{ $product->description->warranty }} months</p>
+                                    @endif
                                     <h4>{{ number_format($product->price, 0, ',', '.') . ' VND' }}<span>{{ number_format($product->price, 0, ',', '.') . ' VND' }}</span>
                                     </h4>
 
@@ -204,13 +206,18 @@
                                     <div class="product-content">
                                         <div class="row">
                                             <div class="col-lg-10 b">
-                                                <h5>Introduction</h5>
-                                                <p>{{ $product->description->instruction }}</p>
-                                                <br>
-                                                <h5>Features</h5>
-                                                @foreach (preg_split('/\\n/', str_replace('\r', '', $product->description->feature)) as $subItm)
-                                                    <p>{{ $subItm }}</p>
-                                                @endforeach
+                                                @if (isset($product->description->instruction))
+                                                    <h5>Introduction</h5>
+                                                    <p>{!! $product->description->instruction !!}</p>
+                                                    <br>
+                                                @endif
+                                                @if (isset($product->description->feature))
+                                                    <h5>Features</h5>
+                                                    {!! $product->description->feature !!}
+                                                    {{-- @foreach (preg_split('/\\n/', str_replace('\r', '', $product->description->feature)) as $subItm)
+                                                        <p>{ !! $subItm !!}</p>
+                                                    @endforeach --}}
+                                                @endif
                                                 <br>
                                             </div>
                                         </div>
@@ -255,12 +262,14 @@
                                                     </td>
                                                 @endif
                                             </tr>
-                                            <tr>
-                                                <td class="p-catagory">Weight</td>
-                                                <td>
-                                                    <div class="p-weight">{{ $product->description->weight }} kg</div>
-                                                </td>
-                                            </tr>
+                                            @if (isset($product->description->weight))
+                                                <tr>
+                                                    <td class="p-catagory">Weight</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->description->weight }} kg</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
@@ -268,12 +277,15 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td class="p-catagory">Webcam</td>
-                                                <td>
-                                                    <div class="p-weight">{{ $product->description->webcam }} camera</div>
-                                                </td>
-                                            </tr>
+                                            @if (isset($product->description->webcam))
+                                                <tr>
+                                                    <td class="p-catagory">Webcam</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->description->webcam }}</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
                                             <tr>
                                                 <td class="p-catagory">Graphics</td>
                                                 <td>
@@ -286,12 +298,18 @@
                                                     <div class="p-weight">{{ $product->cpu->name }}</div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td class="p-catagory">Dimension</td>
-                                                <td>
-                                                    <div class="p-weight">{{ $product->description->dimension }} cm</div>
-                                                </td>
-                                            </tr>
+
+                                            @if (isset($product->description->dimension))
+                                                <tr>
+                                                    <td class="p-catagory">Dimensions</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->description->dimension }} cm
+                                                        </div>
+                                                        <div>(Height x Width x Depth)</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 <td>

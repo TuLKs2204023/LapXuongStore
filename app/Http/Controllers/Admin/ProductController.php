@@ -64,7 +64,7 @@ class ProductController extends Controller
         $product = Product::create($proData);
         $product->refresh();
 
-        // // Save Price
+        // Save Price
         // $product = $this->processPrice($product, $proData);
 
         //Save Description
@@ -138,6 +138,9 @@ class ProductController extends Controller
         // if ($proData['price'] != $oldPrice) {
         //     $product = $this->processPrice($product, $proData);
         // }
+
+        //Save Description
+        $product = $this->processDescription($product, $proData);
 
         // Save Images
         $files = $this->processImage($request);

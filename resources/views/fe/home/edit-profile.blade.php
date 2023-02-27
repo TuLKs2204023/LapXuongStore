@@ -76,8 +76,8 @@
                             <div class="breadcrumb-text">
                                 <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
 
-                                <a>{{ auth()->user()->name }}</a>
-                                <span>Edit</span>
+                                <a href="{{ Route('userProfile') }}">{{ auth()->user()->name }}</a>
+                                <span>Update Information</span>
                             </div>
                         </div>
                     </div>
@@ -270,7 +270,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <button class="btn btn-info " type="submit"
-                                            >Edit</button>
+                                            >Update</button>
                                     </div>
                                 </div>
                             </form>

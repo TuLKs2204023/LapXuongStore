@@ -92,6 +92,13 @@
                 const myStickyNav = new MyStickyNav({});
             }
         });
+
+        const navCateBtn = document.querySelector('.nav-item .cate-btn');
+        const navFakeCateBtn = document.querySelector('.nav-fake-categories .cate-btn');
+        navCateBtn.addEventListener('click', (e) =>{
+            navFakeCateBtn.click();
+            navCateBtn.classList.toggle('show');
+        });
     </script>
 
     @yield('myJs')
