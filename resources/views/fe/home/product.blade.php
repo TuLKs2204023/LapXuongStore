@@ -1,5 +1,12 @@
 @extends('fe.layout.layout')
 
+@section('myCss')
+    <style>
+        .overflow-auto {
+            max-height: 400px;
+        }
+    </style>
+@endsection
 
 @section('breader')
     <div class="breadcrumb-section">
@@ -147,12 +154,9 @@
                                     <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                                 </div>
                                 <div class="pd-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <span>5</span>
+                                    @for ($i = 0; $i < 5; $i++)
+                                        <i class="fa fa-star"></i>
+                                    @endfor
                                 </div>
                                 <div class="pd-desc">
                                     <p>Manufacture : <a href="#">{{ $product->manufacture->name }}</a></p>
@@ -164,8 +168,7 @@
                                 <div class="quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <input name="product-quantity" type="text"
-                                                value="1">
+                                            <input name="product-quantity" type="text" value="1">
                                         </div>
                                         <a href="#" class="primary-btn pd-cart" data-id="{{ $product->id }}">Add
                                             To Cart</a>
@@ -191,7 +194,8 @@
                                 <li><a class="active" href="#tab-1" data-toggle="tab" role="tab">DESCRIPTION</a>
                                 </li>
                                 <li><a href="#tab-2" data-toggle="tab" role="tab">SPECIFICATIONS</a></li>
-                                <li><a href="#tab-3" data-toggle="tab" role="tab">Customer Review (02)</a></li>
+                                <li><a href="#tab-3" data-toggle="tab" role="tab">Customer Review
+                                        ({{ $product->countRates() }})</a></li>
                             </ul>
                         </div>
                         <div class="tab-item-content">
@@ -254,7 +258,7 @@
                                             <tr>
                                                 <td class="p-catagory">Weight</td>
                                                 <td>
-                                                    <div class="p-weight">{{$product->description->weight}} kg</div>
+                                                    <div class="p-weight">{{ $product->description->weight }} kg</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -267,7 +271,7 @@
                                             <tr>
                                                 <td class="p-catagory">Webcam</td>
                                                 <td>
-                                                    <div class="p-weight">{{$product->description->webcam}} camera</div>
+                                                    <div class="p-weight">{{ $product->description->webcam }} camera</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -285,7 +289,7 @@
                                             <tr>
                                                 <td class="p-catagory">Dimension</td>
                                                 <td>
-                                                    <div class="p-weight">{{$product->description->dimension}} cm</div>
+                                                    <div class="p-weight">{{ $product->description->dimension }} cm</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -297,70 +301,109 @@
                                         </table>
                                     </div>
                                 </div>
+                                {{-- ---------------------------------Comment View------------------------------------------------ --}}
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     <div class="customer-review-option">
-                                        <h4>2 Comments</h4>
-                                        <div class="comment-option">
-                                            <div class="co-item">
-                                                <div class="avatar-pic">
-                                                    <img src="front/img/product-single/avatar-1.png" alt="">
-                                                </div>
-                                                <div class="avatar-text">
-                                                    <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
+                                        <h4>{{ $product->countRates() }} Comments</h4>
+                                        <div class="comment-option overflow-auto">
+                                            @foreach ($ratings as $rating)
+                                                <div class="co-item">
+                                                    <div class="avatar-pic">
+                                                        <img src="front/img/product-single/avatar-2.png" alt="">
                                                     </div>
-                                                    <h5>Kelly <span>08 February 2023</span></h5>
-                                                    <div class="at-reply">Nice !</div>
-                                                </div>
-                                            </div>
-                                            <div class="co-item">
-                                                <div class="avatar-pic">
-                                                    <img src="front/img/product-single/avatar-2.png" alt="">
-                                                </div>
-                                                <div class="avatar-text">
-                                                    <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
+                                                    <div class="avatar-text">
+                                                        <div class="at-rating">
+                                                            @for ($i = 0; $i < $rating->rate; $i++)
+                                                                <i class="fa fa-star"></i>
+                                                            @endfor
+                                                        </div>
+                                                        <h5>{{ $rating->user->name }}
+                                                            <span>{{ $rating->created_at }}</span>
+                                                        </h5>
+                                                        <div class="at-reply">{{ $rating->review }}</div>
                                                     </div>
-                                                    <h5>Carry <span>07 February 2023</span></h5>
-                                                    <div class="at-reply">Nice !</div>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
-                                        <div class="personal-rating">
-                                            <h6>Your Rating</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star-o"></i>
-                                            </div>
-                                        </div>
-                                        <div class="leave-comment">
-                                            <h4>Leave A Comment</h4>
-                                            <form action="" class="comment-form">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Name">
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Email">
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <textarea placeholder="Messages"></textarea>
-                                                        <button type="submit" class="site-btn">Send message</button>
-                                                    </div>
+                                        {{-- ---------------------------------end Comment View------------------------------------------------ --}}
+
+                                        {{-- ---------------------------------------------------Review Form--------------------------------------------------------------------------------- --}}
+                                        @if (Route::has('login'))
+                                            @auth
+                                                <div class="leave-comment">
+                                                    <h4>Leave A Comment</h4>
+                                                    <form action="{{ Route('admin.rating.store') }}" class="comment-form"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                        <div class="personal-rating">
+                                                            <div class="form-group" id="rating-ability-wrapper">
+                                                                <label class="control-label" for="rating">
+                                                                    <span class="field-label-header">How would you rate your
+                                                                        ability to
+                                                                        use
+                                                                        the computer and access internet?*</span><br>
+                                                                    <span class="field-label-info"></span>
+                                                                    <input type="hidden" id="selected_rating"
+                                                                        name="selected_rating" value=""
+                                                                        required="required">
+                                                                </label>
+                                                                <h2 class="bold rating-header" style="">
+                                                                    <span class="selected-rating">0</span><small> / 5</small>
+                                                                </h2>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="1"
+                                                                    id="rating-star-1">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="2"
+                                                                    id="rating-star-2">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="3"
+                                                                    id="rating-star-3">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="4"
+                                                                    id="rating-star-4">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="5"
+                                                                    id="rating-star-5">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <input disabled placeholder="Name"
+                                                                    value="{{ auth()->user()->name }}">
+                                                                <input type="hidden" type="text" name="name"
+                                                                    value="{{ auth()->user()->name }}">
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <input disabled type="text"
+                                                                    value="{{ auth()->user()->email }}">
+                                                                <input type="hidden" placeholder="Email" name="email"
+                                                                    value="{{ auth()->user()->email }}">
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <textarea placeholder="Review" name="review" rows="8"></textarea>
+                                                                <button type="submit" class="site-btn">Send
+                                                                    Review</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            @endauth
+                                        @endif
+
+                                        {{-- ---------------------------------------------------end Review Form--------------------------------------------------------------------------------- --}}
+
                                     </div>
                                 </div>
 
@@ -371,7 +414,7 @@
             </div>
 
         </div>
-    </section>  
+    </section>
 @endsection
 
 
@@ -518,4 +561,42 @@
         }
     });
 </script>
+    <script>
+        jQuery(document).ready(function($) {
+
+            $(".btnrating").on('click', (function(e) {
+
+                var previous_value = $("#selected_rating").val();
+
+                var selected_value = $(this).attr("data-attr");
+                $("#selected_rating").val(selected_value);
+
+                $(".selected-rating").empty();
+                $(".selected-rating").html(selected_value);
+
+                for (i = 1; i <= selected_value; ++i) {
+                    $("#rating-star-" + i).toggleClass('btn-warning');
+                    $("#rating-star-" + i).toggleClass('btn-default');
+                }
+
+                for (ix = 1; ix <= previous_value; ++ix) {
+                    $("#rating-star-" + ix).toggleClass('btn-warning');
+                    $("#rating-star-" + ix).toggleClass('btn-default');
+                }
+
+            }));
+
+
+        });
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const confirmDialog = new ConfirmDialog({
+                    processUrl: '{{ Route('admin.rating.store') }}',
+                    processToken: '{{ csrf_token() }}',
+                    deleteBtn: "button.site-btn",
+                    headerCartSelector: ".cart-icon",
+                });
+            }
+        });
+    </script>
 @endsection

@@ -74,7 +74,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="breadcrumb-text">
-                                <a href="{{Route('feHome')}}"><i class="fa fa-home"></i>Home</a>
+                                <a href="{{Route('fe.home')}}"><i class="fa fa-home"></i>Home</a>
                                 <span>{{auth()->user()->name}}</span>
                             </div>
                         </div>
@@ -210,7 +210,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-info " target="__blank"
+                                    <a class="btn btn-info "
                                         href="{{ Route('editbyuser',auth()->user()->id) }}">Edit</a>
                                 </div>
                             </div>

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
 
@@ -50,18 +51,20 @@ class PromotionController extends Controller
                 }
                 $existCode = Promotion::where('code', $code)->first();
                 if ($existCode) {
-                    return back()->with('errors', 'Duplicated code found '.$i.' are created.');
+                    $code = '';
+                    continue;
                 } else {
                     $discount = $inputDiscount / 100;
                     Promotion::create(['code' => $code, 'discount' => $discount]);
                     $code = '';
                 }
             }
+            $success = $i.' codes were created successfully. If you found missing amount, it means there were duplicated codes';
         } else {
             return back()->with('errors', 'Discount must be greater than 0.');
         }
 
-        return redirect()->route('admin.promotion.index');
+        return redirect()->route('admin.promotion.index', compact('success'));
     }
 
     /**

@@ -24,7 +24,8 @@ class HomeController extends Controller
     public function product($slug)
     {
         $product = Product::where('slug', $slug)->get()->first();
-        return view('fe.home.product', compact('product'));
+        $ratings = $product->ratings->sortByDesc('id');
+        return view('fe.home.product', compact('product', 'ratings'));
     }
 
     public function addCart(Request $request)

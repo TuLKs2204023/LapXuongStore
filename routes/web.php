@@ -15,8 +15,8 @@ use App\Http\Controllers\Admin\StockController;
 
 use App\Http\Controllers\backend\OdersController;
 
-use App\Http\Controllers\PromotionController;
-
+use App\Http\Controllers\Admin\PromotionController;
+use App\Http\Controllers\Admin\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,6 +162,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         // Route::get('/{id}/edit', [PromotionController::class, 'edit'])->name('edit');
         // Route::put('/update', [PromotionController::class, 'update'])->name('update');
         // Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
+    });
+
+    // Rating
+    Route::group(['prefix' => 'rating', 'as' => 'rating.'], function () {
+        Route::get('/', [RatingController::class, 'index'])->name('index');
+        Route::get('/create', [RatingController::class, 'create'])->name('create');
+        Route::post('/store', [RatingController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
+        Route::put('/update', [RatingController::class, 'update'])->name('update');
+        Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
     });
 });
 

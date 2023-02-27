@@ -1,6 +1,9 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
+        {{-- ---------------------------------------------------------start Manager section--------------------------------------------------------------------- --}}
+
+
         <!-- Dashboard Nav -->
         <li class="nav-item">
             <a class="nav-link " href="{{ Route('admin.dashboard') }}">
@@ -24,6 +27,20 @@
             </li><!-- End Categories Nav -->
 
             <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.promotion.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Promotion</span>
+                </a>
+            </li><!-- End Promotion Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.stock.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Stock</span>
+                </a>
+            </li><!-- End Promotion Nav -->
+
+            <li class="nav-item">
                 <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
                     href="#">
                     <i class="bi bi-cpu"></i><span>Specifications</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -45,16 +62,17 @@
                             <i class="bi bi-circle"></i><span>RAM</span>
                         </a>
                         <!--End RAM -->
-                        <!-- STOCK -->
-                        <a href="{{ Route('admin.stock.index') }}">
-                            <i class="bi bi-circle"></i><span>Stock</span>
-                        </a>
-                        <!--End STOCK -->
                     </li>
 
                 </ul>
             </li><!-- End Forms Nav -->
         @endif
+
+        {{-- ---------------------------------------------------------end Manager section--------------------------------------------------------------------- --}}
+
+
+
+        {{-- ---------------------------------------------------------start Admin section--------------------------------------------------------------------- --}}
 
         @if (auth()->user()->role == 'Admin')
             <li class="nav-item">
@@ -76,27 +94,19 @@
                             <i class="bi bi-circle"></i><span>User Orders</span>
                         </a>
                         <!--End User Orders -->
+                        <!-- User Ratings -->
+                        <a href="{{ Route('admin.rating.index') }}">
+                            <i class="bi bi-circle"></i><span>User Ratings</span>
+                        </a>
+                        <!--End User Ratings -->
 
                     </li>
 
                 </ul>
             </li><!-- End Forms Nav -->
         @endif
-       
-======
-        </li><!-- End Categories Nav -->
 
-        <!-- Specifications Nav -->
-        <li class="nav-item">
-            <a class="nav-link " href="{{Route('admin.promotion.index')}}">
-                <i class="bi bi-menu-button-wide"></i>
-                <span>Promotion</span>
-            </a>
-        </li><!-- End Promotion Nav -->
-
-        
-
+        {{-- ---------------------------------------------------------end Admin section--------------------------------------------------------------------- --}}
 
     </ul>
-
 </aside>
