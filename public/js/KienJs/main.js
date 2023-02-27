@@ -70,7 +70,10 @@ function MyToggle({
     }
 }
 
-function MyStickyNav({ headerSelector = ".header-section" }) {
+function MyStickyNav({
+    headerSelector = ".header-section",
+    scalePercent = 0.85,
+}) {
     const headerCont = $(headerSelector);
     const headerTop = $(headerSelector + " > div:first-child");
     const headerBody = $(headerSelector + " > div:nth-child(2)");
@@ -82,7 +85,7 @@ function MyStickyNav({ headerSelector = ".header-section" }) {
     window.addEventListener("scroll", (e) => {
         if (window.pageYOffset >= stickyOffset) {
             headerCont.classList.add("sticky");
-            nextEle.style.marginTop = `${headerTopHeight}px`;
+            nextEle.style.marginTop = `${headerTopHeight * scalePercent}px`;
         } else {
             headerCont.classList.remove("sticky");
             nextEle.style.marginTop = 0;
