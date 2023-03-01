@@ -10,7 +10,7 @@
             max-height: 400px;
         }
 
-        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role{
+        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role {
             font-style: italic;
             font-size: 80%;
             font-weight: 500;
@@ -378,25 +378,46 @@
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
                                                 <div class="co-item">
-                                                    <div class="avatar-pic">
-                                                        <img src="{{ asset('images/' . $rating->user->image) }}"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="avatar-text">
-                                                        <div class="at-rating">
-                                                            @for ($i = 0; $i < $rating->rate; $i++)
-                                                                <i class="fa fa-star"></i>
-                                                            @endfor
-                                                            @for ($i = 0; $i < 5 - $rating->rate; $i++)
-                                                                <i class="fa fa-star-o"></i>
-                                                            @endfor
+                                                    <form action="{{ Route('admin.rating.destroy') }}" method="post"
+                                                        style="display:inline-block">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <input type="hidden" name="id" value="{{ $rating->id }}">
+                                                        <div class="avatar-pic">
+                                                            <img src="{{ asset('images/' . $rating->user->image) }}"
+                                                                alt="">
                                                         </div>
-                                                        <div class="at-role">{{$rating->user->role}}</div>
-                                                        <h5>{{ $rating->user->name }}
-                                                            <span>{{ $rating->created_at }}</span>
-                                                        </h5>
-                                                        <div class="at-reply">{{ $rating->review }}</div>
-                                                    </div>
+                                                        <div class="avatar-text">
+                                                            <div class="at-rating">
+                                                                @for ($i = 0; $i < $rating->rate; $i++)
+                                                                    <i class="fa fa-star"></i>
+                                                                @endfor
+                                                                @for ($i = 0; $i < 5 - $rating->rate; $i++)
+                                                                    <i class="fa fa-star-o"></i>
+                                                                @endfor
+                                                            </div>
+                                                            <div
+                                                                @if ($rating->user->role == 'Admin' || $rating->user->role == 'Manager')
+                                                                    class="badge rounded-pill bg-info text-light"
+                                                                @else
+                                                                    class="badge rounded-pill bg-secondary text-light" 
+                                                                @endif>
+                                                                {{ $rating->user->role }}
+                                                            </div>
+                                                            <h5>{{ $rating->user->name }}
+                                                                <span>{{ $rating->created_at }}</span>
+                                                            </h5>
+                                                            <div class="at-reply">{{ $rating->review }}</div>
+                                                            @if (auth()->user())
+                                                                @if(auth()->user()->role == 'Admin')
+                                                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Delete
+                                                                </button>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -468,7 +489,7 @@
                                                             </div>
                                                             <div class="col-lg-12">
                                                                 <textarea placeholder="Review" name="review" rows="8"></textarea>
-                                                                <button type="submit" class="site-btn">Send
+                                                                <button type="submit" class="site-btn review-lapxuong-btn">Send
                                                                     Review</button>
                                                             </div>
                                                         </div>
@@ -477,7 +498,7 @@
                                             @endauth
                                         @else
                                             <div class="leave-comment">
-                                                <p>Please loggin to commet</p>
+                                                <p>Please loggin to comment</p>
                                             </div>
                                         @endif
 
@@ -664,18 +685,15 @@
                 }
 
             }));
-
-
         });
-        // document.addEventListener("readystatechange", (e) => {
-        //     if (e.target.readyState === "complete") {
-        //         const confirmDialog = new ConfirmDialog({
-        //             processUrl: '{{ Route('admin.rating.store') }}',
-        //             processToken: '{{ csrf_token() }}',
-        //             deleteBtn: "button.site-btn",
-        //             headerCartSelector: ".cart-icon",
-        //         });
-        //     }
-        // });
+    </script>
+    <script type="module">
+        import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
+
+        // const submitBtn = document.querySelector('.review-lapxuong-btn');
+        // console.log(submitBtn)
+        // submitBtn.onclick = function(){
+        //     console.log(submitBtn)
+        // }
     </script>
 @endsection

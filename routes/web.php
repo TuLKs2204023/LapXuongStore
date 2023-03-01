@@ -18,6 +18,7 @@ use App\Http\Controllers\backend\OdersController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\RatingController;
 use App\Http\Controllers\Admin\WishlistItemController;
+use App\Models\WishlistItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,11 +97,14 @@ Route::post('/process-checkout', [FE_HomeController::class, 'processCheckout'])-
 
 // For Admin purpose
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    // Dashboard
-
 
     // User
     Route::resource('/user', UserController::class);
+
+    //Wishlist
+    Route::group(['prefix' => 'wishlist', 'as' => 'wishlist.'], function () {
+        Route::get('/', [WishlistItemController::class, 'adminIndex'])->name('index');
+    });
 
     // Product
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
@@ -110,8 +114,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
         Route::put('/update', [ProductController::class, 'update'])->name('update');
         Route::delete('/destroy', [ProductController::class, 'destroy'])->name('destroy');
-
-
     });
 
     // Category
@@ -188,4 +190,3 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
     });
 });
-

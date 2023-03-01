@@ -29,6 +29,12 @@ class WishlistItemController extends Controller
         }
     }
 
+    public function adminIndex()
+    {
+        $wishlistItems = WishlistItem::all();
+        return view('admin.wishlist.index', compact('wishlistItems'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

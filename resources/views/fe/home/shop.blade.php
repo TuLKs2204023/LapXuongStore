@@ -199,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- 09 Of 36 Product</p>
+                                <p>Show 01- 09 Of {{count($products)}} Product</p>
                             </div>
                         </div>
                     </div> <!-- // Main content Header -->

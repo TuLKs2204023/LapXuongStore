@@ -45,7 +45,7 @@ class RatingController extends Controller
         $user = User::find(auth()->user()->id);
 
         $user = $this->processRating($user, $proData);
-
+        
         return back()->with('success', 'Review added successfully.');
     }
 
@@ -89,8 +89,11 @@ class RatingController extends Controller
      * @param  \App\Models\Rating  $rating
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rating $rating)
+    public function destroy(Request $request)
     {
-        //
+        $rId = $request->id;
+        $rating = Rating::find($rId);
+        $rating->delete();
+        return back();
     }
 }

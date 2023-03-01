@@ -44,7 +44,14 @@
                     <i class="bi bi-menu-button-wide"></i>
                     <span>Stock</span>
                 </a>
-            </li><!-- End Promotion Nav -->
+            </li><!-- End Stock Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.wishlist.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Wishlist</span>
+                </a>
+            </li><!-- End Wishlist Nav -->
 
             <li class="nav-item">
                 <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"

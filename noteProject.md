@@ -6,6 +6,7 @@ Sửa file ".env.example" thành ".env"
 1. Kiểm tra key
 2. Kiểm tra tên database trước khi migrate
 3. Kiểm tra Password database (nếu có)
+4. Kiểm ra MAIL fields
 
 
 # Chạy lệnh sau khi clone project
@@ -23,6 +24,7 @@ Sửa file ".env.example" thành ".env"
 12. php artisan vendor:publish -> chọn 11
 13. php artisan vendor:publish -> chọn 12
 14. các bước còn lại làm theo link "https://vietlaravel.com/huong-dan-tich-hop-ckeditor-va-ckfinder-chuan-nhat-cho-laravel.html"
+15. Nếu cần chạy schedule thì    php artisan schedule:run
 
 # Fix lỗi
 1. Add tay thông tin vô cate_group table trong database (Lỗi foreign key)

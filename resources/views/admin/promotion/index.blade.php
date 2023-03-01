@@ -96,15 +96,18 @@
                         </div>
                     </div>
                 </div>
-                <!-- Message Section -->
-                @include('components.message')
-                <!-- / Message Section -->
+               
 
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+                
+                 <!-- Message Section -->
+                 @include('components.message')
+                 <!-- / Message Section -->
+                 
                 <table id="stockManagement" class="table table-bordered table-striped">
                     <thead>
                         <tr>
