@@ -15,18 +15,6 @@
                 @if (Route::has('login'))
                     @auth
                         @if (auth()->user()->role == 'Customer')
-                            <a href="{{ url('profile') }}" class="login-panel">Home</a>
-                        @endif
-                        @if (auth()->user()->role !== 'Customer')
-                            <a href="{{ url('admin') }}" class="login-panel">Home</a>
-                        @endif
-                    @else
-                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                    @endauth
-                @endif
-                <!-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> -->
-
-
                                 <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
@@ -91,7 +79,7 @@
                 <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">
                         <li class="heart-icon">
-                            <a href="#">
+                            <a href="{{ Route('wishlist') }}">
                                 <i class="icon_heart_alt"></i>
                                 <span>2</span>
                             </a>

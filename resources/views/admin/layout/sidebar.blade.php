@@ -1,7 +1,7 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        {{-- ---------------------------------------------------------start Manager section--------------------------------------------------------------------- --}}
+        {{-- ---------------------------------------------------------start Dashboard section--------------------------------------------------------------------- --}}
 
 
         <!-- Dashboard Nav -->
@@ -11,21 +11,26 @@
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
-        @if (auth()->user()->role == 'Manager')
 
-                <li class="nav-item">
-                    <a class="nav-link " href="{{ Route('admin.product.index') }}">
-                        <i class="bi bi-tags"></i>
-                        <span>Product</span>
-                    </a>
-                </li><!-- End Product Nav -->
-            
-                <li class="nav-item">
-                    <a class="nav-link " href="{{ Route('admin.cate.index') }}">
-                        <i class="bi bi-menu-button-wide"></i>
-                        <span>Categories</span>
-                    </a>
-                </li><!-- End Categories Nav -->
+        {{-- ---------------------------------------------------------end Dashboard section--------------------------------------------------------------------- --}}
+
+
+        {{-- ---------------------------------------------------------start Manager section--------------------------------------------------------------------- --}}
+
+        @if (auth()->user()->role == 'Manager')
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.product.index') }}">
+                    <i class="bi bi-tags"></i>
+                    <span>Product</span>
+                </a>
+            </li><!-- End Product Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.cate.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Categories</span>
+                </a>
+            </li><!-- End Categories Nav -->
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.promotion.index') }}">
@@ -64,7 +69,7 @@
                         </a>
                         <!--End RAM -->
                     </li>
-
+        @endif
         {{-- ---------------------------------------------------------end Manager section--------------------------------------------------------------------- --}}
 
 
@@ -72,7 +77,6 @@
         {{-- ---------------------------------------------------------start Admin section--------------------------------------------------------------------- --}}
 
         @if (auth()->user()->role == 'Admin')
-
             <li class="nav-item">
                 <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
                     href="#">
@@ -101,7 +105,6 @@
                     </li>
                 </ul>
             </li><!-- End Forms Nav -->
-            @endif
         @endif
 
         {{-- ---------------------------------------------------------end Admin section--------------------------------------------------------------------- --}}

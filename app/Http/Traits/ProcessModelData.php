@@ -84,6 +84,7 @@ trait ProcessModelData
     }
 
     function processRating(User $user, array $proData){
+        //Tú tạo
         $product = DB::table('products')->where('id', $proData['product_id'])->first();
 
         $productId = $product->id;
