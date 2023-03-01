@@ -39,9 +39,10 @@
                                 @if (session('cart'))
                                     @foreach (session('cart') as $item)
                                         <tr class="pr-cart-item" data-index="{{ $item->product->id }}">
-                                            <td class="cart-pic first-row"><a href="{{Route('product.details', $item->product->slug)}}"><img
-                                                    src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                    alt="{{ $item->product->name }}"></a></td>
+                                            <td class="cart-pic first-row"><a
+                                                    href="{{ Route('product.details', $item->product->slug) }}"><img
+                                                        src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                        alt="{{ $item->product->name }}"></a></td>
                                             <td class="cart-title first-row">
                                                 <h5>{{ $item->product->name }}</h5>
                                             </td>
@@ -51,6 +52,7 @@
                                                 <div class="quantity">
                                                     <div class="pro-qty">
                                                         <input type="text" value="{{ $item->quantity }}"
+                                                            data-stock="{{ $item->product->inStock() - $item->product->outStock() - $item->quantity }}"
                                                             name="product-quantity">
                                                     </div>
                                                 </div>
@@ -63,7 +65,8 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="6"> &#128557; I'm hungry, feed me some laptops please &#128557; </td>
+                                        <td colspan="6"> &#128557; I'm hungry, feed me some laptops please &#128557;
+                                        </td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -72,7 +75,7 @@
                     <div class="row order-summary">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
-                                <a href="{{Route('fe.shop.index')}}" class="primary-btn up-cart"> Continue Shopping</a>
+                                <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart"> Continue Shopping</a>
                             </div>
                         </div>
                         <div class="col-lg-4 offset-lg-4">

@@ -15,37 +15,24 @@
                 @if (Route::has('login'))
                     @auth
                         @if (auth()->user()->role == 'Customer')
-                            <a href="{{ url('profile') }}" class="login-panel">Home</a>
-                        @endif
-                        @if (auth()->user()->role !== 'Customer')
-                            <a href="{{ url('admin') }}" class="login-panel">Home</a>
-                        @endif
-                    @else
-                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                    @endauth
-                @endif
-                <!-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> -->
-
-
-                                <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
+                            <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                                <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
-                                    style="width:80px " type="submit">{{ auth()->user()->name }}</a>
-
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius" style="width:80px "
+                                type="submit">{{ auth()->user()->name }}</a>
                         @endif
                         @if (auth()->user()->role == 'Admin')
                             <a href="{{ url('admin') }}" class="login-panel"> Hello {{ auth()->user()->name }}</a>
                         @endif
                         @if (auth()->user()->role == 'Manager')
                             <a href="{{ url('manager') }}" class="login-panel"> Hello {{ auth()->user()->name }}</a>
-                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius"
-                                    style="width:90px " type="submit">Setting</a>
+                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
+                                type="submit">Setting</a>
                         @endif
                     @else
                         <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>

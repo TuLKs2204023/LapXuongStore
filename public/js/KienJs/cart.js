@@ -1,5 +1,5 @@
 import { showSuccessToast, showErrorToast } from "./toast.js";
-export { CartHandler, getParent, updateCart, updateCartHeader };
+export { CartHandler, getParent, updateCartPage, updateCartHeader };
 
 $ = document.querySelector.bind(document);
 
@@ -27,18 +27,31 @@ function CartHandler({
             return false;
         }
         for (let input of inputs) {
+            const incBtn = input.parentNode.querySelector(".inc.qtybtn");
+            let stock = Number(input.dataset.stock);
+            disableIncrease(stock, incBtn);
+
             const selectedRow = getParent(input, cartItemSelector);
             const pid = selectedRow.dataset.index;
             const btns = input.parentNode.querySelectorAll(".qtybtn");
 
             for (let btn of btns) {
                 btn.addEventListener("click", (e) => {
-                    cartUpdateHandler(e, input, pid, updateCart);
+                    cartUpdateHandler(e, input, pid, updateCartPage);
+                    stock = Number(input.dataset.stock);
+                    // disableIncrease(stock, incBtn);
                 });
             }
 
-            input.oninput = (e) => {
-                cartUpdateHandler(e, input, pid, updateCart);
+            input.onfocusout = (e) => {
+                cartUpdateHandler(e, input, pid, updateCartPage);
+                if (input.dataset.stock <= 0) {
+                    showErrorToast({
+                        message: "Cannot add more items due to out of stock.",
+                        duration: 3000,
+                    });
+                    return false;
+                }
             };
         }
     } else {
@@ -55,13 +68,37 @@ function CartHandler({
         };
 
         function callback2(
-            ajaxHttpRequest,
+            e,
+            res,
             cartOrBtnSelector,
             summaryContSelector,
             summariesSelector,
+            headerCartSelector,
             input
         ) {
-            showSuccessToast();
+            if (res.stockBalance < 0) {
+                showErrorToast({
+                    message: "Cannot add more items due to out of stock.",
+                    duration: 3000,
+                });
+                return false;
+            }
+
+            // Update header cartItems
+            updateCartHeader(res, headerCartSelector);
+
+            showSuccessToast({
+                message: "Card item(s) added successfully.",
+                duration: 3000,
+            });
+        }
+    }
+
+    function disableIncrease(stock, incBtn) {
+        if (stock <= 0) {
+            incBtn.addEventListener("click", disableHandler, true);
+        } else {
+            incBtn.removeEventListener("click", disableHandler);
         }
     }
 
@@ -82,14 +119,19 @@ function CartHandler({
                     ajaxHttpRequest.readyState == 4 &&
                     ajaxHttpRequest.status == 200
                 ) {
+                    const res = JSON.parse(ajaxHttpRequest.responseText);
+                    console.log(res);
+                    input.dataset.stock = res.stockBalance;
+
                     callback(
-                        ajaxHttpRequest,
+                        e,
+                        res,
                         cartOrBtnSelector,
                         summaryContSelector,
                         summariesSelector,
+                        headerCartSelector,
                         input
                     );
-                    updateCartHeader(ajaxHttpRequest, headerCartSelector);
                 }
             };
 
@@ -104,14 +146,18 @@ function CartHandler({
 }
 
 // Function to update Total Amount of items
-function updateCart(
-    ajaxHttpRequest,
+function updateCartPage(
+    e,
+    res,
     cartOrBtnSelector,
     summaryContSelector,
     summariesSelector,
+    headerCartSelector,
     input
 ) {
-    const res = JSON.parse(ajaxHttpRequest.responseText);
+    // Update header cartItems
+    updateCartHeader(res, headerCartSelector);
+
     if (input) {
         const itmPrice =
             input.parentNode.parentNode.parentNode.nextElementSibling;
@@ -138,19 +184,28 @@ function updateCart(
             <tr class="pr-cart-item"><td colspan="6">&#128557; Too cold, you're not going to leave me empty, are you? &#128557;</td></tr>
         `;
     }
+
+    let incBtn;
+    if (input) {
+        incBtn = input.parentNode.querySelector(".inc.qtybtn");
+        if (res.stockBalance <= 0) {
+            incBtn.addEventListener("click", disableHandler, true);
+            return;
+        } else {
+            incBtn.removeEventListener("click", disableHandler, true);
+        }
+    }
 }
 
 // Function to update Header Cart
-function updateCartHeader(ajaxHttpRequest, headerCartSelector) {
-    const res = JSON.parse(ajaxHttpRequest.responseText);
+function updateCartHeader(res, headerCartSelector) {
     const headerContainer = $(headerCartSelector);
-    
+
     if (headerContainer) {
         const headerCart = headerContainer.querySelector(".index");
         if (headerCart) {
             const totalQty = res.totalQty;
             headerCart.innerHTML = totalQty;
-            // totalQty > 1 ? `${totalQty} items` : `${totalQty} item`;
         }
     }
 }
@@ -164,4 +219,14 @@ function getParent(input, formGrpSelector) {
         }
         parent = parent.parentElement;
     }
+}
+
+// Disable click event
+function disableHandler(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    showErrorToast({
+        message: "Cannot add more items due to out of stock.",
+        duration: 3000,
+    });
 }

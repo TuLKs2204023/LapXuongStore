@@ -606,15 +606,15 @@
 
 
         });
-        document.addEventListener("readystatechange", (e) => {
-            if (e.target.readyState === "complete") {
-                const confirmDialog = new ConfirmDialog({
-                    processUrl: '{{ Route('admin.rating.store') }}',
-                    processToken: '{{ csrf_token() }}',
-                    deleteBtn: "button.site-btn",
-                    headerCartSelector: ".cart-icon",
-                });
-            }
-        });
+        // document.addEventListener("readystatechange", (e) => {
+        //     if (e.target.readyState === "complete") {
+        //         const confirmDialog = new ConfirmDialog({
+        //             processUrl: '{{ Route('admin.rating.store') }}',
+        //             processToken: '{{ csrf_token() }}',
+        //             deleteBtn: "button.site-btn",
+        //             headerCartSelector: ".cart-icon",
+        //         });
+        //     }
+        // });
     </script>
 @endsection
