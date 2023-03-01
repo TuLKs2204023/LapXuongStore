@@ -16,6 +16,13 @@ Sửa file ".env.example" thành ".env"
 5. php artisan key:generate
 6. npm install (Cần tải nodeJS để chạy lệnh này trong terminal)
 7. npm run build
+<!-- 8. download ckeditor 4 (file .zip) -->
+9. composer require ckfinder/ckfinder-laravel-package
+10. php artisan ckfinder:download
+11. php artisan vendor:publish -> chọn 10
+12. php artisan vendor:publish -> chọn 11
+13. php artisan vendor:publish -> chọn 12
+14. các bước còn lại làm theo link "https://vietlaravel.com/huong-dan-tich-hop-ckeditor-va-ckfinder-chuan-nhat-cho-laravel.html"
 
 # Fix lỗi
 1. Add tay thông tin vô cate_group table trong database (Lỗi foreign key)
@@ -24,3 +31,6 @@ Sửa file ".env.example" thành ".env"
 4. Nếu đã tạo bảng stocks thì -> trong mysql -> stocks table, chỉnh UPDATE và DELETE foreign key product_id lại thành CASCADE (hai options này nằm ở bên phải màn hình)
 5. Xóa tay cột description trong products table nếu đã tạo product table (thêm file migrate alter thì nhiều file quá)
 6. Xóa migration delete_column_stocks_table
+7. Vào Xampp -> Apache Config -> php.ini -> tìm dòng "gd" -> xóa dấu ";"
+8. Vào Xampp -> Apache Config -> php.ini -> tìm dòng "zip" -> xóa dấu ";" nếu ko chạy được lệnh 9
+9. Sửa file config/ckfinder.php dòng 85 ->     ':8888/LapXuongStore/public/' (thống nhất port và tên project)

@@ -78,7 +78,7 @@
                 <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">
                         <li class="heart-icon">
-                            <a href="#">
+                            <a href="{{ Route('wishlist') }}">
                                 <i class="icon_heart_alt"></i>
                                 <span>2</span>
                             </a>

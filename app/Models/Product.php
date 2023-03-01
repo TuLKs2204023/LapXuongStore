@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
@@ -190,7 +191,7 @@ class Product extends Model
         return $this->hasOne(Description::class);
      }
 
-     /* Get description of this product.
+     /* -------------------------------Rate---------------------------------
      */
 
      public function ratings():HasMany{
@@ -198,6 +199,7 @@ class Product extends Model
      }
 
      public function countRates(){
+        $rates = 0;
         $rates = $this->loadCount('ratings');
         $countRates = $rates->ratings_count;
 
@@ -206,11 +208,47 @@ class Product extends Model
      }
 
      public function sumRates(){
+        $rates = 0;
         $rates = $this->loadSum('ratings', 'rate');
         $sumRates = $rates->ratings_sum_rate;
 
         return $sumRates;
      }
 
-     
+     public function avgRates(){
+        $avg = 0;
+        $avg = $this->sumRates() / $this->countRates();
+        return number_format($avg, 0, '.');
+     }
+
+     /* -------------------------------end Rate---------------------------------
+     */
+
+     /* -------------------------------Wishlist_Item---------------------------------
+     */
+
+     public function wishlistItems(){
+        return $this->hasMany(WishlistItem::class);
+     }
+
+     public function findWishlist(){
+        $user = auth()->user();
+        if($user){
+            $userId = $user->id;
+            $wishlistItems = $this->wishlistItems();
+            $found = $wishlistItems->where('user_id', $userId)->first();
+            if($found){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }   
+     }
+
+     /* -------------------------------end Wishlist_Item---------------------------------
+     */
 }

@@ -2,8 +2,45 @@
 
 @section('myCss')
     <style>
-        .overflow-auto {
+        .fa-heart {
+            color: red;
+        }
+
+        .comment-option.overflow-auto {
             max-height: 400px;
+        }
+
+        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role{
+            font-style: italic;
+            font-size: 80%;
+            font-weight: 500;
+            text-shadow: 2px 2px 10px #4154F1;
+            /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
+        }
+
+        .personal-rating .btn-default,
+        .personal-rating .btn-warning {
+            transition: all 0.3s;
+        }
+
+        .personal-rating .btn-default:hover {
+            color: #FAC451;
+            border-color: white;
+            background-color: white;
+        }
+
+        .personal-rating .btnrating.btn.btn-lg.btn-warning:focus,
+        .personal-rating .btn-warning {
+            color: #FAC451;
+            border-color: white;
+            background-color: white;
+        }
+
+        .personal-rating .btn-warning:hover,
+        .personal-rating .btn-default {
+            color: gray;
+            border-color: white;
+            background-color: white;
         }
     </style>
 @endsection
@@ -151,15 +188,28 @@
                                 <div class="pd-title">
                                     <span>oranges</span>
                                     <h3>{{ $product->name }}</h3>
-                                    <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
+                                    @if ($product->findWishlist())
+                                        <a href="{{ Route('removeWishlist', $product->id) }}" class="heart-icon"><i
+                                                class="fas fa-heart"></i></a>
+                                    @else
+                                        <a href="{{ Route('addWishlist', $product->id) }}" class="heart-icon"><i
+                                                class="far fa-heart"></i></a>
+                                    @endif
                                 </div>
                                 <div class="pd-rating">
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <i class="fa fa-star"></i>
-                                    @endfor
+                                    @if ($product->countRates() > 0)
+                                        @for ($i = 0; $i < $product->avgRates(); $i++)
+                                            <i class="fa fa-star"></i>
+                                        @endfor
+                                        @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
+                                            <i class="fa fa-star-o"></i>
+                                        @endfor
+                                    @endif
                                 </div>
                                 <div class="pd-desc">
-                                    <p>Manufacture : <a href="#">{{ $product->manufacture->name }}</a></p>
+                                    <p>Manufacture : <a
+                                            href="{{ Route('fe.shop.cate', $product->manufacture->slug) }}">{{ $product->manufacture->name }}</a>
+                                    </p>
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
@@ -230,12 +280,14 @@
                                                 <td class="p-catagory">Customer Rating</td>
                                                 <td>
                                                     <div class="pd-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <span>(5)</span>
+                                                        @if ($product->countRates() > 0)
+                                                            @for ($i = 0; $i < $product->avgRates(); $i++)
+                                                                <i class="fa fa-star"></i>
+                                                            @endfor
+                                                            @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endfor
+                                                        @endif
                                                     </div>
                                                 </td>
 
@@ -253,12 +305,12 @@
                                                 <td class="p-catagory">Availability</td>
                                                 @if ($product->inStock() - $product->outStock() > 0)
                                                     <td>
-                                                        <div class="p-stock">
+                                                        <div class="p-stock" style="color: green">
                                                             {{ $product->inStock() - $product->outStock() }} in Stock</div>
                                                     </td>
                                                 @else
                                                     <td>
-                                                        <div class="p-stock">Out of Stock</div>
+                                                        <div class="p-stock" style="color: red">Out of Stock</div>
                                                     </td>
                                                 @endif
                                             </tr>
@@ -327,14 +379,19 @@
                                             @foreach ($ratings as $rating)
                                                 <div class="co-item">
                                                     <div class="avatar-pic">
-                                                        <img src="front/img/product-single/avatar-2.png" alt="">
+                                                        <img src="{{ asset('images/' . $rating->user->image) }}"
+                                                            alt="">
                                                     </div>
                                                     <div class="avatar-text">
                                                         <div class="at-rating">
                                                             @for ($i = 0; $i < $rating->rate; $i++)
                                                                 <i class="fa fa-star"></i>
                                                             @endfor
+                                                            @for ($i = 0; $i < 5 - $rating->rate; $i++)
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endfor
                                                         </div>
+                                                        <div class="at-role">{{$rating->user->role}}</div>
                                                         <h5>{{ $rating->user->name }}
                                                             <span>{{ $rating->created_at }}</span>
                                                         </h5>
@@ -418,6 +475,10 @@
                                                     </form>
                                                 </div>
                                             @endauth
+                                        @else
+                                            <div class="leave-comment">
+                                                <p>Please loggin to commet</p>
+                                            </div>
                                         @endif
 
                                         {{-- ---------------------------------------------------end Review Form--------------------------------------------------------------------------------- --}}

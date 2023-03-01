@@ -17,6 +17,7 @@ use App\Http\Controllers\backend\OdersController;
 
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\RatingController;
+use App\Http\Controllers\Admin\WishlistItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,12 @@ Route::post('/update-cart', [FE_HomeController::class, 'updateCart'])->name('upd
 Route::post('/remove-cart', [FE_HomeController::class, 'removeCart'])->name('removeCart');
 Route::get('/view-cart', [FE_HomeController::class, 'viewCart'])->name('viewCart');
 Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearCart');
+
+// Wishlist
+Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
+Route::get('/{id}/add_wishlist', [WishlistItemController::class, 'store'])->name('addWishlist');
+Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'destroy'])->name('removeWishlist');
+
 
 // For Login purpose
 // Route::group(['middleware' => 'canLogin'], function () {

@@ -200,7 +200,7 @@ class UserController extends Controller
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
             if ($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg') {
-                return view('admin.users.add-user')->with('error', 'Only jpg, png, jpeg files are acceptable.');
+                return redirect()->route('userProfile')->with('error', 'Only jpg, png, jpeg files are acceptable.');
             }
             $imageName = $file->getClientOriginalName();
             $file->move("images", $imageName);

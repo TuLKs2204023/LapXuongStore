@@ -18,7 +18,7 @@ class RatingController extends Controller
      */
     public function index()
     {
-        $ratings = Rating::all();
+        $ratings = Rating::all()->sortByDesc('id');
         return view('admin.rating.index', compact('ratings'));
     }
 
