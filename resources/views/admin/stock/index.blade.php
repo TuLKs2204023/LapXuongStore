@@ -1,5 +1,5 @@
+@section('title','- Stocks')
 @extends('admin.layout.layout')
-
 @section('myHead')
 @endsection
 
@@ -64,9 +64,9 @@
                                         <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
                                         <td>{{ $stock->out_qty }}</td>
                                         <td>Still not input</td>
-                                        <td>{{ $stock->created_at }}</td> 
-                                    </tr>  
-                            @endforeach            
+                                        <td>{{ $stock->created_at }}</td>
+                                    </tr>
+                            @endforeach
                     </tbody>
 
                     <tfoot>

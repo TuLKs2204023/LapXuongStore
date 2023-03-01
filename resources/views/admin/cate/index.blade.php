@@ -1,11 +1,11 @@
 @extends('admin.layout.layout')
-
+@section('title','- Categories')
 
 @section('contents')
 
     <div class="pagetitle">
         <h1>Categories Management</h1>
-        <nav style="--bs-breadcrumb-divider: '>';"> 
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item active">Categories</li>

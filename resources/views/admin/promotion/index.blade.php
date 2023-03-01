@@ -1,9 +1,9 @@
+@section('title','- Promotion')
 @extends('admin.layout.layout')
-
 @section('myHead')
     <style>
         .row.g-3.align-items-center {
-            margin-top: 1px; 
+            margin-top: 1px;
         }
 
         .text-left{
@@ -88,7 +88,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="text-left">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>

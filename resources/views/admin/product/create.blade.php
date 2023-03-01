@@ -1,5 +1,5 @@
+@section('title','- Create Product')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>{{ $isUpdate ? 'Edit' : 'Create' }} Product</h1>

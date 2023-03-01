@@ -1,3 +1,4 @@
+@section('fetitle','- Product')
 @extends('fe.layout.layout')
 
 @section('myCss')

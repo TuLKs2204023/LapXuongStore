@@ -1,5 +1,5 @@
+@section('title','- Oders')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>Oders List</h1>

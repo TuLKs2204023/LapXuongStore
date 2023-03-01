@@ -1,3 +1,4 @@
+@section('fetitle','- Shop')
 @extends('fe.layout.layout')
 
 @section('myCss')
@@ -7,7 +8,6 @@
         }
     </style>
 @endsection
-
 
 @section('breader')
     <!-- BREADCUMB SECTION BEGIN-->

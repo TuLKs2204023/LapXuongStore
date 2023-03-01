@@ -1,5 +1,5 @@
+@section('title','- Create Stock')
 @extends('admin.layout.layout')
-
 
 @section('contents')
     <div class="pagetitle">

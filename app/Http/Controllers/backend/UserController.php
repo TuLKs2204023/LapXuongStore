@@ -126,26 +126,35 @@ class UserController extends Controller
     public function EditpasswordUser(Request $request, $id)
     {
         $data = array();
-        $data['password'] = Hash::make($request->password);
+
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
-        $edit = DB::table('users')->where('id', $id)->update($data);
-        if ($edit) {
-            $notification = array(
-                'message' => 'Successfully updated',
-                'alert-type' => 'success',
-            );
-            return redirect()->route('userProfile')->with($notification);
-        } else {
+        $passconf = Hash::make($request->password_confirmation);
+        if( Hash::check($request->password_confirmation,auth()->user()->password ) )
+        {
+            $data['password'] = Hash::make($request->password);
+            $edit = DB::table('users')->where('id', $id)->update($data);
+            if ($edit) {
+                $notification = array(
+                    'message' => 'Successfully updated',
+                    'alert-type' => 'success',
+                );
+                return redirect()->route('userProfile')->with($notification);
+            } else {
 
+                $notification = array(
+                    'message' => 'Something went wrong,try again !',
+                    'alert-type' => 'error',
+                );
+                return redirect()->route('userProfile')->with($notification);
+            }
+        } else {
             $notification = array(
                 'message' => 'Something went wrong,try again',
-                'alert-type' => 'error',
-            );
+                    'alert-type' => 'error',);
             return redirect()->route('userProfile')->with($notification);
-
-
-    }}
+        }
+    }
 
     /**
      * It updates the user information.
@@ -182,7 +191,8 @@ class UserController extends Controller
                 'alert-type' => 'error',
             );
             return redirect()->route('alluser')->with($notification);
-    }}
+        }
+    }
     public function UpdateByUser(Request $request, $id)
     {
         $user = User::find($id);
@@ -210,9 +220,9 @@ class UserController extends Controller
             }
             $imageName = $file->getClientOriginalName();
             $file->move("images", $imageName);
-
-        }else
-        {$imageName['image'] = null;}
+        } else {
+            $imageName['image'] = null;
+        }
 
         $data['image'] = $imageName;
         $edit = $user->update($data);
@@ -229,9 +239,8 @@ class UserController extends Controller
                 'alert-type' => 'error',
             );
             return redirect()->route('userProfile')->with($notification);
-
-
-    }}
+        }
+    }
     /**
      * It deletes a user from the database.
      *

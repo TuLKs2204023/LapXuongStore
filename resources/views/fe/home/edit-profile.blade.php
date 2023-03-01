@@ -1,3 +1,4 @@
+@section('fetitle','- Edit Profile')
 @extends('fe.layout.layout')
 @section('myCss')
     <style>
@@ -184,7 +185,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="email" name="email" class="form-control"
-                                            value="{{ $edit->email }}" required>
+                                            value="{{ $edit->email }}" required disabled >
                                     </div>
                                 </div>
                                 <hr>

@@ -1,5 +1,5 @@
+@section('title','- Stock details')
 @extends('admin.layout.layout')
-
 @section('myHead')
 @endsection
 

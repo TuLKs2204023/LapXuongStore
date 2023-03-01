@@ -1,3 +1,5 @@
+
+@section('title','- Rating')
 @extends('admin.layout.layout')
 
 @section('myHead')
@@ -102,3 +104,4 @@
         });
     </script>
 @endsection
+

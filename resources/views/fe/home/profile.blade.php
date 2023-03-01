@@ -1,3 +1,4 @@
+@section('fetitle','- Profile')
 @extends('fe.layout.layout')
 @section('myCss')
     <style>
@@ -219,9 +220,9 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-info "
+                                    <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1"
                                         href="{{ Route('editbyuser',auth()->user()->id) }}">Edit</a>
-                                        <a class="btn btn-info "
+                                        <a class="btn btn-info" style="background-color:#4154f1;border-color:#4154f1"
                                         href="{{ Route('passwordUser',auth()->user()->id) }}">Change Password</a>
                                 </div>
                             </div>
