@@ -1,5 +1,3 @@
-
-@section('title','- Rating')
 @extends('admin.layout.layout')
 
 @section('myHead')
@@ -17,7 +15,7 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-        @if (auth()->user()->role !== 'Admin')
+        @if (auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Manager')
             <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
                 <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
@@ -25,14 +23,13 @@
                 <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
 
             </section>
-        @endif
-        @if (auth()->user()->role == 'Admin')
+        @else
             <div class="card">
                 <div class="card-header">
                     <!-- Message Section -->
                     @include('components.message')
                     <!-- / Message Section -->
-
+                    
                     {{-- <h3 class="card-title">DataTable with default features</h3> --}}
                 </div>
                 <!-- /.card-header -->
@@ -43,38 +40,24 @@
                                 <th>ID</th>
                                 <th>User Name</th>
                                 <th>Product Name</th>
-                                <th>Rating Level</th>
-                                <th>Review</th>
                                 <th>Timestamp</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach ($ratings as $rating)
+                            @foreach ($wishlistItems as $item)
                                 <tr>
-                                    <td>{{ $rating->id }}</td>
-                                    <td>{{ $rating->user->name }}</td>
-                                    <td>{{ $rating->product->name }}</td>
-                                    <td>{{ $rating->rate }}</td>
-                                    <td>{{ $rating->review }}</td>
-                                    <td>{{ $rating->created_at }}</td>
-                                    <td> <a class="btn btn-outline-info btn-sm"
-                                            href="{{ Route('admin.rating.edit', $rating->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->user->name }}</td>
+                                    <td>{{ $item->product->name }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>
+                                        <a class="btn btn-outline-danger btn-sm"
+                                            href="{{ Route('admin.rating.destroy', $item->id) }}">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
                                         </a>
-                                        <form action="{{ Route('admin.rating.destroy') }}" method="post"
-                                            style="display:inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <input type="hidden" name="id" value="{{ $rating->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
-                                            </button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -89,6 +72,7 @@
             <!-- /.card -->
         @endif
     </section>
+
 @endsection
 
 @section('myJs')
@@ -104,4 +88,3 @@
         });
     </script>
 @endsection
-

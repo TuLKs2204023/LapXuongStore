@@ -1,5 +1,14 @@
-@section('fetitle','- Cart')
 @extends('fe.layout.layout')
+
+@section('myCss')
+    <style>
+        .product-cart tr td .close-td.first-row a {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+@endsection
+
 @section('content')
     <!-- BREADCUMB SECTION BEGIN-->
     <div class="breadcrumb-section">
@@ -9,7 +18,7 @@
                     <div class="breadcrumb-text">
                         <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i> Home</a>
                         <a href="{{ Route('fe.shop.index') }}">Shop</a>
-                        <span>Shopping Cart</span>
+                        <span>{{ auth()->user()->name }} Wishlist</span>
                     </div>
                 </div>
             </div>
@@ -29,15 +38,12 @@
                                 <tr>
                                     <th>Images</th>
                                     <th class="p-name">Product Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody class="products-cart">
-                                @if (session('cart'))
-                                    @foreach (session('cart') as $item)
+                                @if ($wishlistItems)
+                                    @foreach ($wishlistItems as $item)
                                         <tr class="pr-cart-item" data-index="{{ $item->product->id }}">
                                             <td class="cart-pic first-row"><a
                                                     href="{{ Route('product.details', $item->product->slug) }}"><img
@@ -46,27 +52,14 @@
                                             <td class="cart-title first-row">
                                                 <h5>{{ $item->product->name }}</h5>
                                             </td>
-                                            <td class="p-price first-row">
-                                                {{ number_format($item->product->price, 0, ',', '.') }}</td>
-                                            <td class="qua-col first-row">
-                                                <div class="quantity">
-                                                    <div class="pro-qty">
-                                                        <input type="text" value="{{ $item->quantity }}"
-                                                            data-stock="{{ $item->product->inStock() - $item->product->outStock() - $item->quantity }}"
-                                                            name="product-quantity">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="total-price first-row">
-                                                {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
-                                            </td>
-                                            <td class="close-td first-row"><i class="ti-close"></i></td>
+                                            <td class="close-td first-row"><a
+                                                    href="{{ Route('removeWishlist', $item->product->id) }}"><i
+                                                        class="ti-close"></i></a></td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="6"> &#128557; I'm hungry, feed me some laptops please &#128557;
-                                        </td>
+                                        <td colspan="6"> {{ $errors }} </td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -75,19 +68,7 @@
                     <div class="row order-summary">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
-                                <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart"> Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 offset-lg-4">
-                            <div class="proceed-checkout">
-                                <ul>
-                                    <li class="subtotal">Subtotal
-                                        <span class="ajax-summary">{{ number_format($total['value'], 0, ',', '.') }}
-                                            VND</span>
-                                    </li>
-                                    <li class="cart-total">Total <span>Total after discount</span></li>
-                                </ul>
-                                <a href="{{ Route('checkout') }}" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart">Click me to shop</a>
                             </div>
                         </div>
                     </div>

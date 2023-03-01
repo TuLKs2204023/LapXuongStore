@@ -1,16 +1,50 @@
 @section('fetitle','- Product')
 @extends('fe.layout.layout')
-<<<<<<< Updated upstream
 
-=======
 @section('myCss')
     <style>
-        .overflow-auto {
+        .fa-heart {
+            color: red;
+        }
+
+        .comment-option.overflow-auto {
             max-height: 400px;
+        }
+
+        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role {
+            font-style: italic;
+            font-size: 80%;
+            font-weight: 500;
+            text-shadow: 2px 2px 10px #4154F1;
+            /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
+        }
+
+        .personal-rating .btn-default,
+        .personal-rating .btn-warning {
+            transition: all 0.3s;
+        }
+
+        .personal-rating .btn-default:hover {
+            color: #FAC451;
+            border-color: white;
+            background-color: white;
+        }
+
+        .personal-rating .btnrating.btn.btn-lg.btn-warning:focus,
+        .personal-rating .btn-warning {
+            color: #FAC451;
+            border-color: white;
+            background-color: white;
+        }
+
+        .personal-rating .btn-warning:hover,
+        .personal-rating .btn-default {
+            color: gray;
+            border-color: white;
+            background-color: white;
         }
     </style>
 @endsection
->>>>>>> Stashed changes
 
 @section('breader')
     <div class="breadcrumb-section">
@@ -155,18 +189,28 @@
                                 <div class="pd-title">
                                     <span>oranges</span>
                                     <h3>{{ $product->name }}</h3>
-                                    <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
+                                    @if ($product->findWishlist())
+                                        <a href="{{ Route('removeWishlist', $product->id) }}" class="heart-icon"><i
+                                                class="fas fa-heart"></i></a>
+                                    @else
+                                        <a href="{{ Route('addWishlist', $product->id) }}" class="heart-icon"><i
+                                                class="far fa-heart"></i></a>
+                                    @endif
                                 </div>
                                 <div class="pd-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <span>5</span>
+                                    @if ($product->countRates() > 0)
+                                        @for ($i = 0; $i < $product->avgRates(); $i++)
+                                            <i class="fa fa-star"></i>
+                                        @endfor
+                                        @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
+                                            <i class="fa fa-star-o"></i>
+                                        @endfor
+                                    @endif
                                 </div>
                                 <div class="pd-desc">
-                                    <p>Manufacture : <a href="#">{{ $product->manufacture->name }}</a></p>
+                                    <p>Manufacture : <a
+                                            href="{{ Route('fe.shop.cate', $product->manufacture->slug) }}">{{ $product->manufacture->name }}</a>
+                                    </p>
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
@@ -203,7 +247,8 @@
                                 <li><a class="active" href="#tab-1" data-toggle="tab" role="tab">DESCRIPTION</a>
                                 </li>
                                 <li><a href="#tab-2" data-toggle="tab" role="tab">SPECIFICATIONS</a></li>
-                                <li><a href="#tab-3" data-toggle="tab" role="tab">Customer Review (02)</a></li>
+                                <li><a href="#tab-3" data-toggle="tab" role="tab">Customer Review
+                                        ({{ $product->countRates() }})</a></li>
                             </ul>
                         </div>
                         <div class="tab-item-content">
@@ -236,12 +281,14 @@
                                                 <td class="p-catagory">Customer Rating</td>
                                                 <td>
                                                     <div class="pd-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <span>(5)</span>
+                                                        @if ($product->countRates() > 0)
+                                                            @for ($i = 0; $i < $product->avgRates(); $i++)
+                                                                <i class="fa fa-star"></i>
+                                                            @endfor
+                                                            @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endfor
+                                                        @endif
                                                     </div>
                                                 </td>
 
@@ -259,12 +306,12 @@
                                                 <td class="p-catagory">Availability</td>
                                                 @if ($product->inStock() - $product->outStock() > 0)
                                                     <td>
-                                                        <div class="p-stock">
+                                                        <div class="p-stock" style="color: green">
                                                             {{ $product->inStock() - $product->outStock() }} in Stock</div>
                                                     </td>
                                                 @else
                                                     <td>
-                                                        <div class="p-stock">Out of Stock</div>
+                                                        <div class="p-stock" style="color: red">Out of Stock</div>
                                                     </td>
                                                 @endif
                                             </tr>
@@ -291,6 +338,7 @@
                                                     </td>
                                                 </tr>
                                             @endif
+
                                             <tr>
                                                 <td class="p-catagory">Graphics</td>
                                                 <td>
@@ -303,6 +351,7 @@
                                                     <div class="p-weight">{{ $product->cpu->name }}</div>
                                                 </td>
                                             </tr>
+
                                             @if (isset($product->description->dimension))
                                                 <tr>
                                                     <td class="p-catagory">Dimensions</td>
@@ -313,6 +362,7 @@
                                                     </td>
                                                 </tr>
                                             @endif
+
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 <td>
@@ -322,70 +372,139 @@
                                         </table>
                                     </div>
                                 </div>
+                                {{-- ---------------------------------Comment View------------------------------------------------ --}}
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     <div class="customer-review-option">
-                                        <h4>2 Comments</h4>
-                                        <div class="comment-option">
-                                            <div class="co-item">
-                                                <div class="avatar-pic">
-                                                    <img src="front/img/product-single/avatar-1.png" alt="">
+                                        <h4>{{ $product->countRates() }} Comments</h4>
+                                        <div class="comment-option overflow-auto">
+                                            @foreach ($ratings as $rating)
+                                                <div class="co-item">
+                                                    <form action="{{ Route('admin.rating.destroy') }}" method="post"
+                                                        style="display:inline-block">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <input type="hidden" name="id" value="{{ $rating->id }}">
+                                                        <div class="avatar-pic">
+                                                            <img src="{{ asset('images/' . $rating->user->image) }}"
+                                                                alt="">
+                                                        </div>
+                                                        <div class="avatar-text">
+                                                            <div class="at-rating">
+                                                                @for ($i = 0; $i < $rating->rate; $i++)
+                                                                    <i class="fa fa-star"></i>
+                                                                @endfor
+                                                                @for ($i = 0; $i < 5 - $rating->rate; $i++)
+                                                                    <i class="fa fa-star-o"></i>
+                                                                @endfor
+                                                            </div>
+                                                            <div
+                                                                @if ($rating->user->role == 'Admin' || $rating->user->role == 'Manager')
+                                                                    class="badge rounded-pill bg-info text-light"
+                                                                @else
+                                                                    class="badge rounded-pill bg-secondary text-light" 
+                                                                @endif>
+                                                                {{ $rating->user->role }}
+                                                            </div>
+                                                            <h5>{{ $rating->user->name }}
+                                                                <span>{{ $rating->created_at }}</span>
+                                                            </h5>
+                                                            <div class="at-reply">{{ $rating->review }}</div>
+                                                            @if (auth()->user())
+                                                                @if(auth()->user()->role == 'Admin')
+                                                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Delete
+                                                                </button>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div class="avatar-text">
-                                                    <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </div>
-                                                    <h5>Kelly <span>08 February 2023</span></h5>
-                                                    <div class="at-reply">Nice !</div>
-                                                </div>
-                                            </div>
-                                            <div class="co-item">
-                                                <div class="avatar-pic">
-                                                    <img src="front/img/product-single/avatar-2.png" alt="">
-                                                </div>
-                                                <div class="avatar-text">
-                                                    <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    </div>
-                                                    <h5>Carry <span>07 February 2023</span></h5>
-                                                    <div class="at-reply">Nice !</div>
-                                                </div>
-                                            </div>
+                                            @endforeach
                                         </div>
-                                        <div class="personal-rating">
-                                            <h6>Your Rating</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star-o"></i>
-                                            </div>
-                                        </div>
-                                        <div class="leave-comment">
-                                            <h4>Leave A Comment</h4>
-                                            <form action="" class="comment-form">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Name">
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Email">
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <textarea placeholder="Messages"></textarea>
-                                                        <button type="submit" class="site-btn">Send message</button>
-                                                    </div>
+                                        {{-- ---------------------------------end Comment View------------------------------------------------ --}}
+
+                                        {{-- ---------------------------------------------------Review Form--------------------------------------------------------------------------------- --}}
+                                        @if (Route::has('login'))
+                                            @auth
+                                                <div class="leave-comment">
+                                                    <h4>Leave A Comment</h4>
+                                                    <form action="{{ Route('admin.rating.store') }}" class="comment-form"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                        <div class="personal-rating">
+                                                            <div class="form-group" id="rating-ability-wrapper">
+                                                                <label class="control-label" for="rating">
+                                                                    <span class="field-label-header">How would you rate your
+                                                                        ability to
+                                                                        use
+                                                                        the computer and access internet?*</span><br>
+                                                                    <span class="field-label-info"></span>
+                                                                    <input type="hidden" id="selected_rating"
+                                                                        name="selected_rating" value=""
+                                                                        required="required">
+                                                                </label>
+                                                                <h2 class="bold rating-header" style="">
+                                                                    <span class="selected-rating">0</span><small> / 5</small>
+                                                                </h2>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="1"
+                                                                    id="rating-star-1">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="2"
+                                                                    id="rating-star-2">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="3"
+                                                                    id="rating-star-3">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="4"
+                                                                    id="rating-star-4">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btnrating btn btn-default btn-lg" data-attr="5"
+                                                                    id="rating-star-5">
+                                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <input disabled placeholder="Name"
+                                                                    value="{{ auth()->user()->name }}">
+                                                                <input type="hidden" type="text" name="name"
+                                                                    value="{{ auth()->user()->name }}">
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <input disabled type="text"
+                                                                    value="{{ auth()->user()->email }}">
+                                                                <input type="hidden" placeholder="Email" name="email"
+                                                                    value="{{ auth()->user()->email }}">
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <textarea placeholder="Review" name="review" rows="8"></textarea>
+                                                                <button type="submit" class="site-btn review-lapxuong-btn">Send
+                                                                    Review</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            @endauth
+                                        @else
+                                            <div class="leave-comment">
+                                                <p>Please loggin to comment</p>
+                                            </div>
+                                        @endif
+
+                                        {{-- ---------------------------------------------------end Review Form--------------------------------------------------------------------------------- --}}
+
                                     </div>
                                 </div>
 
@@ -543,4 +662,39 @@
         }
     });
 </script>
+    <script>
+        jQuery(document).ready(function($) {
+
+            $(".btnrating").on('click', (function(e) {
+
+                var previous_value = $("#selected_rating").val();
+
+                var selected_value = $(this).attr("data-attr");
+                $("#selected_rating").val(selected_value);
+
+                $(".selected-rating").empty();
+                $(".selected-rating").html(selected_value);
+
+                for (i = 1; i <= selected_value; ++i) {
+                    $("#rating-star-" + i).toggleClass('btn-warning');
+                    $("#rating-star-" + i).toggleClass('btn-default');
+                }
+
+                for (ix = 1; ix <= previous_value; ++ix) {
+                    $("#rating-star-" + ix).toggleClass('btn-warning');
+                    $("#rating-star-" + ix).toggleClass('btn-default');
+                }
+
+            }));
+        });
+    </script>
+    <script type="module">
+        import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
+
+        // const submitBtn = document.querySelector('.review-lapxuong-btn');
+        // console.log(submitBtn)
+        // submitBtn.onclick = function(){
+        //     console.log(submitBtn)
+        // }
+    </script>
 @endsection

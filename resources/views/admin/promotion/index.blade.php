@@ -66,11 +66,11 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="number" id="codeLength" class="form-control" name="codeLength"
-                                            aria-describedby="codeLengthHelpInline" placeholder="Length of promotion" required>
+                                            aria-describedby="codeLengthHelpInline" placeholder="Length of promotion" required min="5" max="15">
                                     </div>
                                     <div class="col-auto">
                                         <span id="codeLengthHelpInline" class="form-text">
-                                            Must be under 15 characters long.
+                                            Must be 5-15 characters long.
                                         </span>
                                     </div>
                                 </div>
@@ -96,15 +96,18 @@
                         </div>
                     </div>
                 </div>
-                <!-- Message Section -->
-                @include('components.message')
-                <!-- / Message Section -->
+               
 
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+                
+                 <!-- Message Section -->
+                 @include('components.message')
+                 <!-- / Message Section -->
+                 
                 <table id="stockManagement" class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -123,10 +126,9 @@
                                 <td>{{ $promotion->code }}</td>
                                 <td>{{ $promotion->discount * 100 }}%</td>
                                 <td>{{ $promotion->created_at }}</td>
-                                <td>{{ $promotion->status }}</td>
-                                {{-- <td><button
+                                <td><button
                                         class="btn {{ $promotion->isAvailable() ? 'btn-danger' : 'btn-success' }} rounded-pill">{{ $promotion->isAvailable() ? 'Used' : 'Available' }}</button>
-                                </td> --}}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

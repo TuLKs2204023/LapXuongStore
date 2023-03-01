@@ -53,7 +53,9 @@ class StockController extends Controller
         // Save price for this Product
         $product = $this->processPriceWithStockId($product, $proData);
 
-        return redirect()->route('admin.stock.index');
+        $success = 'Successfully added stock for '. $product->name;
+
+        return redirect()->route('admin.stock.index')->with('success', $success);
     }
 
     public function stockDetails(Request $request){
@@ -69,8 +71,7 @@ class StockController extends Controller
     {
         $isUpdate = true;
         $product = Product::find($id);
-
-        return view('admin.stock.createByDetails', compact('product', 'isUpdate'));
+        return view('admin.stock.createByDetails')->with(['product'=> $product], ['isUpdate'=> $isUpdate]);
     }
 
 

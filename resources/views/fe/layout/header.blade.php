@@ -8,17 +8,16 @@
                 </div>
                 <div class="phone-service">
                     <i class="fa fa-phone"></i>
-                    0522765313
+                    03979-3979-3979
                 </div>
             </div>
             <div class="ht-right">
                 @if (Route::has('login'))
-                @auth
-                    @if (auth()->user()->role == 'Customer')
-
+                    @auth
+                        @if (auth()->user()->role == 'Customer')
                             <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();">
+                                         document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -48,12 +47,13 @@
                     <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
                 @endauth
             @endif
+
                 <div class="lan-selector">
                     <select name="countries" id="countries" class="language_drop" style="width:300px;">
-                        <option value="yt" data-image="front/img/flag-1.jpg" data-imagecss="flag yt"
+                        <option value="yt" data-image="{{asset('frontend/img/flag-1.jpg')}}" data-imagecss="flag yt"
                             data-title="English">English</option>
-                        <option value="yu" data-image="front/img/flag-2.jpg" data-imagecss="flag yu"
-                            data-title="Bangladesh">German</option>
+                        <option value="yu" data-image="{{asset('frontend/img/flag-3.jpg')}}" data-imagecss="flag yu"
+                            data-title="Vietnamese">Vietnamese</option>
                     </select>
                 </div>
 
@@ -88,9 +88,14 @@
                 <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">
                         <li class="heart-icon">
-                            <a href="#">
+                            <a href="{{ Route('wishlist') }}">
                                 <i class="icon_heart_alt"></i>
-                                <span>2</span>
+                                @if (auth()->user())
+                                    <span>{{ count(auth()->user()->wishlistItems) }}</span>
+                                @else
+                                    <span>0</span>
+                                @endif
+                                
                             </a>
                         </li>
                         <li class="cart-icon">
@@ -137,7 +142,6 @@
 
                             </div>
                         </li>
-                        <li class="cart-price">$3,000.00</li>
                     </ul>
                 </div>
             </div>

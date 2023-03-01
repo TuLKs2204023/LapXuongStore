@@ -7,6 +7,7 @@ use App\Http\Traits\ProcessModelData;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -194,6 +195,8 @@ class UserController extends Controller
     }
     public function UpdateByUser(Request $request, $id)
     {
+        $user = User::find($id);
+        
         $data = array();
         $data['name'] = $request->name;
         $data['email'] = $request->email;
@@ -205,6 +208,9 @@ class UserController extends Controller
 
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $image = $user->image;
+        File::delete(public_path("images/" . $image));
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
@@ -219,8 +225,7 @@ class UserController extends Controller
         }
 
         $data['image'] = $imageName;
-
-        $edit = DB::table('users')->where('id', $id)->update($data);
+        $edit = $user->update($data);
         if ($edit) {
             $notification = array(
                 'message' => 'Successfully updated',
@@ -243,7 +248,11 @@ class UserController extends Controller
      */
     public function DeleteUser($id)
     {
-        $delete = DB::table('users')->where('id', $id)->delete();
+        $user = User::find($id);
+        $image = $user->image;
+        File::delete(public_path("images/" . $image));
+        $delete = $user->delete();
+
         if ($delete) {
             $notification = array(
                 'message' => 'Successfully deleted user',

@@ -5,6 +5,7 @@ namespace App\Http\Traits;
 use App\Models\Product;
 use App\Models\Cates\Ram;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -82,6 +83,16 @@ trait ProcessModelData
         return $order;
     }
 
+    function processRating(User $user, array $proData){
+        //Tú tạo
+        $product = DB::table('products')->where('id', $proData['product_id'])->first();
+
+        $productId = $product->id;
+
+        $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
+        $user->refresh();
+    }
+    
     function processRam(array $proData)
     {
         $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);

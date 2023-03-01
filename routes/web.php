@@ -15,8 +15,10 @@ use App\Http\Controllers\Admin\StockController;
 
 use App\Http\Controllers\backend\OdersController;
 
-use App\Http\Controllers\PromotionController;
-
+use App\Http\Controllers\Admin\PromotionController;
+use App\Http\Controllers\Admin\RatingController;
+use App\Http\Controllers\Admin\WishlistItemController;
+use App\Models\WishlistItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +83,12 @@ Route::post('/remove-cart', [FE_HomeController::class, 'removeCart'])->name('rem
 Route::get('/view-cart', [FE_HomeController::class, 'viewCart'])->name('viewCart');
 Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearCart');
 
+// Wishlist
+Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
+Route::get('/{id}/add_wishlist', [WishlistItemController::class, 'store'])->name('addWishlist');
+Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'destroy'])->name('removeWishlist');
+
+
 // For Login purpose
 // Route::group(['middleware' => 'canLogin'], function () {
 // Checkout
@@ -89,11 +97,14 @@ Route::post('/process-checkout', [FE_HomeController::class, 'processCheckout'])-
 
 // For Admin purpose
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    // Dashboard
-
 
     // User
     Route::resource('/user', UserController::class);
+
+    //Wishlist
+    Route::group(['prefix' => 'wishlist', 'as' => 'wishlist.'], function () {
+        Route::get('/', [WishlistItemController::class, 'adminIndex'])->name('index');
+    });
 
     // Product
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
@@ -103,8 +114,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
         Route::put('/update', [ProductController::class, 'update'])->name('update');
         Route::delete('/destroy', [ProductController::class, 'destroy'])->name('destroy');
-
-
     });
 
     // Category
@@ -170,5 +179,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         // Route::put('/update', [PromotionController::class, 'update'])->name('update');
         // Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
     });
-});
 
+    // Rating
+    Route::group(['prefix' => 'rating', 'as' => 'rating.'], function () {
+        Route::get('/', [RatingController::class, 'index'])->name('index');
+        Route::get('/create', [RatingController::class, 'create'])->name('create');
+        Route::post('/store', [RatingController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
+        Route::put('/update', [RatingController::class, 'update'])->name('update');
+        Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
+    });
+});

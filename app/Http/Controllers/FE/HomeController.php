@@ -24,47 +24,59 @@ class HomeController extends Controller
     public function product($slug)
     {
         $product = Product::where('slug', $slug)->get()->first();
-        return view('fe.home.product', compact('product'));
+        $ratings = $product->ratings->sortByDesc('id');
+        return view('fe.home.product', compact('product', 'ratings'));
     }
 
     public function addCart(Request $request)
     {
+        // Get request information
         $pid = $request->pid;
         $qty = $request->quantity;
 
+        // Determine current product
         $product = Product::find($pid);
-        $cartItem = new CartItem($product, $qty);
 
-        if (session('cart')) {
-            $cart = session('cart');
-        } else {
-            $cart = [];
-        }
+        // Get session 'Cart'
+        session('cart') ? $cart = session('cart') : $cart = [];
 
+        // Find current product in session 'Cart'
         $existedKey = null;
+        $cartQty = $qty;
         if ($cart) {
             foreach ($cart as $cartKey => $cartVal) {
                 if ($cartKey == $pid) {
                     $existedKey = $cartKey;
+                    $cartQty += $cart[$existedKey]->quantity;
                     break;
                 }
             }
         }
 
+        // Check stock availability
+        if ($this->stockBalance($product, $cartQty) < 0) {
+            return $res = array(
+                'stockBalance' => $this->stockBalance($product, $cartQty),
+            );
+        }
+
+        // Add Cart Item
+        $cartItem = new CartItem($product, $qty);
         if ($existedKey) {
             $cart[$existedKey]->quantity += $qty;
-            // if ($cart[$existedKey]->quantity !== $qty) {
-            // }
         } else {
             $cart[$pid] = $cartItem;
             session()->put('cart', $cart);
         }
 
+        // Number of items in Cart
         $total = HomeController::totalCart();
 
+        // Response for HttpRequest
         $res = array(
             'key' => $existedKey,
-            'totalQty' => $total['qty']
+            'totalQty' => $total['qty'],
+            'stockBalance' => $this->stockBalance($product, $cartQty),
         );
         return $res;
     }
@@ -79,6 +91,16 @@ class HomeController extends Controller
         $key = $request->pid;
         $qty = $request->quantity;
 
+        // Determine current product
+        $product = Product::find($key);
+
+        // Check stock availability
+        // if (!$this->stockBalance($product, $qty)) {
+        //     return $res = array(
+        //         'stockBalance' => false,
+        //     );
+        // }
+
         $cart[$key]->quantity = $qty;
         $value = $qty * $cart[$key]->product->price;
 
@@ -87,7 +109,8 @@ class HomeController extends Controller
         $res = array(
             'curVal' => number_format($value, 0, ',', '.'),
             'totalVal' => number_format($total['value'], 0, ',', '.'),
-            'totalQty' => $total['qty']
+            'totalQty' => $total['qty'],
+            'stockBalance' => $this->stockBalance($product, $qty),
         );
         return $res;
     }
@@ -110,7 +133,7 @@ class HomeController extends Controller
         }
         return $total;
     }
-    
+
     public function removeCart(Request $request)
     {
         $cart = session('cart');
@@ -131,6 +154,12 @@ class HomeController extends Controller
     public function clearCart()
     {
         session()->forget('cart');
+    }
+
+    // Check stock availability
+    private function stockBalance(Product $product, int $cartQty): int
+    {
+        return $product->inStock() - $product->outStock() - $cartQty;
     }
 
     public function checkout()
@@ -205,11 +234,9 @@ class HomeController extends Controller
         return view('fe.home.shop', compact('products'));
     }
 
-    public function userProfile(){
-        $user= auth()->user();
+    public function userProfile()
+    {
+        $user = auth()->user();
         return view('fe.home.profile', compact('user'));
-
-
     }
-
 }
