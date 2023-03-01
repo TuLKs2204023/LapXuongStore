@@ -1,5 +1,16 @@
+@section('fetitle','- Product')
 @extends('fe.layout.layout')
+<<<<<<< Updated upstream
 
+=======
+@section('myCss')
+    <style>
+        .overflow-auto {
+            max-height: 400px;
+        }
+    </style>
+@endsection
+>>>>>>> Stashed changes
 
 @section('breader')
     <div class="breadcrumb-section">

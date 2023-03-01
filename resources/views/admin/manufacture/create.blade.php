@@ -1,5 +1,6 @@
-@extends('admin.layout.layout')
+@section('title','- Create Manufacturer')
 
+@extends('admin.layout.layout')
 @section('contents')
     <div class="pagetitle">
         <h1>{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture</h1>
@@ -18,6 +19,7 @@
 <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
 
 <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+
 
 </section>
         @endif

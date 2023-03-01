@@ -13,44 +13,41 @@
             </div>
             <div class="ht-right">
                 @if (Route::has('login'))
-                    @auth
-                        @if (auth()->user()->role == 'Customer')
-                            <a href="{{ url('profile') }}" class="login-panel">Home</a>
-                        @endif
-                        @if (auth()->user()->role !== 'Customer')
-                            <a href="{{ url('admin') }}" class="login-panel">Home</a>
-                        @endif
-                    @else
-                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                    @endauth
-                @endif
-                <!-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> -->
+                @auth
+                    @if (auth()->user()->role == 'Customer')
 
+                            <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius" style="padding-top:7px;padding-bottom: 7px;"
+                                style="width:80px " type="submit" style="padding-top:7px;padding-bottom: 7px;">{{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 38px ; margin-left:20px; margin-right:10px" >
+                            </a>
 
-                                <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                                <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
-                                    style="width:80px " type="submit">{{ auth()->user()->name }}</a>
+                    @endif
+                    @if (auth()->user()->role == 'Admin')
 
-                        @endif
-                        @if (auth()->user()->role == 'Admin')
-                            <a href="{{ url('admin') }}" class="login-panel"> Hello {{ auth()->user()->name }}</a>
-                        @endif
-                        @if (auth()->user()->role == 'Manager')
-                            <a href="{{ url('manager') }}" class="login-panel"> Hello {{ auth()->user()->name }}</a>
-                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius"
-                                    style="width:90px " type="submit">Setting</a>
-                        @endif
-                    @else
-                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                    @endauth
-                @endif
+                        <a href="{{ url('admin') }}" class="login-panel" style="padding-top:7px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
+                            <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 38px ; margin-left:20px;" >
+                        </a>
+
+                    @endif
+                    @if (auth()->user()->role == 'Manager')
+
+                        <a href="{{ url('manager') }}" class="login-panel" style="padding-top:7px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
+                            <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 38px ; margin-left:20px; margin-right:10px" ></a>
+                        <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius"
+                                style="width:90px " type="submit">Setting</a>
+                    @endif
+                @else
+                    <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
+                @endauth
+            @endif
                 <div class="lan-selector">
                     <select name="countries" id="countries" class="language_drop" style="width:300px;">
                         <option value="yt" data-image="front/img/flag-1.jpg" data-imagecss="flag yt"

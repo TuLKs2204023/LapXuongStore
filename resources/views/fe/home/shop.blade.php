@@ -1,5 +1,5 @@
+@section('fetitle','- Shop')
 @extends('fe.layout.layout')
-
 @section('breader')
     <!-- BREADCUMB SECTION BEGIN-->
     <div class="breadcrumb-section">

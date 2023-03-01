@@ -1,5 +1,5 @@
+@section('title','- CPU')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>CPU Management</h1>

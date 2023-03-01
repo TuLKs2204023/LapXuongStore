@@ -1,5 +1,5 @@
+@section('title','- Edit User')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>Edit User</h1>

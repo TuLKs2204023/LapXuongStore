@@ -7,7 +7,11 @@
     <meta name="keywords" content="codelean, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<<<<<<< Updated upstream
     <title>LapShop</title>
+=======
+    <title>LapXuongStore @yield('fetitle')</title>
+>>>>>>> Stashed changes
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
@@ -35,6 +39,9 @@
     <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
     <!-- -------------------------------------------------------------------------------- -->
     @yield('myCss')
+
+    <!--Toastr-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/FeCss/toast.css') }}">
 </head>
 
 <body>
@@ -82,6 +89,10 @@
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
 
+    <!--Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
     <!-- KIEN Js -->
     <script type="module">
         import {MyToggle, MyStickyNav} from '{{ asset('/js/KienJs/main.js') }}';
@@ -100,6 +111,23 @@
             navCateBtn.classList.toggle('show');
         });
     </script>
+    <!--Toastr -->
+    <script type="module">
+         @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info':
+                    toastr.info("{{ Session::get('message') }}");
+                    break;
+                case 'success':
+                    toastr.success("{{ Session::get('message') }}");
+                    break;
+                case 'error':
+                    toastr.error("{{ Session::get('message') }}");
+            }
+        @endif
+    </script>
+    <!--Toastr -->
 
     @yield('myJs')
 </body>

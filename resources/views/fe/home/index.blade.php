@@ -1,5 +1,5 @@
+@section('fetitle','- Home')
 @extends('fe.layout.layout')
-
 @section('content')
      <!-- BODY SECTION BEGIN-->
      <section class="hero-section">
@@ -533,4 +533,4 @@
     <!-- INSTAGRAM SECTION END-->
 
 @endsection
-   
+

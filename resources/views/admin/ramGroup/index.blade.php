@@ -1,5 +1,5 @@
+@section('title','- Ram')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>RAM's category Management</h1>
