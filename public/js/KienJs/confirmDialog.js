@@ -1,5 +1,5 @@
-import { toast } from "./toast.js";
-import { getParent, updateCart, updateCartHeader } from "./cart.js";
+import { showSuccessToast } from "./toast.js";
+import { getParent, updateCartPage, updateCartHeader } from "./cart.js";
 
 export { ConfirmDialog };
 
@@ -125,16 +125,23 @@ function ConfirmDialog({
     }
 
     function deleteSuccess(ajaxHttpRequest) {
-        updateCart(ajaxHttpRequest, cartOrBtnSelector, summaryContSelector, summariesSelector);
-        updateCartHeader(ajaxHttpRequest, headerCartSelector);
+        const res = JSON.parse(ajaxHttpRequest.responseText);
+        updateCartPage(
+            null,
+            res,
+            cartOrBtnSelector,
+            summaryContSelector,
+            summariesSelector,
+            headerCartSelector
+        );
+        updateCartHeader(res, headerCartSelector);
         hideDialog();
 
         setTimeout(() => {
-            toast({
+            showSuccessToast({
                 title: "Success",
                 message: "Cart item removed successfully.",
-                type: "success",
-                duration: 2000,
+                duration: 3000,
             });
         }, 100);
     }

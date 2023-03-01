@@ -75,7 +75,6 @@
 
 
         {{-- ---------------------------------------------------------start Admin section--------------------------------------------------------------------- --}}
-
         @if (auth()->user()->role == 'Admin')
             <li class="nav-item">
                 <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
@@ -106,7 +105,6 @@
                 </ul>
             </li><!-- End Forms Nav -->
         @endif
-
         {{-- ---------------------------------------------------------end Admin section--------------------------------------------------------------------- --}}
 
     </ul>

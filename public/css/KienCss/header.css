@@ -1,7 +1,7 @@
 .header-section {
     position: relative;
     width: 100%;
-    z-index: 999;
+    z-index: 9999;
 }
 .header-section.sticky {
     position: fixed;
@@ -9,13 +9,13 @@
 }
 .header-section.sticky > .container,
 .header-section.sticky > .nav-item {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
 }
 
 .header-section.sticky input,
 .header-section.sticky .advanced-search .category-btn {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .header-section .header-top {
@@ -125,7 +125,7 @@
     top: 8px;
     opacity: 0;
     visibility: hidden;
-    z-index: 9999;
+    z-index: 99999;
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     padding: 0 0 20px 0;
