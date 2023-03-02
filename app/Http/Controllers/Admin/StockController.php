@@ -48,7 +48,7 @@ class StockController extends Controller
         $product = Product::where('name', $proData['product_name'])->get()->first();
 
         // Save stock for this product
-        $product = $this->processStock($product, $proData);
+        $product = $this->processInStock($product, $proData);
         
         // Save price for this Product
         $product = $this->processPriceWithStockId($product, $proData);

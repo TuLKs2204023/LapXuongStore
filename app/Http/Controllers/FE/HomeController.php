@@ -230,7 +230,7 @@ class HomeController extends Controller
 
     public function shop()
     {
-        $products = Product::all();
+        $products = Product::all(10);
         return view('fe.home.shop', compact('products'));
     }
 

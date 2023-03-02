@@ -1,4 +1,4 @@
-@section('title','- Stock details')
+@section('title','- Stock Details')
 @extends('admin.layout.layout')
 @section('myHead')
 @endsection
