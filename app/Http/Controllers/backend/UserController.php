@@ -195,12 +195,11 @@ class UserController extends Controller
     }
     public function UpdateByUser(Request $request, $id)
     {
-        $user = User::find($id);
-        
+
+
         $data = array();
         $data['name'] = $request->name;
-        $data['email'] = $request->email;
-
+        // $data['email'] = $request->email;
         $data['gender'] = $request->gender;
         $data['address'] = $request->address;
         $data['phone'] = $request->phone;
@@ -209,6 +208,7 @@ class UserController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
+        $user = User::find($id);
         $image = $user->image;
         File::delete(public_path("images/" . $image));
 
