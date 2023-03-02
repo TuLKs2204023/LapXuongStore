@@ -99,21 +99,21 @@
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.promotion.index') }}">
-                    <i class="bi bi-menu-button-wide"></i>
+                    <i class="bi bi-award"></i>
                     <span>Promotion</span>
                 </a>
             </li><!-- End Promotion Nav -->
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.stock.index') }}">
-                    <i class="bi bi-menu-button-wide"></i>
+                    <i class="bi bi-basket2-fill"></i>
                     <span>Stock</span>
                 </a>
             </li><!-- End Stock Nav -->
             
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.wishlist.index') }}">
-                    <i class="bi bi-menu-button-wide"></i>
+                    <i class="bi bi-heart"></i>
                     <span>Wishlist</span>
                 </a>
             </li><!-- End Wishlist Nav -->
@@ -144,13 +144,11 @@
                 </ul>
             </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse"
-                            aria-expanded="true" href="#">
-                            <i class="bi bi-person-check-fill"></i><span>User Setting</span>
-                            <i class="bi bi-chevron-double-down ms-auto"></i>
-                            {{-- <i class="bi bi-chevron-down ms-auto"></i> --}}
-                        </a>
-                        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                        <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
+                        href="#">
+                        <i class="bi bi-person"></i><span>User Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                             <li>
                                 <!-- User -->
                                 <a href="{{ URL::to('/all-user') }}">

@@ -5,11 +5,11 @@
 
 @section('contents')
     <div class="pagetitle">
-        <h1>Rating</h1>
+        <h1>Wishlist</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active"><a href="{{ Route('admin.rating.index') }}">Rating Management</a></li>
+                <li class="breadcrumb-item active"><a href="{{ Route('admin.rating.index') }}">Wishlist Management</a></li>
             </ol>
         </nav>
     </div><!-- End Page Title -->

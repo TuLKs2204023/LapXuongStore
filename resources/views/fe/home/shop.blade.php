@@ -255,11 +255,10 @@
                         </div>
                     </div> <!-- // Main content Body -->
 
-                    <!-- Main content Footer -->
+                    {{-- <!-- Main content Footer -->
                     <div class="loading-more">
-                        <i class="icon_loading"></i>
-                        <a href="">Loading More</a>
-                    </div> <!-- // Main content Footer -->
+                          {{$products->links('vendor.pagination.custom')}}
+                    </div> <!-- // Main content Footer --> --}}
 
                 </div> <!-- // Main Content -->
             </div>
