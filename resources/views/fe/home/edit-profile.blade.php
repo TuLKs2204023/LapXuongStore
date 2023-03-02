@@ -186,6 +186,8 @@
                                     <div class="col-sm-9 text-secondary">
                                         <input type="email" name="email" class="form-control"
                                             value="{{ $edit->email }}" required disabled >
+                                        <input type="hidden" name="email"
+                                            value="{{ $edit->email }}" >
                                     </div>
                                 </div>
                                 <hr>

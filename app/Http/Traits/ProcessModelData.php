@@ -65,7 +65,7 @@ trait ProcessModelData
         return $product;
     }
 
-    function processStock(Product $product, array $proData)
+    function processInStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
         $product->stocks()->create(['in_qty' => $proData['in_qty']]);
