@@ -1,5 +1,5 @@
+@section('title','- Oders')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>Oders List</h1>
@@ -14,10 +14,10 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <a class="btn btn-outline-primary" href="#">
+                {{-- <a class="btn btn-outline-primary" href="#">
                     <i class="bi bi-plus-circle-fill me-1"></i>
                     Create New Orders
-                </a>
+                </a> --}}
                 <!-- Message Section -->
                 @include('components.message')
                 <!-- / Message Section -->

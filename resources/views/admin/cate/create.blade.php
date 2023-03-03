@@ -1,5 +1,5 @@
+@section('title','- Create Category')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>{{ $isUpdate ? 'Edit' : 'Create' }} CPU</h1>

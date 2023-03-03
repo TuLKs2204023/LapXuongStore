@@ -1,5 +1,5 @@
+@section('title','- Product')
 @extends('admin.layout.layout')
-
 @section('myHead')
 @endsection
 

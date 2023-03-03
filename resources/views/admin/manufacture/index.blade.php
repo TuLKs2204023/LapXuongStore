@@ -1,5 +1,5 @@
+@section('title','- Manufacture')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>Manufacture Management</h1>

@@ -1,5 +1,5 @@
+@section('title','- Create Ram')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>{{ $isUpdate ? 'Edit' : 'Create' }} RAM's category</h1>

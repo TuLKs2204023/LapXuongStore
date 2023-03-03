@@ -1,3 +1,5 @@
+
+@section('title','- Rating')
 @extends('admin.layout.layout')
 
 @section('myHead')
@@ -85,6 +87,7 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
+        @endif
     </section>
 @endsection
 
@@ -101,4 +104,4 @@
         });
     </script>
 @endsection
-@endif
+

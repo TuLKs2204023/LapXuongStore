@@ -1,16 +1,41 @@
+@section('fetitle', '- Home')
 @extends('fe.layout.layout')
 
+@section('myCss')
+    <style>
+        .col-lg-4 .single-banner img{
+            max-height: 562px;
+        }
+    </style>
+@endsection
+
 @section('content')
-     <!-- BODY SECTION BEGIN-->
-     <section class="hero-section">
+    <!-- BODY SECTION BEGIN-->
+    <section class="hero-section">
         <div class="hero-items owl-carousel">
-            <div class="single-hero-items set-bg" data-setbg="front/img/22.jpg">
+            <div class="single-hero-items set-bg" data-setbg="{{ asset('frontend/img/22.jpg') }}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <span style="color: aliceblue">Laptop Gaming</span>
+                            <h1 style="color: aliceblue">Black friday</h1>
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
+                                Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
+                            <a href="#" class="primary-btn">Shop now</a>
+                        </div>
+                    </div>
+                    <div class="off-card">
+                        <h2>Sale <span>50%</span></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="single-hero-items set-bg" data-setbg="{{ asset('frontend/img/23.jpg') }}">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
                             <span>Laptop Gaming</span>
-                            <h1>Black friday</h1>
-                            <p>Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
+                            <h1 style="color: aliceblue">Black friday</h1>
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
                             <a href="#" class="primary-btn">Shop now</a>
                         </div>
@@ -20,13 +45,13 @@
                     </div>
                 </div>
             </div>
-            <div class="single-hero-items set-bg" data-setbg="front/img/23.jpg">
+            <div class="single-hero-items set-bg" data-setbg="{{ asset('frontend/img/24.jpg') }}">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
-                            <span>Gaming Gear</span>
-                            <h1>Black friday</h1>
-                            <p>Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
+                            <span>Laptop Gaming</span>
+                            <h1 style="color: aliceblue">Black friday</h1>
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
                             <a href="#" class="primary-btn">Shop now</a>
                         </div>
@@ -36,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
     </section>
     <!-- Body SECTION END-->
@@ -47,16 +73,15 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="front/img/banner-001.jpg" alt="">
+                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
                         <div class="inner-text">
                             <h4>Gaming</h4>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="front/img/banner-002.png" alt="">
+                        <img src="{{ asset('frontend/img/banner-002.jpg') }}" alt="">
                         <div class="inner-text">
                             <h4>Office</h4>
                         </div>
@@ -64,9 +89,9 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="front/img/banner-003.jpg" alt="">
+                        <img src="{{ asset('frontend/img/banner-003.jpg') }}" alt="">
                         <div class="inner-text">
-                            <h4>Build</h4>
+                            <h4>WorkStation</h4>
                         </div>
                     </div>
                 </div>
@@ -84,7 +109,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="product-large set-bg" data-setbg="front/img/products/02.jpg">
+                    <div class="product-large set-bg" data-setbg="{{ asset('frontend/img/products/02.jpg') }}">
                         <h2>Office</h2>
                         <a href="#">Discover More</a>
                     </div>
@@ -101,7 +126,7 @@
                     <div class="product-slider owl-carousel">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/1.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/1.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -125,7 +150,7 @@
                         </div>
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/3.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/3.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -149,7 +174,7 @@
                         </div>
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/4.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/4.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -173,7 +198,7 @@
                         </div>
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/5.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/5.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -207,7 +232,7 @@
     <!-- ----------------------------------------------------------------------------------------------- -->
 
     <!-- DEAL OF WEEK SECTION BEGIN-->
-    <section class="deal-of-week set-bg spad" data-setbg="front/img/time1-bg.jpg">
+    <section class="deal-of-week set-bg spad" data-setbg="{{ asset('frontend/img/time1-bg.jpg') }}">
         <div class="container">
             <div class="col-lg-6 text-center">
                 <div class="section-title">
@@ -259,7 +284,7 @@
                     <div class="product-slider owl-carousel">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/004.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/004.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -283,7 +308,7 @@
                         </div>
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/003.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/003.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -307,7 +332,7 @@
                         </div>
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/002.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/002.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -331,7 +356,7 @@
                         </div>
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="front/img/products/001.jpg" alt="">
+                                <img src="{{ asset('frontend/img/products/001.jpg') }}" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -356,7 +381,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
-                    <div class="product-large set-bg" data-setbg="front/img/products/03-1.jpg">
+                    <div class="product-large set-bg" data-setbg="{{ asset('frontend/img/products/03-1.jpg') }}">
                         <h2>Gaming</h2>
                         <a href="#">Discover More</a>
                     </div>
@@ -372,31 +397,31 @@
 
     <!-- INSTAGRAM SECTION BEGIN-->
     <div class="instagram-photo">
-        <div class="insta-item set-bg" data-setbg="front/img/a/a1.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a1.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#">PC_Collection</a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="front/img/a/a6.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a6.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#">PC_Collection</a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="front/img/a/a3.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a3.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#">PC_Collection</a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="front/img/a/a4.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a4.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#">PC_Collection</a></h5>
             </div>
         </div>
-        <div class="insta-item set-bg" data-setbg="front/img/a/a5.jpg">
+        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a5.jpg') }}">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
                 <h5><a href="#">PC_Collection</a></h5>
@@ -416,7 +441,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <div class="single-latest-blog">
-                        <img src="front/img/b01.png" alt="">
+                        <img src="{{ asset('frontend/img/b01.png') }}" alt="">
                         <div class="latest-text">
                             <div class="tag-list">
                                 <div class="tag-item">
@@ -441,7 +466,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="single-latest-blog">
-                        <img src="front/img/b2.png" alt="">
+                        <img src="{{ asset('frontend/img/b2.png') }}" alt="">
                         <div class="latest-text">
                             <div class="tag-list">
                                 <div class="tag-item">
@@ -467,7 +492,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="single-latest-blog">
-                        <img src="front/img/b3.png" alt="">
+                        <img src="{{ asset('frontend/img/b3.png') }}" alt="">
                         <div class="latest-text">
                             <div class="tag-list">
                                 <div class="tag-item">
@@ -495,7 +520,7 @@
                     <div class="col-lg-4">
                         <div class="single-benefit">
                             <div class="sb-icon">
-                                <img src="front/img/icon-1.png" alt="">
+                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
                             </div>
                             <div class="sb-text">
                                 <h6>FREE SHIP</h6>
@@ -506,7 +531,7 @@
                     <div class="col-lg-4">
                         <div class="single-benefit">
                             <div class="sb-icon">
-                                <img src="front/img/icon-2.png" alt="">
+                                <img src="{{ asset('frontend/img/icon-2.png') }}" alt="">
                             </div>
                             <div class="sb-text">
                                 <h6>DELIVERY ON TIME</h6>
@@ -517,7 +542,7 @@
                     <div class="col-lg-4">
                         <div class="single-benefit">
                             <div class="sb-icon">
-                                <img src="front/img/icon-1.png" alt="">
+                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
                             </div>
                             <div class="sb-text">
                                 <h6>SECURE PAYMENT</h6>
@@ -533,4 +558,3 @@
     <!-- INSTAGRAM SECTION END-->
 
 @endsection
-   

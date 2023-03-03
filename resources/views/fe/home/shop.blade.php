@@ -1,3 +1,4 @@
+@section('fetitle','- Shop')
 @extends('fe.layout.layout')
 
 @section('myCss')
@@ -7,7 +8,6 @@
         }
     </style>
 @endsection
-
 
 @section('breader')
     <!-- BREADCUMB SECTION BEGIN-->
@@ -201,7 +201,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- 09 Of 36 Product</p>
+                                <p>Show 01- 09 Of {{count($products)}} Product</p>
                             </div>
                         </div>
                     </div> <!-- // Main content Header -->
@@ -257,11 +257,10 @@
                         </div>
                     </div> <!-- // Main content Body -->
 
-                    <!-- Main content Footer -->
+                    {{-- <!-- Main content Footer -->
                     <div class="loading-more">
-                        <i class="icon_loading"></i>
-                        <a href="">Loading More</a>
-                    </div> <!-- // Main content Footer -->
+                          {{$products->links('vendor.pagination.custom')}}
+                    </div> <!-- // Main content Footer --> --}}
 
                 </div> <!-- // Main Content -->
             </div>

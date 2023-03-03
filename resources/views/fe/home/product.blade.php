@@ -1,3 +1,4 @@
+@section('fetitle', '- Product')
 @extends('fe.layout.layout')
 
 @section('myCss')
@@ -10,7 +11,7 @@
             max-height: 400px;
         }
 
-        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role{
+        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role {
             font-style: italic;
             font-size: 80%;
             font-weight: 500;
@@ -164,7 +165,8 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
-                                <img src="front/img/product-single/01.png" alt="" class="product-big-img">
+                                <img src="{{ asset('images/' . $product->oldestImage->url) }}" alt=""
+                                    class="product-big-img">
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
@@ -173,12 +175,13 @@
                                 <div class="product-thumbs-track ps-slider owl-carousel">
                                     @if ($product->images->count() > 0)
                                         @foreach ($product->images as $image)
-                                            <img src="{{ asset('images/' . $image->url) }}" alt=""
-                                                style="width: 80px; height: auto;">
+                                            <div class="pt" data-imgbigurl="{{ asset('images/' . $image->url) }}">
+                                                <img src="{{ asset('images/' . $image->url) }}"
+                                                    style="width: 80px; height: auto;" alt="{{ $product->name }}">
+                                            </div>
+                                            {{-- <img src="{{ asset('images/' . $image->url) }}" alt=""
+                                                style="width: 80px; height: auto;"> --}}
                                         @endforeach
-                                        <div class="pt active" data-imgbigurl="front/img/product-single/01.png">
-                                            <img src="front/img/product-single/01.png" alt="">
-                                        </div>
                                     @endif
                                 </div>
                             </div>
@@ -378,25 +381,46 @@
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
                                                 <div class="co-item">
-                                                    <div class="avatar-pic">
-                                                        <img src="{{ asset('images/' . $rating->user->image) }}"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="avatar-text">
-                                                        <div class="at-rating">
-                                                            @for ($i = 0; $i < $rating->rate; $i++)
-                                                                <i class="fa fa-star"></i>
-                                                            @endfor
-                                                            @for ($i = 0; $i < 5 - $rating->rate; $i++)
-                                                                <i class="fa fa-star-o"></i>
-                                                            @endfor
+                                                    <form action="{{ Route('admin.rating.destroy') }}" method="post"
+                                                        style="display:inline-block">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <input type="hidden" name="id"
+                                                            value="{{ $rating->id }}">
+                                                        <div class="avatar-pic">
+                                                            <img src="{{ asset('images/' . $rating->user->image) }}"
+                                                                alt="">
                                                         </div>
-                                                        <div class="at-role">{{$rating->user->role}}</div>
-                                                        <h5>{{ $rating->user->name }}
-                                                            <span>{{ $rating->created_at }}</span>
-                                                        </h5>
-                                                        <div class="at-reply">{{ $rating->review }}</div>
-                                                    </div>
+                                                        <div class="avatar-text">
+                                                            <div class="at-rating">
+                                                                @for ($i = 0; $i < $rating->rate; $i++)
+                                                                    <i class="fa fa-star"></i>
+                                                                @endfor
+                                                                @for ($i = 0; $i < 5 - $rating->rate; $i++)
+                                                                    <i class="fa fa-star-o"></i>
+                                                                @endfor
+                                                            </div>
+                                                            <div
+                                                                @if ($rating->user->role == 'Admin' || $rating->user->role == 'Manager') class="badge rounded-pill bg-info text-light"
+                                                                @else
+                                                                    class="badge rounded-pill bg-secondary text-light" @endif>
+                                                                {{ $rating->user->role }}
+                                                            </div>
+                                                            <h5>{{ $rating->user->name }}
+                                                                <span>{{ $rating->created_at }}</span>
+                                                            </h5>
+                                                            <div class="at-reply">{{ $rating->review }}</div>
+                                                            @if (auth()->user())
+                                                                @if (auth()->user()->role == 'Admin')
+                                                                    <button type="submit"
+                                                                        class="btn btn-outline-danger btn-sm">
+                                                                        <i class="fas fa-trash"></i>
+                                                                        Delete
+                                                                    </button>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -407,6 +431,9 @@
                                             @auth
                                                 <div class="leave-comment">
                                                     <h4>Leave A Comment</h4>
+                                                    <!-- Message Section -->
+                                                    @include('components.message')
+                                                    <!-- / Message Section -->
                                                     <form action="{{ Route('admin.rating.store') }}" class="comment-form"
                                                         method="POST">
                                                         @csrf
@@ -414,10 +441,8 @@
                                                         <div class="personal-rating">
                                                             <div class="form-group" id="rating-ability-wrapper">
                                                                 <label class="control-label" for="rating">
-                                                                    <span class="field-label-header">How would you rate your
-                                                                        ability to
-                                                                        use
-                                                                        the computer and access internet?*</span><br>
+                                                                    <span class="field-label-header">How do you feel about our
+                                                                        services and products?</span><br>
                                                                     <span class="field-label-info"></span>
                                                                     <input type="hidden" id="selected_rating"
                                                                         name="selected_rating" value=""
@@ -468,7 +493,8 @@
                                                             </div>
                                                             <div class="col-lg-12">
                                                                 <textarea placeholder="Review" name="review" rows="8"></textarea>
-                                                                <button type="submit" class="site-btn">Send
+                                                                <button type="submit"
+                                                                    class="site-btn review-lapxuong-btn">Send
                                                                     Review</button>
                                                             </div>
                                                         </div>
@@ -477,7 +503,7 @@
                                             @endauth
                                         @else
                                             <div class="leave-comment">
-                                                <p>Please loggin to commet</p>
+                                                <p>Please log-in to comment</p>
                                             </div>
                                         @endif
 
@@ -511,110 +537,34 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="front/img/products/product-1.jpg" alt="">
-                            <div class="sale pp-sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
+                @foreach ($product->relateProducts() as $relate)
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img src="{{asset('images/', $relate->oldestImage->url)}}" alt="{{$relate->name}}">
+                                <div class="sale pp-sale">Sale</div>
+                                <div class="icon">
+                                    <i class="icon_heart_alt"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
+                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
+                                </ul>
                             </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="">
-                                <h5>PC Xgear Office Core I3-12100 8GB 128GB SSD</h5>
-                            </a>
-                            <div class="product-price">
-                                $400.00
-                                <span>$450.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="front/img/products/product-1.jpg" alt="">
-                            <div class="sale pp-sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="">
-                                <h5>PC Xgear Office Core I3-12100 8GB 128GB SSD</h5>
-                            </a>
-                            <div class="product-price">
-                                $400.00
-                                <span>$450.00</span>
+                            <div class="pi-text">
+                                <div class="catagory-name">Coat</div>
+                                <a href="">
+                                    <h5>{{$relate->name}}</h5>
+                                </a>
+                                <div class="product-price">
+                                    {{$relate->price}}
+                                    <span>$450.00</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="front/img/products/product-1.jpg" alt="">
-                            <div class="sale pp-sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="">
-                                <h5>PC Xgear Office Core I3-12100 8GB 128GB SSD</h5>
-                            </a>
-                            <div class="product-price">
-                                $400.00
-                                <span>$450.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="front/img/products/product-1.jpg" alt="">
-                            <div class="sale pp-sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="">
-                                <h5>PC Xgear Office Core I3-12100 8GB 128GB SSD</h5>
-                            </a>
-                            <div class="product-price">
-                                $400.00
-                                <span>$450.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -664,18 +614,15 @@
                 }
 
             }));
-
-
         });
-        // document.addEventListener("readystatechange", (e) => {
-        //     if (e.target.readyState === "complete") {
-        //         const confirmDialog = new ConfirmDialog({
-        //             processUrl: '{{ Route('admin.rating.store') }}',
-        //             processToken: '{{ csrf_token() }}',
-        //             deleteBtn: "button.site-btn",
-        //             headerCartSelector: ".cart-icon",
-        //         });
-        //     }
-        // });
+    </script>
+    <script type="module">
+        import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
+
+        // const submitBtn = document.querySelector('.review-lapxuong-btn');
+        // console.log(submitBtn)
+        // submitBtn.onclick = function(){
+        //     console.log(submitBtn)
+        // }
     </script>
 @endsection

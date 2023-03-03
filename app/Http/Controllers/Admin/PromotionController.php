@@ -59,12 +59,14 @@ class PromotionController extends Controller
                     $code = '';
                 }
             }
-            $success = $i.' codes were created successfully. If you found missing amount, it means there were duplicated codes';
+            $success = $i . ' codes were created successfully.
+                             If you found missing amount, it means there were duplicated codes';
         } else {
-            return back()->with('errors', 'Discount must be greater than 0.');
+            $errors = 'Discount must be greater than 0.';
+            return back()->with('errors', $errors);
         }
 
-        return redirect()->route('admin.promotion.index', compact('success'));
+        return back()->with('success', $success);
     }
 
     /**

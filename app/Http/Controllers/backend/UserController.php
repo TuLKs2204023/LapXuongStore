@@ -7,6 +7,7 @@ use App\Http\Traits\ProcessModelData;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -125,26 +126,35 @@ class UserController extends Controller
     public function EditpasswordUser(Request $request, $id)
     {
         $data = array();
-        $data['password'] = Hash::make($request->password);
+
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
-        $edit = DB::table('users')->where('id', $id)->update($data);
-        if ($edit) {
-            $notification = array(
-                'message' => 'Successfully updated',
-                'alert-type' => 'success',
-            );
-            return redirect()->route('userProfile')->with($notification);
-        } else {
+        $passconf = Hash::make($request->password_confirmation);
+        if( Hash::check($request->password_confirmation,auth()->user()->password ) )
+        {
+            $data['password'] = Hash::make($request->password);
+            $edit = DB::table('users')->where('id', $id)->update($data);
+            if ($edit) {
+                $notification = array(
+                    'message' => 'Successfully updated',
+                    'alert-type' => 'success',
+                );
+                return redirect()->route('userProfile')->with($notification);
+            } else {
 
+                $notification = array(
+                    'message' => 'Something went wrong,try again !',
+                    'alert-type' => 'error',
+                );
+                return redirect()->route('userProfile')->with($notification);
+            }
+        } else {
             $notification = array(
                 'message' => 'Something went wrong,try again',
-                'alert-type' => 'error',
-            );
+                    'alert-type' => 'error',);
             return redirect()->route('userProfile')->with($notification);
-
-
-    }}
+        }
+    }
 
     /**
      * It updates the user information.
@@ -181,13 +191,15 @@ class UserController extends Controller
                 'alert-type' => 'error',
             );
             return redirect()->route('alluser')->with($notification);
-    }}
+        }
+    }
     public function UpdateByUser(Request $request, $id)
     {
+
+
         $data = array();
         $data['name'] = $request->name;
-        $data['email'] = $request->email;
-
+        // $data['email'] = $request->email;
         $data['gender'] = $request->gender;
         $data['address'] = $request->address;
         $data['phone'] = $request->phone;
@@ -195,6 +207,10 @@ class UserController extends Controller
 
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $user = User::find($id);
+        $image = $user->image;
+        File::delete(public_path("images/" . $image));
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
@@ -204,12 +220,12 @@ class UserController extends Controller
             }
             $imageName = $file->getClientOriginalName();
             $file->move("images", $imageName);
-
-        }else
-        {$imageName['image'] = null;}
+        } else {
+            $imageName['image'] = null;
+        }
 
         $data['image'] = $imageName;
-        $edit = DB::table('users')->where('id', $id)->update($data);
+        $edit = $user->update($data);
         if ($edit) {
             $notification = array(
                 'message' => 'Successfully updated',
@@ -223,9 +239,8 @@ class UserController extends Controller
                 'alert-type' => 'error',
             );
             return redirect()->route('userProfile')->with($notification);
-
-
-    }}
+        }
+    }
     /**
      * It deletes a user from the database.
      *
@@ -233,7 +248,11 @@ class UserController extends Controller
      */
     public function DeleteUser($id)
     {
-        $delete = DB::table('users')->where('id', $id)->delete();
+        $user = User::find($id);
+        $image = $user->image;
+        File::delete(public_path("images/" . $image));
+        $delete = $user->delete();
+
         if ($delete) {
             $notification = array(
                 'message' => 'Successfully deleted user',

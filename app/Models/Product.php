@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Cates\Manufacture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -251,4 +252,10 @@ class Product extends Model
 
      /* -------------------------------end Wishlist_Item---------------------------------
      */
+
+     public function relateProducts(){
+        $products = Product::all();
+        $relates = $products->where('manufacture_id', $this->manufacture_id);
+        return $relates;
+     }
 }

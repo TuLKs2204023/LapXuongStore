@@ -15,10 +15,12 @@ use App\Http\Controllers\FE\CheckoutController;
 use App\Http\Controllers\Admin\StockController;
 
 use App\Http\Controllers\backend\OdersController;
-
+use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\RatingController;
 use App\Http\Controllers\Admin\WishlistItemController;
+use App\Models\WishlistItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +69,16 @@ Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userPro
 Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name('passwordUser');
 Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
 
+
+//Google authentication controller
+Route::controller(GoogleController::class)->group(function(){
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');});
+
+//Facebook authentication controller
+Route::controller(FacebookController::class)->group(function(){
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');});
 //Order management
 Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
 
@@ -186,5 +198,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::put('/update', [RatingController::class, 'update'])->name('update');
             Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
         });
+
     });
 });
