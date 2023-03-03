@@ -13,48 +13,87 @@ function CartHandler({
     summaryContSelector = "",
     summariesSelector = "",
     headerCartSelector = ".minicart",
+    checkoutBtnSelector = ".proceed-checkout-btn",
 }) {
     const cartContainer = $(cartOrBtnSelector);
-
     if (!cartContainer) {
         return false;
     }
+
     if (isUpdate) {
+        // Add events in ViewCart page
         const inputs = cartContainer.querySelectorAll(
             `input[name="${inputName}"]`
         );
-        if (!inputs) {
-            return false;
-        }
-        for (let input of inputs) {
-            const incBtn = input.parentNode.querySelector(".inc.qtybtn");
-            let stock = Number(input.dataset.stock);
-            disableIncrease(stock, incBtn);
+        if (inputs) {
+            if (inputs.length) {
+                for (let input of inputs) {
+                    // Disable increase button whenever item is out-of-stock
+                    const incBtn =
+                        input.parentNode.querySelector(".inc.qtybtn");
+                    const stock = Number(input.dataset.stock);
+                    if (incBtn) {
+                        disableButton(stock, 0, incBtn);
+                    }
 
-            const selectedRow = getParent(input, cartItemSelector);
-            const pid = selectedRow.dataset.index;
-            const btns = input.parentNode.querySelectorAll(".qtybtn");
+                    const checkoutBtn = $(checkoutBtnSelector);
+                    if (checkoutBtn) {
+                        disableButton(stock, -1, checkoutBtn);
+                    }
 
-            for (let btn of btns) {
-                btn.addEventListener("click", (e) => {
-                    cartUpdateHandler(e, input, pid, updateCartPage);
-                    stock = Number(input.dataset.stock);
-                    // disableIncrease(stock, incBtn);
-                });
-            }
-
-            input.onfocusout = (e) => {
-                cartUpdateHandler(e, input, pid, updateCartPage);
-                if (input.dataset.stock <= 0) {
-                    showErrorToast({
-                        message: "Cannot add more items due to out of stock.",
-                        duration: 3000,
-                    });
-                    return false;
+                    // Update ViewCart page whenever quantity is changed
+                    const selectedRow = getParent(input, cartItemSelector);
+                    const pid = selectedRow.dataset.index;
+                    const btns = input.parentNode.querySelectorAll(".qtybtn");
+                    for (let btn of btns) {
+                        btn.addEventListener("click", (e) => {
+                            cartUpdateHandler(e, input, pid, updateCartPage);
+                            // stock = Number(input.dataset.stock);
+                            // disableButton(stock, 0, incBtn);
+                        });
+                    }
+                    input.oninput = (e) => {
+                        cartUpdateHandler(e, input, pid, updateCartPage);
+                    };
                 }
-            };
+
+                // Disable check-out process whenever encounters out-of-stock items
+                const checkoutBtn = $(checkoutBtnSelector);
+                if (checkoutBtn) {
+                    checkoutBtn.addEventListener("click", (e) => {
+                        const isAllValid = Array.from(inputs).every((input) => {
+                            return input.dataset.stock >= 0;
+                        });
+                        if (!isAllValid) {
+                            e.preventDefault();
+                            showErrorToast({
+                                message:
+                                    "Cannot add more items due to out of stock.",
+                                duration: 3000,
+                            });
+                            return false;
+                        }
+                    });
+                    // const stock = Number(input.dataset.stock);
+                    // disableButton(stock, -1, checkoutBtn);
+                }
+            } else {
+                // Disable check-out Button if cart is empty
+                const checkoutBtn = $(checkoutBtnSelector);
+                if (checkoutBtn) {
+                    checkoutBtn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        showErrorToast({
+                            message: "Nothing in cart for checking out.",
+                            duration: 3000,
+                        });
+                        return false;
+                    });
+                }
+            }
         }
     } else {
+        // Add events in Product page
         const input = document.querySelector(`input[name="${inputName}"]`);
 
         if (!input) {
@@ -64,18 +103,10 @@ function CartHandler({
         const pid = cartContainer.dataset.id;
 
         cartContainer.onclick = (e) => {
-            cartUpdateHandler(e, input, pid, callback2);
+            cartUpdateHandler(e, input, pid, callback);
         };
 
-        function callback2(
-            e,
-            res,
-            cartOrBtnSelector,
-            summaryContSelector,
-            summariesSelector,
-            headerCartSelector,
-            input
-        ) {
+        function callback({ res, headerCartSelector }) {
             if (res.stockBalance < 0) {
                 showErrorToast({
                     message: "Cannot add more items due to out of stock.",
@@ -94,14 +125,7 @@ function CartHandler({
         }
     }
 
-    function disableIncrease(stock, incBtn) {
-        if (stock <= 0) {
-            incBtn.addEventListener("click", disableHandler, true);
-        } else {
-            incBtn.removeEventListener("click", disableHandler);
-        }
-    }
-
+    // Process to call HttpRequest
     function cartUpdateHandler(e, input, pid, callback) {
         e.preventDefault();
         setTimeout(() => {
@@ -112,49 +136,53 @@ function CartHandler({
                 _token: token,
             };
 
-            const ajaxHttpRequest = new XMLHttpRequest();
+            const ajaxReq = new XMLHttpRequest();
 
-            ajaxHttpRequest.onreadystatechange = () => {
-                if (
-                    ajaxHttpRequest.readyState == 4 &&
-                    ajaxHttpRequest.status == 200
-                ) {
-                    const res = JSON.parse(ajaxHttpRequest.responseText);
-                    console.log(res);
+            ajaxReq.onreadystatechange = () => {
+                if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
+                    const res = JSON.parse(ajaxReq.responseText);
                     input.dataset.stock = res.stockBalance;
 
-                    callback(
+                    callback({
                         e,
                         res,
                         cartOrBtnSelector,
                         summaryContSelector,
                         summariesSelector,
                         headerCartSelector,
-                        input
-                    );
+                        input,
+                    });
                 }
             };
 
-            ajaxHttpRequest.open("POST", url, true);
-            ajaxHttpRequest.setRequestHeader(
+            ajaxReq.open("POST", url, true);
+            ajaxReq.setRequestHeader(
                 "Content-type",
                 "application/json;charset=UTF-8"
             );
-            ajaxHttpRequest.send(JSON.stringify(params));
+            ajaxReq.send(JSON.stringify(params));
         }, 1);
+    }
+
+    // Function to disable increase button whenever item is out-of-stock
+    function disableButton(stockBal, num, incBtn) {
+        if (stockBal <= num) {
+            incBtn.addEventListener("click", disableHandler, true);
+        } else {
+            incBtn.removeEventListener("click", disableHandler, true);
+        }
     }
 }
 
 // Function to update Total Amount of items
-function updateCartPage(
-    e,
+function updateCartPage({
     res,
     cartOrBtnSelector,
     summaryContSelector,
     summariesSelector,
     headerCartSelector,
-    input
-) {
+    input,
+}) {
     // Update header cartItems
     updateCartHeader(res, headerCartSelector);
 

@@ -77,7 +77,15 @@
                             <div class="cart-buttons">
                                 <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart"> Continue Shopping</a>
                             </div>
+                            <div class="discount-coupon">
+                                <h6>Disscount Codes</h6>
+                                <form action="#" class="coupon-form">
+                                    <input type="text" placeholder="Enter Your Codes">
+                                    <button type="submit" class="site-btn coupon-btn">Apply</button>
+                                </form>
+                            </div>
                         </div>
+
                         <div class="col-lg-4 offset-lg-4">
                             <div class="proceed-checkout">
                                 <ul>
@@ -85,9 +93,12 @@
                                         <span class="ajax-summary">{{ number_format($total['value'], 0, ',', '.') }}
                                             VND</span>
                                     </li>
-                                    <li class="cart-total">Total <span>Total after discount</span></li>
+                                    <li class="cart-total">Total <span
+                                            class="ajax-summary">{{ number_format($total['value'], 0, ',', '.') }}
+                                            VND</span></li>
                                 </ul>
-                                <a href="{{ Route('checkout') }}" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                <a href="{{ Route('checkout') }}" class="proceed-checkout-btn site-btn proceed-btn">PROCEED TO CHECK
+                                    OUT</a>
                             </div>
                         </div>
                     </div>
@@ -115,6 +126,7 @@
                     summaryContSelector: ".order-summary",
                     summariesSelector: ".ajax-summary",
                     headerCartSelector: ".cart-icon",
+                    checkoutBtnSelector: ".proceed-checkout-btn",
                 });
 
                 const confirmDialog = new ConfirmDialog({

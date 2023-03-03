@@ -73,6 +73,14 @@ trait ProcessModelData
         return $product;
     }
 
+    function processOutStock(Product $product, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
+        $product->stocks()->create(['out_qty' => $proData['out_qty']]);
+        $product->refresh();
+        return $product;
+    }
+
     function processUsedPromotion(Order $order, string $promotionCode)
     {
         // From 'TU Lele' with ❤❤❤

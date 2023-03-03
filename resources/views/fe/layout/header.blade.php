@@ -121,8 +121,8 @@
                                     </table>
                                 </div>
                                 <div class="select-button">
-                                    <a href="{{ Route('viewCart') }}" class="primary-btn view-card">VIEW CART</a>
-                                    <a href="{{ Route('checkout') }}" class="primary-btn checkout-btn">CHECK OUT</a>
+                                    <a href="{{ Route('viewCart') }}" class="site-btn-alt view-card">VIEW CART</a>
+                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK OUT</a>
                                 </div>
 
                             </div>

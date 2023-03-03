@@ -192,6 +192,8 @@
                                 <div class="select-option">
                                     <select class="sorting">
                                         <option value="">Default Sorting</option>
+                                        <option value="1">Ascending</option>
+                                        <option value="2">Descending</option>
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
