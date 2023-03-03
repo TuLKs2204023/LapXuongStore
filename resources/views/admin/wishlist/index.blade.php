@@ -53,11 +53,16 @@
                                     <td>{{ $item->product->name }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>
-                                        <a class="btn btn-outline-danger btn-sm"
-                                            href="{{ Route('admin.rating.destroy', $item->id) }}">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </a>
+                                        <form action="{{ Route('admin.wishlist.destroy') }}" method="post"
+                                            style="display:inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="id" value="{{ $item->id }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

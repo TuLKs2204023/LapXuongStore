@@ -95,7 +95,7 @@ Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearC
 // Wishlist
 Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
 Route::get('/{id}/add_wishlist', [WishlistItemController::class, 'store'])->name('addWishlist');
-Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'destroy'])->name('removeWishlist');
+Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'userDestroy'])->name('removeWishlist');
 
 
 // For Login purpose
@@ -110,7 +110,14 @@ Route::group(['middleware' => 'auth'], function () {
     // For Admin purpose
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         // Dashboard
-
+        Route::group(['prefix' => 'wishlist', 'as' => 'wishlist.'], function () {
+            Route::get('/', [WishlistItemController::class, 'adminIndex'])->name('index');
+            // Route::get('/create', [WishlistItemController::class, 'create'])->name('create');
+            // Route::post('/store', [WishlistItemController::class, 'store'])->name('store');
+            // Route::get('/{id}/edit', [WishlistItemController::class, 'edit'])->name('edit');
+            // Route::put('/update', [WishlistItemController::class, 'update'])->name('update');
+            Route::delete('/destroy', [WishlistItemController::class, 'adminDestroy'])->name('destroy');
+        });
 
         // User
         Route::resource('/user', UserController::class);
