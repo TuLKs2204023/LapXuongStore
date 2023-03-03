@@ -25,6 +25,7 @@ Sửa file ".env.example" thành ".env"
 13. php artisan vendor:publish -> chọn 12
 14. các bước còn lại làm theo link "https://vietlaravel.com/huong-dan-tich-hop-ckeditor-va-ckfinder-chuan-nhat-cho-laravel.html"
 15. Nếu cần chạy schedule thì    php artisan schedule:run
+16. composer require laravel/socialite (đọc fix lỗi số 10.)
 
 # Fix lỗi
 1. Add tay thông tin vô cate_group table trong database (Lỗi foreign key)
@@ -36,3 +37,24 @@ Sửa file ".env.example" thành ".env"
 7. Vào Xampp -> Apache Config -> php.ini -> tìm dòng "gd" -> xóa dấu ";"
 8. Vào Xampp -> Apache Config -> php.ini -> tìm dòng "zip" -> xóa dấu ";" nếu ko chạy được lệnh 9
 9. Sửa file config/ckfinder.php dòng 85 ->     ':8888/LapXuongStore/public/' (thống nhất port và tên project)
+10. <chạy MIGRATE>
+
+<add vào file .env>
+GOOGLE_CLIENT_ID=1045147736434-ci8su7i6j5jh1j55vmnjdcohu83vs4b6.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+
+FACEBOOK_CLIENT_ID=174361068689376
+FACEBOOK_CLIENT_SECRET=1231743f6954579fe4aada8b38c98089ab5
+
+<add vào file config/services> (nếu có rồi thì thôi, vì đã đồng bộ qua github)
+'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => 'http://localhost/LapXuongStore/public/auth/google/callback',
+
+    ],
+'facebook' => [
+    'client_id' => env('FACEBOOK_CLIENT_ID'),
+    'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+    'redirect' => 'http://localhost/LapXuongStore/public/auth/facebook/callback',
+],

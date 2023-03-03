@@ -26,10 +26,10 @@ class Promotion extends Model
         $usedPromotion = DB::table('used_promotions')->where('promotion_id', $id)->first();
         if($usedPromotion){
             $this->status = 0;
-            return true; //true
+            return false; //true
         }
         else{
-            return false; //false
+            return true; //false
         }
     }
 }

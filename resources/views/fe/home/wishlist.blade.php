@@ -80,7 +80,7 @@
 @endsection
 
 @section('myJs')
-    <script type="module">
+    {{-- <script type="module">
         import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
         import {ConfirmDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
 
@@ -98,13 +98,13 @@
                     headerCartSelector: ".cart-icon",
                 });
 
-                const confirmDialog = new ConfirmDialog({
-                    processUrl: '{{ Route('removeCart') }}',
-                    processToken: '{{ csrf_token() }}',
-                    deleteBtn: "td.close-td.first-row",
-                    headerCartSelector: ".cart-icon",
-                });
+                // const confirmDialog = new ConfirmDialog({
+                //     processUrl: '{{ Route('removeCart') }}',
+                //     processToken: '{{ csrf_token() }}',
+                //     deleteBtn: "td.close-td.first-row",
+                //     headerCartSelector: ".cart-icon",
+                // });
             }
         });
-    </script>
+    </script> --}}
 @endsection

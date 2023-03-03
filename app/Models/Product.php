@@ -254,8 +254,7 @@ class Product extends Model
      */
 
      public function relateProducts(){
-        $products = Product::all();
-        $relates = $products->where('manufacture_id', $this->manufacture_id);
+        $relates = Product::where('manufacture_id', $this->manufacture_id);
         return $relates;
      }
 }

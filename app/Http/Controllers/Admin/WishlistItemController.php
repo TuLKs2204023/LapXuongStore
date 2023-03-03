@@ -104,7 +104,7 @@ class WishlistItemController extends Controller
      * @param  \App\Models\WishlistItem  $wishlistItem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function userDestroy(Request $request)
     {
         $pId = $request->id;
         $user = auth()->user();
@@ -113,4 +113,14 @@ class WishlistItemController extends Controller
         $wishlistItem->delete();
         return back();
     }
+
+    public function adminDestroy(Request $request)
+    {
+        $wlId = $request->id;
+        $wishlistItem = WishlistItem::where('id', $wlId)->first();
+        $wishlistItem->delete();
+        return back();
+    }
+
+
 }

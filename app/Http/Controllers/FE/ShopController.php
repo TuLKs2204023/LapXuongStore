@@ -20,7 +20,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(12);
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,

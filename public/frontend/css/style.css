@@ -193,8 +193,8 @@ ol {
 
 .site-btn {
 	color: #ffffff;
-	background: var(--violet);
-	border: 1px solid var(--violet);
+	background: var(--blue-dark);
+	border: 1px solid var(--blue-dark);
 	font-size: 14px;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -2885,7 +2885,7 @@ ol {
 	border: 2px solid #ebebeb;
 	padding: 14px 20px;
 	background: #f3f3f3;
-	text-align: center;
+	/* text-align: center; */
 	display: block;
 }
 
@@ -2975,16 +2975,16 @@ ol {
 }
 
 .checkout-form .place-order .order-total .order-table {
-	margin-bottom: 64px;
+	/* margin-bottom: 20px; */
 }
 
-.checkout-form .place-order .order-total .order-table li {
+.checkout-form .place-order .order-total .order-table li:not(.order-summary) {
 	list-style: none;
 	color: var(--grey-dark);
 	font-size: 14px;
 	font-weight: 700;
 	text-transform: uppercase;
-	border-bottom: 1px solid #e5e5e5;
+	/* border-bottom: 1px solid #e5e5e5; */
 	padding-bottom: 5px;
 	padding-top: 30px;
 }
@@ -3062,7 +3062,7 @@ ol {
 }
 
 .checkout-form .place-order .order-total .order-btn .place-btn {
-	padding: 13px 40px 11px;
+	padding: 10px 66px 10px;
 	background: var(--blue-dark);
 	border-color: var(--blue-dark);
 }

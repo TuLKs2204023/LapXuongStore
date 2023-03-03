@@ -32,6 +32,7 @@
     <!-- KIEN Css Styles -->
     <link rel="stylesheet" href="{{ asset('css/KienCss/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/shop.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/checkout.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/confirmDialog.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">

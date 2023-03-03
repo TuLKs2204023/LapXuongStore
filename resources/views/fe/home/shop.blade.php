@@ -192,6 +192,8 @@
                                 <div class="select-option">
                                     <select class="sorting">
                                         <option value="">Default Sorting</option>
+                                        <option value="1">Ascending</option>
+                                        <option value="2">Descending</option>
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
@@ -255,10 +257,10 @@
                         </div>
                     </div> <!-- // Main content Body -->
 
-                    {{-- <!-- Main content Footer -->
+                    <!-- Main content Footer -->
                     <div class="loading-more">
                           {{$products->links('vendor.pagination.custom')}}
-                    </div> <!-- // Main content Footer --> --}}
+                    </div> <!-- // Main content Footer -->
 
                 </div> <!-- // Main Content -->
             </div>
