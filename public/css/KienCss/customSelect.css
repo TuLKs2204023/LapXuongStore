@@ -4,6 +4,7 @@
  * .focus-visible utility class.
  */
 input:focus,
+textarea:focus,
 .form-control:focus {
     outline: 0;
     box-shadow: 0 0 10px 0 rgba(1, 41, 112, 0.15) !important;

@@ -61,7 +61,7 @@
                                         <td>{{ $stock->product->subName() }}</td>
                                         <td>{{ $stock->product->id }}</td>
                                         <td>{{ $stock->in_qty }}</td>
-                                        <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
+                                        <td>{{ number_format($stock->price->origin ?? 0, 0, ',', '.') }}</td>
                                         <td>{{ $stock->out_qty }}</td>
                                         <td>Still not input</td>
                                         <td>{{ $stock->created_at }}</td>

@@ -225,7 +225,7 @@
                                         <div class="pro-qty">
                                             <input name="product-quantity" type="text" value="1">
                                         </div>
-                                        <a href="#" class="primary-btn pd-cart" data-id="{{ $product->id }}">Add
+                                        <a href="#" class="primary-btn site-btn-main pd-cart" data-id="{{ $product->id }}">Add
                                             To Cart</a>
                                     </div>
                                 </div>

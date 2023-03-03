@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
-use App\Models\Order;
 
 class HomeController extends Controller
 {
@@ -23,7 +22,7 @@ class HomeController extends Controller
 
     public function product($slug)
     {
-        $product = Product::where('slug', $slug)->get()->first();
+        $product = Product::where('slug', $slug)->first();
         $ratings = $product->ratings->sortByDesc('id');
         return view('fe.home.product', compact('product', 'ratings'));
     }
@@ -108,6 +107,7 @@ class HomeController extends Controller
 
         $res = array(
             'curVal' => number_format($value, 0, ',', '.'),
+            'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
             'totalQty' => $total['qty'],
             'stockBalance' => $this->stockBalance($product, $qty),
@@ -145,6 +145,7 @@ class HomeController extends Controller
 
         $total = HomeController::totalCart();
         $res = array(
+            'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
             'totalQty' => $total['qty']
         );
@@ -157,81 +158,14 @@ class HomeController extends Controller
     }
 
     // Check stock availability
-    private function stockBalance(Product $product, int $cartQty): int
+    public function stockBalance(Product $product, int $cartQty): int
     {
         return $product->inStock() - $product->outStock() - $cartQty;
-    }
-
-    public function checkout()
-    {
-        $total = HomeController::totalCart();
-        $res = array(
-            'totalVal' => number_format($total['value'], 0, ',', '.'),
-            'totalQty' => $total['qty']
-        );
-        return view('fe.home.checkout', compact('res'));
-    }
-
-    public function processCheckout(Request $request)
-    {
-        if (session('cart')) {
-            // Save Order
-            $orderInfo = $request->all();
-            $orderInfo['order_date'] = date('Y-m-d', time());
-            $orderInfo['user_id'] = session('user')->id;
-            $order = Order::create($orderInfo);
-
-            // Save Order Details
-            $cart = session('cart');
-            $details = [];
-            foreach ($cart as $item) {
-                $details[] = [
-                    'product_id' => $item->product->id,
-                    'price_id' => $item->product->price_id,
-                    'quantity' => $item->quantity,
-                ];
-
-                // $orderDetail = new OrderDetail();
-                // $orderDetail->product_id = $item->product->id;
-                // $orderDetail->price = $item->product->price;
-                // $orderDetail->quantity = $item->quantity;
-                // $order->details()->save($orderDetail);
-            }
-
-            $order->details()->createMany($details);
-
-            $this->clearCart();
-            return view('fe.thankyou');
-        }
-    }
-
-    public function displayCheckout()
-    {
-        // $orders = Order::withCount('details')->get();
-        // foreach ($orders as $order) {
-        //     echo 'OrderID: ' . $order->id . ' - Details records: ' . $order->details_count . ' <br> ';
-        // }
-
-        // $user = User::find(3);
-        // dd($user->latestOrder);
-
-        $product = Product::find(1);
-        $images = $product->images;
-        dd($images);
-        foreach ($images as $image) {
-            echo $image->url;
-        }
     }
 
     public function contact()
     {
         return view('fe.home.contact');
-    }
-
-    public function shop()
-    {
-        $products = Product::all(10);
-        return view('fe.home.shop', compact('products'));
     }
 
     public function userProfile()

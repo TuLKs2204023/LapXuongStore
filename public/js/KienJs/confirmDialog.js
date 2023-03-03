@@ -126,14 +126,13 @@ function ConfirmDialog({
 
     function deleteSuccess(ajaxHttpRequest) {
         const res = JSON.parse(ajaxHttpRequest.responseText);
-        updateCartPage(
-            null,
+        updateCartPage({
             res,
             cartOrBtnSelector,
             summaryContSelector,
             summariesSelector,
-            headerCartSelector
-        );
+            headerCartSelector,
+        });
         updateCartHeader(res, headerCartSelector);
         hideDialog();
 
