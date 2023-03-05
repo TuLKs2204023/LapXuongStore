@@ -1,0 +1,68 @@
+:root {
+    --violet: #4154f1;
+    --violet-main: #0f21c3;
+    --violet-50: rgba(65, 83, 241, 0.5);
+    /* --violet: #242f9b; */
+    --violet-2nd: #648dd4;
+    --violet-2nd-50: rgba(100, 141, 212, 0.5);
+    --violet-3rd: #9bb7eb;
+    --violet-3rd-50: rgba(155, 183, 235, 0.5);
+    --violet-4th: #dbdffd;
+    --violet-4th-50: rgba(219, 223, 253, 0.5);
+    --violet-4th-85: rgba(219, 223, 253, 0.85);
+    --violet-5th: #e7eafe;
+    --violet-5th-50: rgba(231, 234, 254, 0.5);
+    --blue-dark: #596376;
+    --grey-dark: #373737;
+    --grey-dark-60: rgba(0, 0, 0, 0.66);
+    --grey-dark-90: rgba(0, 0, 0, 0.9);
+    /* --grey-dark: #252525; */
+}
+.site-btn {
+    background: linear-gradient(to left, var(--grey-dark) 50%, var(--violet) 50%) right !important;
+    background-size: 200% !important;
+    border-color: var(--grey-dark) !important;
+    color: #ffffff !important;
+    transition: .3s ease-out;
+}
+.site-btn-outline {
+    cursor: pointer;
+    color:var(--violet) !important;
+    background: linear-gradient(to left, #ffffff00 50%, var(--violet) 50%) right !important;
+    background-size: 200% !important;
+    border: 1px solid var(--violet);
+    transition: .3s ease-out;
+}
+.site-btn:hover,
+.site-btn-outline:hover {
+    color: #ffffff !important;
+    background-position: left !important;
+    border: 1px solid var(--violet) !important;
+}
+
+.site-btn-alt {
+    cursor: pointer;
+    background: linear-gradient(to left, var(--grey-dark) 50%, #000000 50%) right !important;
+    border: 1px solid var(--grey-dark);
+    color: #ffffff;
+    background-size: 200% !important;
+    transition: .3s ease-out;
+}
+.site-btn-alt:hover {
+    background-position: left !important;
+    border: 1px solid #000000 !important;
+}
+.site-btn-main {
+    background: linear-gradient(to left, var(--violet) 50%, var(--violet-main) 50%) right !important;
+    border: 1px solid var(--violet) !important;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    background-size: 200% !important;
+    transition: .3s ease-out;
+    cursor: pointer;
+}
+.site-btn-main:hover {
+    background-position: left !important;
+    border: 1px solid var(--violet-main) !important;
+}
+

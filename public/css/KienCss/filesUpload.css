@@ -1,0 +1,48 @@
+.myFilesUpload .list-images {
+    width: 100%;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.myFilesUpload .hidden {
+    display: none;
+}
+
+.myFilesUpload .box-image {
+    position: relative;
+    float: left;
+    margin: 5px 8px;
+}
+
+.myFilesUpload .box-image img {
+    width: auto;
+    height: 120px;
+}
+
+.myFilesUpload .wrap-btn-delete {
+    position: absolute;
+    top: 0;
+    right: 2px;
+    /* height: 2px; */
+    /* font-size: 20px; */
+    font-weight: bold;
+    color: #fff;
+}
+
+.myFilesUpload .wrap-btn-delete span {
+    border-radius: 2px;
+    background-color: rgba(211, 211, 211, 0.7);
+    padding: 0 5.5px;
+}
+
+.myFilesUpload .wrap-btn-delete span:hover {
+    background-color: rgba(128, 128, 128, 0.7);
+}
+
+.myFilesUpload .btn-delete-image {
+    cursor: pointer;
+}
+
+.myFilesUpload .table {
+    width: 15%;
+}
