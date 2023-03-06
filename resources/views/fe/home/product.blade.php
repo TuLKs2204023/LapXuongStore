@@ -11,13 +11,14 @@
             max-height: 400px;
         }
 
-        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role {
-            font-style: italic;
-            font-size: 80%;
-            font-weight: 500;
-            text-shadow: 2px 2px 10px #4154F1;
-            /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
-        }
+        /* .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role .bg-info{
+                    font-style: italic;
+                    font-size: 80%;
+                    font-weight: 500;
+                    text-shadow: 2px 2px 10px var(--violet-2nd);
+                }
+                    /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
+
 
         .personal-rating .btn-default,
         .personal-rating .btn-warning {
@@ -218,7 +219,6 @@
                                     @endif
                                     <h4>{{ number_format($product->price, 0, ',', '.') . ' VND' }}<span>{{ number_format($product->price, 0, ',', '.') . ' VND' }}</span>
                                     </h4>
-
                                 </div>
                                 <div class="quantity">
                                     <div class="quantity">
@@ -402,9 +402,11 @@
                                                                 @endfor
                                                             </div>
                                                             <div
-                                                                @if ($rating->user->role == 'Admin' || $rating->user->role == 'Manager') class="badge rounded-pill bg-info text-light"
+                                                                @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
+                                                                @elseif ($rating->user->role == 'Manager') 
+                                                                    style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
                                                                 @else
-                                                                    class="badge rounded-pill bg-secondary text-light" @endif>
+                                                                    style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
                                                                 {{ $rating->user->role }}
                                                             </div>
                                                             <h5>{{ $rating->user->name }}
@@ -542,7 +544,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ asset('images/', $relate->oldestImage->url) }}" alt="{{ $relate->name }}">
+                                <img src="{{ asset('images/' . $relate->oldestImage->url) }}" alt="{{ $relate->name }}">
                                 <div class="sale pp-sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -578,6 +580,7 @@
 @section('myJs')
     <script type="module">
     import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
+    import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
     document.addEventListener("readystatechange", (e) => {
         if (e.target.readyState === "complete") {
             const addCart = new CartHandler({
@@ -592,7 +595,12 @@
             });
         }
     });
-</script>
+
+    const reviewBtn = document.querySelector('.review-lapxuong-btn');
+    reviewBtn.onclick = function(){
+        
+    }
+    </script>
     <script>
         jQuery(document).ready(function($) {
 
@@ -618,14 +626,5 @@
 
             }));
         });
-    </script>
-    <script type="module">
-        import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
-
-        // const submitBtn = document.querySelector('.review-lapxuong-btn');
-        // console.log(submitBtn)
-        // submitBtn.onclick = function(){
-        //     console.log(submitBtn)
-        // }
     </script>
 @endsection
