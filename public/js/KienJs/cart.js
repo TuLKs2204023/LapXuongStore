@@ -1,5 +1,11 @@
 import { showSuccessToast, showErrorToast } from "./toast.js";
-export { CartHandler, getParent, updateCartPage, updateCartHeader };
+export {
+    CartHandler,
+    getParent,
+    processUpdateCartPage,
+    updateCartHeader,
+    preventCheckout,
+};
 
 $ = document.querySelector.bind(document);
 
@@ -7,18 +13,31 @@ function CartHandler({
     url = "",
     token = "",
     isUpdate = false,
-    cartOrBtnSelector = ".add-to-cart",
-    cartItemSelector = "",
     inputName = "product-quantity",
-    summaryContSelector = "",
-    summariesSelector = "",
-    headerCartSelector = ".minicart",
-    checkoutBtnSelector = ".proceed-checkout-btn",
+    selectors: {
+        cartOrBtnSelector = ".add-to-cart",
+        cartItemSelector = "",
+        summaryContSelector = "",
+        summariesSelector = "",
+        headerCartSelector = ".minicart",
+        headerCartItemsSelector = ".select-items",
+        headerCartCheckoutSelector = ".checkout-btn",
+        checkoutBtnSelector = ".proceed-checkout-btn",
+    },
 }) {
-    const cartContainer = $(cartOrBtnSelector);
-    if (!cartContainer) {
-        return false;
-    }
+    const selectors = {
+        cartOrBtnSelector,
+        cartItemSelector,
+        summaryContSelector,
+        summariesSelector,
+        headerCartSelector,
+        headerCartItemsSelector,
+        headerCartCheckoutSelector,
+        checkoutBtnSelector,
+    };
+
+    const cartContainer = $(selectors["cartOrBtnSelector"]);
+    if (!cartContainer) return false;
 
     if (isUpdate) {
         // Add events in ViewCart page
@@ -26,87 +45,65 @@ function CartHandler({
             `input[name="${inputName}"]`
         );
         if (inputs) {
-            if (inputs.length) {
-                for (let input of inputs) {
-                    // Disable increase button whenever item is out-of-stock
-                    const incBtn =
-                        input.parentNode.querySelector(".inc.qtybtn");
-                    const stock = Number(input.dataset.stock);
-                    if (incBtn) {
-                        disableButton(stock, 0, incBtn);
-                    }
+            const checkoutBtn = $(selectors["checkoutBtnSelector"]);
 
-                    const checkoutBtn = $(checkoutBtnSelector);
-                    if (checkoutBtn) {
-                        disableButton(stock, -1, checkoutBtn);
-                    }
+            // Disable check-out Button if cart is empty
+            preventCheckout(checkoutBtn, !inputs.length);
 
-                    // Update ViewCart page whenever quantity is changed
-                    const selectedRow = getParent(input, cartItemSelector);
-                    const pid = selectedRow.dataset.index;
-                    const btns = input.parentNode.querySelectorAll(".qtybtn");
-                    for (let btn of btns) {
-                        btn.addEventListener("click", (e) => {
-                            cartUpdateHandler(e, input, pid, updateCartPage);
-                            // stock = Number(input.dataset.stock);
-                            // disableButton(stock, 0, incBtn);
-                        });
-                    }
-                    input.oninput = (e) => {
-                        cartUpdateHandler(e, input, pid, updateCartPage);
-                    };
+            // Add event for Increase|Decrease button
+            for (let input of inputs) {
+                // Disable increase button whenever item is out-of-stock
+                const incBtn = input.parentNode.querySelector(".inc.qtybtn");
+                const stock = Number(input.dataset.stock);
+                if (incBtn) {
+                    disableButton(stock, 0, incBtn);
                 }
 
-                // Disable check-out process whenever encounters out-of-stock items
-                const checkoutBtn = $(checkoutBtnSelector);
                 if (checkoutBtn) {
-                    checkoutBtn.addEventListener("click", (e) => {
-                        const isAllValid = Array.from(inputs).every((input) => {
-                            return input.dataset.stock >= 0;
-                        });
-                        if (!isAllValid) {
-                            e.preventDefault();
-                            showErrorToast({
-                                message:
-                                    "Cannot add more items due to out of stock.",
-                                duration: 3000,
-                            });
-                            return false;
-                        }
-                    });
-                    // const stock = Number(input.dataset.stock);
-                    // disableButton(stock, -1, checkoutBtn);
+                    disableButton(stock, -1, checkoutBtn);
                 }
-            } else {
-                // Disable check-out Button if cart is empty
-                const checkoutBtn = $(checkoutBtnSelector);
-                if (checkoutBtn) {
-                    checkoutBtn.addEventListener("click", (e) => {
-                        e.preventDefault();
-                        showErrorToast({
-                            message: "Nothing in cart for checking out.",
-                            duration: 3000,
-                        });
-                        return false;
+
+                // Update ViewCart page whenever quantity is changed
+                const selectedRow = getParent(
+                    input,
+                    selectors["cartItemSelector"]
+                );
+                const pid = selectedRow.dataset.index;
+                const btns = input.parentNode.querySelectorAll(".qtybtn");
+                for (let btn of btns) {
+                    btn.addEventListener("click", (e) => {
+                        cartUpdateHandler(
+                            e,
+                            input,
+                            pid,
+                            selectors,
+                            processUpdateCartPage
+                        );
                     });
                 }
+                input.oninput = (e) => {
+                    cartUpdateHandler(
+                        e,
+                        input,
+                        pid,
+                        selectors,
+                        processUpdateCartPage
+                    );
+                };
             }
         }
     } else {
         // Add events in Product page
         const input = document.querySelector(`input[name="${inputName}"]`);
-
-        if (!input) {
-            return false;
-        }
+        if (!input) return false;
 
         const pid = cartContainer.dataset.id;
 
         cartContainer.onclick = (e) => {
-            cartUpdateHandler(e, input, pid, callback);
+            cartUpdateHandler(e, input, pid, selectors, callback);
         };
 
-        function callback({ res, headerCartSelector }) {
+        function callback({ res, selectors }) {
             if (res.stockBalance < 0) {
                 showErrorToast({
                     message: "Cannot add more items due to out of stock.",
@@ -116,7 +113,7 @@ function CartHandler({
             }
 
             // Update header cartItems
-            updateCartHeader(res, headerCartSelector);
+            updateCartHeader(res, selectors);
 
             showSuccessToast({
                 message: "Card item(s) added successfully.",
@@ -126,7 +123,7 @@ function CartHandler({
     }
 
     // Process to call HttpRequest
-    function cartUpdateHandler(e, input, pid, callback) {
+    function cartUpdateHandler(e, input, pid, selectors, callback) {
         e.preventDefault();
         setTimeout(() => {
             const params = {
@@ -146,11 +143,8 @@ function CartHandler({
                     callback({
                         e,
                         res,
-                        cartOrBtnSelector,
-                        summaryContSelector,
-                        summariesSelector,
-                        headerCartSelector,
                         input,
+                        selectors,
                     });
                 }
             };
@@ -163,29 +157,14 @@ function CartHandler({
             ajaxReq.send(JSON.stringify(params));
         }, 1);
     }
-
-    // Function to disable increase button whenever item is out-of-stock
-    function disableButton(stockBal, num, incBtn) {
-        if (stockBal <= num) {
-            incBtn.addEventListener("click", disableHandler, true);
-        } else {
-            incBtn.removeEventListener("click", disableHandler, true);
-        }
-    }
 }
 
 // Function to update Total Amount of items
-function updateCartPage({
-    res,
-    cartOrBtnSelector,
-    summaryContSelector,
-    summariesSelector,
-    headerCartSelector,
-    input,
-}) {
+function processUpdateCartPage({ res, input, selectors }) {
     // Update header cartItems
-    updateCartHeader(res, headerCartSelector);
+    updateCartHeader(res, selectors);
 
+    // Update current item Price
     if (input) {
         const itmPrice =
             input.parentNode.parentNode.parentNode.nextElementSibling;
@@ -196,9 +175,12 @@ function updateCartPage({
         }
     }
 
-    const sumContainer = $(summaryContSelector);
+    // Update Summary section
+    const sumContainer = $(selectors["summaryContSelector"]);
     if (sumContainer) {
-        const sums = sumContainer.querySelectorAll(summariesSelector);
+        const sums = sumContainer.querySelectorAll(
+            selectors["summariesSelector"]
+        );
         if (sums) {
             for (let sum of sums) {
                 sum.innerHTML = res.totalVal + " VND";
@@ -206,34 +188,47 @@ function updateCartPage({
         }
     }
 
+    // Update cart content when it becomes empty
     if (!res.totalQty) {
-        const cartContainer = $(cartOrBtnSelector);
+        const cartContainer = $(selectors["cartOrBtnSelector"]);
         cartContainer.innerHTML = `
-            <tr class="pr-cart-item"><td colspan="6">&#128557; Too cold, you're not going to leave me empty, are you? &#128557;</td></tr>
+            <tr class="pr-cart-item">
+                <td colspan="6">
+                    &#128557; Too cold, you're not going to leave me empty, are you? &#128557;
+                </td>
+            </tr>
         `;
     }
 
+    // Disable Increase button whenever item comes out-of-stock
     let incBtn;
     if (input) {
         incBtn = input.parentNode.querySelector(".inc.qtybtn");
-        if (res.stockBalance <= 0) {
-            incBtn.addEventListener("click", disableHandler, true);
-            return;
-        } else {
-            incBtn.removeEventListener("click", disableHandler, true);
-        }
+        disableButton(res.stockBalance, 0, incBtn);
     }
+
+    // Disable Checkout button whenever arbittrary item comes out-of-stock
+    const checkoutBtn = $(selectors["checkoutBtnSelector"]);
+    if (checkoutBtn) disableButton(res.stockBalance, -1, checkoutBtn);
 }
 
 // Function to update Header Cart
-function updateCartHeader(res, headerCartSelector) {
-    const headerContainer = $(headerCartSelector);
+function updateCartHeader(res, selectors) {
+    const checkoutBtn = $(selectors["checkoutBtnSelector"]);
+    if (checkoutBtn) disableButton(res.stockBalance, -1, checkoutBtn);
+    
+    const headerContainer = $(selectors["headerCartSelector"]);
+    const headerCheckoutBtn = headerContainer.querySelector(
+        selectors["headerCartCheckoutSelector"]
+    );
+    if (headerCheckoutBtn)
+        disableButton(res.stockBalance, -1, headerCheckoutBtn);
 
     if (headerContainer) {
-        const headerCart = headerContainer.querySelector(".index");
-        if (headerCart) {
+        const headerCartCount = headerContainer.querySelector(".index");
+        if (headerCartCount) {
             const totalQty = res.totalQty;
-            headerCart.innerHTML = totalQty;
+            headerCartCount.innerHTML = totalQty;
         }
     }
 }
@@ -257,4 +252,29 @@ function disableHandler(e) {
         message: "Cannot add more items due to out of stock.",
         duration: 3000,
     });
+}
+
+// Function to disable increase button whenever item is out-of-stock
+function disableButton(stockBal, num, incBtn) {
+    if (stockBal <= num) {
+        incBtn.addEventListener("click", disableHandler, true);
+    } else {
+        incBtn.removeEventListener("click", disableHandler, true);
+    }
+}
+
+// Function to prevent proceed Check-out while Cart is empty
+function preventCheckout(checkoutBtn, isEmpty) {
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener("click", (e) => {
+            if (isEmpty) {
+                e.preventDefault();
+                showErrorToast({
+                    message:
+                        "Nothing to carry out, please add some items first.",
+                    duration: 3000,
+                });
+            }
+        });
+    }
 }

@@ -1,4 +1,6 @@
-export { MyToggle, MyStickyNav };
+export { MyToggle, MyStickyNav, HeaderCartHandler };
+import { updateCartHeader, preventCheckout } from "./cart.js";
+import { showSuccessToast, showErrorToast } from "./toast.js";
 
 $ = document.querySelector.bind(document);
 
@@ -75,7 +77,6 @@ function MyStickyNav({
     scalePercent = 0.85,
 }) {
     const headerCont = $(headerSelector);
-    const headerTop = $(headerSelector + " > div:first-child");
     const headerBody = $(headerSelector + " > div:nth-child(2)");
 
     const nextEle = headerCont.nextElementSibling;
@@ -91,4 +92,65 @@ function MyStickyNav({
             nextEle.style.marginTop = 0;
         }
     });
+}
+
+function HeaderCartHandler({
+    url = "",
+    token = "",
+    selectors: {
+        headerCartSelector = ".minicart",
+        headerCartItemsSelector = ".select-items",
+        headerCartCheckoutSelector = ".checkout-btn",
+    },
+}) {
+    const selectors = {
+        headerCartSelector,
+        headerCartItemsSelector,
+        headerCartCheckoutSelector,
+    };
+
+    const headerCart = $(selectors["headerCartSelector"]);
+    if (!headerCart) return false;
+
+    const checkoutBtn = headerCart.querySelector(
+        selectors["headerCartCheckoutSelector"]
+    );
+    if (!checkoutBtn) return false;
+
+    checkoutBtn.addEventListener("click", checkEmptyCart);
+
+    // Process to call HttpRequest
+    function checkEmptyCart(e) {
+        e.preventDefault();
+        setTimeout(() => {
+            const params = {
+                _token: token,
+            };
+
+            const ajaxReq = new XMLHttpRequest();
+
+            ajaxReq.onreadystatechange = () => {
+                if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
+                    const res = JSON.parse(ajaxReq.responseText);
+
+                    if (res.emptyCart) {
+                        showErrorToast({
+                            message:
+                                "Nothing to carry out, please add some items first.",
+                            duration: 3000,
+                        });
+                    } else {
+                        window.location.href = res.route;
+                    }
+                }
+            };
+
+            ajaxReq.open("POST", url, true);
+            ajaxReq.setRequestHeader(
+                "Content-type",
+                "application/json;charset=UTF-8"
+            );
+            ajaxReq.send(JSON.stringify(params));
+        }, 1);
+    }
 }

@@ -1,4 +1,4 @@
-@section('fetitle','- Checkout')
+@section('fetitle', '- Checkout')
 @extends('fe.layout.layout')
 @section('content')
     <!-- BREADCUMB SECTION BEGIN-->
@@ -18,6 +18,10 @@
 
     <!-- BREADCUMB SECTION END-->
 
+    <!-- Message section -->
+    @include('components.message')
+    <!-- / Message section -->
+
     <!-- Check-out SECTION BEGIN-->
     <div class="checkout-section spad">
         <div class="container">
@@ -25,9 +29,9 @@
                 @csrf
                 <div class="row">
                     <div class="col-lg-5">
-                        <div class="checkout-content">
-                            <a href="login.html" class="content-btn">Click Here To Login</a>
-                        </div>
+                        {{-- <div class="checkout-content">
+                            <a href="{{ Route('login') }}" class="content-btn">Click Here To Login</a>
+                        </div> --}}
                         <h4>Biling Details</h4>
                         <div class="row">
                             <div class="col-lg-12">
@@ -54,7 +58,7 @@
                                 <label for="notes">Notes<span></span></label>
                                 <textarea type="text" id="notes" name="notes" rows="3"></textarea>
                             </div>
-                            <div class="col-lg-12">
+                            {{-- <div class="col-lg-12">
                                 <div class="create-item">
                                     <label for="acc-create">
                                         Create an Account?
@@ -62,13 +66,12 @@
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="checkout-content discount-coupon coupon-form">
-                            <input type="text" placeholder="Enter Your Coupon Code" id="promotion_id"
-                                name="promotion_id">
+                            <input type="text" placeholder="Enter Your Coupon Code" id="couponCode" name="couponCode">
                             <button type="submit" class="site-btn coupon-btn">Apply</button>
                         </div>
                         <div class="place-order">
@@ -87,7 +90,7 @@
                                                         </div>
                                                         <div class="order-product-name">{{ $item->product->name }}</div>
                                                         <div class="order-product-price">
-                                                            <div>x
+                                                            <div>x&nbsp;
                                                                 <span class="order-product-quantity">
                                                                     {{ number_format($item->quantity, 0, ',', '.') }}
                                                                 </span>
@@ -142,7 +145,6 @@
 
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
-                const checkOut = new CheckoutHandler({});
                 const coupon = new CouponHandler({
                     url: '{{ Route('couponCheck') }}',
                     token: '{{ csrf_token() }}',

@@ -225,7 +225,8 @@
                                         <div class="pro-qty">
                                             <input name="product-quantity" type="text" value="1">
                                         </div>
-                                        <a href="#" class="primary-btn site-btn-main pd-cart" data-id="{{ $product->id }}">Add
+                                        <a href="#" class="primary-btn site-btn-main pd-cart"
+                                            data-id="{{ $product->id }}">Add
                                             To Cart</a>
                                     </div>
                                 </div>
@@ -541,7 +542,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{asset('images/', $relate->oldestImage->url)}}" alt="{{$relate->name}}">
+                                <img src="{{ asset('images/', $relate->oldestImage->url) }}" alt="{{ $relate->name }}">
                                 <div class="sale pp-sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
@@ -555,10 +556,10 @@
                             <div class="pi-text">
                                 <div class="catagory-name">Coat</div>
                                 <a href="">
-                                    <h5>{{$relate->name}}</h5>
+                                    <h5>{{ $relate->name }}</h5>
                                 </a>
                                 <div class="product-price">
-                                    {{$relate->price}}
+                                    {{ $relate->price }}
                                     <span>$450.00</span>
                                 </div>
                             </div>
@@ -583,9 +584,11 @@
                 url: '{{ Route('addCart') }}',
                 token: '{{ csrf_token() }}',
                 isUpdate: false,
-                cartOrBtnSelector: ".pd-cart",
                 inputName: "product-quantity",
-                headerCartSelector: ".cart-icon",
+                selectors: {
+                    cartOrBtnSelector: ".pd-cart",
+                    headerCartSelector: ".cart-icon",
+                }
             });
         }
     });

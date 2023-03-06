@@ -26,7 +26,7 @@ class CheckoutController extends HomeController
 
     public function couponCheck(Request $request)
     {
-        $code = $request->code;
+        $code = $request->couponCode;
         $coupon = Promotion::where('code', $code)->first();
         if ($coupon === null) {
             return array('status' => null);
@@ -44,26 +44,35 @@ class CheckoutController extends HomeController
     {
         if (session('cart')) {
             // Check out-of-stock
-            $cart = session('cart');
-            foreach ($cart as $item) {
-                $stock = $this->stockBalance($item->product, $item->quantity);
-                if ($stock < 0) {
-                    return $res = array(
-                        'pid' => $item->product->id,
-                        'stockBalance' => $stock
-                    );
-                }
+            $cart = collect(session('cart'));
+            $errors =
+                $cart->filter(function ($item, $key) {
+                    $stock = $this->stockBalance($item->product, $item->quantity);
+                    return $stock < 0;
+                })->map(function ($item, $key) {
+                    return '"' . $item->product->name . '" is currently out-of-stock.';
+                })->toArray();
+            if (count($errors) > 0) {
+                return back()->withErrors($errors);
             }
 
             // Save Order
             $orderInfo = $request->all();
             $orderInfo['order_date'] = date('Y-m-d H:i:s', time());
             $orderInfo['user_id'] = auth()->user()->id;
-            // dd($orderInfo);
             $order = Order::create($orderInfo);
 
-            // Save Order Details
+            // Save Coupon
+            $res = $this->couponCheck($request);
+            if ($res['status'] === 'success') {
+                $coupon = $res['coupon'];
+                $order->usedPromotion()->create(['promotion_id' => $coupon->id]);
+                $order->refresh();
+                $order->usedPromotion->promotion->status = 0;
+                $order->push();
+            }
 
+            // Save Order Details
             $details = [];
             foreach ($cart as $item) {
                 $details[] = [
@@ -82,11 +91,15 @@ class CheckoutController extends HomeController
                 // $orderDetail->quantity = $item->quantity;
                 // $order->details()->save($orderDetail);
             }
-
             $order->details()->createMany($details);
 
             $this->clearCart();
             return view('fe.home.thankyou');
+        } else {
+            $errors = ['msg' => 'Your cart is currently empty.'];
+            if (count($errors) > 0) {
+                return back()->withErrors($errors);
+            }
         }
     }
 }
