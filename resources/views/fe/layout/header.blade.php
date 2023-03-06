@@ -24,24 +24,29 @@
                                 @csrf
                             </form>
                             <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
-                                style="padding-top:7px;padding-bottom: 7px;" style="width:80px " type="submit"
-                                style="padding-top:7px;padding-bottom: 7px;">{{ auth()->user()->name }}
+                                style="padding-top:10px;padding-bottom: 7px;" style="width:80px "
+                                type="submit">{{ auth()->user()->name }}
                                 <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle" style="height: 38px ; margin-left:20px; margin-right:10px">
+                                    class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
                             </a>
                         @endif
                         @if (auth()->user()->role == 'Admin')
-                            <a href="{{ url('admin') }}" class="login-panel" style="padding-top:7px;padding-bottom: 7px;">
+                            <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
                                 Hello {{ auth()->user()->name }}
                                 <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle" style="height: 38px ; margin-left:20px;">
+                                    class="rounded-circle" style="
+                                    height: 40px ;width:40px; margin-left:20px;">
                             </a>
+                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
+                                type="submit">Setting</a>
                         @endif
                         @if (auth()->user()->role == 'Manager')
-                            <a href="{{ url('manager') }}" class="login-panel" style="padding-top:7px;padding-bottom: 7px;">
-                                Hello {{ auth()->user()->name }}
+                            <a href="{{ url('manager') }}" class="login-panel"
+                                style="padding-top:10px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
                                 <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle" style="height: 38px ; margin-left:20px; margin-right:10px"></a>
+                                    class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px"></a>
                             <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
                                 type="submit">Setting</a>
                         @endif
@@ -50,12 +55,12 @@
                     @endauth
                 @endif
 
-                <div class="lan-selector">
-                    <select name="countries" id="countries" class="language_drop" style="width:300px;">
+                <div class="lan-selector" >
+                    <select name="countries" id="countries" class="language_drop" style="width:150px;">
                         <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}"
-                            data-imagecss="flag yt" data-title="English">English</option>
+                            data-imagecss="flag yt" data-title="English">Eng</option>
                         <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}"
-                            data-imagecss="flag yu" data-title="Vietnamese">Vietnamese</option>
+                            data-imagecss="flag yu" data-title="Vietnamese" >Vie</option>
                     </select>
                 </div>
 
@@ -139,10 +144,8 @@
                                 </div>
                                 <div class="select-button">
                                     <a href="{{ Route('viewCart') }}" class="site-btn-alt view-card">VIEW CART</a>
-                                    <a class="site-btn-main checkout-btn">CHECK
-                                        OUT</a>
+                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK OUT</a>
                                 </div>
-
                             </div>
                         </li>
                     </ul>

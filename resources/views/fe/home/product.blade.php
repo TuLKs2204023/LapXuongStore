@@ -382,25 +382,19 @@
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
                                                 <div class="co-item">
-                                                    <form action="{{ Route('admin.rating.destroy') }}" method="post"
-                                                        style="display:inline-block">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $rating->id }}">
-                                                        <div class="avatar-pic">
-                                                            <img src="{{ asset('images/' . $rating->user->image) }}"
-                                                                alt="">
+                                                    <div class="avatar-pic">
+                                                        <img src="{{ asset('images/' . $rating->user->image) }}"
+                                                            alt="">
+                                                    </div>
+                                                    <div class="avatar-text">
+                                                        <div class="at-rating">
+                                                            @for ($i = 0; $i < $rating->rate; $i++)
+                                                                <i class="fa fa-star"></i>
+                                                            @endfor
+                                                            @for ($i = 0; $i < 5 - $rating->rate; $i++)
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endfor
                                                         </div>
-                                                        <div class="avatar-text">
-                                                            <div class="at-rating">
-                                                                @for ($i = 0; $i < $rating->rate; $i++)
-                                                                    <i class="fa fa-star"></i>
-                                                                @endfor
-                                                                @for ($i = 0; $i < 5 - $rating->rate; $i++)
-                                                                    <i class="fa fa-star-o"></i>
-                                                                @endfor
-                                                            </div>
                                                             <div
                                                                 @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
                                                                 @elseif ($rating->user->role == 'Manager') 
@@ -423,7 +417,21 @@
                                                                 @endif
                                                             @endif
                                                         </div>
-                                                    </form>
+                                                        <h5>{{ $rating->user->name }}
+                                                            <span>{{ $rating->created_at }}</span>
+                                                        </h5>
+                                                        <div class="at-reply">{{ $rating->review }}</div>
+                                                        @if (auth()->user())
+                                                            @if (auth()->user()->role == 'Admin')
+                                                                <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
+                                                                    id="deletecomment" class="btn btn-sm btn-danger">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Delete
+                                                                </a>
+                                                            @endif
+                                                        @endif
+                                                    </div>
+
                                                 </div>
                                             @endforeach
                                         </div>
@@ -526,9 +534,6 @@
 @endsection
 
 
-
-
-
 @section('content')
     <div class="related-products spad">
         <div class="container">
@@ -573,36 +578,50 @@
     </div>
 @endsection
 
-
-
-
-
 @section('myJs')
     <script type="module">
-    import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
-    import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
-    document.addEventListener("readystatechange", (e) => {
-        if (e.target.readyState === "complete") {
-            const addCart = new CartHandler({
-                url: '{{ Route('addCart') }}',
-                token: '{{ csrf_token() }}',
-                isUpdate: false,
-                inputName: "product-quantity",
-                selectors: {
+        import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const addCart = new CartHandler({
+                    url: '{{ Route('addCart') }}',
+                    token: '{{ csrf_token() }}',
+                    isUpdate: false,
                     cartOrBtnSelector: ".pd-cart",
+                    inputName: "product-quantity",
                     headerCartSelector: ".cart-icon",
-                }
-            });
-        }
-    });
-
-    const reviewBtn = document.querySelector('.review-lapxuong-btn');
-    reviewBtn.onclick = function(){
-        
-    }
+                });
+            }
+        });
     </script>
     <script>
         jQuery(document).ready(function($) {
+
+            $(document).on("click", "#deletecomment",
+                function(e) {
+
+                    e.preventDefault();
+                    var link = $(this).attr("href");
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                'Deleted!',
+                                'This comment has been deleted.',
+                                'success'
+                            )
+                            window.location.href = link;
+                        }
+                    })
+                });
 
             $(".btnrating").on('click', (function(e) {
 

@@ -31,6 +31,9 @@ class User extends Authenticatable
         'gender',
         'google_id',
         'facebook_id',
+        'city_id',
+        'district_id',
+        'ward_id'
     ];
 
     /**
@@ -59,4 +62,14 @@ class User extends Authenticatable
     public function wishlistItems(){
         return $this->hasMany(WishlistItem::class);
     }
+    public function city(){
+        return $this->belongsTo(City::class);
+    }
+    public function district(){
+        return $this->belongsTo(District::class);
+    }
+    public function ward(){
+        return $this->belongsTo(Ward::class);
+    }
+
 }

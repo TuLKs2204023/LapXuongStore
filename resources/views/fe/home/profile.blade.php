@@ -214,7 +214,7 @@
                                     <h6 class="mb-0">Address</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{auth()->user()->address}}
+                                    {{auth()->user()->address ?? 'Not updated'}}  - {{auth()->user()->ward->name ?? ''}} - {{auth()->user()->district->name ?? ''}} - {{auth()->user()->city->name ?? ''}}
                                 </div>
                             </div>
                             <hr>

@@ -29,6 +29,8 @@ use App\Http\Controllers\backend\OdersController;
 
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
+use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,7 +49,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
-Route::get('/manager', [AdminHomeController::class, 'manager'])->name('admin.dashboard');
+Route::get('/manager', [AdminHomeController::class, 'manager'])->name('manager.dashboard');
 Route::get('/customer', [AdminHomeController::class, 'customer'])->name('customer');
 
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
@@ -81,6 +83,15 @@ Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userPro
 Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name('passwordUser');
 Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
 
+
+
+//report users
+Route::get('admin/lastweek', [DashboardController::class, 'lastweek'])->name('lastweek');
+
+//Dropdown Address Controller
+Route::get('city', [DropdownController::class, 'fetchCity']);
+Route::post('api/fetch-district', [DropdownController::class, 'fetchDistrict'])->name('fetchDistrict');
+Route::post('api/fetch-ward', [DropdownController::class, 'fetchWard'])->name('fetchWard');
 
 //Google authentication controller
 Route::controller(GoogleController::class)->group(function () {
@@ -144,7 +155,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [ProductController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::put('/update', [ProductController::class, 'update'])->name('update');
-            Route::delete('/destroy', [ProductController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
         });
 
         // Category
@@ -164,7 +175,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [ManufactureController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [ManufactureController::class, 'edit'])->name('edit');
             Route::put('/update', [ManufactureController::class, 'update'])->name('update');
-            Route::delete('/destroy', [ManufactureController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [ManufactureController::class, 'destroy'])->name('destroy');
         });
 
         // CPU
@@ -174,7 +185,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [CpuController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [CpuController::class, 'edit'])->name('edit');
             Route::put('/update', [CpuController::class, 'update'])->name('update');
-            Route::delete('/destroy', [CpuController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [CpuController::class, 'destroy'])->name('destroy');
         });
 
         // RAM's Group
@@ -184,7 +195,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [RamGroupController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [RamGroupController::class, 'edit'])->name('edit');
             Route::put('/update', [RamGroupController::class, 'update'])->name('update');
-            Route::delete('/destroy', [RamGroupController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy{id}', [RamGroupController::class, 'destroy'])->name('destroy');
         });
 
         // Screen's Group
@@ -298,7 +309,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [RatingController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
             Route::put('/update', [RatingController::class, 'update'])->name('update');
-            Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [RatingController::class, 'destroy'])->name('destroy');
         });
     });
 });

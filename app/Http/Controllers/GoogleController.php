@@ -40,7 +40,8 @@ class GoogleController extends Controller
                 return redirect()->intended('profile');
 
             }else{
-                $newUser = User::updateOrCreate(['email' => $user->email],[
+                $newUser = User::Create([
+                        'email' => $user->email],[
                         'name' => $user->name,
                         'google_id'=> $user->id,
                         'password' => encrypt('123456dummy')
@@ -48,7 +49,7 @@ class GoogleController extends Controller
 
                 Auth::login($newUser);
 
-                return redirect()->intended('profile    ');
+                return redirect()->intended('profile');
             }
 
         } catch (Exception $e) {
