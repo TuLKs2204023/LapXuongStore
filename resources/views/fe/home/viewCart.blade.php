@@ -1,4 +1,4 @@
-@section('fetitle','- Cart')
+@section('fetitle', '- Cart')
 @extends('fe.layout.layout')
 @section('content')
     <!-- BREADCUMB SECTION BEGIN-->
@@ -97,7 +97,8 @@
                                             class="ajax-summary">{{ number_format($total['value'], 0, ',', '.') }}
                                             VND</span></li>
                                 </ul>
-                                <a href="{{ Route('checkout') }}" class="proceed-checkout-btn site-btn proceed-btn">PROCEED TO CHECK
+                                <a href="{{ Route('checkout') }}" class="proceed-checkout-btn site-btn proceed-btn">PROCEED
+                                    TO CHECK
                                     OUT</a>
                             </div>
                         </div>
@@ -112,7 +113,7 @@
 @section('myJs')
     <script type="module">
         import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
-        import {ConfirmDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
+        import {DeleteDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
 
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
@@ -120,20 +121,25 @@
                     url: '{{ Route('updateCart') }}',
                     token: '{{ csrf_token() }}',
                     isUpdate: true,
-                    cartOrBtnSelector: ".products-cart",
-                    cartItemSelector: ".pr-cart-item",
                     inputName: "product-quantity",
-                    summaryContSelector: ".order-summary",
-                    summariesSelector: ".ajax-summary",
-                    headerCartSelector: ".cart-icon",
-                    checkoutBtnSelector: ".proceed-checkout-btn",
+                    selectors: {
+                        cartOrBtnSelector: ".products-cart",
+                        cartItemSelector: ".pr-cart-item",
+                        summaryContSelector: ".order-summary",
+                        summariesSelector: ".ajax-summary",
+                        headerCartSelector: ".cart-icon",
+                        checkoutBtnSelector: ".proceed-checkout-btn",
+                    }
                 });
 
-                const confirmDialog = new ConfirmDialog({
+                const deleteDialog = new DeleteDialog({
                     processUrl: '{{ Route('removeCart') }}',
                     processToken: '{{ csrf_token() }}',
-                    deleteBtn: "td.close-td.first-row",
-                    headerCartSelector: ".cart-icon",
+                    selectors: {
+                        deleteBtn: "td.close-td.first-row",
+                        headerCartSelector: ".cart-icon",
+                        checkoutBtnSelector: ".proceed-checkout-btn",
+                    }
                 });
             }
         });

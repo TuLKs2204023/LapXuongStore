@@ -2,8 +2,11 @@
 
 namespace App\Http\Traits;
 
+use App\Models\Cates\Hdd;
 use App\Models\Product;
 use App\Models\Cates\Ram;
+use App\Models\Cates\Screen;
+use App\Models\Cates\Ssd;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -106,6 +109,30 @@ trait ProcessModelData
         $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);
         $ram->refresh();
         $proData['ram_id'] = $ram->id;
+        return $proData;
+    }
+
+    function processScreen(array $proData)
+    {
+        $screen = Screen::firstOrCreate(['amount' => $proData['screen']]);
+        $screen->refresh();
+        $proData['screen_id'] = $screen->id;
+        return $proData;
+    }
+
+    function processHdd(array $proData)
+    {
+        $hdd = Hdd::firstOrCreate(['amount' => $proData['hdd']]);
+        $hdd->refresh();
+        $proData['hdd_id'] = $hdd->id;
+        return $proData;
+    }
+
+    function processSsd(array $proData)
+    {
+        $ssd = Ssd::firstOrCreate(['amount' => $proData['ssd']]);
+        $ssd->refresh();
+        $proData['ssd_id'] = $ssd->id;
         return $proData;
     }
 

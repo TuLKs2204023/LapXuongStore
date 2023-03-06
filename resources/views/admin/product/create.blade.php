@@ -67,6 +67,24 @@
                             <span class="form-message"></span>
                         </div><!-- / Manufacture section -->
 
+                        <!-- Series section -->
+                        <div class="form-group row mb-3">
+                            <label for="series_id" class="col-sm-2 col-form-label">Series</label>
+                            <div class="col-sm-10">
+                                <div class="my-custom-select">
+                                    <select id="series_id" name="series_id" class="form-control" rules="required">
+                                        <option value="">--- Select ---</option>
+                                        @foreach ($series as $item)
+                                            <option
+                                                value="{{ $item->id }}"{{ $isUpdate ? ($product->series->id == $item->id ? 'selected' : '') : '' }}>
+                                                {{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <span class="form-message"></span>
+                        </div><!-- / Series section -->
+
                         <!-- CPU section -->
                         <div class="form-group row mb-3">
                             <label for="cpu_id" class="col-sm-2 col-form-label">CPU</label>
@@ -85,14 +103,114 @@
                             <span class="form-message"></span>
                         </div><!-- / CPU section -->
 
+                        <!-- GPU section -->
+                        <div class="form-group row mb-3">
+                            <label for="gpu_id" class="col-sm-2 col-form-label">GPU</label>
+                            <div class="col-sm-10">
+                                <div class="my-custom-select">
+                                    <select id="gpu_id" name="gpu_id" class="form-control" rules="required">
+                                        <option value="">--- Select ---</option>
+                                        @foreach ($gpus as $item)
+                                            <option
+                                                value="{{ $item->id }}"{{ $isUpdate ? ($product->gpu->id == $item->id ? 'selected' : '') : '' }}>
+                                                {{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <span class="form-message"></span>
+                        </div><!-- / GPU section -->
+
+                        <!-- Color section -->
+                        <div class="form-group row mb-3">
+                            <label for="color_id" class="col-sm-2 col-form-label">Color</label>
+                            <div class="col-sm-10">
+                                <div class="my-custom-select">
+                                    <select id="color_id" name="color_id" class="form-control" rules="required">
+                                        <option value="">--- Select ---</option>
+                                        @foreach ($colors as $item)
+                                            <option
+                                                value="{{ $item->id }}"{{ $isUpdate ? ($product->color->id == $item->id ? 'selected' : '') : '' }}>
+                                                {{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <span class="form-message"></span>
+                        </div><!-- / Color section -->
+
+                        <!-- Demand section -->
+                        <div class="form-group row mb-3">
+                            <label for="demand_id" class="col-sm-2 col-form-label">Demand</label>
+                            <div class="col-sm-10">
+                                <div class="my-custom-select">
+                                    <select id="demand_id" name="demand_id" class="form-control" rules="required">
+                                        <option value="">--- Select ---</option>
+                                        @foreach ($demands as $item)
+                                            <option
+                                                value="{{ $item->id }}"{{ $isUpdate ? ($product->demand->id == $item->id ? 'selected' : '') : '' }}>
+                                                {{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <span class="form-message"></span>
+                        </div><!-- / Demand section -->
+
+                        <!-- Resolution section -->
+                        <div class="form-group row mb-3">
+                            <label for="resolution_id" class="col-sm-2 col-form-label">Resolution</label>
+                            <div class="col-sm-10">
+                                <div class="my-custom-select">
+                                    <select id="resolution_id" name="resolution_id" class="form-control" rules="required">
+                                        <option value="">--- Select ---</option>
+                                        @foreach ($resolutions as $item)
+                                            <option
+                                                value="{{ $item->id }}"{{ $isUpdate ? ($product->resolution->id == $item->id ? 'selected' : '') : '' }}>
+                                                {{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <span class="form-message"></span>
+                        </div><!-- / Resolution section -->
+
+                        <!-- Screen section -->
+                        <div class="form-group row mb-3">
+                            <label for="screen" class="col-sm-2 col-form-label">Screen</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="screen" name="screen" class="form-control" placeholder="(in inch)"
+                                    value="{{ $isUpdate ? $product->screen->amount : '' }}">
+                            </div>
+                        </div><!-- / Screen section -->
+
                         <!-- RAM section -->
                         <div class="form-group row mb-3">
-                            <label for="ram" class="col-sm-2 col-form-label">RAM (in GB)</label>
+                            <label for="ram" class="col-sm-2 col-form-label">RAM</label>
                             <div class="col-sm-10">
-                                <input type="text" id="ram" name="ram" class="form-control"
+                                <input type="text" id="ram" name="ram" class="form-control" placeholder="(in GB)"
                                     value="{{ $isUpdate ? $product->ram->amount : '' }}">
                             </div>
                         </div><!-- / RAM section -->
+
+                        <!-- HDD section -->
+                        <div class="form-group row mb-3">
+                            <label for="hdd" class="col-sm-2 col-form-label">HDD</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="hdd" name="hdd" class="form-control" placeholder="(in GB)"
+                                    value="{{ $isUpdate ? $product->hdd->amount : '' }}">
+                            </div>
+                        </div><!-- / HDD section -->
+
+                        <!-- SSD section -->
+                        <div class="form-group row mb-3">
+                            <label for="ssd" class="col-sm-2 col-form-label">SSD</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="ssd" name="ssd" class="form-control" placeholder="(in GB)"
+                                    value="{{ $isUpdate ? $product->ssd->amount : '' }}">
+                            </div>
+                        </div><!-- / SSD section -->
+
 
                         {{-- ------------------------------Description section start---------------------------------------------- --}}
                         <!-- Weight section -->

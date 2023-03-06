@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="inner-header">
             <div class="row">
                 <div class="col-lg-1 col-md-1">
@@ -110,7 +110,7 @@
                                 <i class="icon_bag_alt"></i>
                                 <span class="index">{{ $headerCart['qty'] }}</span>
                             </a>
-                            <div class="cart-hover">
+                            <div class="cart-hover shadowed">
                                 <div class="select-items">
                                     <table>
                                         <tbody>
@@ -144,10 +144,8 @@
                                 </div>
                                 <div class="select-button">
                                     <a href="{{ Route('viewCart') }}" class="site-btn-alt view-card">VIEW CART</a>
-                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK
-                                        OUT</a>
+                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK OUT</a>
                                 </div>
-
                             </div>
                         </li>
                     </ul>

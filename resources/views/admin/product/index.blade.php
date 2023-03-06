@@ -48,6 +48,8 @@
                             <th>Manufacture</th>
                             <th>CPU</th>
                             <th>RAM</th>
+                            <th>Screen</th>
+                            <th>HDD</th>
                             <th>Price</th>
                             {{-- <th>Description</th> --}}
                             <th>Action</th>
@@ -64,10 +66,12 @@
                                             style="width: 80px; height: auto;">
                                     @endif
                                 </td>
-                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->subName() }}</td>
                                 <td>{{ $item->manufacture->name }}</td>
                                 <td>{{ $item->cpu->name }}</td>
                                 <td>{{ $item->ram->amount }}</td>
+                                <td>{{ $item->screen->amount }}</td>
+                                <td>{{ $item->hdd->amount }}</td>
                                 <td>{{ number_format($item->price, 0, ',', '.') }}</td>
                                 {{-- <td>
                                     <ul>

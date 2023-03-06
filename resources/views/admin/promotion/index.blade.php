@@ -127,7 +127,7 @@
                                 <td>{{ $promotion->discount * 100 }}%</td>
                                 <td>{{ $promotion->created_at }}</td>
                                 <td><button
-                                        class="btn {{ $promotion->isAvailable() ? 'btn-success':'btn-danger' }} rounded-pill">{{ $promotion->isAvailable() ? 'Available':'Used' }}</button>
+                                        class="btn {{ $promotion->isAvailable() ? 'btn-success' : 'btn-danger' }} rounded-pill">{{ $promotion->isAvailable() ? 'Available' : 'Used' }}</button>
                                 </td>
                             </tr>
                         @endforeach

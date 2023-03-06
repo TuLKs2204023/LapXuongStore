@@ -2,28 +2,39 @@
 
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\CateController;
-use App\Http\Controllers\Admin\Cates\ManufactureController;
-use App\Http\Controllers\Admin\Cates\CpuController;
-use App\Http\Controllers\Admin\Cates\RamGroupController;
-use App\Http\Controllers\Admin\ProductController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\backend\UserController;
-use App\Http\Controllers\FE\HomeController as FE_HomeController;
-use App\Http\Controllers\FE\ShopController;
-use App\Http\Controllers\FE\CheckoutController;
 use App\Http\Controllers\Admin\StockController;
-
-use App\Http\Controllers\backend\OdersController;
-use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\FacebookController;
-use App\Http\Controllers\DropdownController;
-
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\RatingController;
 use App\Http\Controllers\Admin\WishlistItemController;
+use App\Http\Controllers\Admin\ProductController;
+
+use App\Http\Controllers\Admin\Cates\ColorController;
+use App\Http\Controllers\Admin\Cates\ManufactureController;
+use App\Http\Controllers\Admin\Cates\CpuController;
+use App\Http\Controllers\Admin\Cates\DemandController;
+use App\Http\Controllers\Admin\Cates\GpuController;
+use App\Http\Controllers\Admin\Cates\HddGroupController;
+use App\Http\Controllers\Admin\Cates\RamGroupController;
+use App\Http\Controllers\Admin\Cates\ResolutionController;
+use App\Http\Controllers\Admin\Cates\ScreenGroupController;
+use App\Http\Controllers\Admin\Cates\SeriesController;
+use App\Http\Controllers\Admin\Cates\SsdGroupController;
+
+use App\Http\Controllers\FE\HomeController as FE_HomeController;
+use App\Http\Controllers\FE\ShopController;
+use App\Http\Controllers\FE\CheckoutController;
+
+use App\Http\Controllers\backend\UserController;
+use App\Http\Controllers\backend\OdersController;
+
+use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\FacebookController;
+use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\DashboardController;
-use App\Models\WishlistItem;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -83,14 +94,16 @@ Route::post('api/fetch-district', [DropdownController::class, 'fetchDistrict'])-
 Route::post('api/fetch-ward', [DropdownController::class, 'fetchWard'])->name('fetchWard');
 
 //Google authentication controller
-Route::controller(GoogleController::class)->group(function(){
+Route::controller(GoogleController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
-    Route::get('auth/google/callback', 'handleGoogleCallback');});
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
 
 //Facebook authentication controller
-Route::controller(FacebookController::class)->group(function(){
+Route::controller(FacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
-    Route::get('auth/facebook/callback', 'handleFacebookCallback');});
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
 //Order management
 Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
 
@@ -103,6 +116,7 @@ Route::post('/update-cart', [FE_HomeController::class, 'updateCart'])->name('upd
 Route::post('/remove-cart', [FE_HomeController::class, 'removeCart'])->name('removeCart');
 Route::get('/view-cart', [FE_HomeController::class, 'viewCart'])->name('viewCart');
 Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearCart');
+Route::post('/empty-cart', [FE_HomeController::class, 'emptyCart'])->name('emptyCart');
 
 // Wishlist
 Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
@@ -184,6 +198,86 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/destroy{id}', [RamGroupController::class, 'destroy'])->name('destroy');
         });
 
+        // Screen's Group
+        Route::group(['prefix' => 'screenGroup', 'as' => 'screenGroup.'], function () {
+            Route::get('/', [ScreenGroupController::class, 'index'])->name('index');
+            Route::get('/create', [ScreenGroupController::class, 'create'])->name('create');
+            Route::post('/store', [ScreenGroupController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ScreenGroupController::class, 'edit'])->name('edit');
+            Route::put('/update', [ScreenGroupController::class, 'update'])->name('update');
+            Route::delete('/destroy', [ScreenGroupController::class, 'destroy'])->name('destroy');
+        });
+
+        // HDD's Group
+        Route::group(['prefix' => 'hddGroup', 'as' => 'hddGroup.'], function () {
+            Route::get('/', [HddGroupController::class, 'index'])->name('index');
+            Route::get('/create', [HddGroupController::class, 'create'])->name('create');
+            Route::post('/store', [HddGroupController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [HddGroupController::class, 'edit'])->name('edit');
+            Route::put('/update', [HddGroupController::class, 'update'])->name('update');
+            Route::delete('/destroy', [HddGroupController::class, 'destroy'])->name('destroy');
+        });
+
+        // SSD's Group
+        Route::group(['prefix' => 'ssdGroup', 'as' => 'ssdGroup.'], function () {
+            Route::get('/', [SsdGroupController::class, 'index'])->name('index');
+            Route::get('/create', [SsdGroupController::class, 'create'])->name('create');
+            Route::post('/store', [SsdGroupController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [SsdGroupController::class, 'edit'])->name('edit');
+            Route::put('/update', [SsdGroupController::class, 'update'])->name('update');
+            Route::delete('/destroy', [SsdGroupController::class, 'destroy'])->name('destroy');
+        });
+
+        // Color
+        Route::group(['prefix' => 'color', 'as' => 'color.'], function () {
+            Route::get('/', [ColorController::class, 'index'])->name('index');
+            Route::get('/create', [ColorController::class, 'create'])->name('create');
+            Route::post('/store', [ColorController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ColorController::class, 'edit'])->name('edit');
+            Route::put('/update', [ColorController::class, 'update'])->name('update');
+            Route::delete('/destroy', [ColorController::class, 'destroy'])->name('destroy');
+        });
+
+        // GPU
+        Route::group(['prefix' => 'gpu', 'as' => 'gpu.'], function () {
+            Route::get('/', [GpuController::class, 'index'])->name('index');
+            Route::get('/create', [GpuController::class, 'create'])->name('create');
+            Route::post('/store', [GpuController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [GpuController::class, 'edit'])->name('edit');
+            Route::put('/update', [GpuController::class, 'update'])->name('update');
+            Route::delete('/destroy', [GpuController::class, 'destroy'])->name('destroy');
+        });
+
+        // Demand
+        Route::group(['prefix' => 'demand', 'as' => 'demand.'], function () {
+            Route::get('/', [DemandController::class, 'index'])->name('index');
+            Route::get('/create', [DemandController::class, 'create'])->name('create');
+            Route::post('/store', [DemandController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [DemandController::class, 'edit'])->name('edit');
+            Route::put('/update', [DemandController::class, 'update'])->name('update');
+            Route::delete('/destroy', [DemandController::class, 'destroy'])->name('destroy');
+        });
+
+        // Series
+        Route::group(['prefix' => 'series', 'as' => 'series.'], function () {
+            Route::get('/', [SeriesController::class, 'index'])->name('index');
+            Route::get('/create', [SeriesController::class, 'create'])->name('create');
+            Route::post('/store', [SeriesController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [SeriesController::class, 'edit'])->name('edit');
+            Route::put('/update', [SeriesController::class, 'update'])->name('update');
+            Route::delete('/destroy', [SeriesController::class, 'destroy'])->name('destroy');
+        });
+
+        // Resolution
+        Route::group(['prefix' => 'resolution', 'as' => 'resolution.'], function () {
+            Route::get('/', [ResolutionController::class, 'index'])->name('index');
+            Route::get('/create', [ResolutionController::class, 'create'])->name('create');
+            Route::post('/store', [ResolutionController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ResolutionController::class, 'edit'])->name('edit');
+            Route::put('/update', [ResolutionController::class, 'update'])->name('update');
+            Route::delete('/destroy', [ResolutionController::class, 'destroy'])->name('destroy');
+        });
+
         // STOCK
         Route::group(['prefix' => 'stock', 'as' => 'stock.'], function () {
 
@@ -217,6 +311,5 @@ Route::group(['middleware' => 'auth'], function () {
             Route::put('/update', [RatingController::class, 'update'])->name('update');
             Route::get('/destroy/{id}', [RatingController::class, 'destroy'])->name('destroy');
         });
-
     });
 });

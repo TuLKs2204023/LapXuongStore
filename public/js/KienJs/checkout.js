@@ -6,18 +6,17 @@ $ = document.querySelector.bind(document);
 function CheckoutHandler({
     url = "",
     token = "",
-    checkoutBtnSelector = ".place-btn",
-    checkoutSummarySelector = ".order-summaries",
+    selectors: {
+        checkoutBtnSelector = ".place-btn",
+        checkoutSummarySelector = ".order-summaries",
+    },
 }) {
-    const checkoutBtn = $(checkoutBtnSelector);
-    const checkoutSummary = $(checkoutSummarySelector);
+    const selectors = { checkoutBtnSelector, checkoutSummarySelector };
+    const checkoutSummary = $(selectors["checkoutSummarySelector"]);
+    if (!checkoutSummary) return false;
 
-    if (!checkoutSummary) {
-        return false;
-    }
-
-    if (checkoutBtn) {
-    }
+    const checkoutBtn = $(selectors["checkoutBtnSelector"]);
+    if (!checkoutBtn) return false;
 }
 
 function CouponHandler({
@@ -33,13 +32,11 @@ function CouponHandler({
     },
 }) {
     const couponCont = $(couponContSelector);
-    if (!couponCont) {
-        return false;
-    }
+    if (!couponCont) return false;
+
     const couponBtn = couponCont.querySelector(couponBtnSelector);
-    if (!couponBtn) {
-        return false;
-    }
+    if (!couponBtn) return false;
+
     const orderSummary = {
         orderCont,
         orderSubtotal,
@@ -62,13 +59,10 @@ function CouponHandler({
     // Function to update Order-table
     function updateOrder(res, orderSummary) {
         const orderCont = $(orderSummary.orderCont);
-        if (!orderCont) {
-            return false;
-        }
+        if (!orderCont) return false;
+
         const orderSub = orderCont.querySelector(orderSummary.orderSubtotal);
-        if (!orderSub) {
-            return false;
-        }
+        if (!orderSub) return false;
 
         const orderDiscount = orderCont.querySelector(
             `${orderSummary.orderDiscount} span`
@@ -113,7 +107,7 @@ function CouponHandler({
                     // Disable input, change btn from 'Apply' to 'Edit'
                     couponCont.classList.remove("error");
                     const opts = {
-                        inputDisable: true,
+                        inputReadOnly: true,
                         btnText: "Edit",
                         btnClassAction: "add",
                         btnListener: "removeEventListener",
@@ -129,7 +123,7 @@ function CouponHandler({
                     couponBtn.addEventListener("click", (e) => {
                         e.preventDefault();
                         const opts = {
-                            inputDisable: false,
+                            inputReadOnly: false,
                             btnText: "Apply",
                             btnClassAction: "remove",
                             btnListener: "addEventListener",
@@ -166,7 +160,7 @@ function CouponHandler({
         couponCont,
         couponBtn,
         opts: {
-            inputDisable,
+            inputReadOnly,
             contClass = "applied",
             btnText,
             btnClass = "site-btn-main",
@@ -174,7 +168,7 @@ function CouponHandler({
             btnListener,
         },
     }) {
-        input.disabled = inputDisable;
+        input.readOnly = inputReadOnly;
         couponCont.classList[btnClassAction](contClass);
         couponBtn.innerHTML = btnText;
         couponBtn.classList[btnClassAction](btnClass);
@@ -186,7 +180,7 @@ function CouponHandler({
         e.preventDefault();
         setTimeout(() => {
             const params = {
-                code: input.value,
+                couponCode: input.value,
                 _token: token,
             };
 

@@ -11,13 +11,14 @@
             max-height: 400px;
         }
 
-        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role {
-            font-style: italic;
-            font-size: 80%;
-            font-weight: 500;
-            text-shadow: 2px 2px 10px #4154F1;
-            /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
-        }
+        /* .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role .bg-info{
+                    font-style: italic;
+                    font-size: 80%;
+                    font-weight: 500;
+                    text-shadow: 2px 2px 10px var(--violet-2nd);
+                }
+                    /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
+
 
         .personal-rating .btn-default,
         .personal-rating .btn-warning {
@@ -218,7 +219,6 @@
                                     @endif
                                     <h4>{{ number_format($product->price, 0, ',', '.') . ' VND' }}<span>{{ number_format($product->price, 0, ',', '.') . ' VND' }}</span>
                                     </h4>
-
                                 </div>
                                 <div class="quantity">
                                     <div class="quantity">
@@ -329,7 +329,7 @@
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
-                                                    <div class="p-weight">15.6-inch FHD (1920 x 1080), 144Hz, IPS-level
+                                                    <div class="p-weight">{{$product->screen->name}} ({{$product->resolution->name}})
                                                     </div>
                                                 </td>
                                             </tr>
@@ -345,7 +345,7 @@
                                             <tr>
                                                 <td class="p-catagory">Graphics</td>
                                                 <td>
-                                                    <div class="p-weight">NVIDIA® GeForce GTX™ 1650 , 4GB GDDR6</div>
+                                                    <div class="p-weight">{{ $product->gpu->name }}</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -369,7 +369,7 @@
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 <td>
-                                                    <div class="p-weight">Graphite Black</div>
+                                                    <div class="p-weight">{{$product->color->name}}</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -395,11 +395,27 @@
                                                                 <i class="fa fa-star-o"></i>
                                                             @endfor
                                                         </div>
-                                                        <div
-                                                            @if ($rating->user->role == 'Admin' || $rating->user->role == 'Manager') class="badge rounded-pill bg-info text-light"
+                                                            <div
+                                                                @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
+                                                                @elseif ($rating->user->role == 'Manager') 
+                                                                    style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
                                                                 @else
-                                                                    class="badge rounded-pill bg-secondary text-light" @endif>
-                                                            {{ $rating->user->role }}
+                                                                    style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
+                                                                {{ $rating->user->role }}
+                                                            </div>
+                                                            <h5>{{ $rating->user->name }}
+                                                                <span>{{ $rating->created_at }}</span>
+                                                            </h5>
+                                                            <div class="at-reply">{{ $rating->review }}</div>
+                                                            @if (auth()->user())
+                                                                @if (auth()->user()->role == 'Admin')
+                                                                    <button type="submit"
+                                                                        class="btn btn-outline-danger btn-sm">
+                                                                        <i class="fas fa-trash"></i>
+                                                                        Delete
+                                                                    </button>
+                                                                @endif
+                                                            @endif
                                                         </div>
                                                         <h5>{{ $rating->user->name }}
                                                             <span>{{ $rating->created_at }}</span>
@@ -533,7 +549,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ asset('images/', $relate->oldestImage->url) }}" alt="{{ $relate->name }}">
+                                <img src="{{ asset('images/' . $relate->oldestImage->url) }}" alt="{{ $relate->name }}">
                                 <div class="sale pp-sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>

@@ -1,17 +1,18 @@
-{{-- @if (count($errors) > 0) --}}
-@if (session('errors'))
-    <div class="alert alert-danger">
-        <strong>Sorry!</strong> There were some troubles with your action:<br><br>
-        <ul>
-            {{-- @foreach ($errors->all() as $error) --}}
-                <li>{{ $errors }}</li>
-            {{-- @endforeach --}}
-        </ul>
+@if ($errors->any())
+    <div class="main-errors">
+        <div class="alert alert-danger">
+            <strong>Sorry!</strong> There were some troubles with your action:<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 @endif
 
 @if (session('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success main-success">
         {{ session('success') }}
     </div>
 @endif

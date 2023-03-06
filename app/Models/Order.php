@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'order_date', 'name', 'phone', 'email', 'address', 'notes', 'payment', 'promotion_id'];
+    protected $fillable = ['user_id', 'order_date', 'name', 'phone', 'email', 'address', 'notes', 'payment'];
 
     /**
      * Get the Order Details for this Order
@@ -18,11 +18,6 @@ class Order extends Model
     public function details()
     {
         return $this->hasMany(OrderDetail::class, 'order_id');
-    }
-
-    public function promotion(): BelongsTo
-    {
-        return $this->belongsTo(Promotion::class);
     }
 
     public function usedPromotion(): HasOne

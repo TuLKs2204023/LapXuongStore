@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
+use App\Models\Cates\Demand;
 
 class HomeController extends Controller
 {
@@ -16,8 +17,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        return view('fe.home.index');
+        $demands = Demand::all();
+        $officeProducts = Product::where('demand_id', 1)->get();
+        $gamingProducts = Product::where('demand_id', 2)->get();
+        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts'));
     }
 
     public function product($slug)
@@ -93,13 +96,6 @@ class HomeController extends Controller
         // Determine current product
         $product = Product::find($key);
 
-        // Check stock availability
-        // if (!$this->stockBalance($product, $qty)) {
-        //     return $res = array(
-        //         'stockBalance' => false,
-        //     );
-        // }
-
         $cart[$key]->quantity = $qty;
         $value = $qty * $cart[$key]->product->price;
 
@@ -155,6 +151,21 @@ class HomeController extends Controller
     public function clearCart()
     {
         session()->forget('cart');
+    }
+
+    // Check empty cart
+    public function emptyCart(Request $request)
+    {
+        $cart = session('cart');
+        if (!$cart) {
+            return [
+                'emptyCart' => true,
+                'totalQty' => 0,
+            ];
+        }
+        return [
+            'route' => route('checkout'),
+        ];
     }
 
     // Check stock availability
