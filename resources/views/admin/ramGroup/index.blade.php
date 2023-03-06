@@ -85,16 +85,10 @@
                                         </i>
                                         Edit
                                     </a>
-                                    <form action="{{ Route('admin.ramGroup.destroy') }}" method="post"
-                                        style="display:inline-block">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="hidden" name="id" value="{{ $item->id }}">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <a href="{{ URL::to('admin/ram/destroy/' . $item->id) }}" class="btn btn-sm btn-danger" id="delete">
                                             <i class="fas fa-trash"></i>
                                             Delete
-                                        </button>
-                                    </form>
+                                        </a>
 
                                 </td>
                             </tr>

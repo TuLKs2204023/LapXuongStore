@@ -65,16 +65,10 @@
                                             </i>
                                             Edit
                                         </a>
-                                        <form action="{{ Route('admin.rating.destroy') }}" method="post"
-                                            style="display:inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <input type="hidden" name="id" value="{{ $rating->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
-                                            </button>
-                                        </form>
+                                        <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}" class="btn btn-sm btn-danger" id="delete">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

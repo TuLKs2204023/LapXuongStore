@@ -96,18 +96,18 @@
                         </div>
                     </div>
                 </div>
-               
+
 
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                
+
                  <!-- Message Section -->
                  @include('components.message')
                  <!-- / Message Section -->
-                 
+
                 <table id="stockManagement" class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -127,7 +127,7 @@
                                 <td>{{ $promotion->discount * 100 }}%</td>
                                 <td>{{ $promotion->created_at }}</td>
                                 <td><button
-                                        class="btn {{ $promotion->isAvailable() ? 'btn-danger' : 'btn-success' }} rounded-pill">{{ $promotion->isAvailable() ? 'Used' : 'Available' }}</button>
+                                        class="btn {{ $promotion->isAvailable() ? 'btn-success':'btn-danger' }} rounded-pill">{{ $promotion->isAvailable() ? 'Available':'Used' }}</button>
                                 </td>
                             </tr>
                         @endforeach
