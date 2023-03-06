@@ -201,7 +201,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- 09 Of {{count($products)}} Product</p>
+                                <p>Show 01- 09 Of {{ count($products) }} Product</p>
                             </div>
                         </div>
                     </div> <!-- // Main content Header -->
@@ -258,9 +258,9 @@
                     </div> <!-- // Main content Body -->
 
                     <!-- Main content Footer -->
-                    <div class="loading-more">
+                    {{-- <div class="loading-more">
                           {{$products->links('vendor.pagination.custom')}}
-                    </div> <!-- // Main content Footer -->
+                    </div> <!-- // Main content Footer --> --}}
 
                 </div> <!-- // Main Content -->
             </div>

@@ -3,7 +3,7 @@
 
 @section('myCss')
     <style>
-        .col-lg-4 .single-banner img{
+        .col-lg-4 .single-banner img {
             max-height: 562px;
         }
     </style>
@@ -18,8 +18,9 @@
                     <div class="row">
                         <div class="col-lg-5">
                             <span style="color: aliceblue">Laptop Gaming</span>
-                            <h1 style="color: aliceblue">Black friday</h1>
-                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
+                            <h1 style="color: aliceblue">Valentine</h1>
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
+                                Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
                             <a href="#" class="primary-btn">Shop now</a>
                         </div>
@@ -35,7 +36,8 @@
                         <div class="col-lg-5">
                             <span>Laptop Gaming</span>
                             <h1 style="color: aliceblue">Black friday</h1>
-                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
+                                Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
                             <a href="#" class="primary-btn">Shop now</a>
                         </div>
@@ -51,7 +53,8 @@
                         <div class="col-lg-5">
                             <span>Laptop Gaming</span>
                             <h1 style="color: aliceblue">Black friday</h1>
-                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng Hoa Thám. (78 - 80 - 82
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
+                                Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
                             <a href="#" class="primary-btn">Shop now</a>
                         </div>
@@ -61,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </section>
     <!-- Body SECTION END-->
@@ -71,54 +74,16 @@
     <section class="banner-section sqad">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
-                        <div class="inner-text">
-                            <h4>Gaming</h4>
+                @foreach ($demands as $item)
+                    <div class="col-lg-4">
+                        <div class="single-banner">
+                            <img src="{{ asset('frontend/img/' . $item->image) }}" alt="{{ $item->name }}">
+                            <div class="inner-text">
+                                <h4><a href="{{ Route('fe.shop.cate', $item->slug) }}">{{ $item->name }}</a></h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
-                        <div class="inner-text">
-                            <h4>Graphics</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
-                        <div class="inner-text">
-                            <h4>Student</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
-                        <div class="inner-text">
-                            <h4>Slim</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-002.jpg') }}" alt="">
-                        <div class="inner-text">
-                            <h4>Office</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="{{ asset('frontend/img/banner-003.jpg') }}" alt="">
-                        <div class="inner-text">
-                            <h4>WorkStation</h4>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -140,110 +105,34 @@
                 </div>
                 <div class="col-lg-8 offset-lg-1">
                     <div class="filter-control">
-                        <ul>
-                            <li class="active">a</li>
-                            <li>b</li>
-                            <li>c</li>
-                            <li>d</li>
-                        </ul>
                     </div>
                     <div class="product-slider owl-carousel">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/1.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
+                        @foreach ($officeProducts as $item)
+                            <div class="product-item">
+                                <div class="pi-pic">
+                                    <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
+                                    <div class="sale">Sale</div>
+                                    <div class="icon">
+                                        <i class="icon_heart_alt"></i>
+                                    </div>
+                                    <ul>
+                                        <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
+                                        <li class="quick-view"><a href="product.html">+ Quick View</a></li>
+                                        <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
+                                    </ul>
                                 </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear Office Core I3-12100 8GB 128GB SSD</h5>
-                                </a>
-                                <div class="product-price">
-                                    $400.00
-                                    <span>$450.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/3.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear Office Ryzen 5 5600G 8GB 128GB SSD</h5>
-                                </a>
-                                <div class="product-price">
-                                    $400.00
-                                    <span>$480.00</span>
+                                <div class="pi-text">
+                                    <div class="catagory-name">{{ $item->manufacture->name }}</div>
+                                    <a href="">
+                                        <h5>{{ $item->name }}</h5>
+                                    </a>
+                                    <div class="product-price">
+                                        {{ $item->price }}
+                                        <span>{{ $item->price }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/4.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear Office Core I5-12400 8GB 128GB SSD</h5>
-                                </a>
-                                <div class="product-price">
-                                    $415.00
-                                    <span>$500.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/5.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear Office Ryzen 7 5700G 8GB 128GB SSD</h5>
-                                </a>
-                                <div class="product-price">
-                                    $450.00
-                                    <span>$695.00</span>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -298,110 +187,34 @@
             <div class="row">
                 <div class="col-lg-8 ">
                     <div class="filter-control">
-                        <ul>
-                            <li class="active">a</li>
-                            <li>b</li>
-                            <li>c</li>
-                            <li>d</li>
-                        </ul>
                     </div>
                     <div class="product-slider owl-carousel">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/004.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
+                        @foreach ($gamingProducts as $item)
+                            <div class="product-item">
+                                <div class="pi-pic">
+                                    <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
+                                    <div class="sale">Sale</div>
+                                    <div class="icon">
+                                        <i class="icon_heart_alt"></i>
+                                    </div>
+                                    <ul>
+                                        <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
+                                        <li class="quick-view"><a href="product.html">+ Quick View</a></li>
+                                        <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
+                                    </ul>
                                 </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear MAG i3060 Intel i5-12400F<br /> 16GB RAM RTX 3060 250GB SSD NVMe</h5>
-                                </a>
-                                <div class="product-price">
-                                    $400.00
-                                    <span>$450.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/003.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear Fi5K Core I5-12600K<br /> 16GB RTX 3060 250GB Nvme SSD</h5>
-                                </a>
-                                <div class="product-price">
-                                    $1000.00
-                                    <span>$1410.00</span>
+                                <div class="pi-text">
+                                    <div class="catagory-name">{{ $item->manufacture->name }}</div>
+                                    <a href="">
+                                        <h5>{{ $item->name }}</h5>
+                                    </a>
+                                    <div class="product-price">
+                                        {{ $item->price }}
+                                        <span>{{ $item->price }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/002.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear MAG7i Core I7-12700F<br /> 16GB RTX 3060 250GB Nvme SSD</h5>
-                                </a>
-                                <div class="product-price">
-                                    $1,200.00
-                                    <span>$1,500.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="{{ asset('frontend/img/products/001.jpg') }}" alt="">
-                                <div class="sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>PC Xgear MPG7i Core I7-12700KF<br /> Ram 16GB RTX 4080 500GB Nvme SSD</h5>
-                                </a>
-                                <div class="product-price">
-                                    $2,990.00
-                                    <span>$3,195.00</span>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-lg-3 offset-lg-1">

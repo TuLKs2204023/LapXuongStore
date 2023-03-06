@@ -329,7 +329,7 @@
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
-                                                    <div class="p-weight">15.6-inch FHD (1920 x 1080), 144Hz, IPS-level
+                                                    <div class="p-weight">{{$product->screen->name}} ({{$product->resolution->name}})
                                                     </div>
                                                 </td>
                                             </tr>
@@ -345,7 +345,7 @@
                                             <tr>
                                                 <td class="p-catagory">Graphics</td>
                                                 <td>
-                                                    <div class="p-weight">NVIDIA® GeForce GTX™ 1650 , 4GB GDDR6</div>
+                                                    <div class="p-weight">{{ $product->gpu->name }}</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -369,7 +369,7 @@
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 <td>
-                                                    <div class="p-weight">Graphite Black</div>
+                                                    <div class="p-weight">{{$product->color->name}}</div>
                                                 </td>
                                             </tr>
                                         </table>

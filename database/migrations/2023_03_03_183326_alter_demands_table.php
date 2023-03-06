@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('demands', function (Blueprint $table) {
             $table->string('name')->nullable()->change();
             $table->string('slug')->nullable()->change();
+            $table->string('image')->after('slug')->nullable();
         });
     }
 

@@ -86,10 +86,11 @@ class ResolutionController extends Controller
      */
     public function update(Request $request, Resolution $resolution)
     {
+        $resolution = Resolution::find($request->id);
         $proData = $this->processData($request);
 
-        // Save Resolution
-        $resolution = Resolution::create($proData);
+        // Save Cpu
+        $resolution->update($proData);
 
         return redirect()->route('admin.resolution.index');
     }

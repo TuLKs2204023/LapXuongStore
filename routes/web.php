@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\CateController;
+use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\Admin\PromotionController;
+use App\Http\Controllers\Admin\RatingController;
+use App\Http\Controllers\Admin\WishlistItemController;
+use App\Http\Controllers\Admin\ProductController;
+
 use App\Http\Controllers\Admin\Cates\ColorController;
 use App\Http\Controllers\Admin\Cates\ManufactureController;
 use App\Http\Controllers\Admin\Cates\CpuController;
@@ -13,21 +19,20 @@ use App\Http\Controllers\Admin\Cates\ResolutionController;
 use App\Http\Controllers\Admin\Cates\ScreenGroupController;
 use App\Http\Controllers\Admin\Cates\SeriesController;
 use App\Http\Controllers\Admin\Cates\SsdGroupController;
-use App\Http\Controllers\Admin\ProductController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\backend\UserController;
+
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
 use App\Http\Controllers\FE\ShopController;
 use App\Http\Controllers\FE\CheckoutController;
-use App\Http\Controllers\Admin\StockController;
 
+use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\backend\OdersController;
+
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
-use App\Http\Controllers\Admin\PromotionController;
-use App\Http\Controllers\Admin\RatingController;
-use App\Http\Controllers\Admin\WishlistItemController;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -78,14 +83,16 @@ Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])-
 
 
 //Google authentication controller
-Route::controller(GoogleController::class)->group(function(){
+Route::controller(GoogleController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
-    Route::get('auth/google/callback', 'handleGoogleCallback');});
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
 
 //Facebook authentication controller
-Route::controller(FacebookController::class)->group(function(){
+Route::controller(FacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
-    Route::get('auth/facebook/callback', 'handleFacebookCallback');});
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
 //Order management
 Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
 
@@ -293,6 +300,5 @@ Route::group(['middleware' => 'auth'], function () {
             Route::put('/update', [RatingController::class, 'update'])->name('update');
             Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
         });
-
     });
 });

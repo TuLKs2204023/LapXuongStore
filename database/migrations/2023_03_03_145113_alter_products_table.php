@@ -29,6 +29,14 @@ return new class extends Migration
                 'slug' => 'screen'
             )
         );
+        // Insert new record for 'cate_groups' table for testing
+        DB::table('screen_groups')->insert(
+            array(
+                'name' => 'From 13" to 15"',
+                'min' => '13',
+                'max' => '15', 
+            )
+        );
         
         Schema::table('products', function (Blueprint $table) {
             $table->foreignId('screen_id')->default(1)->after('ram_id')->constrained();

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
-            $table->bigInteger('value')->nullable();
-            $table->bigInteger('min')->nullable();
-            $table->bigInteger('max')->nullable();
+            $table->float('value')->nullable();
+            $table->float('min')->nullable();
+            $table->float('max')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });

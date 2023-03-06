@@ -29,6 +29,14 @@ return new class extends Migration
                 'slug' => 'hdd'
             )
         );
+        // Insert new record for 'cate_groups' table for testing
+        DB::table('hdd_groups')->insert(
+            array(
+                'name' => 'From 128GB to 512GB',
+                'min' => '128',
+                'max' => '512', 
+            )
+        );
 
         Schema::table('products', function (Blueprint $table) {
             $table->foreignId('hdd_id')->default(1)->after('ram_id')->constrained();
