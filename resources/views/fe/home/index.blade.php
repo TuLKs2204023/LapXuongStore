@@ -81,6 +81,30 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
+                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
+                        <div class="inner-text">
+                            <h4>Graphics</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-banner">
+                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
+                        <div class="inner-text">
+                            <h4>Student</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-banner">
+                        <img src="{{ asset('frontend/img/banner-001.jpg') }}" alt="">
+                        <div class="inner-text">
+                            <h4>Slim</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-banner">
                         <img src="{{ asset('frontend/img/banner-002.jpg') }}" alt="">
                         <div class="inner-text">
                             <h4>Office</h4>

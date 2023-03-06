@@ -14,8 +14,10 @@
     --violet-5th-50: rgba(231, 234, 254, 0.5);
     --blue-dark: #596376;
     --grey-dark: #373737;
+    --grey-dark-2nd: #b0b0b0;
     --grey-dark-60: rgba(0, 0, 0, 0.66);
     --grey-dark-90: rgba(0, 0, 0, 0.9);
+    --red-dark-tu: crimson;
     /* --grey-dark: #252525; */
 }
 .site-btn {

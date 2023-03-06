@@ -203,7 +203,7 @@ class UserController extends Controller
         $data['gender'] = $request->gender;
         $data['address'] = $request->address;
         $data['phone'] = $request->phone;
-        $data['password'] = Hash::make($request->password);
+        // $data['password'] = Hash::make($request->password);
 
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');

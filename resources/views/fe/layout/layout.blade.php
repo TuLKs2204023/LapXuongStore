@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>LapXuongStore @yield('fetitle')</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/fav-icon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('fav-icon.ico') }}">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
