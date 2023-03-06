@@ -60,7 +60,7 @@
                 <div><span class="close-btn cancel-btn"><i class="fa-solid fa-xmark"></i></span></div>
             </div>
             <div class="dialog-body">
-                <h4 class="dialog-title">Are you sure to DELETE this item?</h4>
+                <h6 class="dialog-title">Are you sure to DELETE this item?</h6>
             </div>
             <div class="dialog-footer">
                 <button class="form-submit standard warning proceed-btn">Proceed</button>
@@ -91,25 +91,6 @@
     <!--Toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-
-    <!-- KIEN Js -->
-    <script type="module">
-        import {MyToggle, MyStickyNav} from '{{ asset('/js/KienJs/main.js') }}';
-
-        document.addEventListener("readystatechange", (e) => {
-            if (e.target.readyState === "complete") {
-                const myToggle = new MyToggle({});
-                const myStickyNav = new MyStickyNav({});
-            }
-        });
-
-        const navCateBtn = document.querySelector('.nav-item .cate-btn');
-        const navFakeCateBtn = document.querySelector('.nav-fake-categories .cate-btn');
-        navCateBtn.addEventListener('click', (e) =>{
-            navFakeCateBtn.click();
-            navCateBtn.classList.toggle('show');
-        });
-    </script>
     <!--Toastr -->
     <script type="module">
          @if (Session::has('message'))
@@ -127,6 +108,33 @@
         @endif
     </script>
     <!--Toastr -->
+
+    <!-- KIEN Js -->
+    <script type="module">
+        import {MyToggle, MyStickyNav, HeaderCartHandler} from '{{ asset('/js/KienJs/main.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const myToggle = new MyToggle({});
+                const myStickyNav = new MyStickyNav({});
+                const headerCart = new HeaderCartHandler({
+                    url: '{{ Route('emptyCart') }}',
+                    token: '{{ csrf_token() }}',
+                    selectors: {
+                        headerCartSelector: ".cart-icon",
+                    },
+                });
+            }
+        });
+
+        const navCateBtn = document.querySelector('.nav-item .cate-btn');
+        const navFakeCateBtn = document.querySelector('.nav-fake-categories .cate-btn');
+        navCateBtn.addEventListener('click', (e) =>{
+            navFakeCateBtn.click();
+            navCateBtn.classList.toggle('show');
+        });
+    </script>
+    <!-- KIEN Js -->
 
     @yield('myJs')
 </body>

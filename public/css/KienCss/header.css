@@ -1,13 +1,19 @@
 .header-section {
     position: relative;
     width: 100%;
-    z-index: 9999;
 }
 .header-section.sticky {
     position: fixed;
     top: 0;
+    z-index: 9;
 }
-.header-section.sticky > .container,
+.header-section > .container-fluid {
+    background-color: #ffffff;
+    padding: 0 5rem;
+    position: relative;
+    z-index: 99;
+}
+.header-section.sticky > .container-fluid,
 .header-section.sticky > .nav-item {
     background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
@@ -34,6 +40,10 @@
     -o-transition: all 0.3s;
     transition: all 0.3s;
 }
+.header-section .inner-header .input-group {
+    position: unset;
+}
+
 .header-section.sticky .inner-header {
     padding: 15px 0;
 }
@@ -53,6 +63,10 @@
     transform: scale(0.85);
 }
 
+.header-section .nav-item {
+    position: relative;
+    z-index: 98;
+}
 .header-section.sticky .nav-item {
     height: 40.8px;
     background-color: var(--grey-dark-60);
@@ -141,6 +155,16 @@
     -o-transition: all 0.3s;
     transition: all 0.3s;
 }
+.nav-fake-categories .category-list:after {
+    content: " ";
+    position: absolute;
+    bottom: 100%; /* At the top of the tooltip */
+    left: 22.5%;
+    margin-left: -5px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+}
 
 .nav-fake-categories .category-list li {
     list-style: none;
@@ -168,4 +192,22 @@
 
 .nav-fake-categories .category-list li a:hover {
     color: var(--violet);
+}
+
+.inner-header .nav-right li.cart-icon .cart-hover::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%; /* At the top of the tooltip */
+    left: 75.5%;
+    margin-left: -5px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+}
+
+.shadowed {
+    -webkit-filter: drop-shadow(0px 2px 2px rgba(130, 130, 130, 1));
+    filter: drop-shadow(0px 2px 2px rgba(130, 130, 130, 1));
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
 }

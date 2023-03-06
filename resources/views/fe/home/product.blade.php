@@ -587,9 +587,11 @@
                 url: '{{ Route('addCart') }}',
                 token: '{{ csrf_token() }}',
                 isUpdate: false,
-                cartOrBtnSelector: ".pd-cart",
                 inputName: "product-quantity",
-                headerCartSelector: ".cart-icon",
+                selectors: {
+                    cartOrBtnSelector: ".pd-cart",
+                    headerCartSelector: ".cart-icon",
+                }
             });
         }
     });

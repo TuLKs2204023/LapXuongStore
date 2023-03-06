@@ -98,6 +98,7 @@ Route::post('/update-cart', [FE_HomeController::class, 'updateCart'])->name('upd
 Route::post('/remove-cart', [FE_HomeController::class, 'removeCart'])->name('removeCart');
 Route::get('/view-cart', [FE_HomeController::class, 'viewCart'])->name('viewCart');
 Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearCart');
+Route::post('/empty-cart', [FE_HomeController::class, 'emptyCart'])->name('emptyCart');
 
 // Wishlist
 Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');

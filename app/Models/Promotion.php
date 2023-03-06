@@ -13,22 +13,18 @@ class Promotion extends Model
 
     protected $fillable = ['code', 'discount'];
 
-    public function order(): HasOne{
-        return $this->hasOne(Order::class);
-    }
-
-    public function usedPromotion():HasOne{
+    public function usedPromotion(): HasOne
+    {
         return $this->hasOne(UsedPromotion::class);
     }
 
-    public function isAvailable(){
+    public function isAvailable()
+    {
         $id = $this->id;
         $usedPromotion = DB::table('used_promotions')->where('promotion_id', $id)->first();
-        if($usedPromotion){
-            $this->status = 0;
+        if ($usedPromotion) {
             return false; //true
-        }
-        else{
+        } else {
             return true; //false
         }
     }

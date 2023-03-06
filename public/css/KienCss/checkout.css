@@ -8,7 +8,7 @@
     position: relative;
 }
 
-.checkout-content input:disabled {
+.checkout-content input:read-only {
     color: var(--violet-3rd);
 }
 .checkout-content .coupon-btn {
