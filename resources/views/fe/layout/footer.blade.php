@@ -4,7 +4,7 @@
             <div class="col-lg-3">
                 <div class="footer-left">
                     <a href="index,html">
-                        <img src="front/img/footer-logo.png" height="25" alt="">
+                        <img src="{{asset('frontend/img/footer-logo.png')}}" height="25" alt="">
                     </a>
                 </div>
                 <ul>
@@ -61,7 +61,7 @@
                         Copyright <script>document.write(new Date().getFullYear()); </script> All right reserved | This temple is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">Group-01</a>
                     </div>
                     <div class="payment-pic">
-                        <img src="front/img/payment-method.png" alt="">
+                        <img src="{{asset('frontend/img/payment-method.png')}}" alt="">
                     </div>
                 </div>
             </div>

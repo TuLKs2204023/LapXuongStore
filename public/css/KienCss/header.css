@@ -134,7 +134,9 @@
 
 .nav-fake-categories .category-list {
     position: absolute;
-    width: max-content;
+    width: 80vw;
+    max-height: 60vh;
+    overflow-y: scroll;
     left: 20px;
     top: 8px;
     opacity: 0;
@@ -144,10 +146,11 @@
     backdrop-filter: blur(10px);
     padding: 0 0 20px 0;
     display: flex;
+    flex-wrap: wrap;
     /* justify-content: space-around;
     align-items: flex-start;
     align-content: center; */
-    gap: 10px 10px;
+    gap: 16px 0px;
     -webkit-box-shadow: 0 13px 32px rgba(51, 51, 51, 0.1);
     box-shadow: 0 13px 32px rgba(51, 51, 51, 0.1);
     border: 1px solid #ebebeb;
@@ -182,9 +185,10 @@
 .nav-fake-categories .category-list li .category-list-header,
 .nav-fake-categories .category-list li a {
     display: block;
-    font-size: 16px;
+    font-size: 0.9rem;
     color: var(--blue-dark);
-    padding: 10px 40px 0px 40px;
+    padding: 8px 20px 0px 30px;
+    width: 11rem;
     /* -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s; */

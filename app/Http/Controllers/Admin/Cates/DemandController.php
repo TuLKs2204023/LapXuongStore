@@ -83,7 +83,7 @@ class DemandController extends Controller
      * @param  \App\Models\Cates\Demand  $demand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Demand $demand)
+    public function update(Request $request)
     {
         $demand = Demand::find($request->id);
         $proData = $this->processData($request);

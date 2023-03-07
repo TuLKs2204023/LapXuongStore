@@ -83,7 +83,7 @@ class ColorController extends Controller
      * @param  \App\Models\Cates\Color  $color
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Color $color)
+    public function update(Request $request)
     {
         $color = Color::find($request->id);
         $proData = $this->processData($request);

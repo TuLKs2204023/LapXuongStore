@@ -72,6 +72,12 @@
                         </a>
                         <!--End Series -->
 
+                        <!-- Demand -->
+                        <a href="{{ Route('admin.demand.index') }}">
+                            <i class="bi bi-circle"></i><span>Demand</span>
+                        </a>
+                        <!--End Demand -->
+
                         <!-- CPU -->
                         <a href="{{ Route('admin.cpu.index') }}">
                             <i class="bi bi-circle"></i><span>CPU</span>
@@ -143,7 +149,7 @@
                         <!--End UserList -->
 
                         <!-- User Orders -->
-                        <a href="{{ URL::to('/allorders') }}">
+                        <a href="{{ URL::to('/admin/order/all-orders') }}">
                             <i class="bi bi-circle"></i><span>User Orders</span>
                         </a>
                         <!--End User Orders -->

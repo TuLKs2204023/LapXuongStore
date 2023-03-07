@@ -79,7 +79,7 @@
                 <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="front/img/logo3.png" height="30" alt="">
+                            <img src="{{asset('frontend/img/logo3.png')}}" height="30" alt="">
                         </a>
                     </div>
                 </div>
@@ -191,7 +191,7 @@
     </div>
     <div class="nav-fake-categories">
         <div class="cate-btn my-toggle"></div>
-        <ul class="category-list my-toggle-content">
+        <ul class="category-list my-toggle-content myScrollbar">
             @foreach ($cateGroups as $cateGroup)
                 <li>
                     <div class="category-list-header">{{ $cateGroup->name }}</div>
