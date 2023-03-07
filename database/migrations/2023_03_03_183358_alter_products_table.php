@@ -17,8 +17,36 @@ return new class extends Migration
         // Insert new record for 'demands' table for testing
         DB::table('demands')->insert(
             array(
-                'name' => 'Office',
-                'slug' => 'office'
+                [
+                    'name' => 'Office',
+                    'slug' => 'office',
+                    'image' => 'banner-001.jpg'
+                ],
+                [
+                    'name' => 'Gaming',
+                    'slug' => 'gaming',
+                    'image' => 'banner-002.jpg'
+                ],
+                [
+                    'name' => 'Graphics',
+                    'slug' => 'graphics',
+                    'image' => 'banner-003.jpg'
+                ],
+                [
+                    'name' => 'Student',
+                    'slug' => 'student',
+                    'image' => 'banner-004.jpg'
+                ],
+                [
+                    'name' => 'Slim',
+                    'slug' => 'slim',
+                    'image' => 'banner-005.jpg'
+                ],
+                [
+                    'name' => 'Workstation',
+                    'slug' => 'workstation',
+                    'image' => 'banner-006.jpg'
+                ],
             )
         );
         // Insert new record for 'cate_groups' table for testing
@@ -28,7 +56,7 @@ return new class extends Migration
                 'slug' => 'demand'
             )
         );
-        
+
         //alter products
         Schema::table('products', function (Blueprint $table) {
             $table->foreignId('demand_id')->default(1)->after('screen_id')->constrained();

@@ -29,29 +29,19 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Customer ID</th>
-                            <th>Oder Date</th>
-                            <th>Shipping Name</th>
-                            <th>Shipping Phone</th>
-                            <th>Shipping Address</th>
-
-                            <th>Action</th>
+                            <th>Order ID</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($all as $row)
+                        @foreach ($orderItems as $key => $row)
                             <tr>
-                                <td>{{ $row->id }}</td>
-                                <td>{{ $row->user_id }}</td>
-                                <td>{{ $row->order_date }}</td>
-                                <td>{{ $row->name }}</td>
-                                <td>{{ $row->phone }}</td>
-                                <td>{{ $row->address }}</td>
-                                <td>
-                                    <a href="{{ Route('admin.order.details', $row->id) }}"
-                                        class="btn btn-sm btn-outline-info">Details</a>
-                                </td>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $row->order_id }}</td>
+                                <td>{{ $row->quantity }}</td>
+                                <td>{{ $row->price->origin }}</td>
                             </tr>
                         @endforeach
                     </tbody>

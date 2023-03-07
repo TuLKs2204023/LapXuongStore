@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
 use App\Models\User;
+use App\Models\City;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -34,7 +35,7 @@ class UserController extends Controller
     public function InfoUser()
     {
         $all = DB::table('users')->get();
-
+        
 
 
         return view('admin.users.info-user', compact('all'));
@@ -113,7 +114,9 @@ class UserController extends Controller
     public function EditByUser($id)
     {
         $edit = DB::table('users')->where('id', $id)->first();
-        return view('fe.home.edit-profile', compact('edit'));
+        $city = City::get(["name", "id"]);
+
+        return view('fe.home.edit-profile', compact('edit','city'));
     }
     public function passwordUser($id)
     {
@@ -129,29 +132,38 @@ class UserController extends Controller
 
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
-        $passconf = Hash::make($request->password_confirmation);
-        if( Hash::check($request->password_confirmation,auth()->user()->password ) )
-        {
-            $data['password'] = Hash::make($request->password);
-            $edit = DB::table('users')->where('id', $id)->update($data);
-            if ($edit) {
-                $notification = array(
-                    'message' => 'Successfully updated',
-                    'alert-type' => 'success',
-                );
-                return redirect()->route('userProfile')->with($notification);
-            } else {
+        $conpass = $request->confirm_new_password;
+        $newpass = $request->password;
+        if ($newpass == $conpass) {
+            if (Hash::check($request->old_confirmation, auth()->user()->password)) {
+                $data['password'] = Hash::make($request->password);
+                $edit = DB::table('users')->where('id', $id)->update($data);
+                if ($edit) {
+                    $notification = array(
+                        'message' => 'Successfully updated',
+                        'alert-type' => 'success',
+                    );
+                    return redirect()->route('userProfile')->with($notification);
+                } else {
 
+                    $notification = array(
+                        'message' => 'Something went wrong,try again !',
+                        'alert-type' => 'error',
+                    );
+                    return redirect()->route('userProfile')->with($notification);
+                }
+            } else {
                 $notification = array(
-                    'message' => 'Something went wrong,try again !',
+                    'message' => 'Plesase confirm old password,try again',
                     'alert-type' => 'error',
                 );
                 return redirect()->route('userProfile')->with($notification);
             }
         } else {
             $notification = array(
-                'message' => 'Something went wrong,try again',
-                    'alert-type' => 'error',);
+                'message' => 'Please confirm new password ,try again',
+                'alert-type' => 'error',
+            );
             return redirect()->route('userProfile')->with($notification);
         }
     }
@@ -180,7 +192,7 @@ class UserController extends Controller
         $edit = DB::table('users')->where('id', $id)->update($data);
         if ($edit) {
             $notification = array(
-                'message' => 'successfully updated user',
+                'message' => 'Successfully updated user',
                 'alert-type' => 'success',
             );
             return redirect()->route('alluser')->with($notification);
@@ -195,8 +207,6 @@ class UserController extends Controller
     }
     public function UpdateByUser(Request $request, $id)
     {
-
-
         $data = array();
         $data['name'] = $request->name;
         // $data['email'] = $request->email;
@@ -204,7 +214,9 @@ class UserController extends Controller
         $data['address'] = $request->address;
         $data['phone'] = $request->phone;
         // $data['password'] = Hash::make($request->password);
-
+        $data['city_id']=$request->city;
+        $data['district_id']=$request->district;
+        $data['ward_id']=$request->ward;
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
@@ -262,7 +274,7 @@ class UserController extends Controller
         } else {
 
             $notification = array(
-                'message' => 'something went wrong,try again',
+                'message' => 'Something went wrong,try again',
                 'alert-type' => 'error',
             );
             return redirect()->route('alluser')->with($notification);

@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('demands', function (Blueprint $table) {
-            $table->string('name')->nullable()->change();
-            $table->string('slug')->nullable()->change();
-            $table->string('image')->after('slug')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('city_id')->nullable()->constrained();
+            $table->foreignId('district_id')->nullable()->constrained();
+            $table->foreignId('ward_id')->nullable()->constrained();
         });
     }
 

@@ -218,7 +218,43 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Address</h6>
+                                        <h6 class="mb-0">City</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" >
+                                        <select id="City-dropdown" class="form-control" name="city">
+                                            <option value="">-- Select City --</option>
+                                            @foreach ($city as $data)
+                                            <option value="{{$data->id}}">
+                                                {{$data->name}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">District</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <select id="district-dropdown" class="form-control" name="district">
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Ward</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <select id="ward-dropdown" class="form-control" name="ward">
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Street</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="text" name="address" class="form-control"

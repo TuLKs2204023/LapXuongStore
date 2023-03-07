@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\CateController;
+use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\Admin\PromotionController;
+use App\Http\Controllers\Admin\RatingController;
+use App\Http\Controllers\Admin\WishlistItemController;
+use App\Http\Controllers\Admin\ProductController;
+
 use App\Http\Controllers\Admin\Cates\ColorController;
 use App\Http\Controllers\Admin\Cates\ManufactureController;
 use App\Http\Controllers\Admin\Cates\CpuController;
@@ -13,21 +19,22 @@ use App\Http\Controllers\Admin\Cates\ResolutionController;
 use App\Http\Controllers\Admin\Cates\ScreenGroupController;
 use App\Http\Controllers\Admin\Cates\SeriesController;
 use App\Http\Controllers\Admin\Cates\SsdGroupController;
-use App\Http\Controllers\Admin\ProductController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\backend\UserController;
+
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
 use App\Http\Controllers\FE\ShopController;
 use App\Http\Controllers\FE\CheckoutController;
-use App\Http\Controllers\Admin\StockController;
 
+use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\backend\OdersController;
+
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
-use App\Http\Controllers\Admin\PromotionController;
-use App\Http\Controllers\Admin\RatingController;
-use App\Http\Controllers\Admin\WishlistItemController;
+use App\Http\Controllers\DropdownController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderDetailsController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +49,7 @@ use App\Http\Controllers\Admin\WishlistItemController;
 
 Auth::routes();
 Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
-Route::get('/manager', [AdminHomeController::class, 'manager'])->name('admin.dashboard');
+Route::get('/manager', [AdminHomeController::class, 'manager'])->name('manager.dashboard');
 Route::get('/customer', [AdminHomeController::class, 'customer'])->name('customer');
 
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
@@ -77,17 +84,26 @@ Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name(
 Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
 
 
+
+//report users
+Route::get('admin/lastweek', [DashboardController::class, 'lastweek'])->name('lastweek');
+
+//Dropdown Address Controller
+Route::get('city', [DropdownController::class, 'fetchCity']);
+Route::post('api/fetch-district', [DropdownController::class, 'fetchDistrict'])->name('fetchDistrict');
+Route::post('api/fetch-ward', [DropdownController::class, 'fetchWard'])->name('fetchWard');
+
 //Google authentication controller
-Route::controller(GoogleController::class)->group(function(){
+Route::controller(GoogleController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
-    Route::get('auth/google/callback', 'handleGoogleCallback');});
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
 
 //Facebook authentication controller
-Route::controller(FacebookController::class)->group(function(){
+Route::controller(FacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
-    Route::get('auth/facebook/callback', 'handleFacebookCallback');});
-//Order management
-Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
 
 // Product details
 Route::get('/product/{slug}', [FE_HomeController::class, 'product'])->name('product.details');
@@ -137,7 +153,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [ProductController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::put('/update', [ProductController::class, 'update'])->name('update');
-            Route::delete('/destroy', [ProductController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
         });
 
         // Category
@@ -157,7 +173,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [ManufactureController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [ManufactureController::class, 'edit'])->name('edit');
             Route::put('/update', [ManufactureController::class, 'update'])->name('update');
-            Route::delete('/destroy', [ManufactureController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [ManufactureController::class, 'destroy'])->name('destroy');
         });
 
         // CPU
@@ -167,7 +183,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [CpuController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [CpuController::class, 'edit'])->name('edit');
             Route::put('/update', [CpuController::class, 'update'])->name('update');
-            Route::delete('/destroy', [CpuController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [CpuController::class, 'destroy'])->name('destroy');
         });
 
         // RAM's Group
@@ -177,7 +193,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [RamGroupController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [RamGroupController::class, 'edit'])->name('edit');
             Route::put('/update', [RamGroupController::class, 'update'])->name('update');
-            Route::delete('/destroy', [RamGroupController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy{id}', [RamGroupController::class, 'destroy'])->name('destroy');
         });
 
         // Screen's Group
@@ -291,8 +307,14 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [RatingController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
             Route::put('/update', [RatingController::class, 'update'])->name('update');
-            Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
+            Route::get('/destroy/{id}', [RatingController::class, 'destroy'])->name('destroy');
         });
 
+        //Order management
+        Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
+            Route::get('/all-orders', [OdersController::class, 'Allorders'])->name('allorders');
+            //OrderDetails
+            Route::get('/{id}/details', [OrderDetailsController::class, 'adminRights'])->name('details');
+        });
     });
 });

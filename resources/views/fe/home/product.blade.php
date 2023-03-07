@@ -329,7 +329,8 @@
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
-                                                    <div class="p-weight">15.6-inch FHD (1920 x 1080), 144Hz, IPS-level
+                                                    <div class="p-weight">{{ $product->screen->name }}
+                                                        ({{ $product->resolution->name }})
                                                     </div>
                                                 </td>
                                             </tr>
@@ -345,7 +346,7 @@
                                             <tr>
                                                 <td class="p-catagory">Graphics</td>
                                                 <td>
-                                                    <div class="p-weight">NVIDIA® GeForce GTX™ 1650 , 4GB GDDR6</div>
+                                                    <div class="p-weight">{{ $product->gpu->name }}</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -369,7 +370,7 @@
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 <td>
-                                                    <div class="p-weight">Graphite Black</div>
+                                                    <div class="p-weight">{{ $product->color->name }}</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -382,48 +383,41 @@
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
                                                 <div class="co-item">
-                                                    <form action="{{ Route('admin.rating.destroy') }}" method="post"
-                                                        style="display:inline-block">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $rating->id }}">
-                                                        <div class="avatar-pic">
-                                                            <img src="{{ asset('images/' . $rating->user->image) }}"
-                                                                alt="">
+                                                    <div class="avatar-pic">
+                                                        <img src="{{ asset('images/' . $rating->user->image) }}"
+                                                            alt="">
+                                                    </div>
+                                                    <div class="avatar-text">
+                                                        <div class="at-rating">
+                                                            @for ($i = 0; $i < $rating->rate; $i++)
+                                                                <i class="fa fa-star"></i>
+                                                            @endfor
+                                                            @for ($i = 0; $i < 5 - $rating->rate; $i++)
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endfor
                                                         </div>
-                                                        <div class="avatar-text">
-                                                            <div class="at-rating">
-                                                                @for ($i = 0; $i < $rating->rate; $i++)
-                                                                    <i class="fa fa-star"></i>
-                                                                @endfor
-                                                                @for ($i = 0; $i < 5 - $rating->rate; $i++)
-                                                                    <i class="fa fa-star-o"></i>
-                                                                @endfor
-                                                            </div>
-                                                            <div
-                                                                @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
+                                                        <div
+                                                            @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
                                                                 @elseif ($rating->user->role == 'Manager') 
                                                                     style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
                                                                 @else
                                                                     style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
-                                                                {{ $rating->user->role }}
-                                                            </div>
-                                                            <h5>{{ $rating->user->name }}
-                                                                <span>{{ $rating->created_at }}</span>
-                                                            </h5>
-                                                            <div class="at-reply">{{ $rating->review }}</div>
-                                                            @if (auth()->user())
-                                                                @if (auth()->user()->role == 'Admin')
-                                                                    <button type="submit"
-                                                                        class="btn btn-outline-danger btn-sm">
-                                                                        <i class="fas fa-trash"></i>
-                                                                        Delete
-                                                                    </button>
-                                                                @endif
-                                                            @endif
+                                                            {{ $rating->user->role }}
                                                         </div>
-                                                    </form>
+                                                        <h5>{{ $rating->user->name }}
+                                                            <span>{{ $rating->created_at }}</span>
+                                                        </h5>
+                                                        <div class="at-reply">{{ $rating->review }}</div>
+                                                        @if (auth()->user())
+                                                            @if (auth()->user()->role == 'Admin')
+                                                                <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
+                                                                    id="deletecomment" class="btn btn-sm btn-danger">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Delete
+                                                                </a>
+                                                            @endif
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -520,13 +514,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection
-
-
-
 
 
 @section('content')
@@ -574,36 +564,50 @@
     </div>
 @endsection
 
-
-
-
-
 @section('myJs')
     <script type="module">
-    import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
-    import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
-    document.addEventListener("readystatechange", (e) => {
-        if (e.target.readyState === "complete") {
-            const addCart = new CartHandler({
-                url: '{{ Route('addCart') }}',
-                token: '{{ csrf_token() }}',
-                isUpdate: false,
-                inputName: "product-quantity",
-                selectors: {
+        import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const addCart = new CartHandler({
+                    url: '{{ Route('addCart') }}',
+                    token: '{{ csrf_token() }}',
+                    isUpdate: false,
                     cartOrBtnSelector: ".pd-cart",
+                    inputName: "product-quantity",
                     headerCartSelector: ".cart-icon",
-                }
-            });
-        }
-    });
-
-    const reviewBtn = document.querySelector('.review-lapxuong-btn');
-    reviewBtn.onclick = function(){
-        
-    }
+                });
+            }
+        });
     </script>
     <script>
         jQuery(document).ready(function($) {
+
+            $(document).on("click", "#deletecomment",
+                function(e) {
+
+                    e.preventDefault();
+                    var link = $(this).attr("href");
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                'Deleted!',
+                                'This comment has been deleted.',
+                                'success'
+                            )
+                            window.location.href = link;
+                        }
+                    })
+                });
 
             $(".btnrating").on('click', (function(e) {
 

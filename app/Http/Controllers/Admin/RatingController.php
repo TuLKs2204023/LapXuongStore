@@ -42,8 +42,8 @@ class RatingController extends Controller
     {
         $proData = $this->processDataWithOutSlug($request);
         if ($proData['selected_rating'] == null || $proData['review'] == null) {
-            $errors = 'Stars and review cannot be left blank.';
-            return back()->with('errors', $errors);
+            $errors = ['msg' => 'Stars and review cannot be left blank.'];
+            return back()->withErrors($errors);
         } else {
             $user = User::find(auth()->user()->id);
 

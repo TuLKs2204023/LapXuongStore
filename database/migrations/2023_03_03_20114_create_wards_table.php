@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('screen_groups', function (Blueprint $table) {
+        Schema::create('wards', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('district_id')->constrained();
             $table->string('name')->nullable();
-            $table->string('slug')->nullable();
-            $table->float('value')->nullable();
-            $table->float('min')->nullable();
-            $table->float('max')->nullable();
-            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('screen_groups');
+        Schema::dropIfExists('wards');
     }
 };

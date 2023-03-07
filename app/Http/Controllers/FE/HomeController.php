@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
+use App\Models\Cates\Demand;
 
 class HomeController extends Controller
 {
@@ -16,8 +17,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        return view('fe.home.index');
+        $demands = Demand::all();
+        $officeProducts = Product::where('demand_id', 1)->get();
+        $gamingProducts = Product::where('demand_id', 2)->get();
+        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts'));
     }
 
     public function product($slug)
