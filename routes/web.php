@@ -31,7 +31,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\OrderDetailsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -104,8 +104,6 @@ Route::controller(FacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback');
 });
-//Order management
-Route::get('/allorders', [OdersController::class, 'Allorders'])->name('allorders');
 
 // Product details
 Route::get('/product/{slug}', [FE_HomeController::class, 'product'])->name('product.details');
@@ -310,6 +308,13 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
             Route::put('/update', [RatingController::class, 'update'])->name('update');
             Route::get('/destroy/{id}', [RatingController::class, 'destroy'])->name('destroy');
+        });
+
+        //Order management
+        Route::group(['prefix' => 'order', 'as' => 'order.'], function () {
+            Route::get('/all-orders', [OdersController::class, 'Allorders'])->name('allorders');
+            //OrderDetails
+            Route::get('/{id}/details', [OrderDetailsController::class, 'adminRights'])->name('details');
         });
     });
 });

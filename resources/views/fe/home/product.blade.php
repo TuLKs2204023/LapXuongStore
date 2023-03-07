@@ -12,12 +12,12 @@
         }
 
         /* .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role .bg-info{
-                    font-style: italic;
-                    font-size: 80%;
-                    font-weight: 500;
-                    text-shadow: 2px 2px 10px var(--violet-2nd);
-                }
-                    /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
+                            font-style: italic;
+                            font-size: 80%;
+                            font-weight: 500;
+                            text-shadow: 2px 2px 10px var(--violet-2nd);
+                        }
+                            /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
 
 
         .personal-rating .btn-default,
@@ -329,7 +329,8 @@
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
-                                                    <div class="p-weight">{{$product->screen->name}} ({{$product->resolution->name}})
+                                                    <div class="p-weight">{{ $product->screen->name }}
+                                                        ({{ $product->resolution->name }})
                                                     </div>
                                                 </td>
                                             </tr>
@@ -369,7 +370,7 @@
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 <td>
-                                                    <div class="p-weight">{{$product->color->name}}</div>
+                                                    <div class="p-weight">{{ $product->color->name }}</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -395,27 +396,13 @@
                                                                 <i class="fa fa-star-o"></i>
                                                             @endfor
                                                         </div>
-                                                            <div
-                                                                @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
+                                                        <div
+                                                            @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
                                                                 @elseif ($rating->user->role == 'Manager') 
                                                                     style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
                                                                 @else
                                                                     style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
-                                                                {{ $rating->user->role }}
-                                                            </div>
-                                                            <h5>{{ $rating->user->name }}
-                                                                <span>{{ $rating->created_at }}</span>
-                                                            </h5>
-                                                            <div class="at-reply">{{ $rating->review }}</div>
-                                                            @if (auth()->user())
-                                                                @if (auth()->user()->role == 'Admin')
-                                                                    <button type="submit"
-                                                                        class="btn btn-outline-danger btn-sm">
-                                                                        <i class="fas fa-trash"></i>
-                                                                        Delete
-                                                                    </button>
-                                                                @endif
-                                                            @endif
+                                                            {{ $rating->user->role }}
                                                         </div>
                                                         <h5>{{ $rating->user->name }}
                                                             <span>{{ $rating->created_at }}</span>
@@ -431,7 +418,6 @@
                                                             @endif
                                                         @endif
                                                     </div>
-
                                                 </div>
                                             @endforeach
                                         </div>
@@ -528,7 +514,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection

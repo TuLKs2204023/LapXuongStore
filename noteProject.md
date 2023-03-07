@@ -26,6 +26,9 @@ Sửa file ".env.example" thành ".env"
 14. các bước còn lại làm theo link "https://vietlaravel.com/huong-dan-tich-hop-ckeditor-va-ckfinder-chuan-nhat-cho-laravel.html"
 15. Nếu cần chạy schedule thì    php artisan schedule:run
 16. composer require laravel/socialite (đọc fix lỗi số 10.)
+17. chạy migrate và add file .sql để thêm dữ liệu thành phố (nhớ check tên database + tên table), 
+NHỚ CHECK KĨ file wards.sql có nhiều câu lệnh INSERT bên trong, nhớ đổi tên database cho hết nha - do quá nhiều dữ liệu
+<Vô link ghim trong nhóm để tải file .sql>
 
 # Fix lỗi
 1. Add tay thông tin vô cate_group table trong database (Lỗi foreign key)

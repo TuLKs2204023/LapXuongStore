@@ -143,7 +143,7 @@
                         <!--End UserList -->
 
                         <!-- User Orders -->
-                        <a href="{{ URL::to('/allorders') }}">
+                        <a href="{{ URL::to('/admin/order/all-orders') }}">
                             <i class="bi bi-circle"></i><span>User Orders</span>
                         </a>
                         <!--End User Orders -->
