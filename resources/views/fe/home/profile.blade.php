@@ -94,8 +94,9 @@
                                     <h4>{{auth()->user()->name}}</h4>
                                     <p class="text-secondary mb-1">{{auth()->user()->role}}</p>
                                     <p class="text-muted font-size-sm">{{auth()->user()->address}}</p>
-                                    <button class="btn btn-primary">Follow</button>
-                                    <button class="btn btn-outline-primary">Message</button>
+                                    <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1;"
+                                        href="{{ Route('wishlist') }}">Wishlist</a>
+                                    <button class="btn btn-outline-primary">My Orders</button>
                                 </div>
                             </div>
                         </div>

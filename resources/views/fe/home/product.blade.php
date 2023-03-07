@@ -217,7 +217,7 @@
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
-                                    <h4>{{ number_format($product->price, 0, ',', '.') . ' VND' }}<span>{{ number_format($product->price, 0, ',', '.') . ' VND' }}</span>
+                                    <h4>{{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}<span>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}</span>
                                     </h4>
                                 </div>
                                 <div class="quantity">
@@ -300,7 +300,7 @@
                                                 <td class="p-catagory">Price</td>
                                                 <td>
                                                     <div class="p-price">
-                                                        {{ number_format($product->price, 0, ',', '.') . ' VND' }}
+                                                        {{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}
                                                     </div>
                                                 </td>
                                             </tr>
