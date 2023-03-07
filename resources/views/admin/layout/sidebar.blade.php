@@ -72,6 +72,12 @@
                         </a>
                         <!--End Series -->
 
+                        <!-- Demand -->
+                        <a href="{{ Route('admin.demand.index') }}">
+                            <i class="bi bi-circle"></i><span>Demand</span>
+                        </a>
+                        <!--End Demand -->
+
                         <!-- CPU -->
                         <a href="{{ Route('admin.cpu.index') }}">
                             <i class="bi bi-circle"></i><span>CPU</span>

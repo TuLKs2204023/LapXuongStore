@@ -83,7 +83,7 @@ class GpuController extends Controller
      * @param  \App\Models\Cates\Gpu  $gpu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Gpu $gpu)
+    public function update(Request $request)
     {
         $gpu = Gpu::find($request->id);
         $proData = $this->processData($request);

@@ -6,7 +6,7 @@
         <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ Route('admin.Series.index') }}">Series</a></li>
+                <li class="breadcrumb-item"><a href="{{ Route('admin.series.index') }}">Series</a></li>
                 <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Create' }} Series</li>
             </ol>
         </nav>

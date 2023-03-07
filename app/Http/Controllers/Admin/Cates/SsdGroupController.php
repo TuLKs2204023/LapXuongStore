@@ -58,10 +58,10 @@ class SsdGroupController extends Controller
 
         $proData['slug'] = Str::slug($request->name);
 
-        // Save RamGroup
-        $ramGroup = SsdGroup::create($proData);
+        // Save SSDGroup
+        $ssdGroup = SsdGroup::create($proData);
 
-        return redirect()->route('admin.ramGroup.index');
+        return redirect()->route('admin.ssdGroup.index');
     }
 
     /**

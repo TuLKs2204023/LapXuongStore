@@ -188,7 +188,7 @@
     </div>
     <div class="nav-fake-categories">
         <div class="cate-btn my-toggle"></div>
-        <ul class="category-list my-toggle-content">
+        <ul class="category-list my-toggle-content myScrollbar">
             @foreach ($cateGroups as $cateGroup)
                 <li>
                     <div class="category-list-header">{{ $cateGroup->name }}</div>

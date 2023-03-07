@@ -94,8 +94,9 @@ trait ProcessModelData
         return $order;
     }
 
-    function processRating(User $user, array $proData){
-        //Tú tạo
+    function processRating(User $user, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
         $product = DB::table('products')->where('id', $proData['product_id'])->first();
 
         $productId = $product->id;
@@ -103,9 +104,12 @@ trait ProcessModelData
         $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
         $user->refresh();
     }
-    
+
     function processRam(array $proData)
     {
+        if ($proData['ram_select'] == 2) {
+            $proData['ram'] = $proData['ram'] * 1024;
+        }
         $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);
         $ram->refresh();
         $proData['ram_id'] = $ram->id;
@@ -122,6 +126,9 @@ trait ProcessModelData
 
     function processHdd(array $proData)
     {
+        if ($proData['hdd_select'] == 2) {
+            $proData['hdd'] = $proData['hdd'] * 1024;
+        }
         $hdd = Hdd::firstOrCreate(['amount' => $proData['hdd']]);
         $hdd->refresh();
         $proData['hdd_id'] = $hdd->id;
@@ -130,6 +137,9 @@ trait ProcessModelData
 
     function processSsd(array $proData)
     {
+        if ($proData['ssd_select'] == 2) {
+            $proData['ssd'] = $proData['ssd'] * 1024;
+        }
         $ssd = Ssd::firstOrCreate(['amount' => $proData['ssd']]);
         $ssd->refresh();
         $proData['ssd_id'] = $ssd->id;

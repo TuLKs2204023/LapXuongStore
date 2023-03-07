@@ -10,6 +10,8 @@ use App\Models\CateGroup;
 use App\Models\Cates\RamGroup;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class ShopController extends Controller
 {
@@ -20,7 +22,8 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(12);
+        $products = Product::paginate(10);
+        // $products = Product::all(12);
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
@@ -42,13 +45,14 @@ class ShopController extends Controller
 
         if (isset($cateItems->products)) {
             $cateItems->load('products');
-            $products = $cateItems->products;
+            $products = $cateItems->products()->paginate(10);
         }
         if (method_exists(get_class($cateItems), 'cateItems')) {
             $products = new Collection();
             foreach ($cateItems->cateItems()->load('products') as $item) {
                 $products = $products->merge($item->products);
             }
+            $products = $this->paginate($products);
         }
 
         return view('fe.home.shop')->with([
@@ -57,5 +61,28 @@ class ShopController extends Controller
             'cateItems' => $cateItems,
             'products' => $products
         ]);
+    }
+
+    /**
+     * Generates the pagination of the items for an array or collection.
+     *
+     * @param array|Collection      $items
+     * @param int   $perPage
+     * @param int  $page
+     * @param array $options
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator(
+            $items->forPage($page, $perPage),
+            $items->count(),
+            $perPage,
+            $page,
+            $options
+        );
     }
 }

@@ -37,7 +37,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="seriessMgmt" class="table table-bordered table-striped">
+                <table id="seriesMgmt" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -48,7 +48,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($seriess as $item)
+                        @foreach ($series as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
@@ -100,12 +100,12 @@
 @section('myJs')
     <script>
         $(function() {
-            $("#seriessMgmt").DataTable({
+            $("#seriesMgmt").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#seriessMgmt_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#seriesMgmt_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection

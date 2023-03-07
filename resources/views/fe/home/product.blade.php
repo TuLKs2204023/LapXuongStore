@@ -12,12 +12,12 @@
         }
 
         /* .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role .bg-info{
-                    font-style: italic;
-                    font-size: 80%;
-                    font-weight: 500;
-                    text-shadow: 2px 2px 10px var(--violet-2nd);
-                }
-                    /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
+                            font-style: italic;
+                            font-size: 80%;
+                            font-weight: 500;
+                            text-shadow: 2px 2px 10px var(--violet-2nd);
+                        }
+                            /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
 
 
         .personal-rating .btn-default,
@@ -166,8 +166,8 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
-                                <img src="{{ asset('images/' . $product->oldestImage->url) }}" alt=""
-                                    class="product-big-img">
+                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $product->oldestImage->url) : '' }}"
+                                    alt="" class="product-big-img">
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
@@ -544,7 +544,8 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ asset('images/' . $relate->oldestImage->url) }}" alt="{{ $relate->name }}">
+                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $relate->oldestImage->url) : '' }}"
+                                    alt="{{ $relate->name }}">
                                 <div class="sale pp-sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>

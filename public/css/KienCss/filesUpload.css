@@ -8,6 +8,11 @@
     display: none;
 }
 
+.myFilesUpload .input-group-btn {
+    display: block;
+    width: 100%;
+    padding-top: 30px;
+}
 .myFilesUpload .box-image {
     position: relative;
     float: left;

@@ -84,12 +84,13 @@ class ResolutionController extends Controller
      * @param  \App\Models\Cates\Resolution  $resolution
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Resolution $resolution)
+    public function update(Request $request)
     {
+        $resolution = Resolution::find($request->id);
         $proData = $this->processData($request);
 
         // Save Resolution
-        $resolution = Resolution::create($proData);
+        $resolution->update($proData);
 
         return redirect()->route('admin.resolution.index');
     }

@@ -1,4 +1,4 @@
-@section('fetitle','- Shop')
+@section('fetitle', '- Shop')
 @extends('fe.layout.layout')
 
 @section('myCss')
@@ -201,7 +201,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- 09 Of {{count($products)}} Product</p>
+                                <p>Show 01- 09 Of {{ $products->total() }} Product</p>
                             </div>
                         </div>
                     </div> <!-- // Main content Header -->
@@ -214,7 +214,7 @@
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="product-item">
                                             <div class="pi-pic">
-                                                <img src="{{ asset('images/' . $item->oldestImage->url) }}"
+                                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                                     alt="{{ $item->name }}">
                                                 <div class="sale pp-sale">Sale</div>
                                                 <div class="icon">
@@ -259,7 +259,7 @@
 
                     <!-- Main content Footer -->
                     <div class="loading-more">
-                          {{$products->links('vendor.pagination.custom')}}
+                        {{ $products->links('vendor.pagination.custom') }}
                     </div> <!-- // Main content Footer -->
 
                 </div> <!-- // Main Content -->
