@@ -56,7 +56,7 @@
                 @endif
 
                 <div class="lan-selector" >
-                    <select name="countries" id="countries" class="language_drop" style="width:150px;">
+                    <select name="countries" id="countries" class="language_drop" style="width:150px">
                         <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}"
                             data-imagecss="flag yt" data-title="English">Eng</option>
                         <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}"

@@ -217,7 +217,7 @@
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
-                                    <h4>{{ number_format($product->price, 0, ',', '.') . ' VND' }}<span>{{ number_format($product->price, 0, ',', '.') . ' VND' }}</span>
+                                    <h4>{{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}<span>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}</span>
                                     </h4>
                                 </div>
                                 <div class="quantity">
@@ -300,7 +300,7 @@
                                                 <td class="p-catagory">Price</td>
                                                 <td>
                                                     <div class="p-price">
-                                                        {{ number_format($product->price, 0, ',', '.') . ' VND' }}
+                                                        {{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -397,26 +397,13 @@
                                                         </div>
                                                             <div
                                                                 @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
-                                                                @elseif ($rating->user->role == 'Manager') 
+                                                                @elseif ($rating->user->role == 'Manager')
                                                                     style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
                                                                 @else
                                                                     style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
                                                                 {{ $rating->user->role }}
                                                             </div>
-                                                            <h5>{{ $rating->user->name }}
-                                                                <span>{{ $rating->created_at }}</span>
-                                                            </h5>
-                                                            <div class="at-reply">{{ $rating->review }}</div>
-                                                            @if (auth()->user())
-                                                                @if (auth()->user()->role == 'Admin')
-                                                                    <button type="submit"
-                                                                        class="btn btn-outline-danger btn-sm">
-                                                                        <i class="fas fa-trash"></i>
-                                                                        Delete
-                                                                    </button>
-                                                                @endif
-                                                            @endif
-                                                        </div>
+
                                                         <h5>{{ $rating->user->name }}
                                                             <span>{{ $rating->created_at }}</span>
                                                         </h5>

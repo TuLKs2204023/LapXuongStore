@@ -100,7 +100,7 @@
                                         Stock
                                     </a>
 
-                                        
+
                                         <a href="{{ URL::to('admin/product/destroy/' . $item->id) }}" class="btn btn-sm btn-danger" id="delete">
                                             <i class="fas fa-trash"></i>
                                             Delete

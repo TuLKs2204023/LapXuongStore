@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Product;
+
 
 class AdminHomeController extends Controller
 {
@@ -43,8 +45,9 @@ class AdminHomeController extends Controller
     }
     public function manager()
     {
-
-        return view('admin.dashboard');
+        $allproduct = Product::all();
+        
+        return view('admin.dashboard',compact('allproduct'));
 
     }
     public function customer()
