@@ -6,61 +6,79 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
-use App\Models\Order;
-use App\Models\User;
+use App\Models\Cates\Demand;
 
 class HomeController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        
-        return view('fe.home.index');
+        $demands = Demand::all();
+        $officeProducts = Product::where('demand_id', 1)->get();
+        $gamingProducts = Product::where('demand_id', 2)->get();
+        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts'));
     }
 
     public function product($slug)
     {
-        $product = Product::where('slug', $slug)->get()->first();
-        return view('fe.home.product', compact('product'));
+        $product = Product::where('slug', $slug)->first();
+        $ratings = $product->ratings->sortByDesc('id');
+        return view('fe.home.product', compact('product', 'ratings'));
     }
 
     public function addCart(Request $request)
     {
+        // Get request information
         $pid = $request->pid;
         $qty = $request->quantity;
 
+        // Determine current product
         $product = Product::find($pid);
-        $cartItem = new CartItem($product, $qty);
 
-        if (session('cart')) {
-            $cart = session('cart');
-        } else {
-            $cart = [];
-        }
+        // Get session 'Cart'
+        session('cart') ? $cart = session('cart') : $cart = [];
 
+        // Find current product in session 'Cart'
         $existedKey = null;
+        $cartQty = $qty;
         if ($cart) {
             foreach ($cart as $cartKey => $cartVal) {
                 if ($cartKey == $pid) {
                     $existedKey = $cartKey;
+                    $cartQty += $cart[$existedKey]->quantity;
                     break;
                 }
             }
         }
 
+        // Check stock availability
+        if ($this->stockBalance($product, $cartQty) < 0) {
+            return $res = array(
+                'stockBalance' => $this->stockBalance($product, $cartQty),
+            );
+        }
+
+        // Add Cart Item
+        $cartItem = new CartItem($product, $qty);
         if ($existedKey) {
-            if ($cart[$existedKey]->quantity !== $qty) {
-                $cart[$existedKey]->quantity = $qty;
-            }
+            $cart[$existedKey]->quantity += $qty;
         } else {
             $cart[$pid] = $cartItem;
             session()->put('cart', $cart);
         }
 
+        // Number of items in Cart
         $total = HomeController::totalCart();
 
+        // Response for HttpRequest
         $res = array(
             'key' => $existedKey,
-            'totalQty' => $total['qty']
+            'totalQty' => $total['qty'],
+            'stockBalance' => $this->stockBalance($product, $cartQty),
         );
         return $res;
     }
@@ -75,6 +93,9 @@ class HomeController extends Controller
         $key = $request->pid;
         $qty = $request->quantity;
 
+        // Determine current product
+        $product = Product::find($key);
+
         $cart[$key]->quantity = $qty;
         $value = $qty * $cart[$key]->product->price;
 
@@ -82,8 +103,10 @@ class HomeController extends Controller
 
         $res = array(
             'curVal' => number_format($value, 0, ',', '.'),
+            'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
-            'totalQty' => $total['qty']
+            'totalQty' => $total['qty'],
+            'stockBalance' => $this->stockBalance($product, $qty),
         );
         return $res;
     }
@@ -118,6 +141,7 @@ class HomeController extends Controller
 
         $total = HomeController::totalCart();
         $res = array(
+            'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
             'totalQty' => $total['qty']
         );
@@ -129,74 +153,35 @@ class HomeController extends Controller
         session()->forget('cart');
     }
 
-    public function checkout()
+    // Check empty cart
+    public function emptyCart(Request $request)
     {
-        $total = HomeController::totalCart();
-        $res = array(
-            'totalVal' => number_format($total['value'], 0, ',', '.'),
-            'totalQty' => $total['qty']
-        );
-        return view('fe.home.checkout', compact('res'));
-    }
-
-    public function processCheckout(Request $request)
-    {
-        if (session('cart')) {
-            // Save Order
-            $orderInfo = $request->all();
-            $orderInfo['order_date'] = date('Y-m-d', time());
-            $orderInfo['user_id'] = session('user')->id;
-            $order = Order::create($orderInfo);
-
-            // Save Order Details
-            $cart = session('cart');
-            $details = [];
-            foreach ($cart as $item) {
-                $details[] = [
-                    'product_id' => $item->product->id,
-                    'price_id' => $item->product->price_id,
-                    'quantity' => $item->quantity,
-                ];
-
-                // $orderDetail = new OrderDetail();
-                // $orderDetail->product_id = $item->product->id;
-                // $orderDetail->price = $item->product->price;
-                // $orderDetail->quantity = $item->quantity;
-                // $order->details()->save($orderDetail);
-            }
-
-            $order->details()->createMany($details);
-
-            $this->clearCart();
-            return view('fe.thankyou');
+        $cart = session('cart');
+        if (!$cart) {
+            return [
+                'emptyCart' => true,
+                'totalQty' => 0,
+            ];
         }
+        return [
+            'route' => route('checkout'),
+        ];
     }
 
-    public function displayCheckout()
+    // Check stock availability
+    public function stockBalance(Product $product, int $cartQty): int
     {
-        // $orders = Order::withCount('details')->get();
-        // foreach ($orders as $order) {
-        //     echo 'OrderID: ' . $order->id . ' - Details records: ' . $order->details_count . ' <br> ';
-        // }
-
-        // $user = User::find(3);
-        // dd($user->latestOrder);
-
-        $product = Product::find(1);
-        $images = $product->images;
-        dd($images);
-        foreach($images as $image) {
-            echo $image->url;
-        }
+        return $product->inStock() - $product->outStock() - $cartQty;
     }
 
-    public function contact(){
+    public function contact()
+    {
         return view('fe.home.contact');
     }
 
-    public function shop(){
-        $products = Product::all();
-        return view('fe.home.shop', compact('products'));
+    public function userProfile()
+    {
+        $user = auth()->user();
+        return view('fe.home.profile', compact('user'));
     }
-
 }

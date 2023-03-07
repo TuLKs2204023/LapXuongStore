@@ -9,7 +9,7 @@ class Price extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'origin', 'discount', 'published_at'];
+    protected $fillable = ['product_id', 'origin', 'stock_id', 'discount', 'published_at'];
 
     /**
      * Get the product that owns this price.
@@ -17,5 +17,9 @@ class Price extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function stock(){
+        return $this->belongsTo(Stock::class);
     }
 }

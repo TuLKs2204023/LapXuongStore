@@ -1,9 +1,9 @@
+@section('title','- CPU')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>CPU Management</h1>
-        <nav>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item active">CPU</li>
@@ -12,6 +12,16 @@
     </div><!-- End Page Title -->
 
     <section class="section">
+        @if (auth()->user()->role == 'Customer')
+        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+
+            <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
+
+            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+
+        </section>
+        @endif
+        @if (auth()->user()->role !== 'Customer')
         <div class="card">
             <div class="card-header">
                 <a class="btn btn-outline-primary" href="{{ Route('admin.cpu.create') }}">
@@ -19,22 +29,9 @@
                     Create New CPU
                 </a>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
@@ -45,7 +42,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            {{-- <th>Image</th> --}}
                             <th>Description</th>
                             <th>Action</th>
                         </tr>
@@ -56,13 +52,6 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
-                                {{-- <td>
-                                    @if (!empty($item->image))
-                                        <img src="{{ asset('images/' . $item->image->url) }}" alt=""
-                                            style="width: 80px; height: auto;">
-                                    @endif
-
-                                </td> --}}
                                 <td>
                                     <ul>
                                         @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
@@ -82,16 +71,10 @@
                                         </i>
                                         Edit
                                     </a>
-                                    <form action="{{ Route('admin.cpu.destroy') }}" method="post"
-                                        style="display:inline-block">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="hidden" name="id" value="{{ $item->id }}">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <a href="{{ URL::to('admin/cpu/destroy/' . $item->id) }}" class="btn btn-sm btn-danger" id="delete">
                                             <i class="fas fa-trash"></i>
                                             Delete
-                                        </button>
-                                    </form>
+                                        </a>
 
                                 </td>
                             </tr>
@@ -120,3 +103,4 @@
         });
     </script>
 @endsection
+@endif

@@ -1,116 +1,145 @@
-/*the container must be positioned relative:*/
-.my-custom-select {
-  position: relative;
-  text-align: left;
+/**
+ * Cross-browser focus ring for explicit focus 
+ * via keyboard-based (eg Tab) navigation or the
+ * .focus-visible utility class.
+ */
+.form-control {
+  transition: all 0.3s;
 }
-.my-custom-select select {
-  display: none; /*hide original SELECT element:*/
+.form-control:hover {
+  border: 1px solid rgba(1, 41, 112, 0.3) !important;
+  box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
 }
-.my-custom-select > .select-selected {
-  color: #333;
-  background-color: #fff;
-}
-.my-custom-select > .select-selected:hover {
-  border: 1px solid #1ac7b6;
-  background-color: #fff;
+input:focus,
+textarea:focus,
+.form-control:focus {
+    outline: 0;
+    box-shadow: 0 0 10px 0 rgba(1, 41, 112, 0.15) !important;
+    border-color: #4154f1 !important;
 }
 
+/**
+ * Remove focus ring for non-explicit scenarios.
+ */
+:focus:not(.focus-visible) {
+    outline: 0;
+    box-shadow: none;
+}
+
+/*the container must be positioned relative:*/
+.my-custom-select {
+    position: relative;
+    text-align: left;
+}
+.my-custom-select select {
+    /*hide original SELECT element:*/
+    display: none; 
+}
+.my-custom-select > .my-custom-select-cont {
+    color: #333;
+    background-color: #fff;
+}
+/* .my-custom-select > .my-custom-select-cont:hover {
+    border: 1px solid #4154f1;
+    background-color: #fff;
+} */
+
 /*style the arrow inside the select element:*/
-.my-custom-select > .select-selected:after {
-  position: absolute;
-  content: "";
-  top: 40%;
-  right: 10px;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
-  border-color: #b3b3b3 transparent transparent transparent;
+.my-custom-select > .my-custom-select-cont:after {
+    position: absolute;
+    content: "";
+    top: 40%;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #b3b3b3 transparent transparent transparent;
 }
 /*point the arrow upwards when the select box is open (active):*/
-.my-custom-select > /* .select-selected.select-arrow-active:after {
+/* .my-custom-select > .my-custom-select-cont.select-arrow-active:after {
   border-color: transparent transparent #b3b3b3 transparent;
   top: 25%;
 } */
 
 /*style the items (options), including the selected item:*/
 .my-custom-select-items div,
-.my-custom-select > .select-selected {
-  color: #333;
-  background-color: #fff;
-  line-height: 1.5rem;
-  padding: 8px 16px;
-  cursor: pointer;
-  user-select: none;
+.my-custom-select > .my-custom-select-cont {
+    color: #333;
+    background-color: #fff;
+    line-height: 1.5rem;
+    padding: 8px 16px;
+    cursor: pointer;
+    user-select: none;
 }
 .my-custom-select-items div {
-  border-left: 4.5px solid #fff;
-  transition: all 0.16s ease-in-out;
+    border-left: 4.5px solid #fff;
+    transition: all 0.16s ease-in-out;
 }
 
 /*style items (options):*/
 .my-custom-select-items {
-  visibility: hidden;
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #b3b3b3;
-  border-radius: 3.5px;
-  top: 100%;
-  left: 0;
-  right: 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  z-index: 99;
-  margin-top: -40px;
-  max-height: 0;
-  overflow: auto;
-  transform: scaleY(0);
-  transform-origin: 90% center;
-  transition: all 0.222s ease-in-out;
-  animation: fadeOut ease-out 0.222s;
+    visibility: hidden;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #b3b3b3;
+    border-radius: 3.5px;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    margin-top: -43px;
+    max-height: 0;
+    overflow: auto;
+    transform: scaleY(0);
+    transform-origin: 90% center;
+    transition: all 0.222s ease-in-out;
+    animation: fadeOut ease-out 0.222s;
 }
 
 /*hide the items when the select box is closed:*/
 .select-show {
-  visibility: visible;
-  max-height: 330px;
-  transform: scaleY(1);
-  transform-origin: 90% center;
-  transition: all 0.222s ease-in-out;
-  animation: fadeIn ease-in 0.222s;
+    visibility: visible;
+    max-height: 330px;
+    transform: scaleY(1);
+    transform-origin: 90% center;
+    transition: all 0.222s ease-in-out;
+    animation: fadeIn ease-in 0.222s;
 }
 
 .my-custom-select-items div:hover,
 .my-custom-select-items .select-hover,
 .same-as-selected {
-  color: #1ac7b6;
-  background-color: #f2f7f7;
-  border-left: 4.5px solid #dfebeb;
+    color: #4154f1;
+    background-color: #f6f9ff;
+    border-left: 4.5px solid#e3e5ee;
 }
-.my-custom-select > .select-selected:hover:after {
-  border-color: #1ac7b6 transparent transparent transparent !important;
+.my-custom-select > .my-custom-select-cont:focus:after {
+    border-color: #4154f1 transparent transparent transparent !important;
 }
-.my-custom-select > .form-group.invalid .select-selected:after {
-  border-color: #f33a58 transparent transparent transparent;
+.my-custom-select > .form-group.invalid .my-custom-select-cont:after {
+    border-color: #f33a58 transparent transparent transparent;
 }
 
 .same-as-selected {
-  border-left: 4.5px solid #1ac7b6 !important;
-  background-color: #f2f7f7 !important;
+    border-left: 4.5px solid #4154f1 !important;
+    background-color: #f6f9ff !important;
 }
 
 .my-custom-select-items::-webkit-scrollbar,
 .my-custom-select-items::-webkit-scrollbar-thumb {
-  width: 8px;
-  border-radius: 13px;
-  background-clip: padding-box;
-  border: 2px solid transparent;
+    width: 8px;
+    border-radius: 13px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
 }
 .my-custom-select-items::-webkit-scrollbar-thumb {
-  box-shadow: inset 0 0 0 6px;
-  color: #636d773c;
+    box-shadow: inset 0 0 0 6px;
+    color: var(--blue-dark-20);
 }
 .my-custom-select-items.more-width::-webkit-scrollbar {
-  width: 14px;
+    width: 14px;
 }
 .my-custom-select-items.more-width::-webkit-scrollbar-thumb {
-  color: rgba(16, 145, 132, 0.533);
+    color: var(--blue-dark-50);
 }

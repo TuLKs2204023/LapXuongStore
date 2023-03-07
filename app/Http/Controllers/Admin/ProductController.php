@@ -9,6 +9,12 @@ use App\Models\Cates\Cpu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Traits\ProcessModelData;
+use App\Models\Cates\Color;
+use App\Models\Cates\Demand;
+use App\Models\Cates\Gpu;
+use App\Models\Cates\Resolution;
+use App\Models\Cates\Series;
+use App\Models\Stock;
 
 class ProductController extends Controller
 {
@@ -23,7 +29,19 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $products->load('images', 'manufacture', 'cpu');
+        $products->load(
+            'images',
+            'manufacture',
+            'cpu',
+            'ram',
+            'screen',
+            'hdd',
+            'ssd',
+            'color',
+            'gpu',
+            'demand',
+            'resolution'
+        );
         return view('admin.product.index')->with(['products' => $products]);
     }
 
@@ -37,10 +55,22 @@ class ProductController extends Controller
         $isUpdate = false;
         $manufactures = Manufacture::all();
         $cpus = Cpu::all();
+        $colors = Color::all();
+        $gpus = Gpu::all();
+        $demands = Demand::all();
+        $series = Series::all();
+        $resolutions = Resolution::all();
+        $imageFiles = false;
         return view('admin.product.create')->with([
             'isUpdate' => $isUpdate,
             'manufactures' => $manufactures,
             'cpus' => $cpus,
+            'colors' => $colors,
+            'gpus' => $gpus,
+            'demands' => $demands,
+            'series' => $series,
+            'resolutions' => $resolutions,
+            'list_images' => $imageFiles
         ]);
     }
 
@@ -54,15 +84,34 @@ class ProductController extends Controller
     {
         $proData = $this->processData($request);
 
+        // Save Ram
+        $proData = $this->processRam($proData);
+
+        // Save Screen
+        $proData = $this->processScreen($proData);
+
+        // Save HDD
+        $proData = $this->processHdd($proData);
+
+        // Save SSD
+        $proData = $this->processSsd($proData);
+
         // Save Product
         $product = Product::create($proData);
+        $product->refresh();
 
         // Save Price
-        $product = $this->processPrice($product, $proData);
+        // $product = $this->processPrice($product, $proData);
+
+        //Save Description
+        $product = $this->processDescription($product, $proData);
 
         // Save Images
         $files = $this->processImage($request);
-        if ($files) {
+        if ($files === false) {
+            return back()->with('errors', 'Only image file-type is accepted.');
+        }
+        if ($files !== null) {
             $product->images()->createMany($files);
         }
 
@@ -89,15 +138,25 @@ class ProductController extends Controller
     public function edit(int $id)
     {
         $product = Product::find($id);
-        $imageFiles = $product->images;
+        $imageFiles = $product->images()->exists() ? $product->images : false;
         $isUpdate = true;
         $manufactures = Manufacture::all();
         $cpus = Cpu::all();
+        $colors = Color::all();
+        $gpus = Gpu::all();
+        $demands = Demand::all();
+        $series = Series::all();
+        $resolutions = Resolution::all();
         return view('admin.product.create')->with([
             'product' => $product,
             'isUpdate' => $isUpdate,
             'manufactures' => $manufactures,
             'cpus' => $cpus,
+            'colors' => $colors,
+            'gpus' => $gpus,
+            'demands' => $demands,
+            'series' => $series,
+            'resolutions' => $resolutions,
             'list_images' => $imageFiles
         ]);
     }
@@ -113,25 +172,41 @@ class ProductController extends Controller
         $product = Product::find($request->id);
         $proData = $this->processData($request);
 
+        // Save Ram
+        $proData = $this->processRam($proData);
+
+        // Save Screen
+        $proData = $this->processScreen($proData);
+
+        // Save HDD
+        $proData = $this->processHdd($proData);
+
+        // Save SSD
+        $proData = $this->processSsd($proData);
+
         // Save Product
         $product->update($proData);
+        $product->refresh();
 
         // Save Price
-        $oldPrice = $product->price;
-        if ($proData['price'] != $oldPrice) {
-            $product = $this->processPrice($product, $proData);
-        }
+        // $oldPrice = $product->price;
+        // if ($proData['price'] != $oldPrice) {
+        //     $product = $this->processPrice($product, $proData);
+        // }
 
-        // Save Image
+        //Save Description
+        $product = $this->processDescription($product, $proData);
+
+        // Save Images
         $files = $this->processImage($request);
-
+        if ($files === false) {
+            return back()->with('errors', 'Only image file-type is accepted.');
+        }
         $images = $product->images;
-
         if (count($images) > 0) {
             $this->removeItems($images, $proData);
         }
-
-        if ($files) {
+        if ($files !== null) {
             $product->images()->createMany($files);
         }
 

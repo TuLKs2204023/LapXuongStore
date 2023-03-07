@@ -1,7 +1,10 @@
 <aside id="sidebar" class="sidebar">
-
     <ul class="sidebar-nav" id="sidebar-nav">
 
+        {{-- ---------------------------------------------------------start Dashboard section--------------------------------------------------------------------- --}}
+
+
+        <!-- Dashboard Nav -->
         <li class="nav-item">
             <a class="nav-link " href="{{ Route('admin.dashboard') }}">
                 <i class="bi bi-grid"></i>
@@ -9,89 +12,159 @@
             </a>
         </li><!-- End Dashboard Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link " href="{{ Route('admin.product.index') }}">
-                <i class="bi bi-tags"></i>
-                <span>Product</span>
-            </a>
-        </li><!-- End Product Nav -->
+        {{-- ---------------------------------------------------------end Dashboard section--------------------------------------------------------------------- --}}
 
-        <li class="nav-item">
-            <a class="nav-link " href="{{ Route('admin.cate.index') }}">
-                <i class="bi bi-menu-button-wide"></i>
-                <span>Categories</span>
-            </a>
-        </li><!-- End Categories Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
-                href="#">
-                <i class="bi bi-cpu"></i><span>Product Specifications</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{Route('admin.manufacture.index')}}">
-                        <i class="bi bi-circle"></i><span>Manufacture</span>
-                    </a>
-                    <a href="{{Route('admin.cpu.index')}}">
-                        <i class="bi bi-circle"></i><span>CPU</span>
-                    </a>
-                </li>
+        {{-- ---------------------------------------------------------start Manager and Admin section--------------------------------------------------------------------- --}}
 
-            </ul>
-        </li><!-- End Forms Nav -->
+        @if (auth()->user()->role !== 'Customer')
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.product.index') }}">
+                    <i class="bi bi-tags"></i>
+                    <span>Product</span>
+                </a>
+            </li><!-- End Product Nav -->
 
-        <li class="nav-heading">Pages</li>
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.cate.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Categories</span>
+                </a>
+            </li><!-- End Categories Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>Profile</span>
-            </a>
-        </li><!-- End Profile Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.promotion.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Promotion</span>
+                </a>
+            </li><!-- End Promotion Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>F.A.Q</span>
-            </a>
-        </li><!-- End F.A.Q Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.stock.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Stock</span>
+                </a>
+            </li><!-- End Stock Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-contact.html">
-                <i class="bi bi-envelope"></i>
-                <span>Contact</span>
-            </a>
-        </li><!-- End Contact Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.wishlist.index') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Wishlist</span>
+                </a>
+            </li><!-- End Wishlist Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-register.html">
-                <i class="bi bi-card-list"></i>
-                <span>Register</span>
-            </a>
-        </li><!-- End Register Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
+                    href="#">
+                    <i class="bi bi-cpu"></i><span>Specifications</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <!-- Manufacture -->
+                        <a href="{{ Route('admin.manufacture.index') }}">
+                            <i class="bi bi-circle"></i><span>Manufacture</span>
+                        </a>
+                        <!--End Manufacture -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-login.html">
-                <i class="bi bi-box-arrow-in-right"></i>
-                <span>Login</span>
-            </a>
-        </li><!-- End Login Page Nav -->
+                        <!-- Series -->
+                        <a href="{{ Route('admin.series.index') }}">
+                            <i class="bi bi-circle"></i><span>Series</span>
+                        </a>
+                        <!--End Series -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-error-404.html">
-                <i class="bi bi-dash-circle"></i>
-                <span>Error 404</span>
-            </a>
-        </li><!-- End Error 404 Page Nav -->
+                        <!-- Demand -->
+                        <a href="{{ Route('admin.demand.index') }}">
+                            <i class="bi bi-circle"></i><span>Demand</span>
+                        </a>
+                        <!--End Demand -->
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-blank.html">
-                <i class="bi bi-file-earmark"></i>
-                <span>Blank</span>
-            </a>
-        </li><!-- End Blank Page Nav -->
+                        <!-- CPU -->
+                        <a href="{{ Route('admin.cpu.index') }}">
+                            <i class="bi bi-circle"></i><span>CPU</span>
+                        </a>
+                        <!--End CPU -->
+
+                        <!-- GPU -->
+                        <a href="{{ Route('admin.gpu.index') }}">
+                            <i class="bi bi-circle"></i><span>GPU</span>
+                        </a>
+                        <!--End GPU -->
+
+                        <!-- Color -->
+                        <a href="{{ Route('admin.color.index') }}">
+                            <i class="bi bi-circle"></i><span>Color</span>
+                        </a>
+                        <!--End Color -->
+
+                        <!-- RAM -->
+                        <a href="{{ Route('admin.ramGroup.index') }}">
+                            <i class="bi bi-circle"></i><span>RAM</span>
+                        </a>
+                        <!--End RAM -->
+
+                        <!-- Screen -->
+                        <a href="{{ Route('admin.screenGroup.index') }}">
+                            <i class="bi bi-circle"></i><span>Screen</span>
+                        </a>
+                        <!--End Screen -->
+
+                        <!-- Resolution -->
+                        <a href="{{ Route('admin.resolution.index') }}">
+                            <i class="bi bi-circle"></i><span>Resolution</span>
+                        </a>
+                        <!--End Resolution -->
+
+                        <!-- HDD -->
+                        <a href="{{ Route('admin.hddGroup.index') }}">
+                            <i class="bi bi-circle"></i><span>HDD</span>
+                        </a>
+                        <!--End HDD -->
+
+                        <!-- SSD -->
+                        <a href="{{ Route('admin.ssdGroup.index') }}">
+                            <i class="bi bi-circle"></i><span>SSD</span>
+                        </a>
+                        <!--End SSD -->
+                    </li>
+                </ul>
+            </li>
+        @endif
+        {{-- ---------------------------------------------------------end Manager and Admin section--------------------------------------------------------------------- --}}
+
+
+
+        {{-- ---------------------------------------------------------start only Admin section--------------------------------------------------------------------- --}}
+        @if (auth()->user()->role == 'Admin')
+            <li class="nav-item">
+                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
+                    href="#">
+                    <i class="bi bi-person"></i><span>User Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <!-- User -->
+                        <a href="{{ URL::to('/all-user') }}">
+                            <i class="bi bi-circle"></i><span>User List</span>
+                        </a>
+                        <!--End UserList -->
+
+                        <!-- User Orders -->
+                        <a href="{{ URL::to('/admin/order/all-orders') }}">
+                            <i class="bi bi-circle"></i><span>User Orders</span>
+                        </a>
+                        <!--End User Orders -->
+
+                        <!-- User Ratings -->
+                        <a href="{{ Route('admin.rating.index') }}">
+                            <i class="bi bi-circle"></i><span>User Ratings</span>
+                        </a>
+                        <!--End User Ratings -->
+
+                    </li>
+                </ul>
+            </li><!-- End Forms Nav -->
+        @endif
+        {{-- ---------------------------------------------------------end only Admin section--------------------------------------------------------------------- --}}
 
     </ul>
-
 </aside>

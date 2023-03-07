@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,6 +14,32 @@ return new class extends Migration
      */
     public function up()
     {
+        // Insert new record for 'hdds' table for testing
+        DB::table('cate_groups')->insert(
+            array(
+                [
+                    'name' => 'Manufacture',
+                    'slug' => 'manufacture'
+                ],
+                [
+                    'name' => 'Series',
+                    'slug' => 'series'
+                ],
+                [
+                    'name' => 'CPU',
+                    'slug' => 'cpu'
+                ],
+                [
+                    'name' => 'GPU',
+                    'slug' => 'gpu'
+                ],
+                [
+                    'name' => 'RAM',
+                    'slug' => 'ram'
+                ],
+            )
+        );
+
         Schema::create('cates', function (Blueprint $table) {
             $table->id();
             $table->string('name');

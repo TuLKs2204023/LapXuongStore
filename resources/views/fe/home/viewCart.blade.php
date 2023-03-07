@@ -1,5 +1,14 @@
+@section('fetitle', '- Cart')
+@section('myCss')
+    <style>
+        .proceed-checkout a.proceed-checkout-btn span {
+            text-transform: capitalize;
+            font-size: 0.8rem;
+            font-weight: lighter;
+        }
+    </style>
+@endsection
 @extends('fe.layout.layout')
-
 @section('content')
     <!-- BREADCUMB SECTION BEGIN-->
     <div class="breadcrumb-section">
@@ -7,8 +16,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <a href="index.html"><i class="fa fa-home"></i>Home</a>
-                        <a href="shop.html">Shop</a>
+                        <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i> Home</a>
+                        <a href="{{ Route('fe.shop.index') }}">Shop</a>
                         <span>Shopping Cart</span>
                     </div>
                 </div>
@@ -39,9 +48,10 @@
                                 @if (session('cart'))
                                     @foreach (session('cart') as $item)
                                         <tr class="pr-cart-item" data-index="{{ $item->product->id }}">
-                                            <td class="cart-pic first-row"><img
-                                                    src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                    alt="{{ $item->product->name }}"></td>
+                                            <td class="cart-pic first-row"><a
+                                                    href="{{ Route('product.details', $item->product->slug) }}"><img
+                                                        src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                        alt="{{ $item->product->name }}"></a></td>
                                             <td class="cart-title first-row">
                                                 <h5>{{ $item->product->name }}</h5>
                                             </td>
@@ -51,6 +61,7 @@
                                                 <div class="quantity">
                                                     <div class="pro-qty">
                                                         <input type="text" value="{{ $item->quantity }}"
+                                                            data-stock="{{ $item->product->inStock() - $item->product->outStock() - $item->quantity }}"
                                                             name="product-quantity">
                                                     </div>
                                                 </div>
@@ -63,7 +74,8 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="6">I'm hungry, feed me some laptops please &#128557; </td>
+                                        <td colspan="6"> &#128557; I'm hungry, feed me some laptops please &#128557;
+                                        </td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -72,8 +84,7 @@
                     <div class="row order-summary">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
-                                <a href="" class="primary-btn continue-shop"> Continue Shopping</a>
-                                <a href="" class="primary-btn up-cart">Update Cart</a>
+                                <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart"> Continue Shopping</a>
                             </div>
                             <div class="discount-coupon">
                                 <h6>Disscount Codes</h6>
@@ -83,6 +94,7 @@
                                 </form>
                             </div>
                         </div>
+
                         <div class="col-lg-4 offset-lg-4">
                             <div class="proceed-checkout">
                                 <ul>
@@ -90,9 +102,14 @@
                                         <span class="ajax-summary">{{ number_format($total['value'], 0, ',', '.') }}
                                             VND</span>
                                     </li>
-                                    <li class="cart-total">Total <span>Total after discount</span></li>
+                                    <li class="cart-total">Total <span
+                                            class="ajax-summary">{{ number_format($total['value'], 0, ',', '.') }}
+                                            VND</span></li>
                                 </ul>
-                                <a href="{{ Route('checkout') }}" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                <a href="{{ Route('checkout') }}" class="proceed-checkout-btn site-btn proceed-btn">
+                                    PROCEED TO CHECK OUT
+                                    <span> (need login)</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -106,7 +123,7 @@
 @section('myJs')
     <script type="module">
         import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
-        import {ConfirmDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
+        import {DeleteDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
 
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
@@ -114,19 +131,25 @@
                     url: '{{ Route('updateCart') }}',
                     token: '{{ csrf_token() }}',
                     isUpdate: true,
-                    cartOrBtnSelector: ".products-cart",
-                    cartItemSelector: ".pr-cart-item",
                     inputName: "product-quantity",
-                    summaryContSelector: ".order-summary",
-                    summariesSelector: ".ajax-summary",
-                    headerCartSelector: ".cart-icon",
+                    selectors: {
+                        cartOrBtnSelector: ".products-cart",
+                        cartItemSelector: ".pr-cart-item",
+                        summaryContSelector: ".order-summary",
+                        summariesSelector: ".ajax-summary",
+                        headerCartSelector: ".cart-icon",
+                        checkoutBtnSelector: ".proceed-checkout-btn",
+                    }
                 });
 
-                const confirmDialog = new ConfirmDialog({
+                const deleteDialog = new DeleteDialog({
                     processUrl: '{{ Route('removeCart') }}',
                     processToken: '{{ csrf_token() }}',
-                    deleteBtn: "td.close-td.first-row",
-                    headerCartSelector: ".cart-icon",
+                    selectors: {
+                        deleteBtn: "td.close-td.first-row",
+                        headerCartSelector: ".cart-icon",
+                        checkoutBtnSelector: ".proceed-checkout-btn",
+                    }
                 });
             }
         });

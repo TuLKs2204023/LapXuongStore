@@ -25,20 +25,24 @@ function toast({
         toast.style.animation = `slideInLeft ease ${slideInDuration}s, fadeOut linear ${fadeOutDuration}s ${fadeOutDelay}s forwards`;
         toast.innerHTML = `
           <div class="myToast">
-              <div class="toast__icon">
-              <i class="${icon}"></i>
-              </div>
-              <div class="toast__body">
-                  <h3 class="toast__title">${title}</h3>
-                  <p class="toast__msg">${message}</p>
-              </div>
-              <div class="toast__close">
-                  <i class="fas fa-times"></i>
-              </div>
+            <div class="toast__content">
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+                
+            <div id="toast__line_container" class="toast__line_container">
+                <div id="toast__line" class="toast__line"></div>
+            </div>
           </div>
-          <div id="toast__line_container" class="toast__line_container">
-              <div id="toast__line" class="toast__line"></div>
-          </div>
+          
           
       `;
         main.appendChild(toast);
@@ -63,19 +67,27 @@ function toast({
     }
 }
 
-function showSuccessToast() {
+function showSuccessToast({
+    title = "Success",
+    message = "Action performed successfully.",
+    duration = 3000,
+}) {
     toast({
-        title: "Success",
-        message: "Cart item added successfully.",
+        title: title,
+        message: message,
         type: "success",
-        duration: 4000,
+        duration: duration,
     });
 }
-function showErrorToast() {
+function showErrorToast({
+    title = "Error",
+    message = "Some errors occurred, please contact the administrator.",
+    duration = 3000,
+}) {
     toast({
-        title: "Fail",
-        message: "Some errors occurred, please contact the administrator.",
+        title: title,
+        message: message,
         type: "error",
-        duration: 4000,
+        duration: duration,
     });
 }

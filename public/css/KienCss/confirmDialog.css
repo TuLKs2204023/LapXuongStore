@@ -1,6 +1,6 @@
 .dialog-container {
     position: fixed;
-    z-index: 1;
+    z-index: 9999;
     left: 0;
     top: 0;
     width: 100%;
@@ -12,14 +12,16 @@
     position: relative;
     padding: 8px 15px 20px;
     background: #eeeeee;
-    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 4px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     max-width: 400px;
     margin: auto;
     display: flex;
     justify-content: center;
     flex-flow: column;
-    border-top: 4px solid #e7ab3c;
+    border-top: 4px solid var(--violet);
 }
 .dialog-header {
     text-align: right;
@@ -29,7 +31,7 @@
     cursor: move;
 }
 .dialog-header .close-btn {
-    font-size: 1.5rem;
+    font-size: 1rem;
     display: inline-block;
     color: #aaa;
     padding: 0;
@@ -38,7 +40,8 @@
 .dialog-header .close-btn:hover,
 .dialog-header .close-btn:focus,
 .dialog-header .close-btn:active {
-    color: #707479;
+    /* color: #707479; */
+    color: var(--violet);
     text-decoration: none;
     cursor: pointer;
     animation: jellyEffect 0.5s !important;
@@ -53,9 +56,18 @@
 }
 .dialog-footer button {
     margin: 0 0.5rem;
-    font-size: 1rem;
-    width: 8rem !important;
-    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    width: 6rem !important;
+    padding: 0.5rem 0.8rem;
+    color: #ffffff;
+    border: none;
+    border-radius: 2px;
+}
+.dialog-footer button.proceed-btn{
+    background-color: var(--violet);
+}
+.dialog-footer button.cancel-btn{
+    background-color: var(--grey-dark);
 }
 .dialog-footer button:hover {
     animation: jellyEffect 0.5s;

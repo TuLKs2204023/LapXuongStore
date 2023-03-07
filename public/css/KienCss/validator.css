@@ -1,0 +1,27 @@
+.myForm {
+    font-size: 0.9rem;
+}
+
+.myForm label.form-label {
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.myForm label.form-label span {
+    display: inline-block;
+}
+
+.myForm label span.form-required,
+.myForm .form-group.invalid .form-message {
+    color: var(--red-warning);
+}
+
+.myForm .form-message {
+    font-size: 0.75rem;
+    font-weight: normal;
+}
+
+.myForm .form-group.invalid .form-control {
+    border-color: var(--red-warning);
+}

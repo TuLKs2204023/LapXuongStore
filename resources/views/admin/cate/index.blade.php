@@ -1,17 +1,28 @@
 @extends('admin.layout.layout')
+@section('title','- Categories')
 
 @section('contents')
+
     <div class="pagetitle">
         <h1>Categories Management</h1>
-        <nav>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item active">Categories</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
     <section class="section">
+        @if (auth()->user()->role == 'Customer')
+        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+
+            <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
+
+            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+
+        </section>
+        @endif
+        @if (auth()->user()->role !== 'Customer')
         <div class="card">
             <div class="card-header">
                 <a class="btn btn-outline-primary" href="{{ Route('admin.cate.create') }}">
@@ -19,22 +30,9 @@
                     Refresh
                 </a>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
                 {{-- <h3 class="card-title">DataTable with default features</h3> --}}
             </div>
@@ -47,7 +45,6 @@
                             <th>Name</th>
                             <th>Cate Group</th>
                             <th>Products</th>
-                            {{-- <th>Image</th> --}}
                             <th>Description</th>
                             {{-- <th>Action</th> --}}
                         </tr>
@@ -59,13 +56,6 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->cate_group->name }}</td>
-                                {{-- <td>
-                                    @if (!empty($item->image))
-                                        <img src="{{ asset('images/' . $item->image->url) }}" alt=""
-                                            style="width: 80px; height: auto;">
-                                    @endif
-
-                                </td> --}}
                                 <td>
                                     <ol>
                                         @if (isset($item->cateable->products))
@@ -74,7 +64,7 @@
                                             @endforeach
                                         @endif
                                         @if (method_exists(get_class($item->cateable), 'cateItems'))
-                                            @foreach ($item->cateable->cateItems() as $subItems)
+                                            @foreach ($item->cateable->cateItems()->load('products') as $subItems)
                                                 @foreach ($subItems->products as $product)
                                                     <li>{{ $product->name }}</li>
                                                 @endforeach
@@ -139,3 +129,4 @@
         });
     </script>
 @endsection
+@endif

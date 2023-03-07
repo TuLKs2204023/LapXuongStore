@@ -33,7 +33,11 @@ class ManufactureController extends Controller
     public function create()
     {
         $isUpdate = false;
-        return view('admin.manufacture.create')->with(['isUpdate' => $isUpdate]);
+        $imageFiles = false;
+        return view('admin.manufacture.create')->with([
+            'isUpdate' => $isUpdate,
+            'list_images' => $imageFiles
+        ]);
     }
 
     /**
@@ -49,10 +53,13 @@ class ManufactureController extends Controller
         // Save Manufacture
         $manufacture = Manufacture::create($proData);
 
-        // Save Images
-        $file = $this->processImage($request);
-        if ($file) {
-            $manufacture->image()->create($file[0]);
+        // Save Image
+        $files = $this->processImage($request);
+        if ($files === false) {
+            return back()->with('errors', 'Only image file-type is accepted.');
+        }
+        if ($files !== null) {
+            $manufacture->image()->create($files[0]);
         }
 
         return redirect()->route('admin.manufacture.index');
@@ -67,11 +74,17 @@ class ManufactureController extends Controller
     public function edit(int $id)
     {
         $manufacture = Manufacture::find($id);
+        if ($manufacture->image()->exists()) {
+            $imageFiles[] = $manufacture->image;
+        } else {
+            $imageFiles = false;
+        }
         $isUpdate = true;
 
         return view('admin.manufacture.create')->with([
             'manufacture' => $manufacture,
-            'isUpdate' => $isUpdate
+            'isUpdate' => $isUpdate,
+            'list_images' => $imageFiles
         ]);
     }
 
@@ -90,16 +103,16 @@ class ManufactureController extends Controller
         $manufacture->update($proData);
 
         // Save Image
-        $file = $this->processImage($request);
-
-        $image[] = $manufacture->image;
-
-        if ($manufacture->image()->count() > 0) {
-            $this->removeItems($image, $proData);
+        $files = $this->processImage($request);
+        if ($files === false) {
+            return back()->with('errors', 'Only image file-type is accepted.');
         }
-
-        if ($file) {
-            $manufacture->image()->create($file[0]);
+        $images[] = $manufacture->image;
+        if ($manufacture->image()->count() > 0) {
+            $this->removeItems($images, $proData);
+        }
+        if ($files !== null) {
+            $manufacture->image()->create($files[0]);
         }
 
         return redirect()->route('admin.manufacture.index');

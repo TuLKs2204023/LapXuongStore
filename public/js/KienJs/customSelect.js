@@ -11,16 +11,21 @@ function CustomSelect(data) {
         const originalOpts = selElmnt.options;
 
         /*for each element, create a new DIV that will act as the selected item:*/
-        const newInput = document.createElement("DIV");
-        newInput.setAttribute("class", "select-selected form-control");
-        newInput.setAttribute("tabindex", "0");
-        newInput.setAttribute("data-name", selElmnt.name + "-custom");
+        const newInputCont = document.createElement("DIV");
         if (selElmnt.getAttribute("rules")) {
-            newInput.setAttribute("rules", selElmnt.getAttribute("rules"));
+            newInputCont.classList.add("my-custom-select-cont", "form-control");
+            newInputCont.setAttribute("tabindex", "0");
+            newInputCont.setAttribute("data-name", selElmnt.name + "-custom");
+            newInputCont.setAttribute("data-value", selElmnt.selectedIndex);
+            newInputCont.setAttribute("rules", selElmnt.getAttribute("rules"));
         }
+        input.appendChild(newInputCont);
 
+        const newInput = document.createElement("DIV");
+        newInput.classList.add("select-selected");
+        // newInput.setAttribute("tabindex", "0");
         newInput.innerHTML = originalOpts[originalOpts.selectedIndex].innerHTML;
-        input.appendChild(newInput);
+        newInputCont.appendChild(newInput);
 
         /*for each element, create a new DIV that will contain the option list:*/
         const newOptsContainer = document.createElement("DIV");
@@ -39,6 +44,7 @@ function CustomSelect(data) {
         const newOpts = newOptsContainer.getElementsByTagName("DIV");
         for (let newOpt of newOpts) {
             newOpt.addEventListener("click", (e) => {
+                e.preventDefault();
                 /*when an item is clicked, update the original select box, and the selected item:*/
                 Array.from(originalOpts).forEach((opt, idx) => {
                     if (opt.innerHTML === e.target.innerHTML) {
@@ -54,28 +60,28 @@ function CustomSelect(data) {
             });
         }
 
-        input.appendChild(newOptsContainer);
+        newInputCont.appendChild(newOptsContainer);
         newOptsContainer.addEventListener("mousemove", (e) => {
             scrollBarHover(newOptsContainer, e);
         });
 
         // Event fired when clicking on the custom select to show items
-        newInput.addEventListener("click", (e) => {
+        newInputCont.addEventListener("click", (e) => {
             /*when the select box is clicked, close any other select boxes,
       and open/close the current select box:*/
             e.stopPropagation();
-            showOptions(e);
+            showOptions(newInputCont);
         });
 
         // Add event for keyboard shortcut
-        newInput.addEventListener("keydown", (e) => {
+        newInputCont.addEventListener("keydown", (e) => {
             if (e.altKey) {
                 switch (e.key) {
                     case "Down":
                     case "ArrowDown":
                     case "Up":
                     case "ArrowUp":
-                        showOptions(e);
+                        showOptions(e.target);
                         addFocus(newOpts, selElmnt);
                         break;
                 }
@@ -186,26 +192,34 @@ function CustomSelect(data) {
         selectedOpt.classList.add("same-as-selected");
         removeFocus(selectedOpt);
 
+        const newnewInputCont = selectedOpt.parentNode.parentNode;
         const newInput = selectedOpt.parentNode.previousSibling;
-        newInput.dataset.value = selectedOpt.dataset.value;
+        newnewInputCont.dataset.value = selectedOpt.dataset.value;
         newInput.innerHTML = selectedOpt.innerHTML;
     }
 
     // Function to show options list
-    function showOptions(e) {
-        closeAllOptions(e.target);
-        e.target.classList.toggle("select-arrow-active");
-        e.target.nextSibling.classList.toggle("select-show");
+    function showOptions(ele) {
+        closeAllOptions(ele);
+        ele.classList.toggle("select-arrow-active");
+        ele.getElementsByClassName(
+            "my-custom-select-items"
+        )[0].classList.toggle("select-show");
     }
 
     // Func. that close all custom-select boxes, except the current one
     function closeAllOptions(elmnt) {
-        const newInputs = document.getElementsByClassName("select-selected");
+        const newInputs = document.getElementsByClassName(
+            "my-custom-select-cont"
+        );
         for (let input of newInputs) {
             if (elmnt !== input) {
                 input.classList.remove("select-arrow-active");
-                input.nextSibling.classList.remove("select-show");
-                const options = input.nextSibling.getElementsByTagName("DIV");
+                const optsList = input.getElementsByClassName(
+                    "my-custom-select-items"
+                )[0];
+                optsList.classList.remove("select-show");
+                const options = optsList.getElementsByTagName("DIV");
                 removeFocus(options[0]);
             }
         }
@@ -232,6 +246,9 @@ function CustomSelect(data) {
         }
     }
 
+    if (!originalInputs[0]) {
+        return false;
+    }
     const formElement = getParent(originalInputs[0], "form");
     formElement.addEventListener("mousemove", (e) => {
         const optsContainer = e.target.closest(".my-custom-select-items");
@@ -239,7 +256,9 @@ function CustomSelect(data) {
         if (optsContainer) {
             scrollBarHover(optsContainer, pageX);
         } else {
-            const inputs = formElement.getElementsByClassName("my-custom-select-items");
+            const inputs = formElement.getElementsByClassName(
+                "my-custom-select-items"
+            );
             Array.from(inputs).forEach((input) => {
                 input.classList.remove("more-width");
             });

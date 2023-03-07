@@ -3,11 +3,11 @@
 namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
-use App\Http\Controllers\FE\HomeController;
+use App\Http\Controllers\FE\HeaderController;
 
 class HeaderComposer
 {
-    public $headerCart;
+    public $headerCart, $cateGroups;
 
     /**
      * Create a header composer.
@@ -16,7 +16,8 @@ class HeaderComposer
      */
     public function __construct()
     {
-        $this->headerCart = HomeController::totalCart();
+        $this->headerCart = HeaderController::totalCart();
+        $this->cateGroups = HeaderController::cateGroups();
     }
 
     /**
@@ -27,6 +28,10 @@ class HeaderComposer
      */
     public function compose(View $view)
     {
-        $view->with('headerCart', $this->headerCart);
+
+        $view->with([
+            'headerCart' => $this->headerCart,
+            'cateGroups' => $this->cateGroups
+        ]);
     }
 }

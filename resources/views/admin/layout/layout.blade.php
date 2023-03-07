@@ -2,15 +2,18 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dashboard - LapShop</title>
+    <title>
+        {{auth()->user()->role}} @yield('title')
+    </title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link rel="icon" type="image/x-icon" href="{{ asset('fav-icon.ico') }}">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
@@ -36,11 +39,24 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
+    <!-- Editor -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/quill/quill.core.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/quill/quill.bubble.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/quill/quill.snow.css') }}">
+
+    <!-- Main Css Styles -->
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    
     <!-- Kien CSS File -->
-    <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/confirmDialog.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/validator.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/filesUpload.css') }}">
 
+    <!--Toastr + SweetAlert -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/FeCss/toast.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
     @yield('myHead')
 
     <!-- =======================================================
@@ -52,6 +68,9 @@
 </head>
 
 <body>
+
+
+
 
     <!-- ======= Header ======= -->
     @include('admin.layout.header')
@@ -104,6 +123,59 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
+    <!-- Editor -->
+    <script src="{{ asset('assets/vendor/quill/quill.core.js') }}"></script>
+    <script src="{{ asset('assets/vendor/quill/quill.js') }}"></script>
+    <script src="{{ asset('plugins/ckeditor/ckeditor.js') }}"></script>
+
+
+    <!--Toastr + SweetAlert  Script-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <!--Toastr + SweetAlert -->
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info':
+                    toastr.info("{{ Session::get('message') }}");
+                    break;
+                case 'success':
+                    toastr.success("{{ Session::get('message') }}");
+                    break;
+                case 'error':
+                    toastr.error("{{ Session::get('message') }}");
+            }
+        @endif
+    </script>
+    <script>
+        $(document).on("click", "#delete",
+            function(e) {
+                e.preventDefault();
+                var link = $(this).attr("href");
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                        window.location.href = link;
+                    }
+                })
+            });
+    </script>
+    <!-- end Toastr + SweetAlert -->
     @yield('myJs')
 </body>
 

@@ -1,54 +1,30 @@
+@section('title', '- Create Product')
 @extends('admin.layout.layout')
 
 @section('myHead')
     <style>
-        .list-images {
-            width: 100%;
-            margin-top: 20px;
-            display: inline-block;
+        .product-spec,
+        .product-desc,
+        .product-image {
+            background-color: #f9fafc;
+            border-radius: 4px;
+            margin: 0 auto !important;
+            padding-bottom: 20px;
+            box-shadow: 2px 2px 6px rgb(1 41 112 / 10%), -2px -2px 6px rgb(1 41 112 / 10%);
         }
 
-        .hidden {
-            display: none;
-        }
-
-        .box-image {
-            position: relative;
-            float: left;
-            margin: 5px 8px;
-        }
-
-        .box-image img {
-            width: auto;
-            height: 120px;
-        }
-
-        .wrap-btn-delete {
-            position: absolute;
-            top: 0;
-            right: 2px;
-            /* height: 2px; */
-            /* font-size: 20px; */
-            font-weight: bold;
+        fieldset>legend {
+            float: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
             color: #fff;
-        }
-
-        .wrap-btn-delete span {
-            border-radius: 2px;
-            background-color: rgba(211, 211, 211, 0.7);
-            padding: 0 5.5px;
-        }
-
-        .wrap-btn-delete span:hover {
-            background-color: rgba(128, 128, 128, 0.7);
-        }
-
-        .btn-delete-image {
-            cursor: pointer;
-        }
-
-        .table {
-            width: 15%;
+            font-weight: bold;
+            text-align: center;
+            width: auto !important;
+            background-color: var(--blue-dark);
+            border-radius: 4px;
+            padding: 10px 50px !important;
+            margin: 0;
         }
     </style>
 @endsection
@@ -56,7 +32,7 @@
 @section('contents')
     <div class="pagetitle">
         <h1>{{ $isUpdate ? 'Edit' : 'Create' }} Product</h1>
-        <nav>
+        <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ Route('admin.product.index') }}">Product Management</a></li>
@@ -66,173 +42,441 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} Product Form</h5>
+        @if (auth()->user()->role == 'Customer')
+            <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Sorry!</strong> There were some troubles with your HTML input.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
 
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
 
-                <!-- Horizontal Form -->
-                <form action="{{ Route($isUpdate ? 'admin.product.update' : 'admin.product.store') }}" method="post"
-                    class="card-body" enctype="multipart/form-data">
-                    @csrf
-                    @if ($isUpdate)
-                        @method('put')
-                        <input type="hidden" name="id" value="{{ $product->id }}">
-                    @endif
-                    <div class="form-group row mb-3">
-                        <label for="name" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="name" name="name" class="form-control"
-                                value="{{ $isUpdate ? $product->name : '' }}">
-                        </div>
-                    </div>
+            </section>
+        @endif
+        @if (auth()->user()->role !== 'Customer')
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} Product Form</h5>
 
-                    <div class="form-group row mb-3">
-                        <label for="manufacture_id" class="col-sm-2 col-form-label">Manufacture</label>
-                        <div class="col-sm-10">
-                            <div class="my-custom-select">
-                                <select id="manufacture_id" name="manufacture_id" class="form-control" rules="required">
-                                    <option value="">--- Select ---</option>
-                                    @foreach ($manufactures as $item)
-                                        <option
-                                            value="{{ $item->id }}"{{ $isUpdate ? ($product->manufacture->id == $item->id ? 'selected' : '') : '' }}>
-                                            {{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <span class="form-message"></span>
-                    </div>
+                    <!-- Message section -->
+                    @include('components.message')
+                    <!-- / Message section -->
 
-                    <div class="form-group row mb-3">
-                        <label for="cpu_id" class="col-sm-2 col-form-label">CPU</label>
-                        <div class="col-sm-10">
-                            <div class="my-custom-select">
-                                <select id="cpu_id" name="cpu_id" class="form-control" rules="required">
-                                    <option value="">--- Select ---</option>
-                                    @foreach ($cpus as $item)
-                                        <option
-                                            value="{{ $item->id }}"{{ $isUpdate ? ($product->cpu->id == $item->id ? 'selected' : '') : '' }}>
-                                            {{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <span class="form-message"></span>
-                    </div>
+                    <!-- Horizontal Form -->
+                    <form action="{{ Route($isUpdate ? 'admin.product.update' : 'admin.product.store') }}" method="post"
+                        class="card-body row g-3 myForm" enctype="multipart/form-data" id="createProduct">
+                        @csrf
+                        @if ($isUpdate)
+                            @method('put')
+                            <input type="hidden" name="id" value="{{ $product->id }}">
+                        @endif
 
-                    <div class="form-group row mb-3">
-                        <label for="price" class="col-sm-2 col-form-label">Price</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="price" name="price" class="form-control"
-                                value="{{ $isUpdate ? $product->price : '' }}">
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-3">
-                        <label for="description" class="col-sm-2 col-form-label">Description</label>
-                        <div class="col-sm-10">
-                            <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($product->description) : '' }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-3">
-                        <label for="photo" class="col-sm-2 col-form-label">Image</label>
-                        <div class="col-sm-10">
-                            <div class="input-group hdtuto control-group lst increment">
-                                <div class="list-input-hidden-upload">
-                                    <input type="file" name="photos[]" id="file_upload" multiple
-                                        class="myfrm form-control hidden">
+                        <div class="product-name">
+                            <!-- Name section -->
+                            <div class="form-group col-md-12">
+                                <label for="name" class="form-label">
+                                    <div>Name<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="name" name="name" class="form-control"
+                                        rules="required" value="{{ $isUpdate ? $product->name : '' }}">
                                 </div>
-                                <div class="input-group-btn">
-                                    <button class="btn btn-success btn-add-image" type="button"><i
-                                            class="fldemo glyphicon glyphicon-plus"></i>+ Add image</button>
-                                </div>
-                            </div>
-                            <div class="list-images">
-                                @if (isset($list_images) && !empty($list_images))
-                                    @foreach ($list_images as $img)
-                                        <div class="box-image">
-                                            <input type="hidden" name="images_edited[]" value="{{ $img->url }}"
-                                                id="img-{{ $img->id }}">
-                                            <img src="{{ asset('images/' . $img->url) }}" class="picture-box">
-                                            <div class="wrap-btn-delete"><span data-id="img-{{ $img->id }}"
-                                                    class="btn-delete-image">x</span></div>
-                                        </div>
-                                    @endforeach
-                                    <input type="hidden" name="id" value="{{ $product->id }}">
-                                @endif
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
-                        <button type="reset" class="btn btn-secondary">Reset</button>
-                    </div>
-                </form><!-- End Horizontal Form -->
+                            </div><!-- / Name section -->
+                        </div>
+
+                        <div class="spacer"></div>
+
+                        <fieldset class="product-spec row g-3">
+                            <legend>Specification</legend>
+
+                            <!-- Manufacture section -->
+                            <div class="form-group col-md-6">
+                                <label for="manufacture_id" class="form-label">
+                                    <div>Manufacture<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <div class="my-custom-select">
+                                        <select id="manufacture_id" name="manufacture_id" class="form-control"
+                                            rules="required">
+                                            <option value="">--- Select ---</option>
+                                            @foreach ($manufactures as $item)
+                                                <option
+                                                    value="{{ $item->id }}"{{ $isUpdate ? ($product->manufacture->id == $item->id ? 'selected' : '') : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / Manufacture section -->
+
+                            <!-- Series section -->
+                            <div class="form-group col-md-6">
+                                <label for="series_id" class="form-label">
+                                    <div>Series<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <div class="my-custom-select">
+                                        <select id="series_id" name="series_id" class="form-control" rules="required">
+                                            <option value="">--- Select ---</option>
+                                            @foreach ($series as $item)
+                                                <option
+                                                    value="{{ $item->id }}"{{ $isUpdate ? ($product->series->id == $item->id ? 'selected' : '') : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / Series section -->
+
+                            <!-- CPU section -->
+                            <div class="form-group col-md-6">
+                                <label for="cpu_id" class="form-label">
+                                    <div>CPU<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <div class="my-custom-select">
+                                        <select id="cpu_id" name="cpu_id" class="form-control" rules="required">
+                                            <option value="">--- Select ---</option>
+                                            @foreach ($cpus as $item)
+                                                <option
+                                                    value="{{ $item->id }}"{{ $isUpdate ? ($product->cpu->id == $item->id ? 'selected' : '') : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / CPU section -->
+
+                            <!-- GPU section -->
+                            <div class="form-group col-md-6">
+                                <label for="gpu_id" class="form-label">
+                                    <div>GPU<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <div class="my-custom-select">
+                                        <select id="gpu_id" name="gpu_id" class="form-control" rules="required">
+                                            <option value="">--- Select ---</option>
+                                            @foreach ($gpus as $item)
+                                                <option
+                                                    value="{{ $item->id }}"{{ $isUpdate ? ($product->gpu->id == $item->id ? 'selected' : '') : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / GPU section -->
+
+                            <!-- RAM section -->
+                            <div class="form-group col-md-4">
+                                <label for="ram" class="form-label">
+                                    <div>RAM<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12 input-group my-input-group">
+                                    <div class="my-custom-select input-group-prepend">
+                                        <select id="ram_select" name="ram_select">
+                                            <option
+                                                value="1"{{ $isUpdate ? ($product->ram->amount < 1024 ? 'selected' : '') : 'selected' }}>
+                                                in GB</option>
+                                            <option
+                                                value="2"{{ $isUpdate ? ($product->ram->amount >= 1024 ? 'selected' : '') : '' }}>
+                                                in TB</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" id="ram" name="ram" class="form-control"
+                                        rules="required|min:0,exclude"
+                                        value="{{ $isUpdate ? ($product->ram->amount < 1024 ? $product->ram->amount : $product->ram->amount / 1024) : '' }}">
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / RAM section -->
+
+                            <!-- HDD section -->
+                            <div class="form-group col-md-4">
+                                <label for="hdd" class="form-label">
+                                    <div>HDD<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12 input-group my-input-group">
+                                    <div class="my-custom-select input-group-prepend">
+                                        <select id="hdd_select" name="hdd_select">
+                                            <option
+                                                value="1"{{ $isUpdate ? ($product->hdd->amount < 1024 ? 'selected' : '') : 'selected' }}>
+                                                in GB</option>
+                                            <option
+                                                value="2"{{ $isUpdate ? ($product->hdd->amount >= 1024 ? 'selected' : '') : '' }}>
+                                                in TB</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" id="hdd" name="hdd" class="form-control"
+                                        rules="required|min:0"
+                                        value="{{ $isUpdate ? ($product->hdd->amount < 1024 ? $product->hdd->amount : $product->hdd->amount / 1024) : '' }}">
+                                    <div class="myTooltip">
+                                        <span class="tooltiptext">0 indicates product has no HDD</span>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / HDD section -->
+
+                            <!-- SSD section -->
+                            <div class="form-group col-md-4">
+                                <label for="ssd" class="form-label">
+                                    <div>SSD<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12 input-group my-input-group">
+                                    <div class="my-custom-select input-group-prepend">
+                                        <select id="ssd_select" name="ssd_select">
+                                            <option
+                                                value="1"{{ $isUpdate ? ($product->ssd->amount < 1024 ? 'selected' : '') : 'selected' }}>
+                                                in GB</option>
+                                            <option
+                                                value="2"{{ $isUpdate ? ($product->ssd->amount >= 1024 ? 'selected' : '') : '' }}>
+                                                in TB</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" id="ssd" name="ssd" class="form-control"
+                                        rules="required|min:0"
+                                        value="{{ $isUpdate ? ($product->ssd->amount < 1024 ? $product->ssd->amount : $product->ssd->amount / 1024) : '' }}">
+                                    <div class="myTooltip">
+                                        <span class="tooltiptext">0 indicates product has no SSD</span>
+                                    </div>
+
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / SSD section -->
+
+                            <!-- Resolution section -->
+                            <div class="form-group col-md-6">
+                                <label for="resolution_id" class="form-label">
+                                    <div>Screen Resolution<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <div class="my-custom-select">
+                                        <select id="resolution_id" name="resolution_id" class="form-control"
+                                            rules="required">
+                                            <option value="">--- Select ---</option>
+                                            @foreach ($resolutions as $item)
+                                                <option
+                                                    value="{{ $item->id }}"{{ $isUpdate ? ($product->resolution->id == $item->id ? 'selected' : '') : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / Resolution section -->
+
+                            <!-- Screen section -->
+                            <div class="form-group col-md-6">
+                                <label for="screen" class="form-label">
+                                    <div>Screen Size<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="screen" name="screen" class="form-control"
+                                        rules="required|min:0,exclude" placeholder="(in inch)"
+                                        value="{{ $isUpdate ? $product->screen->amount : '' }}">
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / Screen section -->
+
+                            <!-- Color section -->
+                            <div class="form-group col-md-6">
+                                <label for="color_id" class="form-label">
+                                    <div>Color<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <div class="my-custom-select">
+                                        <select id="color_id" name="color_id" class="form-control" rules="required">
+                                            <option value="">--- Select ---</option>
+                                            @foreach ($colors as $item)
+                                                <option
+                                                    value="{{ $item->id }}"{{ $isUpdate ? ($product->color->id == $item->id ? 'selected' : '') : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / Color section -->
+
+                            <!-- Demand section -->
+                            <div class="form-group col-md-6">
+                                <label for="demand_id" class="form-label">
+                                    <div>Demand<span class="form-required">&nbsp;*</span></div>
+                                    <span class="form-message"></span>
+                                </label>
+                                <div class="col-sm-12">
+                                    <div class="my-custom-select">
+                                        <select id="demand_id" name="demand_id" class="form-control" rules="required">
+                                            <option value="">--- Select ---</option>
+                                            @foreach ($demands as $item)
+                                                <option
+                                                    value="{{ $item->id }}"{{ $isUpdate ? ($product->demand->id == $item->id ? 'selected' : '') : '' }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span class="form-message"></span>
+                            </div><!-- / Demand section -->
+                        </fieldset>
+
+                        <div class="spacer"></div>
+
+                        {{-- ------------------------------Description section start---------------------------------------------- --}}
+                        <fieldset class="product-desc row g-3">
+                            <legend>Description</legend>
+
+                            <!-- Weight section -->
+                            <div class="form-group col-md-6">
+                                <label for="weight" class="form-label">Weight</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="weight" name="weight" class="form-control"
+                                        placeholder="(in Kg)"
+                                        value="{{ $isUpdate ? $product->description->weight ?? '' : '' }}">
+                                </div>
+                            </div><!-- / Weight section -->
+
+                            <!-- Dimension section -->
+                            <div class="form-group col-md-6">
+                                <label for="dimension" class="form-label">Dimension</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="dimension" name="dimension" class="form-control"
+                                        placeholder="Height x Width x Depth (in cm)"
+                                        value="{{ $isUpdate ? $product->description->dimension ?? '' : '' }}">
+                                </div>
+                            </div><!-- / Dimension section -->
+
+                            <!-- Webcam section -->
+                            <div class="form-group col-md-3">
+                                <label for="webcam" class="form-label">Webcam</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="webcam" name="webcam" class="form-control"
+                                        value="{{ $isUpdate ? $product->description->webcam ?? '' : '' }}">
+                                </div>
+                            </div><!-- / Webcam section -->
+
+                            <!-- OS section -->
+                            <div class="form-group col-md-3">
+                                <label for="o_s" class="form-label">Operating System</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="o_s" name="o_s" class="form-control"
+                                        value="{{ $isUpdate ? $product->description->o_s ?? '' : '' }}">
+                                </div>
+                            </div><!-- / OS section -->
+
+                            <!-- Battery section -->
+                            <div class="form-group col-md-3">
+                                <label for="battery" class="form-label">Battery</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="battery" name="battery" class="form-control"
+                                        placeholder="(in Wh)"
+                                        value="{{ $isUpdate ? $product->description->battery ?? '' : '' }}">
+                                </div>
+                            </div><!-- / Battery section -->
+
+                            <!-- Warranty section -->
+                            <div class="form-group col-md-3">
+                                <label for="warranty" class="form-label">Warranty</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="warranty" name="warranty" class="form-control"
+                                        placeholder="(in month)"
+                                        value="{{ $isUpdate ? $product->description->warranty ?? '' : '' }}">
+                                </div>
+                            </div><!-- / Warranty section -->
+
+                            <!-- Instruction section -->
+                            <div class="form-group col-md-12">
+                                <label for="instruction" class="form-label">Instruction</label>
+                                <div class="col-sm-12">
+                                    <textarea type="text" id="instruction" name="instruction" class="form-control" rows="6">{{ $isUpdate ? $product->description->instruction ?? '' : '' }}</textarea>
+                                </div>
+                            </div><!-- / Instruction section -->
+
+                            <!-- Feature section -->
+                            <div class="form-group col-md-12">
+                                <label for="feature" class="form-label">Feature</label>
+                                <div class="col-sm-12">
+                                    <textarea type="text" id="feature" name="feature" class="form-control" rows="14">{{ $isUpdate ? $product->description->feature ?? '' : '' }}</textarea>
+                                </div>
+                            </div><!-- / Feature section -->
+
+                            <!-- Create the editor container -->
+                            {{-- <div id="quillEditor">
+                                <p>Hello World!</p>
+                                <p>Some initial <strong>bold</strong> text</p>
+                                <p><br></p>
+                            </div> --}}
+                        </fieldset>
+                        {{-- ------------------------------Description section end---------------------------------------------- --}}
+
+                        <div class="spacer"></div>
+
+                        <!-- Images section -->
+                        <fieldset class="product-image">
+                            <legend>Image</legend>
+                            @include('components.imageUpload')
+                        </fieldset>
+                        <!-- / Images section -->
+
+                        <div class="text-center">
+                            <button type="submit"
+                                class="btn btn-primary my-btn">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </form><!-- End Horizontal Form -->
+                </div>
             </div>
-        </div>
-        <!-- /.card -->
+            <!-- /.card -->
     </section>
 @endsection
 
 @section('myJs')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".btn-add-image").click(function() {
-                $('#file_upload').trigger('click');
-            });
-
-            $('.list-input-hidden-upload').on('change', '#file_upload', function(event) {
-                let today = new Date();
-                let time = today.getTime();
-                let image = event.target.files[0];
-                let file_name = event.target.files[0].name;
-                let box_image = $('<div class="box-image"></div>');
-                box_image.append('<img src="' + URL.createObjectURL(image) + '" class="picture-box">');
-                box_image.append('<div class="wrap-btn-delete"><span data-id=' + time +
-                    ' class="btn-delete-image">x</span></div>');
-                $(".list-images").append(box_image);
-
-                $(this).removeAttr('id');
-                $(this).attr('id', time);
-                let input_type_file =
-                    '<input type="file" name="photos[]" id="file_upload" multiple class="myfrm form-control hidden">';
-                $('.list-input-hidden-upload').append(input_type_file);
-            });
-
-            $(".list-images").on('click', '.btn-delete-image', function() {
-                let id = $(this).data('id');
-                $('#' + id).remove();
-                $(this).parents('.box-image').remove();
-            });
-        });
-    </script>
     <script type="module">
+    import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
     import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
+    import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
+
+
     document.addEventListener("readystatechange", (e) => {
         if (e.target.readyState === "complete") {
+
+            // Custom-select
             const customSelect = new CustomSelect({
                 orginialInput: "my-custom-select",
             });
+
+            // Upload images
+            const filesUpload = new FilesUpload({filesUpload: ".myFilesUpload"});
+
+            // Input validation
+            const productForm = new Validator('#createProduct');
+
+            // Replace the <textarea id="editor1"> with a CKEditor 4
+            // instance, using default configuration.
+            CKEDITOR.replace('instruction', {
+                filebrowserBrowseUrl: '{{ route('ckfinder_browser') }}'
+            });
+            CKEDITOR.replace('feature', {
+                filebrowserBrowseUrl: '{{ route('ckfinder_browser') }}'
+            });
         }
     });
-</script>
+
+    </script>
+
+    @include('ckfinder::setup')
+
 @endsection
+@endif

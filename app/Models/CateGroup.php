@@ -14,6 +14,6 @@ class CateGroup extends Model
      */
     public function cates()
     {
-        return $this->hasMany(OrderDetail::class, 'cate_groups_id');
+        return $this->hasMany(Cate::class, 'cate_groups_id');
     }
 }

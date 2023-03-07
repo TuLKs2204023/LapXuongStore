@@ -1,80 +1,51 @@
+@section('fetitle', '- Shop')
 @extends('fe.layout.layout')
 
+@section('myCss')
+    <style>
+        .fa-heart {
+            color: red;
+        }
+    </style>
+@endsection
+
 @section('breader')
- <!-- BREADCUMB SECTION BEGIN-->
- <div class="breadcrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-text">
-                    <a href="index.html"><i class="fa fa-home"></i>HOME</a>
-                    <a href="shop.html">SHOP</a>
-                    <span>DETAILS</span>
+    <!-- BREADCUMB SECTION BEGIN-->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i> Home</a>
+                        <a href="{{ Route('fe.shop.index') }}">Shop</a>
+                        {{-- <span>{{ ($cate->cate_group->name ?? '') . ($cate->name ?? 'All') }}</span> --}}
+                        <span>
+                            @if (isset($cate->cate_group->name))
+                                {{ $cate->cate_group->name . ': ' }}
+                            @endif
+                            @if (isset($cate->name))
+                                {{ $cate->name }}
+                            @else
+                                {{ 'All' }}
+                            @endif
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- BREADCUMB SECTION END-->
+    <!-- BREADCUMB SECTION END-->
 @endsection
 
 @section('content')
-   
+
 
     <!-- PRODUCT-SHOP SECTION BEGIN-->
     <section class="product-shop spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-sm-8 col-md-6 order-2 order-lg-1 produts-sidebar-filter">
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Categories</h4>
-                        <ul class="filter-catagories">
-                            <li><a href="#">Office</a></li>
-                            <li><a href="#">Gaming</a></li>
-                            <li><a href="#">Build</a></li>
-                        </ul>
-                    </div>
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Brand</h4>
-                        <div class="fw-brand-check">
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    MSI
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    ASUS
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    APPLE
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    DELL
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    ANOTHER
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Price Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">Price</h4>
                         <div class="filter-range-wrap">
@@ -92,9 +63,94 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="filter-btn">Filter</a>
+                        {{-- <a href="#" class="filter-btn">Filter</a> --}}
+                    </div> <!-- // Price Filter -->
 
-                    </div>
+                    <!-- Usage Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Usage</h4>
+                        <ul class="filter-catagories">
+                            <li><a href="#">Office</a></li>
+                            <li><a href="#">Gaming</a></li>
+                            <li><a href="#">Build</a></li>
+                        </ul>
+                    </div> <!-- // Usage Filter -->
+
+                    <!-- Manufacture Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Manufacture</h4>
+                        <div class="fw-brand-check">
+                            @foreach ($cateGroups->find(1)->cates as $cate)
+                                <div class="bc-item">
+                                    <label for="bc-calvin">
+                                        {{ $cate->name }}
+                                        <input type="checkbox" id="bc-calvin">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // Manufacture Filter -->
+
+                    <!-- CPU Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">CPU</h4>
+                        <div class="fw-brand-check">
+                            @foreach ($cateGroups->find(3)->cates as $cate)
+                                <div class="bc-item">
+                                    <label for="bc-calvin">
+                                        {{ $cate->name }}
+                                        <input type="checkbox" id="bc-calvin">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // CPU Filter -->
+
+                    <!-- RAM Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">RAM</h4>
+                        <div class="fw-brand-check">
+                            @foreach ($cateGroups->find(5)->cates as $cate)
+                                @if ($cate->cateable->value === null)
+                                    @continue
+                                @endif
+                                <div class="bc-item">
+                                    <label for="bc-calvin">
+                                        {{ $cate->name }}
+                                        <input type="checkbox" id="bc-calvin">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // RAM Filter -->
+
+                    <!-- Screen Size Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Size</h4>
+                        <div class="fw-size-choose">
+                            <div class="sc-item">
+                                <input type="radio" id="s-size">
+                                <label for="s-size">15.6"</label>
+                            </div>
+                            <div class="sc-item">
+                                <input type="radio" id="m-size">
+                                <label for="m-size">16"</label>
+                            </div>
+                            <div class="sc-item">
+                                <input type="radio" id="l-size">
+                                <label for="l-size">21"</label>
+                            </div>
+                            <div class="sc-item">
+                                <input type="radio" id="xs-size">
+                                <label for="xs-size">24"</label>
+                            </div>
+                        </div>
+                    </div> <!-- // Screen Size Filter -->
+
+                    <!-- Accessories Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">LINH KIỆN</h4>
                         <div class="fw-color-choose">
@@ -123,37 +179,21 @@
                                 <label for="cs-green" class="cs-green">APPLE</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Size</h4>
-                        <div class="fw-size-choose">
-                            <div class="sc-item">
-                                <input type="radio" id="s-size">
-                                <label for="s-size">15.6"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="m-size">
-                                <label for="m-size">16"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="l-size">
-                                <label for="l-size">21"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="xs-size">
-                                <label for="xs-size">24"</label>
-                            </div>
-                        </div>
-                    </div>
+                    </div> <!-- // Accessories Filter -->
+
                 </div>
 
+                <!-- Main Content -->
                 <div class="col-lg-9 order-1 order-lg-2">
+                    <!-- Main content Header -->
                     <div class="product-show-option">
                         <div class="row">
                             <div class="col-lg-7 col-md-7">
                                 <div class="select-option">
                                     <select class="sorting">
                                         <option value="">Default Sorting</option>
+                                        <option value="1">Ascending</option>
+                                        <option value="2">Descending</option>
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
@@ -161,10 +201,12 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- 09 Of 36 Product</p>
+                                <p>Show 01- 09 Of {{ $products->total() }} Product</p>
                             </div>
                         </div>
-                    </div>
+                    </div> <!-- // Main content Header -->
+
+                    <!-- Main content Body -->
                     <div class="product-list">
                         <div class="row">
                             @if ($products)
@@ -172,16 +214,24 @@
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="product-item">
                                             <div class="pi-pic">
-                                                <img src="{{ asset('images/' . $item->oldestImage->url) }}"
+                                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                                     alt="{{ $item->name }}">
                                                 <div class="sale pp-sale">Sale</div>
                                                 <div class="icon">
-                                                    <i class="icon_heart_alt"></i>
+                                                    @if ($item->findWishlist())
+                                                        <a href="{{ Route('removeWishlist', $item->id) }}"><i
+                                                                class="fas fa-heart"></i></a>
+                                                    @else
+                                                        <a href="{{ Route('addWishlist', $item->id) }}"><i
+                                                                class="far fa-heart"></i></a>
+                                                    @endif
                                                 </div>
                                                 <ul>
                                                     <li class="w-icon active"><a href="{{ Route('addCart') }}"><i
                                                                 class="icon_bag_alt"></i></a></li>
-                                                    <li class="quick-view"><a href="{{ Route('product.details', $item->slug) }}">+ Quick View</a></li>
+                                                    <li class="quick-view"><a
+                                                            href="{{ Route('product.details', $item->slug) }}">+ Quick
+                                                            View</a></li>
                                                     <li class="w-icon"><a href=""><i class="fa fa-random"></i></a>
                                                     </li>
                                                 </ul>
@@ -198,20 +248,44 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- @endforeach --}}
                                 @endforeach
                             @else
                                 <div class="col-lg-4 col-sm-6">No Product</div>
                             @endif
 
                         </div>
-                    </div>
+                    </div> <!-- // Main content Body -->
+
+                    <!-- Main content Footer -->
                     <div class="loading-more">
-                        <i class="icon_loading"></i>
-                        <a href="">Loading More</a>
-                    </div>
-                </div>
+                        {{ $products->links('vendor.pagination.custom') }}
+                    </div> <!-- // Main content Footer -->
+
+                </div> <!-- // Main Content -->
             </div>
         </div>
     </section>
     <!-- PRODUCT-SHOP SECTION END-->
+@endsection
+
+@section('myJs')
+    <script>
+        const empty = document.querySelectorAll(".product-item .pi-pic .icon .fa-heart");
+        let isFilled = false;
+
+        empty.forEach(element => {
+            element.onclick = function() {
+                if (!isFilled) {
+                    isFilled = true;
+                    element.classList.remove('far');
+                    element.classList.add('fas');
+                } else {
+                    isFilled = false;
+                    element.classList.remove('fas');
+                    element.classList.add('far');
+                }
+            };
+        });
+    </script>
 @endsection

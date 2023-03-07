@@ -4,21 +4,63 @@
             <div class="ht-left">
                 <div class="mail-service">
                     <i class="fa fa-envelope"></i>
-                    daoducbinh62@gmail.com
+                    LapXuongShop@gmail.com
                 </div>
                 <div class="phone-service">
                     <i class="fa fa-phone"></i>
-                    0522765313
+                    03979-3979-3979
                 </div>
             </div>
             <div class="ht-right">
-                <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                <div class="lan-selector">
-                    <select name="countries" id="countries" class="language_drop" style="width:300px;">
-                        <option value="yt" data-image="front/img/flag-1.jpg" data-imagecss="flag yt"
-                            data-title="English">English</option>
-                        <option value="yu" data-image="front/img/flag-2.jpg" data-imagecss="flag yu"
-                            data-title="Bangladesh">German</option>
+                @if (Route::has('login'))
+                    @auth
+                        @if (auth()->user()->role == 'Customer')
+                            <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
+                                style="padding-top:10px;padding-bottom: 7px;" style="width:80px "
+                                type="submit">{{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
+                            </a>
+                        @endif
+                        @if (auth()->user()->role == 'Admin')
+                            <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
+                                Hello {{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle" style="
+                                    height: 40px ;width:40px; margin-left:20px;">
+                            </a>
+                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
+                                type="submit">Setting</a>
+                        @endif
+                        @if (auth()->user()->role == 'Manager')
+                            <a href="{{ url('manager') }}" class="login-panel"
+                                style="padding-top:10px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px"></a>
+                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
+                                type="submit">Setting</a>
+                        @endif
+                    @else
+                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
+                    @endauth
+                @endif
+
+                <div class="lan-selector" >
+                    <select name="countries" id="countries" class="language_drop" style="width:150px">
+                        <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}"
+                            data-imagecss="flag yt" data-title="English">Eng</option>
+                        <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}"
+                            data-imagecss="flag yu" data-title="Vietnamese" >Vie</option>
                     </select>
                 </div>
 
@@ -31,13 +73,13 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="inner-header">
             <div class="row">
-                <div class="col-lg-2 col-md-2">
+                <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="front/img/logo3.png" height="30" alt="">
+                            <img src="{{asset('frontend/img/logo3.png')}}" height="30" alt="">
                         </a>
                     </div>
                 </div>
@@ -45,17 +87,22 @@
                     <div class="advanced-search">
                         <button type="button" class="category-btn">All Categories</button>
                         <div class="input-group">
-                            <input type="text" placeholder="What do you need">
+                            <input type="text" placeholder="Type something to search ... ">
                             <button type="button"><i class="ti-search"></i></button>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 text-right">
+                <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">
                         <li class="heart-icon">
-                            <a href="#">
+                            <a href="{{ Route('wishlist') }}">
                                 <i class="icon_heart_alt"></i>
-                                <span>2</span>
+                                @if (auth()->user())
+                                    <span>{{ count(auth()->user()->wishlistItems) }}</span>
+                                @else
+                                    <span>0</span>
+                                @endif
+
                             </a>
                         </li>
                         <li class="cart-icon">
@@ -63,7 +110,7 @@
                                 <i class="icon_bag_alt"></i>
                                 <span class="index">{{ $headerCart['qty'] }}</span>
                             </a>
-                            <div class="cart-hover">
+                            <div class="cart-hover shadowed">
                                 <div class="select-items">
                                     <table>
                                         <tbody>
@@ -96,13 +143,11 @@
                                     </table>
                                 </div>
                                 <div class="select-button">
-                                    <a href="{{ Route('viewCart') }}" class="primary-btn view-card">VIEW CART</a>
-                                    <a href="{{ Route('checkout') }}" class="primary-btn checkout-btn">CHECK OUT</a>
+                                    <a href="{{ Route('viewCart') }}" class="site-btn-alt view-card">VIEW CART</a>
+                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK OUT</a>
                                 </div>
-
                             </div>
                         </li>
-                        <li class="cart-price">$3,000.00</li>
                     </ul>
                 </div>
             </div>
@@ -110,48 +155,54 @@
     </div>
     <div class="nav-item">
         <div class="container">
-            <div class="nav-depart">
-                <div class="depart-btn">
+            <div class="nav-categories">
+                <div class="cate-btn">
                     <i class="ti-menu"></i>
-                    <span>All Department</span>
-                    <ul class="depart-hover">
-                        <li class="active"><a href="#">Laptop Gaming</a></li>
-                        <li><a href="#">PC Gaming</a></li>
-                        <li><a href="#">Apple</a></li>
-                        <li><a href="#">Màn Hình</a></li>
-                        <li><a href="#">Linh Kiện</a></li>
-                        <li><a href="#">Ghế-Bàn</a></li>
-                        <li><a href="#">Phần Mềm & Mạng</a></li>
-                        <li><a href="#">PC Doanh Nghiệp</a></li>
-                    </ul>
+                    <span>Categories</span>
                 </div>
             </div>
 
             <nav class="nav-menu mobile-menu">
                 <ul>
-                    <li class="active"><a href="{{ Route('feHome') }}">Home</a></li>
-                    <li><a href="{{ Route('shop') }}">Shop</a></li>
-                    <li><a href="">Product</a>
+                    <li><a href="{{ Route('fe.home') }}">Home</a></li>
+                    <li><a href="{{ Route('fe.shop.index') }}">Shop</a></li>
+                    {{-- <li><a href="">Product</a>
                         <ul class="dropdown">
                             <li><a href="">Thương Hiệu</a></li>
                             <li><a href="">Giá Bán</a></li>
                             <li><a href="">Mục Đích</a></li>
                         </ul>
-                    </li>
-                    <li><a href="blog.html">Blogs</a></li>
-                    <li><a href="{{ Route('contact') }}">Contact</a></li>
-                    <li><a href="">Pages</a>
+                    </li> --}}
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="{{ Route('fe.contact') }}">Contact Us</a></li>
+                    {{-- <li><a href="">Pages</a>
                         <ul class="dropdown">
                             <li><a href="blog-detail.html">Blog Detail</a></li>
-                            <li><a href="{{ Route('shop') }}">Shopping Cart</a></li>
+                            <li><a href="">Shopping Cart</a></li>
                             <li><a href="{{ Route('checkout') }}">Check Out</a></li>
                             <li><a href="faq.html">Faq</a></li>
                             <li><a href="{{ Route('register') }}">Register</a></li>
                             <li><a href="{{ Route('login') }}">Login</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
         </div>
+    </div>
+    <div class="nav-fake-categories">
+        <div class="cate-btn my-toggle"></div>
+        <ul class="category-list my-toggle-content myScrollbar">
+            @foreach ($cateGroups as $cateGroup)
+                <li>
+                    <div class="category-list-header">{{ $cateGroup->name }}</div>
+                    <ul>
+                        @foreach ($cateGroup->cates as $cate)
+                            <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+            @endforeach
+        </ul>
     </div>
 </header>
