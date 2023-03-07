@@ -1,4 +1,13 @@
 @section('fetitle', '- Cart')
+@section('myCss')
+    <style>
+        .proceed-checkout a.proceed-checkout-btn span {
+            text-transform: capitalize;
+            font-size: 0.8rem;
+            font-weight: lighter;
+        }
+    </style>
+@endsection
 @extends('fe.layout.layout')
 @section('content')
     <!-- BREADCUMB SECTION BEGIN-->
@@ -97,9 +106,10 @@
                                             class="ajax-summary">{{ number_format($total['value'], 0, ',', '.') }}
                                             VND</span></li>
                                 </ul>
-                                <a href="{{ Route('checkout') }}" class="proceed-checkout-btn site-btn proceed-btn">PROCEED
-                                    TO CHECK
-                                    OUT</a>
+                                <a href="{{ Route('checkout') }}" class="proceed-checkout-btn site-btn proceed-btn">
+                                    PROCEED TO CHECK OUT
+                                    <span> (need login)</span>
+                                </a>
                             </div>
                         </div>
                     </div>

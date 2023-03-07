@@ -70,7 +70,7 @@ class SeriesController extends Controller
         $series = Series::find($id);
         $isUpdate = true;
 
-        return view('admin.cpu.create')->with([
+        return view('admin.series.create')->with([
             'series' => $series,
             'isUpdate' => $isUpdate
         ]);
@@ -83,7 +83,7 @@ class SeriesController extends Controller
      * @param  \App\Models\Cates\Series  $series
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Series $series)
+    public function update(Request $request)
     {
         $series = Series::find($request->id);
         $proData = $this->processData($request);

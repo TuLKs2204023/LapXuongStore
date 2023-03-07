@@ -44,10 +44,14 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/quill/quill.bubble.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/quill/quill.snow.css') }}">
 
+    <!-- Main Css Styles -->
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    
     <!-- Kien CSS File -->
-    <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/confirmDialog.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/toast.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/KienCss/validator.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/filesUpload.css') }}">
 
     <!--Toastr + SweetAlert -->
@@ -121,7 +125,6 @@
 
     <!-- Editor -->
     <script src="{{ asset('assets/vendor/quill/quill.core.js') }}"></script>
-    <script src="{{ asset('assets/vendor/quill/quill.js') }}"></script>
     <script src="{{ asset('assets/vendor/quill/quill.js') }}"></script>
     <script src="{{ asset('plugins/ckeditor/ckeditor.js') }}"></script>
 
