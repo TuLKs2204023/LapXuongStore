@@ -13,7 +13,7 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-        @if (auth()->user()->role == 'Adminr')
+        @if (auth()->user()->role == 'Admin')
         <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
             <h2>Sorry ! The page you are looking only availabled for Customer and Manager !</h2>
@@ -25,7 +25,7 @@
         @if (auth()->user()->role !== 'Admin')
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Create User Form</h5>
+                <h5 class="card-title">Edit User Form</h5>
 
                 <!-- Message Section -->
                 @include('components.message')

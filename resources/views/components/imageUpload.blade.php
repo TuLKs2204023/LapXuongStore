@@ -1,13 +1,13 @@
-<div class="form-group row mb-3 myFilesUpload">
-    <label for="photo" class="col-sm-2 col-form-label">Image</label>
-    <div class="col-sm-10">
+<div class="form-group col-md-12 myFilesUpload">
+    {{-- <label for="photo" class="col-sm-2 col-form-label">Image</label> --}}
+    <div class="col-sm-12">
         <div class="input-group hdtuto control-group lst increment">
             <div class="list-input-hidden-upload">
                 <input type="file" name="photos[]" id="file_upload" multiple
                     class="myfrm form-control hidden">
             </div>
             <div class="input-group-btn">
-                <button class="btn btn-success btn-add-image" type="button">
+                <button class="btn-add-image" type="button">
                     <i class="fldemo glyphicon glyphicon-plus"></i>
                     + Add image
                 </button>

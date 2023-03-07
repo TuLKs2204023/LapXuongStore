@@ -8,55 +8,59 @@
                 </div>
                 <div class="phone-service">
                     <i class="fa fa-phone"></i>
-                    0522765313
+                    03979-3979-3979
                 </div>
             </div>
             <div class="ht-right">
                 @if (Route::has('login'))
                     @auth
                         @if (auth()->user()->role == 'Customer')
-                            <a href="{{ url('profile') }}" class="login-panel">Home</a>
-                        @endif
-                        @if (auth()->user()->role !== 'Customer')
-                            <a href="{{ url('admin') }}" class="login-panel">Home</a>
-                        @endif
-                    @else
-                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                    @endauth
-                @endif
-                <!-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> -->
-
-
-                                <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
+                            <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                                <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
-                                    style="width:80px " type="submit">{{ auth()->user()->name }}</a>
-
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
+                                style="padding-top:10px;padding-bottom: 7px;" style="width:80px "
+                                type="submit">{{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
+                            </a>
                         @endif
                         @if (auth()->user()->role == 'Admin')
-                            <a href="{{ url('admin') }}" class="login-panel"> Hello {{ auth()->user()->name }}</a>
+                            <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
+                                Hello {{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle" style="
+                                    height: 40px ;width:40px; margin-left:20px;">
+                            </a>
+                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
+                                type="submit">Setting</a>
                         @endif
                         @if (auth()->user()->role == 'Manager')
-                            <a href="{{ url('manager') }}" class="login-panel"> Hello {{ auth()->user()->name }}</a>
-                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius"
-                                    style="width:90px " type="submit">Setting</a>
+                            <a href="{{ url('manager') }}" class="login-panel"
+                                style="padding-top:10px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px"></a>
+                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
+                                type="submit">Setting</a>
                         @endif
                     @else
                         <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
                     @endauth
                 @endif
-                <div class="lan-selector">
-                    <select name="countries" id="countries" class="language_drop" style="width:300px;">
-                        <option value="yt" data-image="front/img/flag-1.jpg" data-imagecss="flag yt"
-                            data-title="English">English</option>
-                        <option value="yu" data-image="front/img/flag-2.jpg" data-imagecss="flag yu"
-                            data-title="Bangladesh">German</option>
+
+                <div class="lan-selector" >
+                    <select name="countries" id="countries" class="language_drop" style="width:150px">
+                        <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}"
+                            data-imagecss="flag yt" data-title="English">Eng</option>
+                        <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}"
+                            data-imagecss="flag yu" data-title="Vietnamese" >Vie</option>
                     </select>
                 </div>
 
@@ -69,13 +73,13 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="inner-header">
             <div class="row">
                 <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="front/img/logo3.png" height="30" alt="">
+                            <img src="{{asset('frontend/img/logo3.png')}}" height="30" alt="">
                         </a>
                     </div>
                 </div>
@@ -91,9 +95,14 @@
                 <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">
                         <li class="heart-icon">
-                            <a href="#">
+                            <a href="{{ Route('wishlist') }}">
                                 <i class="icon_heart_alt"></i>
-                                <span>2</span>
+                                @if (auth()->user())
+                                    <span>{{ count(auth()->user()->wishlistItems) }}</span>
+                                @else
+                                    <span>0</span>
+                                @endif
+
                             </a>
                         </li>
                         <li class="cart-icon">
@@ -101,7 +110,7 @@
                                 <i class="icon_bag_alt"></i>
                                 <span class="index">{{ $headerCart['qty'] }}</span>
                             </a>
-                            <div class="cart-hover">
+                            <div class="cart-hover shadowed">
                                 <div class="select-items">
                                     <table>
                                         <tbody>
@@ -134,13 +143,11 @@
                                     </table>
                                 </div>
                                 <div class="select-button">
-                                    <a href="{{ Route('viewCart') }}" class="primary-btn view-card">VIEW CART</a>
-                                    <a href="{{ Route('checkout') }}" class="primary-btn checkout-btn">CHECK OUT</a>
+                                    <a href="{{ Route('viewCart') }}" class="site-btn-alt view-card">VIEW CART</a>
+                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK OUT</a>
                                 </div>
-
                             </div>
                         </li>
-                        <li class="cart-price">$3,000.00</li>
                     </ul>
                 </div>
             </div>
@@ -184,7 +191,7 @@
     </div>
     <div class="nav-fake-categories">
         <div class="cate-btn my-toggle"></div>
-        <ul class="category-list my-toggle-content">
+        <ul class="category-list my-toggle-content myScrollbar">
             @foreach ($cateGroups as $cateGroup)
                 <li>
                     <div class="category-list-header">{{ $cateGroup->name }}</div>

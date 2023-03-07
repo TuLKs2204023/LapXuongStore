@@ -1,73 +1,35 @@
-import { toast } from "./toast.js";
-import { getParent, updateCart, updateCartHeader } from "./cart.js";
+import { showSuccessToast } from "./toast.js";
+import {
+    getParent,
+    processUpdateCartPage,
+    updateCartHeader,
+    preventCheckout,
+} from "./cart.js";
 
-export { ConfirmDialog };
+export { ConfirmDialog, DeleteDialog };
 
 $ = document.querySelector.bind(document);
 
-function ConfirmDialog({
-    processUrl = "",
-    processToken = "",
-    rowsContainer = ".products-cart",
-    selectedContainer = ".pr-cart-item",
-    deleteBtn = "a.btn.btn-delete",
-    cartOrBtnSelector = ".products-cart",
-    summaryContSelector = ".order-summary",
-    summariesSelector = ".ajax-summary",
-    headerCartSelector = ".minicart",
-}) {
-    const selectedItm = {
-        code: "",
-        row: "",
+function ConfirmDialog(request) {
+    const configs = {
         scrollY: "",
-    };
-
-    const dialog = {
         offset_top: "",
         offset_left: 0,
     };
 
     const dialog_container = $(".dialog-container");
+    if (!dialog_container) return false;
 
-    if (!dialog_container) {
-        return false;
-    }
     const dialog_content = dialog_container.querySelector(".dialog-content");
-
-    if (!dialog_content) {
-        return false;
-    }
-
-    // Add Event-Listener for buttons
-    const rows = $(rowsContainer);
-    if (!rows) {
-        return false;
-    }
-    const confirmBtn = rows.querySelectorAll(deleteBtn);
-    if (confirmBtn) {
-        for (let btn of confirmBtn) {
-            btn.onclick = (e) => {
-                e.preventDefault();
-                selectedItm.row = getParent(e.target, selectedContainer);
-                selectedItm.code = selectedItm.row.dataset.index;
-                setTimeout(() => {
-                    showDialog();
-                }, 0);
-            };
-        }
-    }
+    if (!dialog_content) return false;
 
     const proceedBtn = dialog_container.querySelector(".proceed-btn");
     if (proceedBtn) {
         proceedBtn.onclick = (e) => {
             e.preventDefault();
-            const phpRequest = new PhpAjaxRequest(
-                selectedItm,
-                processUrl,
-                processToken,
-                deleteSuccess
-            );
-            phpRequest.processDelete();
+            if (request instanceof ajaxRequest) {
+                request.processAjaxReq(closeDialog);
+            }
         };
     }
     const cancelBtns = dialog_container.querySelectorAll(".cancel-btn");
@@ -75,14 +37,14 @@ function ConfirmDialog({
         for (let btn of cancelBtns) {
             btn.onclick = (e) => {
                 e.preventDefault();
-                hideDialog();
+                closeDialog();
             };
         }
     }
     window.onclick = (e) => {
         if (e.target === dialog_container) {
             e.preventDefault();
-            hideDialog();
+            closeDialog();
         }
     };
 
@@ -92,51 +54,36 @@ function ConfirmDialog({
             !dialog_container.style.display ||
             dialog_container.style.display === "none"
         ) {
-            selectedItm.scrollY = window.scrollY;
-            window.scrollTo(0, selectedItm.scrollY || 0);
+            configs.scrollY = window.scrollY;
+            window.scrollTo(0, configs.scrollY || 0);
 
             dialog_container.style.display = "block";
             containerAnimate.animate(containerAnimate.type.fadeIn);
             contentAnimate.animate(contentAnimate.type.zoomIn);
 
-            dialog.offset_left = dialog_content.offsetLeft;
-            dialog.offset_top =
+            configs.offset_left = dialog_content.offsetLeft;
+            configs.offset_top =
                 50 -
                 (dialog_content.offsetHeight / screen.height / 2) * 100 +
                 "%";
 
-            dialog_content.style.top = dialog.offset_top;
+            dialog_content.style.top = configs.offset_top;
         }
     }
 
     // Defining function assigned to Delete Cancelation event
-    function hideDialog() {
+    function closeDialog() {
         containerAnimate.animate(containerAnimate.type.fadeOut);
         contentAnimate.animate(contentAnimate.type.zoomOut);
-        // dialog.style.position = "";
-        // dialog.style.top = "";
-        window.scrollTo(0, selectedItm.scrollY || 0);
+        // configs.style.position = "";
+        // configs.style.top = "";
+        window.scrollTo(0, configs.scrollY || 0);
         setTimeout(() => {
             dialog_container.style.display = "none";
 
             dialog_content.style.left = 0;
-            dialog_content.style.top = dialog.offset_top;
+            dialog_content.style.top = configs.offset_top;
         }, 300);
-    }
-
-    function deleteSuccess(ajaxHttpRequest) {
-        updateCart(ajaxHttpRequest, cartOrBtnSelector, summaryContSelector, summariesSelector);
-        updateCartHeader(ajaxHttpRequest, headerCartSelector);
-        hideDialog();
-
-        setTimeout(() => {
-            toast({
-                title: "Success",
-                message: "Cart item removed successfully.",
-                type: "success",
-                duration: 2000,
-            });
-        }, 100);
     }
 
     dragElement(dialog_content);
@@ -172,7 +119,7 @@ function ConfirmDialog({
             e = e || window.event;
             e.preventDefault();
             // calculate the new cursor position:
-            posX_cur = posX_base - e.clientX + dialog.offset_left;
+            posX_cur = posX_base - e.clientX + configs.offset_left;
             posY_cur = posY_base - e.clientY;
             posX_base = e.clientX;
             posY_base = e.clientY;
@@ -205,41 +152,135 @@ function ConfirmDialog({
         }
         return { type, animate };
     }
+    return {
+        showDialog,
+        closeDialog,
+    };
+}
 
-    // Defining for calling PhpAjax functions
-    class PhpAjaxRequest {
-        constructor(selector, processUrl, token, callback) {
-            this.selector = selector;
-            this.processUrl = processUrl;
-            this.token = token;
-            this.callback = callback;
-        }
-        // Defining function to proceed Delete confirmation
-        processDelete() {
-            const iRow = this.selector["row"];
-            const params = {
-                pid: iRow.dataset.index,
-                _token: this.token,
+function DeleteDialog({
+    processUrl = "",
+    processToken = "",
+    selectors: {
+        rowsContainer = ".products-cart",
+        selectedContainer = ".pr-cart-item",
+        deleteBtn = "a.btn.btn-delete",
+        summaryContSelector = ".order-summary",
+        summariesSelector = ".ajax-summary",
+        headerCartSelector = ".minicart",
+        checkoutBtnSelector = ".proceed-checkout-btn",
+    },
+}) {
+    const selectors = {
+        rowsContainer,
+        selectedContainer,
+        deleteBtn,
+        cartOrBtnSelector: rowsContainer,
+        summaryContSelector,
+        summariesSelector,
+        headerCartSelector,
+        checkoutBtnSelector,
+    };
+
+    const selectedItm = {
+        code: "",
+        row: "",
+    };
+
+    // Add Event-Listener for buttons
+    const rows = $(selectors["rowsContainer"]);
+    if (!rows) return false;
+
+    const confirmBtn = rows.querySelectorAll(selectors["deleteBtn"]);
+    if (confirmBtn) {
+        for (let btn of confirmBtn) {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                selectedItm.row = getParent(
+                    e.target,
+                    selectors["selectedContainer"]
+                );
+                selectedItm.code = selectedItm.row.dataset.index;
+                const ajaxReq = new ajaxRequest(
+                    selectedItm,
+                    processUrl,
+                    processToken,
+                    deleteSuccess
+                );
+                // Call confirm Dialog
+                const confirmDialog = new ConfirmDialog(ajaxReq);
+
+                setTimeout(() => {
+                    confirmDialog.showDialog();
+                }, 0);
             };
+        }
+    }
 
-            const ajaxHttpRequest = new XMLHttpRequest();
+    function deleteSuccess(ajaxReq, closeDialog) {
+        const res = JSON.parse(ajaxReq.responseText);
+        processUpdateCartPage({
+            res,
+            selectors,
+        });
+        updateCartHeader(res, selectors);
 
-            ajaxHttpRequest.onreadystatechange = () => {
-                if (
-                    ajaxHttpRequest.readyState == 4 &&
-                    ajaxHttpRequest.status == 200
-                ) {
-                    iRow.remove();
-                    this.callback(ajaxHttpRequest);
+        // Check empty Cart
+        const checkoutBtn = $(selectors["checkoutBtnSelector"]);
+        if (checkoutBtn) {
+            const productCart = document.getElementsByClassName(
+                selectors["rowsContainer"].substring(1)
+            )[0];
+            if (productCart) {
+                const productItms = productCart.getElementsByTagName("input");
+                if (productItms) {
+                    preventCheckout(checkoutBtn, !productItms.length);
                 }
-            };
-
-            ajaxHttpRequest.open("POST", this.processUrl, true);
-            ajaxHttpRequest.setRequestHeader(
-                "Content-type",
-                "application/json;charset=UTF-8"
-            );
-            ajaxHttpRequest.send(JSON.stringify(params));
+            }
         }
+
+        closeDialog();
+
+        setTimeout(() => {
+            showSuccessToast({
+                title: "Success",
+                message: "Cart item removed successfully.",
+                duration: 3000,
+            });
+        }, 100);
+    }
+}
+
+// Define object for calling ajax-request
+class ajaxRequest {
+    constructor(selector, processUrl, token, callback) {
+        this.selector = selector;
+        this.processUrl = processUrl;
+        this.token = token;
+        this.callback = callback;
+    }
+    // Defining function to proceed Delete confirmation
+    processAjaxReq(closeDialog) {
+        const iRow = this.selector["row"];
+        const params = {
+            pid: iRow.dataset.index,
+            _token: this.token,
+        };
+
+        const ajaxReq = new XMLHttpRequest();
+
+        ajaxReq.onreadystatechange = () => {
+            if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
+                iRow.remove();
+                this.callback(ajaxReq, closeDialog);
+            }
+        };
+
+        ajaxReq.open("POST", this.processUrl, true);
+        ajaxReq.setRequestHeader(
+            "Content-type",
+            "application/json;charset=UTF-8"
+        );
+        ajaxReq.send(JSON.stringify(params));
     }
 }

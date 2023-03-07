@@ -1,12 +1,12 @@
+@section('title', '- Orders')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
-        <h1>Oders List</h1>
+        <h1>Orders List</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Oders List</li>
+                <li class="breadcrumb-item active">Orders List</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -14,10 +14,10 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <a class="btn btn-outline-primary" href="#">
+                {{-- <a class="btn btn-outline-primary" href="#">
                     <i class="bi bi-plus-circle-fill me-1"></i>
                     Create New Orders
-                </a>
+                </a> --}}
                 <!-- Message Section -->
                 @include('components.message')
                 <!-- / Message Section -->
@@ -40,22 +40,17 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($all as $key => $row)
+                        @foreach ($all as $row)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{$row->user_id}}</td>
+                                <td>{{ $row->id }}</td>
+                                <td>{{ $row->user_id }}</td>
                                 <td>{{ $row->order_date }}</td>
-                                <td>{{ $row->shipping_name}}</td>
-                                <td>{{ $row->shipping_phone }}</td>
-                                <td>{{ $row->shipping_address }}</td>
-
-
-
+                                <td>{{ $row->name }}</td>
+                                <td>{{ $row->phone }}</td>
+                                <td>{{ $row->address }}</td>
                                 <td>
-                                    <a href="{{ URL::to('/edit-user/' . $row->id) }}"
-                                        class="btn btn-sm btn-info">Edit</a>
-                                    <a href="{{ URL::to('/delete-user/' . $row->id) }}"
-                                        class=" btn btn-sm btn-danger" id="delete">Delete</a>
+                                    <a href="{{ Route('admin.order.details', $row->id) }}"
+                                        class="btn btn-sm btn-outline-info">Details</a>
                                 </td>
                             </tr>
                         @endforeach

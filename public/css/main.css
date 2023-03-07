@@ -1,5 +1,6 @@
 :root {
     --violet: #4154f1;
+    --violet-main: #0f21c3;
     --violet-50: rgba(65, 83, 241, 0.5);
     /* --violet: #242f9b; */
     --violet-2nd: #648dd4;
@@ -12,8 +13,197 @@
     --violet-5th: #e7eafe;
     --violet-5th-50: rgba(231, 234, 254, 0.5);
     --blue-dark: #596376;
+    --blue-dark-20: rgba(89, 99, 118, 0.2);
+    --blue-dark-50: rgba(89, 99, 118, 0.5);
+    --blue-dark-85: rgba(89, 99, 118, 0.85);
+    --blue-dark-2nd: #aab7cf;
     --grey-dark: #373737;
+    --grey-dark-2nd: #b0b0b0;
+    --grey-dark-3rd: #495057;
+    --grey-dark-main: #6c757d;
     --grey-dark-60: rgba(0, 0, 0, 0.66);
     --grey-dark-90: rgba(0, 0, 0, 0.9);
+    --red-dark-tu: crimson;
+    --red-warning: #f33a58;
     /* --grey-dark: #252525; */
+}
+
+.spacer {
+    margin-top: 36px;
+}
+
+.site-btn {
+    background: linear-gradient(
+            to left,
+            var(--grey-dark) 50%,
+            var(--violet) 50%
+        )
+        right !important;
+    background-size: 200% !important;
+    border-color: var(--grey-dark) !important;
+    color: #ffffff !important;
+    transition: 0.3s ease-out;
+}
+.my-btn {
+    background-color: var(--violet) !important;
+}
+.my-btn:hover {
+    background-color: var(--violet-main) !important;
+}
+
+.btn-add-image {
+    background-color: var(--violet);
+    display: block;
+    width: 95%;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 0 auto;
+}
+.btn-add-image:hover {
+    background-color: var(--violet-main);
+}
+
+.site-btn-outline {
+    cursor: pointer;
+    color: var(--violet) !important;
+    background: linear-gradient(to left, #ffffff00 50%, var(--violet) 50%) right !important;
+    background-size: 200% !important;
+    border: 1px solid var(--violet);
+    transition: 0.3s ease-out;
+}
+.site-btn:hover,
+.site-btn-outline:hover {
+    color: #ffffff !important;
+    background-position: left !important;
+    border: 1px solid var(--violet) !important;
+}
+
+.site-btn-alt {
+    cursor: pointer;
+    background: linear-gradient(to left, var(--grey-dark) 50%, #000000 50%)
+        right !important;
+    border: 1px solid var(--grey-dark);
+    color: #ffffff;
+    background-size: 200% !important;
+    transition: 0.3s ease-out;
+}
+.site-btn-alt:hover {
+    background-position: left !important;
+    border: 1px solid #000000 !important;
+}
+.site-btn-main {
+    background: linear-gradient(
+            to left,
+            var(--violet) 50%,
+            var(--violet-main) 50%
+        )
+        right !important;
+    border: 1px solid var(--violet) !important;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    background-size: 200% !important;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+}
+.site-btn-main:hover {
+    background-position: left !important;
+    border: 1px solid var(--violet-main) !important;
+}
+
+.main-errors {
+    width: 80%;
+    margin: 30px auto 0px;
+}
+
+.main-errors ul {
+    margin-left: 40px;
+}
+
+.myScrollbar::-webkit-scrollbar,
+.myScrollbar::-webkit-scrollbar-thumb {
+    width: 8px;
+    border-radius: 13px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.myScrollbar::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 6px;
+    color: var(--blue-dark-50);
+}
+.myScrollbar.more-width::-webkit-scrollbar {
+    width: 14px;
+}
+.myScrollbar.more-width::-webkit-scrollbar-thumb {
+    color: var(--blue-dark-50);
+}
+
+.my-input-group .my-custom-select .select-selected {
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--blue-dark);
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+    transition: all 0.3s;
+}
+.my-input-group .form-control {
+    border-top-right-radius: 0.375rem !important;
+    border-bottom-right-radius: 0.375rem !important;
+}
+
+.my-input-group .my-custom-select .select-selected:hover {
+    background-color: var(--grey-dark-main);
+    color: #ffffff;
+    cursor: pointer;
+    border-color: var(--grey-dark-main);
+    box-shadow: 0px 0px 15px 2px rgba(1, 41, 112, 0.2);
+}
+
+.my-input-group .my-custom-select .my-custom-select-items {
+    min-width: 150px;
+}
+
+/* Tooltip text */
+.myTooltip .tooltiptext {
+    visibility: hidden;
+    opacity: 0;
+    min-width: 120px;
+    background-color: var(--blue-dark-85);
+    color: #fff;
+    box-shadow: 1px 1px 4px rgb(1 41 112 / 15%), -1px -1px 4px rgb(1 41 112 / 15%);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    margin-left: -60px;
+    transition: all 0.3s;
+}
+
+.myTooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 25%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent var(--blue-dark-85) transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.form-control:focus + .myTooltip .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }

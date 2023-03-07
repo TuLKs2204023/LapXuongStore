@@ -1,3 +1,4 @@
+@section('fetitle','- Profile')
 @extends('fe.layout.layout')
 @section('myCss')
     <style>
@@ -93,8 +94,9 @@
                                     <h4>{{auth()->user()->name}}</h4>
                                     <p class="text-secondary mb-1">{{auth()->user()->role}}</p>
                                     <p class="text-muted font-size-sm">{{auth()->user()->address}}</p>
-                                    <button class="btn btn-primary">Follow</button>
-                                    <button class="btn btn-outline-primary">Message</button>
+                                    <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1;"
+                                        href="{{ Route('wishlist') }}">Wishlist</a>
+                                    <button class="btn btn-outline-primary">My Orders</button>
                                 </div>
                             </div>
                         </div>
@@ -199,29 +201,20 @@
                                 </div>
                             </div>
                             <hr>
-                            {{-- <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">Mobile</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    (320) 380-4539
-                                </div>
-                            </div> --}}
-                            {{-- <hr> --}}
                             <div class="row">
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Address</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{auth()->user()->address}}
+                                    {{auth()->user()->address ?? 'Not updated'}}  - {{auth()->user()->ward->name ?? ''}} - {{auth()->user()->district->name ?? ''}} - {{auth()->user()->city->name ?? ''}}
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-info "
+                                    <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1"
                                         href="{{ Route('editbyuser',auth()->user()->id) }}">Edit</a>
-                                        <a class="btn btn-info "
+                                        <a class="btn btn-info" style="background-color:#4154f1;border-color:#4154f1"
                                         href="{{ Route('passwordUser',auth()->user()->id) }}">Change Password</a>
                                 </div>
                             </div>

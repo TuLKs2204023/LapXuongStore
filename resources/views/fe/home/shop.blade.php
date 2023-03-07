@@ -1,4 +1,13 @@
+@section('fetitle', '- Shop')
 @extends('fe.layout.layout')
+
+@section('myCss')
+    <style>
+        .fa-heart {
+            color: red;
+        }
+    </style>
+@endsection
 
 @section('breader')
     <!-- BREADCUMB SECTION BEGIN-->
@@ -183,6 +192,8 @@
                                 <div class="select-option">
                                     <select class="sorting">
                                         <option value="">Default Sorting</option>
+                                        <option value="1">Ascending</option>
+                                        <option value="2">Descending</option>
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
@@ -190,7 +201,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- 09 Of 36 Product</p>
+                                <p>Show 01- 09 Of {{ $products->total() }} Product</p>
                             </div>
                         </div>
                     </div> <!-- // Main content Header -->
@@ -203,11 +214,17 @@
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="product-item">
                                             <div class="pi-pic">
-                                                <img src="{{ asset('images/' . $item->oldestImage->url) }}"
+                                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                                     alt="{{ $item->name }}">
                                                 <div class="sale pp-sale">Sale</div>
                                                 <div class="icon">
-                                                    <i class="icon_heart_alt"></i>
+                                                    @if ($item->findWishlist())
+                                                        <a href="{{ Route('removeWishlist', $item->id) }}"><i
+                                                                class="fas fa-heart"></i></a>
+                                                    @else
+                                                        <a href="{{ Route('addWishlist', $item->id) }}"><i
+                                                                class="far fa-heart"></i></a>
+                                                    @endif
                                                 </div>
                                                 <ul>
                                                     <li class="w-icon active"><a href="{{ Route('addCart') }}"><i
@@ -231,6 +248,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- @endforeach --}}
                                 @endforeach
                             @else
                                 <div class="col-lg-4 col-sm-6">No Product</div>
@@ -241,8 +259,7 @@
 
                     <!-- Main content Footer -->
                     <div class="loading-more">
-                        <i class="icon_loading"></i>
-                        <a href="">Loading More</a>
+                        {{ $products->links('vendor.pagination.custom') }}
                     </div> <!-- // Main content Footer -->
 
                 </div> <!-- // Main Content -->
@@ -250,4 +267,25 @@
         </div>
     </section>
     <!-- PRODUCT-SHOP SECTION END-->
+@endsection
+
+@section('myJs')
+    <script>
+        const empty = document.querySelectorAll(".product-item .pi-pic .icon .fa-heart");
+        let isFilled = false;
+
+        empty.forEach(element => {
+            element.onclick = function() {
+                if (!isFilled) {
+                    isFilled = true;
+                    element.classList.remove('far');
+                    element.classList.add('fas');
+                } else {
+                    isFilled = false;
+                    element.classList.remove('fas');
+                    element.classList.add('far');
+                }
+            };
+        });
+    </script>
 @endsection

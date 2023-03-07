@@ -13,7 +13,7 @@ body {
 
 /* ======= Buttons ======== */
 /* Block */
-div#myToast > .btn {
+#myToast > .btn {
     display: inline-block;
     text-decoration: none;
     background-color: transparent;
@@ -28,28 +28,28 @@ div#myToast > .btn {
 }
 
 /* Modifier */
-div#myToast > .btn--size-l {
+#myToast > .btn--size-l {
     padding: 16px 56px;
 }
-div#myToast > .btn--size-s {
+#myToast > .btn--size-s {
     padding: 8px 20px;
 }
-div#myToast > .btn:hover {
+#myToast > .btn:hover {
     opacity: 0.8;
 }
-div#myToast > .btn + div#myToast > .btn {
+#myToast > .btn + #myToast > .btn {
     margin-left: 16px;
 }
-div#myToast > .btn--success {
+#myToast > .btn--success {
     background-color: #71be34;
 }
-div#myToast > .btn--warn {
+#myToast > .btn--warn {
     background-color: #ffb702;
 }
-div#myToast > .btn--danger {
+#myToast > .btn--danger {
     background-color: #ff623d;
 }
-div#myToast > .btn--disabled {
+#myToast > .btn--disabled {
     opacity: 0.5 !important;
     cursor: default;
 }
@@ -62,7 +62,7 @@ div#myToast > .btn--disabled {
     right: 20px;
     z-index: 9999999999 !important;
 }
-.toast-container {
+#myToast .toast-container {
     display: grid;
     position: relative;
     grid-template-columns: repeat(1, 1fr);
@@ -75,13 +75,12 @@ div#myToast > .btn--disabled {
     backdrop-filter: blur(5px);
     transition: all linear 0.3s;
 }
-.myToast {
+#myToast .myToast {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    padding: 5px 0 10px;
+    /* padding: 5px 0 10px; */
     border-radius: 4px;
-    border: 1px solid #ebebeb;
-    /* border-left: 4px solid; */
 }
 @keyframes slideInLeft {
     from {
@@ -108,16 +107,27 @@ div#myToast > .btn--disabled {
         opacity: 0;
     }
 }
-.toast__line_container {
-    position: absolute;
-    justify-self: center;
-    bottom: 0;
+#myToast .toast__content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ebebeb;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+#myToast .toast__body {
+    flex-grow: 1;
+    padding: 0.5rem 0 1rem 0;
+}
+#myToast .toast__line_container {
+    align-items: flex-end;
+    flex-grow: 1;
     height: 4px;
     background-color: #b8b8b8;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
-.toast__line {
+#myToast .toast__line {
     height: 4px;
     min-width: 400px;
     max-width: 450px;
@@ -125,75 +135,71 @@ div#myToast > .btn--disabled {
     border-bottom-right-radius: 20px;
 }
 
-.toast--success {
+#myToast .toast--success {
     /* border-color: #47d864; */
     border-color: var(--violet);
 }
-.toast--success .toast__icon {
+#myToast .toast--success .toast__icon {
     color: var(--violet);
 }
-.toast--success .toast__line {
+#myToast .toast--success .toast__line {
     background-color: var(--violet);
 }
 
-.toast--info {
+#myToast .toast--info {
     border-color: #2f86eb;
 }
-.toast--info .toast__icon {
+#myToast .toast--info .toast__icon {
     color: #2f86eb;
 }
-.toast--info .toast__line {
+#myToast .toast--info .toast__line {
     background-color: #2f86eb;
 }
 
-.toast--warning {
+#myToast .toast--warning {
     border-color: #ffc021;
 }
-.toast--warning .toast__icon {
+#myToast .toast--warning .toast__icon {
     color: #ffc021;
 }
-.toast--warning .toast__line {
+#myToast .toast--warning .toast__line {
     background-color: #ffc021;
 }
 
-.toast--error {
+#myToast .toast--error {
     border-color: #ff623d;
 }
-.toast--error .toast__icon {
+#myToast .toast--error .toast__icon {
     color: #ff623d;
 }
-.toast--error .toast__line {
+#myToast .toast--error .toast__line {
     background-color: #ff623d;
 }
 
-.toast + .toast {
+#myToast .toast + #myToast .toast {
     margin-top: 24px;
 }
-.toast__icon {
+#myToast .toast__icon {
     font-size: 24px;
 }
-.toast__icon,
-.toast__close {
+#myToast .toast__icon,
+#myToast .toast__close {
     padding: 0 16px;
 }
-.toast__body {
-    flex-grow: 1;
-}
-.toast__title {
+#myToast .toast__title {
     font-size: 16px;
     font-weight: 600;
     color: #333;
     margin: 0;
-    padding: 0.5rem 0 0.5rem;
+    padding: 0.2rem 0 0.2rem;
 }
-.toast__msg {
+#myToast .toast__msg {
     font-size: 14px;
     color: #888;
     margin: 0;
-    padding: 0 0 1rem;
     line-height: 1.5;
 }
-.toast__close {
+#myToast .toast__close {
     font-size: 20px;
     color: rgba(0, 0, 0, 0.3);
     cursor: pointer;

@@ -1,5 +1,5 @@
+@section('title','- Users')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>User List</h1>

@@ -2,15 +2,31 @@
 
 namespace App\Models;
 
+use App\Models\Cates\Manufacture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'slug', 'manufacture_id', 'cpu_id', 'ram_id', 'description'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'manufacture_id',
+        'series_id',
+        'cpu_id',
+        'gpu_id',
+        'ram_id',
+        'color_id',
+        'demand_id',
+        'resolution_id',
+        'screen_id',
+        'hdd_id',
+        'ssd_id',
+    ];
 
     /**
      * The accessors to append to the model's array form.
@@ -18,6 +34,7 @@ class Product extends Model
      * @var array
      */
     protected $appends = ['price', 'price_id'];
+
 
     /**
      * The relationships that should always be loaded.
@@ -134,15 +151,16 @@ class Product extends Model
     {
         return $this->hasMany(Stock::class);
     }
-    
-     /* Get latest stock this product.
+
+    /* Get latest stock this product.
      */
-    
-    public function latestStock(){
+
+    public function latestStock()
+    {
         return $this->hasMany(Stock::class)->latestOfMany();
     }
 
-     /* Get amount of in stock this product.
+    /* Get amount of in stock this product.
      */
 
     public function inStock()
@@ -154,7 +172,7 @@ class Product extends Model
         return $in_qty;
     }
 
-     /* Get amount of out stock this product.
+    /* Get amount of out stock this product.
      */
 
     public function outStock()
@@ -172,10 +190,67 @@ class Product extends Model
         return $this->belongsTo(Cates\Ram::class, 'ram_id');
     }
 
-     /* Get the sub name of this product.
+    /* Get the Screen that owns this product.
+     */
+    public function screen()
+    {
+        return $this->belongsTo(Cates\Screen::class, 'screen_id');
+    }
+
+    /* Get the HDD that owns this product.
+     */
+    public function hdd()
+    {
+        return $this->belongsTo(Cates\Hdd::class, 'hdd_id');
+    }
+
+    /* Get the color that owns this product.
+     */
+    public function color()
+    {
+        return $this->belongsTo(Cates\Color::class, 'color_id');
+    }
+
+    /* Get the gpu that owns this product.
+     */
+    public function gpu()
+    {
+        return $this->belongsTo(Cates\Gpu::class, 'gpu_id');
+    }
+
+    /* Get the SSD that owns this product.
+     */
+    public function ssd()
+    {
+        return $this->belongsTo(Cates\Ssd::class, 'ssd_id');
+    }
+
+    /* Get the Demand that owns this product.
+     */
+    public function demand()
+    {
+        return
+            $this->belongsTo(Cates\Demand::class, 'demand_id');
+    }
+    /* Get the Demand that owns this product.
+     */
+    public function series()
+    {
+        return $this->belongsTo(Cates\Series::class, 'series_id');
+    }
+
+    /* Get the Demand that owns this product.
+     */
+    public function resolution()
+    {
+        return $this->belongsTo(Cates\Resolution::class, 'resolution_id');
+    }
+
+    /* Get the sub name of this product.
      */
 
-    public function subName(){
+    public function subName()
+    {
         $name = $this->name;
         $splitName = [];
         $splitName = (explode('(', $name)); //trả về array
@@ -183,34 +258,112 @@ class Product extends Model
         return $subName;
     }
 
-     /* Get description of this product.
+    /* Get description of this product.
      */
 
-     public function description(){
+    public function description()
+    {
         return $this->hasOne(Description::class);
-     }
+    }
 
-     /* Get description of this product.
+    /* -------------------------------Rate---------------------------------
      */
 
-     public function ratings():HasMany{
+    public function ratings(): HasMany
+    {
         return $this->hasMany(Rating::class);
-     }
+    }
 
-     public function countRates(){
+    public function countRates()
+    {
+        $rates = 0;
         $rates = $this->loadCount('ratings');
         $countRates = $rates->ratings_count;
 
         // $total = $this->ratings;
         return $countRates;
-     }
+    }
 
-     public function sumRates(){
+    public function sumRates()
+    {
+        $rates = 0;
         $rates = $this->loadSum('ratings', 'rate');
         $sumRates = $rates->ratings_sum_rate;
 
         return $sumRates;
-     }
+    }
 
-     
+    public function avgRates()
+    {
+        $avg = 0;
+        $avg = $this->sumRates() / $this->countRates();
+        return number_format($avg, 0, '.');
+    }
+
+    /* -------------------------------end Rate---------------------------------
+     */
+
+    /* -------------------------------Wishlist_Item---------------------------------
+     */
+
+    public function wishlistItems()
+    {
+        return $this->hasMany(WishlistItem::class);
+    }
+
+    public function findWishlist()
+    {
+        $user = auth()->user();
+        if ($user) {
+            $userId = $user->id;
+            $wishlistItems = $this->wishlistItems();
+            $found = $wishlistItems->where('user_id', $userId)->first();
+            if ($found) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /* -------------------------------end Wishlist_Item---------------------------------
+     */
+
+    public function relateProducts()
+    {
+        $relates = Product::where('manufacture_id', $this->manufacture_id)->get();
+        return $relates;
+    }
+    public function salePrice(){
+        $id= $this->id;
+        $price= DB::table('prices')->where('product_id',$id)->avg('origin');
+        $saleprice= $price+$price *50 /100;
+
+        return $saleprice;
+
+
+    }
+    public function fakePrice(){
+        return $this->salePrice()* 120/100;
+
+    }
+    public function revenue(){
+        $outStock= $this->outStock();
+        $price= $this->salePrice();
+        $revenue= $outStock *$price;
+        return $revenue;
+    }
+    public function topSale(){
+        $count= DB::table('products')->count('id');
+        DB::table('products')->get()->first()->id;
+        $max= $this->outStock();
+        for($i=1; $i<$count; $i++){
+            if($max > $this->outStock()){
+                $max=$this->outStock();
+            }
+    }
+    return $max;
+}
 }

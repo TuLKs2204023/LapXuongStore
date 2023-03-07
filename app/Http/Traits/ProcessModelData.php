@@ -2,8 +2,11 @@
 
 namespace App\Http\Traits;
 
+use App\Models\Cates\Hdd;
 use App\Models\Product;
 use App\Models\Cates\Ram;
+use App\Models\Cates\Screen;
+use App\Models\Cates\Ssd;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -65,10 +68,18 @@ trait ProcessModelData
         return $product;
     }
 
-    function processStock(Product $product, array $proData)
+    function processInStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
         $product->stocks()->create(['in_qty' => $proData['in_qty']]);
+        $product->refresh();
+        return $product;
+    }
+
+    function processOutStock(Product $product, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
+        $product->stocks()->create(['out_qty' => $proData['out_qty']]);
         $product->refresh();
         return $product;
     }
@@ -83,7 +94,9 @@ trait ProcessModelData
         return $order;
     }
 
-    function processRating(User $user, array $proData){
+    function processRating(User $user, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
         $product = DB::table('products')->where('id', $proData['product_id'])->first();
 
         $productId = $product->id;
@@ -91,12 +104,45 @@ trait ProcessModelData
         $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
         $user->refresh();
     }
-    
+
     function processRam(array $proData)
     {
+        if ($proData['ram_select'] == 2) {
+            $proData['ram'] = $proData['ram'] * 1024;
+        }
         $ram = Ram::firstOrCreate(['amount' => $proData['ram']]);
         $ram->refresh();
         $proData['ram_id'] = $ram->id;
+        return $proData;
+    }
+
+    function processScreen(array $proData)
+    {
+        $screen = Screen::firstOrCreate(['amount' => $proData['screen']]);
+        $screen->refresh();
+        $proData['screen_id'] = $screen->id;
+        return $proData;
+    }
+
+    function processHdd(array $proData)
+    {
+        if ($proData['hdd_select'] == 2) {
+            $proData['hdd'] = $proData['hdd'] * 1024;
+        }
+        $hdd = Hdd::firstOrCreate(['amount' => $proData['hdd']]);
+        $hdd->refresh();
+        $proData['hdd_id'] = $hdd->id;
+        return $proData;
+    }
+
+    function processSsd(array $proData)
+    {
+        if ($proData['ssd_select'] == 2) {
+            $proData['ssd'] = $proData['ssd'] * 1024;
+        }
+        $ssd = Ssd::firstOrCreate(['amount' => $proData['ssd']]);
+        $ssd->refresh();
+        $proData['ssd_id'] = $ssd->id;
         return $proData;
     }
 

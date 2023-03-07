@@ -1,5 +1,5 @@
+@section('title','- Create User')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>Create User</h1>

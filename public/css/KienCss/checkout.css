@@ -1,0 +1,162 @@
+.checkout-form textarea {
+    width: 100%;
+    border: 2px solid #ebebeb;
+    margin-bottom: 25px;
+    padding-left: 15px;
+}
+.checkout-content {
+    position: relative;
+}
+
+.checkout-content input:read-only {
+    color: var(--violet-3rd);
+}
+.checkout-content .coupon-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 56px;
+    min-width: 140px;
+    text-align: center;
+    background-color: var(--blue-dark);
+    transition: all 0.3s;
+}
+.checkout-content.applied input {
+    border-color: var(--violet) !important;
+}
+.checkout-content.error input {
+    border-color: var(--danger) !important;
+}
+
+.place-order li.order-summary {
+    list-style: none;
+    margin-top: 10px;
+}
+.place-order .order-table li.order-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px 20px;
+    padding: 10px 0 10px 0 !important;
+    border-bottom: none !important;
+}
+
+.place-order .order-table li.order-product-subtotal {
+    margin-top: 0.5rem;
+    border-top: 1px solid #e5e5e5;
+}
+.place-order .order-table li.order-product .order-product-image {
+    border: 1px solid #ebebeb;
+    width: 50px;
+}
+.place-order .order-table li.order-product .order-product-image img {
+    min-width: 48px;
+    height: auto;
+}
+.place-order .order-table li.order-product .order-product-name {
+    flex-basis: auto;
+    font-weight: 500;
+}
+
+.place-order .order-table li.order-product .order-product-price {
+    align-self: flex-end;
+    flex: 0 0 auto;
+    text-align: right;
+}
+.place-order
+    .order-table
+    li.order-product
+    .order-product-price
+    > div:first-child {
+    text-transform: lowercase;
+    font-weight: 500;
+    color: var(--violet);
+}
+.order-total {
+    display: flex;
+    flex-wrap: wrap;
+}
+.order-total .order-table {
+    flex: 100%;
+}
+.order-total .order-payment {
+    text-align: center;
+    flex: 50%;
+    padding: 2rem 0 0;
+}
+
+.order-total .order-btn {
+    flex: 50%;
+    padding: 2rem 0 0;
+    text-align: right !important;
+}
+
+.order-payment .select-option {
+    width: 100%;
+}
+.order-payment .select-option .nice-select.sorting {
+    width: 100%;
+}
+.order-payment .select-option .nice-select {
+    border-radius: 0;
+    border: 1px solid #ecedee;
+    height: 40px;
+    line-height: 35px;
+}
+
+.order-payment .select-option .nice-select .list {
+    margin-top: 0;
+    border-radius: 0;
+    width: 100%;
+}
+
+.order-payment .select-option .nice-select:after {
+    border-bottom: 2px solid #4c4c4c;
+    border-right: 2px solid #4c4c4c;
+    height: 7px;
+    right: 22px;
+    top: 47%;
+    width: 7px;
+    opacity: 0.7;
+}
+
+.order-payment .select-option .nice-select span {
+    font-size: 16px;
+    color: #4c4c4c;
+}
+
+.order-payment .select-option .sorting {
+    margin-right: 20px;
+}
+
+.order-payment .select-option .sorting.nice-select {
+    padding-right: 70px;
+}
+
+.order-payment .select-option .p-show.nice-select {
+    padding-right: 105px;
+}
+
+.order-payment .select-option .p-show.nice-select:before {
+    position: absolute;
+    right: 48px;
+    top: 0;
+    content: "09";
+    font-size: 16px;
+    color: var(--grey-dark);
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .order-total .order-btn .place-btn {
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 765px),
+    screen and (min-width: 992px) and (max-width: 1199px) {
+    .order-total .order-btn .place-btn {
+        width: 100%;
+    }
+    .order-total .order-payment {
+        flex: 100%;
+    }
+}

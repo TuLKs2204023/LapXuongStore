@@ -3,18 +3,19 @@
  * via keyboard-based (eg Tab) navigation or the
  * .focus-visible utility class.
  */
+.form-control {
+  transition: all 0.3s;
+}
+.form-control:hover {
+  border: 1px solid rgba(1, 41, 112, 0.3) !important;
+  box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
+}
 input:focus,
+textarea:focus,
 .form-control:focus {
     outline: 0;
     box-shadow: 0 0 10px 0 rgba(1, 41, 112, 0.15) !important;
     border-color: #4154f1 !important;
-}
-.form-control {
-  transition: 0.3s;
-}
-.form-control:hover {
-  border: 1px solid rgba(1, 41, 112, 0.3);
-  box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
 }
 
 /**
@@ -31,19 +32,20 @@ input:focus,
     text-align: left;
 }
 .my-custom-select select {
-    display: none; /*hide original SELECT element:*/
+    /*hide original SELECT element:*/
+    display: none; 
 }
-.my-custom-select > .select-selected {
+.my-custom-select > .my-custom-select-cont {
     color: #333;
     background-color: #fff;
 }
-/* .my-custom-select > .select-selected:hover {
+/* .my-custom-select > .my-custom-select-cont:hover {
     border: 1px solid #4154f1;
     background-color: #fff;
 } */
 
 /*style the arrow inside the select element:*/
-.my-custom-select > .select-selected:after {
+.my-custom-select > .my-custom-select-cont:after {
     position: absolute;
     content: "";
     top: 40%;
@@ -54,14 +56,14 @@ input:focus,
     border-color: #b3b3b3 transparent transparent transparent;
 }
 /*point the arrow upwards when the select box is open (active):*/
-/* .my-custom-select > .select-selected.select-arrow-active:after {
+/* .my-custom-select > .my-custom-select-cont.select-arrow-active:after {
   border-color: transparent transparent #b3b3b3 transparent;
   top: 25%;
 } */
 
 /*style the items (options), including the selected item:*/
 .my-custom-select-items div,
-.my-custom-select > .select-selected {
+.my-custom-select > .my-custom-select-cont {
     color: #333;
     background-color: #fff;
     line-height: 1.5rem;
@@ -112,10 +114,10 @@ input:focus,
     background-color: #f6f9ff;
     border-left: 4.5px solid#e3e5ee;
 }
-.my-custom-select > .select-selected:focus:after {
+.my-custom-select > .my-custom-select-cont:focus:after {
     border-color: #4154f1 transparent transparent transparent !important;
 }
-.my-custom-select > .form-group.invalid .select-selected:after {
+.my-custom-select > .form-group.invalid .my-custom-select-cont:after {
     border-color: #f33a58 transparent transparent transparent;
 }
 
@@ -133,11 +135,11 @@ input:focus,
 }
 .my-custom-select-items::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 0 6px;
-    color: #636d773c;
+    color: var(--blue-dark-20);
 }
 .my-custom-select-items.more-width::-webkit-scrollbar {
     width: 14px;
 }
 .my-custom-select-items.more-width::-webkit-scrollbar-thumb {
-    color: rgba(16, 145, 132, 0.533);
+    color: var(--blue-dark-50);
 }

@@ -29,8 +29,8 @@ $config['authentication'] = '\App\Http\Middleware\CustomCKFinderAuth';
 /*============================ License Key ============================================*/
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_licenseKey
 
-$config['licenseName'] = 'http://lapxuong.com';
-$config['licenseKey']  = 'DE2E37UWD9RF1EEQ3C37B3E1F2EGQ';
+$config['licenseName'] = 'localhost';
+$config['licenseKey']  = 'FM7M1CP4Y2ARVZTUSLDK4HUF6FTMW';
 
 /*============================ CKFinder Internal Directory ============================*/
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_privateDir
@@ -82,7 +82,7 @@ $config['backends']['laravel_logs'] = array(
 $config['backends']['default'] = array(
     'name'         => 'default',
     'adapter'      => 'local',
-    'baseUrl'      => config('app.url') . ':8080/LapXuong/public/',
+    'baseUrl'      => config('app.url') . '/LapXuongStore/public/',
     'root'         => public_path(),
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,

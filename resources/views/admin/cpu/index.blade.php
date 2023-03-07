@@ -1,5 +1,5 @@
+@section('title','- CPU')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>CPU Management</h1>
@@ -71,16 +71,10 @@
                                         </i>
                                         Edit
                                     </a>
-                                    <form action="{{ Route('admin.cpu.destroy') }}" method="post"
-                                        style="display:inline-block">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="hidden" name="id" value="{{ $item->id }}">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <a href="{{ URL::to('admin/cpu/destroy/' . $item->id) }}" class="btn btn-sm btn-danger" id="delete">
                                             <i class="fas fa-trash"></i>
                                             Delete
-                                        </button>
-                                    </form>
+                                        </a>
 
                                 </td>
                             </tr>

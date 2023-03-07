@@ -1,3 +1,4 @@
+@section('fetitle','- Change Password')
 @extends('fe.layout.layout')
 @section('myCss')
     <style>
@@ -109,11 +110,12 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="password"  class="form-control"
-                                            value="{{ $edit->password }}" required disabled>
+                                             required name= "old_confirmation">
                                     </div>
                                 </div>
 
                                 <hr>
+
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">New Password</h6>
@@ -123,11 +125,20 @@
                                             placeholder="Please enter new password" required>
                                     </div>
                                 </div>
-
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Confirm New Password</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="password" name="confirm_new_password" class="form-control"
+                                            placeholder="Please confirm new password" required>
+                                    </div>
+                                </div>
                                 <hr>
                                <div class="row">
                                     <div class="col-sm-12">
-                                        <button class="btn btn-info " type="submit"
+                                        <button class="btn btn-info " type="submit" style="background-color:#4154f1;border-color:#4154f1"
                                             >Update</button>
                                     </div>
                                 </div>

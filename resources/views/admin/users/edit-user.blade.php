@@ -1,5 +1,5 @@
+@section('title','- Edit User')
 @extends('admin.layout.layout')
-
 @section('contents')
     <div class="pagetitle">
         <h1>Edit User</h1>
@@ -19,7 +19,7 @@
         @if (auth()->user()->role !== 'Customer')
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Create User Form</h5>
+                <h5 class="card-title">Edit User Form</h5>
 
                 <!-- Message Section -->
                 @include('components.message')

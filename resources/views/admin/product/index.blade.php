@@ -1,5 +1,5 @@
+@section('title','- Product')
 @extends('admin.layout.layout')
-
 @section('myHead')
 @endsection
 
@@ -48,6 +48,8 @@
                             <th>Manufacture</th>
                             <th>CPU</th>
                             <th>RAM</th>
+                            <th>Screen</th>
+                            <th>HDD</th>
                             <th>Price</th>
                             {{-- <th>Description</th> --}}
                             <th>Action</th>
@@ -64,10 +66,12 @@
                                             style="width: 80px; height: auto;">
                                     @endif
                                 </td>
-                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->subName() }}</td>
                                 <td>{{ $item->manufacture->name }}</td>
                                 <td>{{ $item->cpu->name }}</td>
                                 <td>{{ $item->ram->amount }}</td>
+                                <td>{{ $item->screen->amount }}</td>
+                                <td>{{ $item->hdd->amount }}</td>
                                 <td>{{ number_format($item->price, 0, ',', '.') }}</td>
                                 {{-- <td>
                                     <ul>
@@ -95,16 +99,13 @@
                                         </i>
                                         Stock
                                     </a>
-                                    <form action="{{ Route('admin.product.destroy') }}" method="post"
-                                        style="display:inline-block">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="hidden" name="id" value="{{ $item->id }}">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+
+
+                                        <a href="{{ URL::to('admin/product/destroy/' . $item->id) }}" class="btn btn-sm btn-danger" id="delete">
                                             <i class="fas fa-trash"></i>
                                             Delete
-                                        </button>
-                                    </form>
+                                        </a>
+
 
                                 </td>
                             </tr>
