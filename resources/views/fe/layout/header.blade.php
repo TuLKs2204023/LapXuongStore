@@ -35,7 +35,8 @@
                             <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
                                 Hello {{ auth()->user()->name }}
                                 <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle" style="
+                                    class="rounded-circle"
+                                    style="
                                     height: 40px ;width:40px; margin-left:20px;">
                             </a>
                             <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
@@ -55,12 +56,12 @@
                     @endauth
                 @endif
 
-                <div class="lan-selector" >
+                <div class="lan-selector">
                     <select name="countries" id="countries" class="language_drop" style="width:150px">
                         <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}"
                             data-imagecss="flag yt" data-title="English">Eng</option>
                         <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}"
-                            data-imagecss="flag yu" data-title="Vietnamese" >Vie</option>
+                            data-imagecss="flag yu" data-title="Vietnamese">Vie</option>
                     </select>
                 </div>
 
@@ -79,7 +80,7 @@
                 <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="{{asset('frontend/img/logo3.png')}}" height="30" alt="">
+                            <img src="{{ asset('frontend/img/logo3.png') }}" height="30" alt="">
                         </a>
                     </div>
                 </div>
@@ -144,7 +145,8 @@
                                 </div>
                                 <div class="select-button">
                                     <a href="{{ Route('viewCart') }}" class="site-btn-alt view-card">VIEW CART</a>
-                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK OUT</a>
+                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK
+                                        OUT</a>
                                 </div>
                             </div>
                         </li>

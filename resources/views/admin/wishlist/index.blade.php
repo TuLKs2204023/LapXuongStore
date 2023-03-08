@@ -4,6 +4,7 @@
 @endsection
 
 @section('contents')
+    <!-- Start Page Title -->
     <div class="pagetitle">
         <h1>Wishlist</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
@@ -14,6 +15,7 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <!-- Start Main Section -->
     <section class="section">
         @if (auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Manager')
             <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
@@ -29,12 +31,12 @@
                     <!-- Message Section -->
                     @include('components.message')
                     <!-- / Message Section -->
-                    
+
                     {{-- <h3 class="card-title">DataTable with default features</h3> --}}
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="productsMgmt" class="table table-bordered table-striped">
+                    <table id="wishlistMgmt" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -76,20 +78,20 @@
             </div>
             <!-- /.card -->
         @endif
-    </section>
+    </section><!-- End Main Section -->
 
 @endsection
 
 @section('myJs')
     <script>
         $(function() {
-            $("#productsMgmt").DataTable({
+            $("#wishlistMgmt").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
                 "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#wishlistMgmt_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection
