@@ -80,7 +80,7 @@
                 <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="{{ asset('frontend/img/logo3.png') }}" height="30" alt="">
+                            <img src="{{ asset('images/asd-removebg-preview.png') }}" height="30" alt="">
                         </a>
                     </div>
                 </div>

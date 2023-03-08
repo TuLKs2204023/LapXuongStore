@@ -403,7 +403,7 @@
                                                         @if (auth()->user())
                                                             @if (auth()->user()->role == 'Admin')
                                                                 <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
-                                                                    id="deletecomment" class="btn btn-sm btn-danger">
+                                                                    id="deletecomment" class="btn btn-outline-danger btn-sm">
                                                                     <i class="fas fa-trash"></i>
                                                                     Delete
                                                                 </a>

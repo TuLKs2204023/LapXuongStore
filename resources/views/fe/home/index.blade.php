@@ -23,7 +23,7 @@
                             <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
                                 Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
-                            <a href="#" class="primary-btn">Shop now</a>
+                            <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
                     <div class="off-card">
@@ -40,7 +40,7 @@
                             <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
                                 Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
-                            <a href="#" class="primary-btn">Shop now</a>
+                            <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
                     <div class="off-card">
@@ -57,7 +57,7 @@
                             <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
                                 Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
-                            <a href="#" class="primary-btn">Shop now</a>
+                            <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
                     <div class="off-card">
@@ -120,7 +120,7 @@
                                     </div>
                                     <ul>
                                         <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                        <li class="quick-view"><a href="product.html">+ Quick View</a></li>
+                                        <li class="quick-view"><a href="{{ Route('product.details', $item->slug) }}">+ Quick View</a></li>
                                         <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
                                     </ul>
                                 </div>
@@ -130,8 +130,8 @@
                                         <h5>{{ $item->name }}</h5>
                                     </a>
                                     <div class="product-price">
-                                        {{ $item->price }}
-                                        <span>{{ $item->price }}</span>
+                                        {{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}
+                                        <span>{{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -212,8 +212,8 @@
                                         <h5>{{ $item->name }}</h5>
                                     </a>
                                     <div class="product-price">
-                                        {{ $item->price }}
-                                        <span>{{ $item->price }}</span>
+                                        {{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}
+                                        <span>{{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}</span>
                                     </div>
                                 </div>
                             </div>
