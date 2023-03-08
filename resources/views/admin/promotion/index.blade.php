@@ -1,12 +1,14 @@
-@section('title','- Promotion')
 @extends('admin.layout.layout')
+
+@section('title', '- Promotion')
+
 @section('myHead')
     <style>
         .row.g-3.align-items-center {
             margin-top: 1px;
         }
 
-        .text-left{
+        .text-left {
             margin-top: 10px;
             margin-bottom: 20px;
         }
@@ -14,6 +16,7 @@
 @endsection
 
 @section('contents')
+    <!-- Start Page Title -->
     <div class="pagetitle">
         <h1>Promotion Management</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
@@ -24,7 +27,9 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <!-- Start Main Section -->
     <section class="section">
+        <!-- card -->
         <div class="card">
             <div class="card-header">
                 {{-- <a class="btn btn-outline-primary" href="{{ Route('admin.stock.create') }}">
@@ -66,7 +71,8 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="number" id="codeLength" class="form-control" name="codeLength"
-                                            aria-describedby="codeLengthHelpInline" placeholder="Length of promotion" required min="5" max="15">
+                                            aria-describedby="codeLengthHelpInline" placeholder="Length of promotion"
+                                            required min="5" max="15">
                                     </div>
                                     <div class="col-auto">
                                         <span id="codeLengthHelpInline" class="form-text">
@@ -80,7 +86,8 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="number" id="discount" class="form-control" name="discount"
-                                            aria-describedby="discountHelpInline" min="1" max="100" placeholder="Discount (no need %)" required>
+                                            aria-describedby="discountHelpInline" min="1" max="100"
+                                            placeholder="Discount (no need %)" required>
                                     </div>
                                     <div class="col-auto">
                                         <span id="discountHelpInline" class="form-text">
@@ -104,11 +111,11 @@
             <!-- /.card-header -->
             <div class="card-body">
 
-                 <!-- Message Section -->
-                 @include('components.message')
-                 <!-- / Message Section -->
+                <!-- Message Section -->
+                @include('components.message')
+                <!-- / Message Section -->
 
-                <table id="stockManagement" class="table table-bordered table-striped">
+                <table id="promotionManagement" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -140,19 +147,19 @@
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-    </section>
+    </section><!-- End Main Section -->
 @endsection
 
 @section('myJs')
     <script>
         $(function() {
-            $("#stockManagement").DataTable({
+            $("#promotionManagement").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
                 "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#stockManagement_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#promotionManagement_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection

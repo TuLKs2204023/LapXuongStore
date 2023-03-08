@@ -1,5 +1,7 @@
-@section('fetitle','- Profile')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Profile')
+
 @section('myCss')
     <style>
         body {
@@ -11,8 +13,6 @@
 
         .main-body {
             padding: 15px;
-
-
         }
 
         .card {
@@ -75,8 +75,8 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="breadcrumb-text">
-                                <a href="{{Route('fe.home')}}"><i class="fa fa-home"></i>Home</a>
-                                <span>{{auth()->user()->name}}</span>
+                                <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
+                                <span>{{ auth()->user()->name }}</span>
                             </div>
                         </div>
                     </div>
@@ -88,15 +88,15 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img src="{{asset('images/'.auth()->user()->image)}}" alt="Admin"
-                                    class="rounded" width="150">
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Admin" class="rounded"
+                                    width="150">
                                 <div class="mt-3">
-                                    <h4>{{auth()->user()->name}}</h4>
-                                    <p class="text-secondary mb-1">{{auth()->user()->role}}</p>
-                                    <p class="text-muted font-size-sm">{{auth()->user()->address}}</p>
+                                    <h4>{{ auth()->user()->name }}</h4>
+                                    <p class="text-secondary mb-1">{{ auth()->user()->role }}</p>
+                                    <p class="text-muted font-size-sm">{{ auth()->user()->address }}</p>
                                     <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1;"
                                         href="{{ Route('wishlist') }}">Wishlist</a>
-                                    <button class="btn btn-outline-primary">My Orders</button>
+                                    <a href="{{ Route('userOrders') }}" class="btn btn-outline-primary">My Orders</a>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +170,7 @@
                                     <h6 class="mb-0">Name</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{auth()->user()->name}}
+                                    {{ auth()->user()->name }}
                                 </div>
                             </div>
                             <hr>
@@ -179,7 +179,7 @@
                                     <h6 class="mb-0">Email</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{auth()->user()->email}}
+                                    {{ auth()->user()->email }}
                                 </div>
                             </div>
                             <hr>
@@ -188,7 +188,7 @@
                                     <h6 class="mb-0">Gender</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{auth()->user()->gender}}
+                                    {{ auth()->user()->gender }}
                                 </div>
                             </div>
                             <hr>
@@ -197,7 +197,7 @@
                                     <h6 class="mb-0">Phone</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{auth()->user()->phone}}
+                                    {{ auth()->user()->phone }}
                                 </div>
                             </div>
                             <hr>
@@ -206,16 +206,18 @@
                                     <h6 class="mb-0">Address</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    {{auth()->user()->address ?? 'Not updated'}}  - {{auth()->user()->ward->name ?? ''}} - {{auth()->user()->district->name ?? ''}} - {{auth()->user()->city->name ?? ''}}
+                                    {{ auth()->user()->address ?? 'Not updated' }} -
+                                    {{ auth()->user()->ward->name ?? '' }} - {{ auth()->user()->district->name ?? '' }} -
+                                    {{ auth()->user()->city->name ?? '' }}
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1"
-                                        href="{{ Route('editbyuser',auth()->user()->id) }}">Edit</a>
-                                        <a class="btn btn-info" style="background-color:#4154f1;border-color:#4154f1"
-                                        href="{{ Route('passwordUser',auth()->user()->id) }}">Change Password</a>
+                                        href="{{ Route('editbyuser', auth()->user()->id) }}">Edit</a>
+                                    <a class="btn btn-info" style="background-color:#4154f1;border-color:#4154f1"
+                                        href="{{ Route('passwordUser', auth()->user()->id) }}">Change Password</a>
                                 </div>
                             </div>
                         </div>
@@ -289,9 +291,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
 

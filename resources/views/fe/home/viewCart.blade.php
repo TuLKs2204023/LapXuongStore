@@ -1,4 +1,7 @@
+@extends('fe.layout.layout')
+
 @section('fetitle', '- Cart')
+
 @section('myCss')
     <style>
         .proceed-checkout a.proceed-checkout-btn span {
@@ -8,7 +11,7 @@
         }
     </style>
 @endsection
-@extends('fe.layout.layout')
+
 @section('content')
     <!-- BREADCUMB SECTION BEGIN-->
     <div class="breadcrumb-section">
@@ -24,7 +27,6 @@
             </div>
         </div>
     </div>
-
     <!-- BREADCUMB SECTION END-->
 
     <!-- Shoping-cart SECTION BEGIN-->
@@ -121,6 +123,7 @@
 @endsection
 
 @section('myJs')
+    <!-- Start KienJs -->
     <script type="module">
         import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
         import {DeleteDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
@@ -153,5 +156,5 @@
                 });
             }
         });
-    </script>
+    </script><!-- End KienJs -->
 @endsection

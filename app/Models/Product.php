@@ -336,30 +336,34 @@ class Product extends Model
         $relates = Product::where('manufacture_id', $this->manufacture_id)->get();
         return $relates;
     }
-    public function salePrice(){
-        $id= $this->id;
-        $price= DB::table('prices')->where('product_id',$id)->avg('origin');
-        $saleprice= $price+$price *50 /100;
+    public function salePrice()
+    {
+        $id = $this->id;
+        $price = DB::table('prices')->where('product_id', $id)->avg('origin');
+        $saleprice = $price + $price * 50 / 100;
 
         return $saleprice;
-
-
     }
-    public function fakePrice(){
-        return $this->salePrice()* 120/100;
-
+    public function fakePrice()
+    {
+        return $this->salePrice() * 120 / 100;
     }
-    public function revenue(){
-        $outStock= $this->outStock();
-        $price= $this->salePrice();
-        $revenue= $outStock *$price;
+    public function revenue()
+    {
+        $outStock = $this->outStock();
+        $price = $this->salePrice();
+        $revenue = $outStock * $price;
         return $revenue;
     }
     public function topSale(){
-        $top= DB::table('stocks')->get()->sortByDesc('out_qty');
-
-
-        return $top;
-
-
-}}
+        $count= DB::table('products')->count('id');
+        DB::table('products')->get()->first()->id;
+        $max= $this->outStock();
+        for($i=1; $i<$count; $i++){
+            if($max > $this->outStock()){
+                $max=$this->outStock();
+            }
+    }
+    return $max;
+}
+}
