@@ -25,6 +25,8 @@
 }
 
 .header-section .header-top {
+    position: relative;
+    z-index: 100;
     transform: scaleY(1);
     transform-origin: top;
     -webkit-transition: all 0.3s;

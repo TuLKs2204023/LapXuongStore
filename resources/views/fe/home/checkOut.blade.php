@@ -1,5 +1,7 @@
-@section('fetitle', '- Checkout')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Checkout')
+
 @section('content')
     <!-- BREADCUMB SECTION BEGIN-->
     <div class="breadcrumb-section">
@@ -15,7 +17,6 @@
             </div>
         </div>
     </div>
-
     <!-- BREADCUMB SECTION END-->
 
     <!-- Message section -->
@@ -139,6 +140,7 @@
 @endsection
 
 @section('myJs')
+    <!-- Start KienJs -->
     <script type="module">
         import {CheckoutHandler, CouponHandler} from '{{ asset('/js/KienJs/checkout.js') }}';
         // import {ConfirmDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
@@ -152,5 +154,5 @@
                 });
             }
         });
-    </script>
+    </script><!-- End KienJs -->
 @endsection

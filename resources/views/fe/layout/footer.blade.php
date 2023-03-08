@@ -4,7 +4,7 @@
             <div class="col-lg-3">
                 <div class="footer-left">
                     <a href="index,html">
-                        <img src="{{asset('frontend/img/footer-logo.png')}}" height="25" alt="">
+                        <img src="{{ asset('frontend/img/footer-logo.png') }}" height="25" alt="">
                     </a>
                 </div>
                 <ul>
@@ -43,12 +43,12 @@
             </div>
             <div class="col-lg-4">
                 <div class="newslatter-item">
-                <h5>Join Our New Letter Now</h5>
-                <p>Get E-mail updates about our Lastest shop and special offers</p>
-                <form action="#" class="subscribe-form">
-                    <input type="text" placeholder="Enter E-mail">
-                    <button type="button">Subscribe</button>
-                </form>
+                    <h5>Join Our New Letter Now</h5>
+                    <p>Get E-mail updates about our Lastest shop and special offers</p>
+                    <form action="#" class="subscribe-form">
+                        <input type="text" placeholder="Enter E-mail">
+                        <button type="button">Subscribe</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -58,14 +58,17 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="copyright-text">
-                        Copyright <script>document.write(new Date().getFullYear()); </script> All right reserved | This temple is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">Group-01</a>
+                        Copyright
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> All right reserved | This temple is made with <i class="fa fa-heart-o"
+                            aria-hidden="true"></i> by <a href="#" target="_blank">Group-01</a>
                     </div>
                     <div class="payment-pic">
-                        <img src="{{asset('frontend/img/payment-method.png')}}" alt="">
+                        <img src="{{ asset('frontend/img/payment-method.png') }}" alt="">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </footer>

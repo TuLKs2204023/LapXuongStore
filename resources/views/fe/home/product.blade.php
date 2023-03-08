@@ -1,5 +1,6 @@
-@section('fetitle', '- Product')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Product')
 
 @section('myCss')
     <style>
@@ -10,15 +11,6 @@
         .comment-option.overflow-auto {
             max-height: 400px;
         }
-
-        /* .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role .bg-info{
-                                font-style: italic;
-                                font-size: 80%;
-                                font-weight: 500;
-                                text-shadow: 2px 2px 10px var(--violet-2nd);
-                            }
-                                /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
-
 
         .personal-rating .btn-default,
         .personal-rating .btn-warning {
@@ -384,7 +376,7 @@
                                             @foreach ($ratings as $rating)
                                                 <div class="co-item">
                                                     <div class="avatar-pic">
-                                                        <img src="{{ asset('images/' . $rating->user->image) }}"
+                                                        <img src="{{ isset($rating->user->image) ? asset('images/' . $rating->user->image) : '' }}"
                                                             alt="">
                                                     </div>
                                                     <div class="avatar-text">
@@ -565,6 +557,7 @@
 @endsection
 
 @section('myJs')
+    <!-- Start KienJs -->
     <script type="module">
         import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
         import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
@@ -582,7 +575,8 @@
                 });
             }
         });
-    </script>
+    </script><!-- End KienJs -->
+
     <script>
         jQuery(document).ready(function($) {
 

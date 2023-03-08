@@ -83,7 +83,8 @@ Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userPro
 Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name('passwordUser');
 Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
 
-
+//User Orders
+Route::get('/user-orders', [OdersController::class, 'userAllOrders'])->name('userOrders');
 
 //report users
 Route::get('admin/lastweek', [DashboardController::class, 'lastweek'])->name('lastweek');

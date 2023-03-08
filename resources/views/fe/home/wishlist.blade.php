@@ -24,7 +24,6 @@
             </div>
         </div>
     </div>
-
     <!-- BREADCUMB SECTION END-->
 
     <!-- Shoping-cart SECTION BEGIN-->
@@ -80,31 +79,4 @@
 @endsection
 
 @section('myJs')
-    {{-- <script type="module">
-        import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
-        import {ConfirmDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
-
-        document.addEventListener("readystatechange", (e) => {
-            if (e.target.readyState === "complete") {
-                const updateCart = new CartHandler({
-                    url: '{{ Route('updateCart') }}',
-                    token: '{{ csrf_token() }}',
-                    isUpdate: true,
-                    cartOrBtnSelector: ".products-cart",
-                    cartItemSelector: ".pr-cart-item",
-                    inputName: "product-quantity",
-                    summaryContSelector: ".order-summary",
-                    summariesSelector: ".ajax-summary",
-                    headerCartSelector: ".cart-icon",
-                });
-
-                // const confirmDialog = new ConfirmDialog({
-                //     processUrl: '{{ Route('removeCart') }}',
-                //     processToken: '{{ csrf_token() }}',
-                //     deleteBtn: "td.close-td.first-row",
-                //     headerCartSelector: ".cart-icon",
-                // });
-            }
-        });
-    </script> --}}
 @endsection

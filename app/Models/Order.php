@@ -24,4 +24,10 @@ class Order extends Model
     {
         return $this->hasOne(UsedPromotion::class);
     }
+
+    //get user own that order
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

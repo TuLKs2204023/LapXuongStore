@@ -1,5 +1,6 @@
-@section('fetitle', '- Home')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Home')
 
 @section('myCss')
     <style>
@@ -77,7 +78,8 @@
                 @foreach ($demands as $item)
                     <div class="col-lg-4">
                         <div class="single-banner">
-                            <img src="{{ asset('frontend/img/' . $item->image) }}" alt="{{ $item->name }}">
+                            <img src="{{ isset($item->image) ? asset('frontend/img/' . $item->image) : '' }}"
+                                alt="{{ $item->name }}">
                             <div class="inner-text">
                                 <h4><a href="{{ Route('fe.shop.cate', $item->slug) }}">{{ $item->name }}</a></h4>
                             </div>
@@ -110,7 +112,8 @@
                         @foreach ($officeProducts as $item)
                             <div class="product-item">
                                 <div class="pi-pic">
-                                    <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
+                                    <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
+                                        alt="{{ $item->name }}">
                                     <div class="sale">Sale</div>
                                     <div class="icon">
                                         <i class="icon_heart_alt"></i>
@@ -393,5 +396,4 @@
         </div>
     </div>
     <!-- INSTAGRAM SECTION END-->
-
 @endsection

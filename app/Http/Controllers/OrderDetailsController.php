@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,8 @@ class OrderDetailsController extends Controller
     public function adminRights(Request $request){
         $orderId = $request->id;
         $orderItems = OrderDetail::where('order_id', $orderId)->get();
-        return view('admin.oders.orderDetails', compact('orderItems'));
+        $order = Order::find($orderId);
+        return view('admin.oders.orderDetails', compact('orderItems', 'order'));
     }
 
     public function userRights(Request $request){

@@ -1,4 +1,5 @@
 @extends('fe.layout.layout')
+
 @section('myCss')
     <style>
         .section-big-py-space {
@@ -43,7 +44,6 @@
                     <div class="success-text"><i class="fa fa-check-circle" aria-hidden="true"></i>
                         <h2>Thank you</h2>
                         <p>Your order is successfully processsed and is on the way</p>
-
                     </div>
                 </div>
             </div>

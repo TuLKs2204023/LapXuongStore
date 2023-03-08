@@ -1,9 +1,12 @@
-@section('title','- Stocks')
 @extends('admin.layout.layout')
+
+@section('title', '- Stocks')
+
 @section('myHead')
 @endsection
 
 @section('contents')
+    <!-- Start Page Title -->
     <div class="pagetitle">
         <h1>Stock Management</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
@@ -14,69 +17,72 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <!-- Start Main Section -->
     <section class="section">
         @if (auth()->user()->role == 'Customer')
-        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
-            <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
+                <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
 
-            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+                <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
 
-        </section>
+            </section>
         @endif
         @if (auth()->user()->role !== 'Customer')
-        <div class="card">
-            <div class="card-header">
-                <a class="btn btn-outline-primary" href="{{ Route('admin.stock.create') }}">
-                    <i class="bi bi-plus-circle-fill me-1"></i>
-                    Add Stock
-                </a>
+            <!-- card -->
+            <div class="card">
+                <div class="card-header">
+                    <a class="btn btn-outline-primary" href="{{ Route('admin.stock.create') }}">
+                        <i class="bi bi-plus-circle-fill me-1"></i>
+                        Add Stock
+                    </a>
 
-                <!-- Message Section -->
-                @include('components.message')
-                <!-- / Message Section -->
+                    <!-- Message Section -->
+                    @include('components.message')
+                    <!-- / Message Section -->
 
-                {{-- <h3 class="card-title">DataTable with default features</h3> --}}
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <table id="stockManagement" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>P.d Name</th>
-                            <th>P.d ID</th>
-                            <th>In Quantity</th>
-                            <th>Unit Price</th>
-                            <th>Out Quantity</th>
-                            <th>Final Price</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
+                    {{-- <h3 class="card-title">DataTable with default features</h3> --}}
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="stockManagement" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>P.d Name</th>
+                                <th>P.d ID</th>
+                                <th>In Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Out Quantity</th>
+                                <th>Final Price</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
                             @foreach ($stocks as $stock)
-                                    <tr>
-                                        <td>{{ $stock->id }}</td>
-                                        <td>{{ $stock->product->subName() }}</td>
-                                        <td>{{ $stock->product->id }}</td>
-                                        <td>{{ $stock->in_qty }}</td>
-                                        <td>{{ number_format($stock->price->origin ?? 0, 0, ',', '.') }}</td>
-                                        <td>{{ $stock->out_qty }}</td>
-                                        <td>Still not input</td>
-                                        <td>{{ $stock->created_at }}</td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ $stock->id }}</td>
+                                    <td>{{ $stock->product->subName() }}</td>
+                                    <td>{{ $stock->product->id }}</td>
+                                    <td>{{ $stock->in_qty }}</td>
+                                    <td>{{ number_format($stock->price->origin ?? 0, 0, ',', '.') }}</td>
+                                    <td>{{ $stock->out_qty }}</td>
+                                    <td>Still not input</td>
+                                    <td>{{ $stock->created_at }}</td>
+                                </tr>
                             @endforeach
-                    </tbody>
+                        </tbody>
 
-                    <tfoot>
-                    </tfoot>
-                </table>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
             </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </section>
+            <!-- /.card -->
+        @endif
+    </section><!-- End Main Section -->
 @endsection
 
 @section('myJs')
@@ -92,4 +98,3 @@
         });
     </script>
 @endsection
-@endif

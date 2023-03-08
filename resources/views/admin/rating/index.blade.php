@@ -1,11 +1,9 @@
-
-@section('title','- Rating')
 @extends('admin.layout.layout')
 
-@section('myHead')
-@endsection
+@section('title', '- Rating')
 
 @section('contents')
+    <!-- Start Page Title -->
     <div class="pagetitle">
         <h1>Rating</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
@@ -16,6 +14,7 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <!-- Start Main Section -->
     <section class="section">
         @if (auth()->user()->role !== 'Admin')
             <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
@@ -27,6 +26,7 @@
             </section>
         @endif
         @if (auth()->user()->role == 'Admin')
+            <!-- card -->
             <div class="card">
                 <div class="card-header">
                     <!-- Message Section -->
@@ -37,7 +37,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="productsMgmt" class="table table-bordered table-striped">
+                    <table id="ratingsMgmt" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -65,7 +65,8 @@
                                             </i>
                                             Edit
                                         </a>
-                                        <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}" class="btn btn-sm btn-danger" id="delete">
+                                        <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
+                                            class="btn btn-sm btn-danger" id="delete">
                                             <i class="fas fa-trash"></i>
                                             Delete
                                         </a>
@@ -82,20 +83,19 @@
             </div>
             <!-- /.card -->
         @endif
-    </section>
+    </section><!-- End Main Section -->
 @endsection
 
 @section('myJs')
     <script>
         $(function() {
-            $("#productsMgmt").DataTable({
+            $("#ratingsMgmt").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
                 "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#ratingsMgmt_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection
-

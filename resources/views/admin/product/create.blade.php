@@ -1,5 +1,6 @@
-@section('title', '- Create Product')
 @extends('admin.layout.layout')
+
+@section('title', '- Create Product')
 
 @section('myHead')
     <style>
@@ -26,10 +27,26 @@
             padding: 10px 50px !important;
             margin: 0;
         }
+
+        .myFilesUpload .control-group {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .myFilesUpload .input-group-btn {
+            width: 95%;
+        }
+
+        .myFilesUpload .input-group-btn .btn-add-image {
+            width: 100%;
+            font-size: 0.8rem;
+            padding: 8px 12px;
+        }
     </style>
 @endsection
 
 @section('contents')
+    <!-- Start Page Title -->
     <div class="pagetitle">
         <h1>{{ $isUpdate ? 'Edit' : 'Create' }} Product</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
@@ -41,6 +58,7 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <!-- Start Main Section -->
     <section class="section">
         @if (auth()->user()->role == 'Customer')
             <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
@@ -52,6 +70,7 @@
             </section>
         @endif
         @if (auth()->user()->role !== 'Customer')
+            <!-- card -->
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} Product Form</h5>
@@ -439,44 +458,44 @@
                 </div>
             </div>
             <!-- /.card -->
-    </section>
+        @endif
+    </section><!-- End Main Section -->
 @endsection
 
 @section('myJs')
+    <!-- Start KienJs -->
     <script type="module">
-    import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
-    import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
-    import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
+        import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
+        import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
+        import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
 
 
-    document.addEventListener("readystatechange", (e) => {
-        if (e.target.readyState === "complete") {
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
 
-            // Custom-select
-            const customSelect = new CustomSelect({
-                orginialInput: "my-custom-select",
-            });
+                // Custom-select
+                const customSelect = new CustomSelect({
+                    orginialInput: "my-custom-select",
+                });
 
-            // Upload images
-            const filesUpload = new FilesUpload({filesUpload: ".myFilesUpload"});
+                // Upload images
+                const filesUpload = new FilesUpload({filesUpload: ".myFilesUpload"});
 
-            // Input validation
-            const productForm = new Validator('#createProduct');
+                // Input validation
+                const productForm = new Validator('#createProduct');
 
-            // Replace the <textarea id="editor1"> with a CKEditor 4
-            // instance, using default configuration.
-            CKEDITOR.replace('instruction', {
-                filebrowserBrowseUrl: '{{ route('ckfinder_browser') }}'
-            });
-            CKEDITOR.replace('feature', {
-                filebrowserBrowseUrl: '{{ route('ckfinder_browser') }}'
-            });
-        }
-    });
-
-    </script>
+                // Replace the <textarea id="editor1"> with a CKEditor 4
+                // instance, using default configuration.
+                CKEDITOR.replace('instruction', {
+                    filebrowserBrowseUrl: '{{ route('ckfinder_browser') }}'
+                });
+                CKEDITOR.replace('feature', {
+                    filebrowserBrowseUrl: '{{ route('ckfinder_browser') }}'
+                });
+            }
+        });
+    </script><!-- End KienJs -->
 
     @include('ckfinder::setup')
 
 @endsection
-@endif

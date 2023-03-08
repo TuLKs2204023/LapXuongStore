@@ -69,9 +69,6 @@
 
 <body>
 
-
-
-
     <!-- ======= Header ======= -->
     @include('admin.layout.header')
     <!-- End Header -->
@@ -176,6 +173,7 @@
             });
     </script>
     <!-- end Toastr + SweetAlert -->
+    
     @yield('myJs')
 </body>
 
