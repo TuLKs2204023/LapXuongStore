@@ -127,8 +127,8 @@
                                         <h5>{{ $item->name }}</h5>
                                     </a>
                                     <div class="product-price">
-                                        {{ $item->price }}
-                                        <span>{{ $item->price }}</span>
+                                        {{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}
+                                        <span>{{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -209,8 +209,8 @@
                                         <h5>{{ $item->name }}</h5>
                                     </a>
                                     <div class="product-price">
-                                        {{ $item->price }}
-                                        <span>{{ $item->price }}</span>
+                                        {{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}
+                                        <span>{{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}</span>
                                     </div>
                                 </div>
                             </div>

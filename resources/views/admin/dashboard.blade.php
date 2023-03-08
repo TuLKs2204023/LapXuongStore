@@ -344,14 +344,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($allproduct as $key => $row)
+                                            @foreach ($top as $key => $row)
+
+
+
                                             <tr>
-                                                <th scope="row"><a href="#"><img src="{{ asset('images/' . $row->oldestImage->url) }}"
+                                                <th scope="row"><a href="#"><img src="{{ asset('images/' . $row->Product->oldestImage->url) }}"
                                                             alt=""></a></th>
-                                                <td><a href="#" class="text-primary fw-bold">{{$row->name}}</a></td>
+                                                <td><a href="#" class="text-primary fw-bold">{{$row->Product->subName()}}</a></td>
                                                 <td>{{$row->price}}</td>
-                                                <td class="fw-bold">{{$row->topSale()}}</td>
-                                                <td>{{$row->revenue()}}</td>
+
+                                                <td class="fw-bold">{{$row->Product->outStock()}}</td>
+                                                <td>{{$row->Product->revenue()}}</td>
                                             </tr>
 
                                             @endforeach

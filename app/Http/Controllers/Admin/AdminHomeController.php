@@ -32,11 +32,13 @@ class AdminHomeController extends Controller
         (auth()->user()->role == 'Admin'){
             $now= Carbon::now();
             $allproduct = Product::all();
+            $top = DB::table('stocks')->get()->sortByDesc('out_qty');
+
             $totalUser= DB::table('users')->where('role','Customer')->where('created_at','>',$now->subDays(30))->count();
             $totalProduct= DB::table('products')->count();
             $totalItem= DB::table('order_details')->where('created_at','>',$now->subDays(30))->count();
 
-            return view('admin.dashboard', compact('totalUser','totalProduct','totalItem','allproduct'));
+            return view('admin.dashboard', compact('totalUser','totalProduct','totalItem','allproduct','top'));
         }
 
         else{
@@ -46,8 +48,8 @@ class AdminHomeController extends Controller
     public function manager()
     {
         $allproduct = Product::all();
-
-        return view('admin.dashboard',compact('allproduct'));
+        $top= DB::table('stocks')->get()->sortByDesc('out_qty');
+        return view('admin.dashboard',compact('allproduct','top'));
 
     }
     public function customer()

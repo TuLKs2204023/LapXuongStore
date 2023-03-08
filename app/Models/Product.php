@@ -356,14 +356,10 @@ class Product extends Model
         return $revenue;
     }
     public function topSale(){
-        $count= DB::table('products')->count('id');
-        DB::table('products')->get()->first()->id;
-        $max= $this->outStock();
-        for($i=1; $i<$count; $i++){
-            if($max > $this->outStock()){
-                $max=$this->outStock();
-            }
-    }
-    return $max;
-}
-}
+        $top= DB::table('stocks')->get()->sortByDesc('out_qty');
+
+
+        return $top;
+
+
+}}
