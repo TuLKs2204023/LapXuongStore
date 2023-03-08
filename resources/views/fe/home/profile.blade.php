@@ -96,7 +96,7 @@
                                     <p class="text-muted font-size-sm">{{auth()->user()->address}}</p>
                                     <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1;"
                                         href="{{ Route('wishlist') }}">Wishlist</a>
-                                    <button class="btn btn-outline-primary">My Orders</button>
+                                    <a href="{{ Route('userOrders') }}" class="btn btn-outline-primary">My Orders</a>
                                 </div>
                             </div>
                         </div>

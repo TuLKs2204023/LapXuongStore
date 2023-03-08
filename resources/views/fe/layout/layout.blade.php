@@ -92,8 +92,8 @@
     <script src="{{ asset('frontend/js/main.js') }}"></script>
 
 
-<!-- jQuery -->
-<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <!-- jQuery -->
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <!--Toastr + Sweet Alert-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -145,33 +145,34 @@
     <!-- KIEN Js -->
 
 
-     <!--Dropdown address -->
+    <!--Dropdown address -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-        jQuery(document).ready(function ($) {
+        jQuery(document).ready(function($) {
 
             /*------------------------------------------
             --------------------------------------------
             City Dropdown Change Event
             --------------------------------------------
             --------------------------------------------*/
-            $('#City-dropdown').on('change', function () {
+            $('#City-dropdown').on('change', function() {
                 let idCity = this.value;
                 $("#district-dropdown").html('');
                 $.ajax({
-                    url: "{{url('api/fetch-district')}}",
+                    url: "{{ url('api/fetch-district') }}",
                     type: "POST",
                     data: {
                         id: idCity,
-                        _token: '{{csrf_token()}}'
+                        _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json',
 
-                    success: function (result) {
+                    success: function(result) {
 
-                        $('#district-dropdown').html('<option value="">-- Select District --</option>');
-                        $.each(result.districts, function (key, value) {
+                        $('#district-dropdown').html(
+                            '<option value="">-- Select District --</option>');
+                        $.each(result.districts, function(key, value) {
                             $("#district-dropdown").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });
@@ -185,21 +186,21 @@
             District Dropdown Change Event
             --------------------------------------------
             --------------------------------------------*/
-            $('#district-dropdown').on('change', function () {
+            $('#district-dropdown').on('change', function() {
                 var idDistrict = this.value;
                 console.log(idDistrict);
                 $("#ward-dropdown").html('');
                 $.ajax({
-                    url: "{{url('api/fetch-ward')}}",
+                    url: "{{ url('api/fetch-ward') }}",
                     type: "POST",
                     data: {
                         district_id: idDistrict,
-                        _token: '{{csrf_token()}}'
+                        _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json',
-                    success: function (res) {
+                    success: function(res) {
                         $('#ward-dropdown').html('<option value="">-- Select Ward --</option>');
-                        $.each(res.wards, function (key, value) {
+                        $.each(res.wards, function(key, value) {
                             $("#ward-dropdown").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });

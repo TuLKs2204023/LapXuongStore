@@ -1,4 +1,4 @@
-@section('title','- Create Manufacturer')
+@section('title', '- Create Manufacturer')
 
 @extends('admin.layout.layout')
 @section('contents')
@@ -13,17 +13,16 @@
         </nav>
     </div><!-- End Page Title -->
     <section class="section">
-    @if (auth()->user()->role == 'Customer')
-    <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        @if (auth()->user()->role == 'Customer')
+            <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
-<h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
+                <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
 
-<img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-
-
-</section>
+                <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
         @endif
-        @if (auth()->user()->role !== 'Customer')
+    </section>
+
+    @if (auth()->user()->role !== 'Customer')
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Create' }} Manufacture Form</h5>
@@ -87,7 +86,8 @@
             </div>
         </div>
         <!-- /.card -->
-    </section>
+        </section>
+    @endif
 @endsection
 
 @section('myJs')
@@ -108,4 +108,3 @@
         });
     </script>
 @endsection
-@endif

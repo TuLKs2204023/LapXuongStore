@@ -1,12 +1,12 @@
-@section('title', '- Orders')
+@section('title', '- Order Details')
 @extends('admin.layout.layout')
 @section('contents')
     <div class="pagetitle">
-        <h1>Orders List</h1>
+        <h1>Order {{$order->id}} Details</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Orders List</li>
+                <li class="breadcrumb-item active">Order {{$order->id}} Details</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -28,8 +28,8 @@
                 <table id="manufacturesMgmt" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Order ID</th>
+                            <th>NO</th>
+                            <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
                         </tr>
@@ -39,7 +39,7 @@
                         @foreach ($orderItems as $key => $row)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $row->order_id }}</td>
+                                <td>{{ $row->product->name}}</td>
                                 <td>{{ $row->quantity }}</td>
                                 <td>{{ $row->price->origin }}</td>
                             </tr>
