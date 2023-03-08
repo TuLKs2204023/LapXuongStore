@@ -91,7 +91,7 @@
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
 
-
+    <!-- =========================== Start DuJs =========================== -->
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
@@ -117,37 +117,7 @@
     </script>
     <!--Toastr -->
 
-    <!-- KIEN Js -->
-    <script type="module">
-        import {MyToggle, MyStickyNav, HeaderCartHandler} from '{{ asset('/js/KienJs/main.js') }}';
-
-        document.addEventListener("readystatechange", (e) => {
-            if (e.target.readyState === "complete") {
-                const myToggle = new MyToggle({});
-                const myStickyNav = new MyStickyNav({});
-                const headerCart = new HeaderCartHandler({
-                    url: '{{ Route('emptyCart') }}',
-                    token: '{{ csrf_token() }}',
-                    selectors: {
-                        headerCartSelector: ".cart-icon",
-                    },
-                });
-            }
-        });
-
-        const navCateBtn = document.querySelector('.nav-item .cate-btn');
-        const navFakeCateBtn = document.querySelector('.nav-fake-categories .cate-btn');
-        navCateBtn.addEventListener('click', (e) =>{
-            navFakeCateBtn.click();
-            navCateBtn.classList.toggle('show');
-        });
-    </script>
-    <!-- KIEN Js -->
-
-
     <!--Dropdown address -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <script>
         jQuery(document).ready(function($) {
 
@@ -210,6 +180,34 @@
 
         });
     </script>
+    <!--End Dropdown address -->
+    <!-- =========================== End DuJs =========================== -->
+
+    <!-- KIEN Js -->
+    <script type="module">
+        import {MyToggle, MyStickyNav, HeaderCartHandler} from '{{ asset('/js/KienJs/main.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const myToggle = new MyToggle({});
+                const myStickyNav = new MyStickyNav({});
+                const headerCart = new HeaderCartHandler({
+                    url: '{{ Route('emptyCart') }}',
+                    token: '{{ csrf_token() }}',
+                    selectors: {
+                        headerCartSelector: ".cart-icon",
+                    },
+                });
+            }
+        });
+
+        const navCateBtn = document.querySelector('.nav-item .cate-btn');
+        const navFakeCateBtn = document.querySelector('.nav-fake-categories .cate-btn');
+        navCateBtn.addEventListener('click', (e) =>{
+            navFakeCateBtn.click();
+            navCateBtn.classList.toggle('show');
+        });
+    </script><!-- KIEN Js -->
 
     @yield('myJs')
 </body>

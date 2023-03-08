@@ -1,6 +1,9 @@
-@section('title', '- Order Details')
 @extends('admin.layout.layout')
+
+@section('title', '- Order Details')
+
 @section('contents')
+    <!-- Start Page Title -->
     <div class="pagetitle">
         <h1>Order {{$order->id}} Details</h1>
         <nav>
@@ -11,7 +14,9 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <!-- Start Main Section -->
     <section class="section">
+        <!-- card -->
         <div class="card">
             <div class="card-header">
                 {{-- <a class="btn btn-outline-primary" href="#">
@@ -25,7 +30,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="manufacturesMgmt" class="table table-bordered table-striped">
+                <table id="orderDetailsMgmt" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>NO</th>
@@ -53,18 +58,18 @@
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-    </section>
+    </section><!-- End Main Section -->
 @endsection
 
 @section('myJs')
     <script>
         $(function() {
-            $("#manufacturesMgmt").DataTable({
+            $("#orderDetailsMgmt").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#manufacturesMgmt_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#orderDetailsMgmt_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection

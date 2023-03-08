@@ -15,7 +15,8 @@
     --blue-dark: #596376;
     --blue-dark-20: rgba(89, 99, 118, 0.2);
     --blue-dark-50: rgba(89, 99, 118, 0.5);
-    --blue-dark-85: rgba(89, 99, 118, 0.85);
+    --blue-dark-80: rgba(89, 99, 118, 0.8);
+    --blue-dark-90: rgba(89, 99, 118, 0.9);
     --blue-dark-2nd: #aab7cf;
     --grey-dark: #373737;
     --grey-dark-2nd: #b0b0b0;
@@ -180,10 +181,11 @@
     visibility: hidden;
     opacity: 0;
     min-width: 120px;
-    background-color: var(--blue-dark-85);
+    background-color: var(--grey-dark);
     color: #fff;
-    box-shadow: 1px 1px 4px rgb(1 41 112 / 15%), -1px -1px 4px rgb(1 41 112 / 15%);
+    box-shadow: 2px 2px 6px rgb(1 41 112 / 20%), -2px -2px 4px rgb(1 41 112 / 20%);
     text-align: center;
+    font-size: 0.8rem;
     border-radius: 6px;
     padding: 5px 10px;
     position: absolute;
@@ -191,7 +193,7 @@
     top: 125%;
     left: 50%;
     margin-left: -60px;
-    transition: all 0.3s;
+    transition: all 0.3s ease-out 0s;
 }
 
 .myTooltip .tooltiptext::after {
@@ -202,11 +204,12 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent transparent var(--blue-dark-85) transparent;
+    border-color: transparent transparent var(--grey-dark) transparent;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .form-control:focus + .myTooltip .tooltiptext {
     visibility: visible;
     opacity: 1;
+    transition: all 0.3s ease-in 1.5s;
 }
