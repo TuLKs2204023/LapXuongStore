@@ -345,15 +345,16 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($allproduct as $key => $row)
-                                            <tr>
-                                                <th scope="row"><a href="#"><img src="{{ asset('images/' . $row->oldestImage->url) }}"
-                                                            alt=""></a></th>
-                                                <td><a href="#" class="text-primary fw-bold">{{$row->name}}</a></td>
-                                                <td>{{$row->price}}</td>
-                                                <td class="fw-bold">{{$row->topSale()}}</td>
-                                                <td>{{$row->revenue()}}</td>
-                                            </tr>
-
+                                                <tr>
+                                                    <th scope="row"><a href="#"><img
+                                                                src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
+                                                                alt=""></a></th>
+                                                    <td><a href="#"
+                                                            class="text-primary fw-bold">{{ $row->name }}</a></td>
+                                                    <td>{{ $row->price }}</td>
+                                                    <td class="fw-bold">{{ $row->topSale() }}</td>
+                                                    <td>{{ $row->revenue() }}</td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>

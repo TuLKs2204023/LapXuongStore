@@ -1,16 +1,23 @@
 .myFilesUpload .list-images {
-    width: 100%;
-    margin-top: 20px;
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0px 20px;
+    margin-top: 10px;
 }
 
 .myFilesUpload .hidden {
     display: none;
 }
 
+.myFilesUpload .control-group {
+    display: flex;
+    margin-bottom: 10px;
+}
+
 .myFilesUpload .input-group-btn {
-    display: block;
-    width: 100%;
+    /* display: flex; */
+    /* width: 100%; */
     padding-top: 30px;
 }
 .myFilesUpload .box-image {

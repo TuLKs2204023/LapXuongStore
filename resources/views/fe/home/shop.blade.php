@@ -1,10 +1,11 @@
-@section('fetitle', '- Shop')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Shop')
 
 @section('myCss')
     <style>
         .fa-heart {
-            color: red;
+            color: var(--red-dark-tu);
         }
     </style>
 @endsection
@@ -38,8 +39,6 @@
 @endsection
 
 @section('content')
-
-
     <!-- PRODUCT-SHOP SECTION BEGIN-->
     <section class="product-shop spad">
         <div class="container">
@@ -270,6 +269,7 @@
 @endsection
 
 @section('myJs')
+    <!-- Start TuJs -->
     <script>
         const empty = document.querySelectorAll(".product-item .pi-pic .icon .fa-heart");
         let isFilled = false;
@@ -287,5 +287,5 @@
                 }
             };
         });
-    </script>
+    </script><!-- End TuJs -->
 @endsection

@@ -1,5 +1,7 @@
-@section('fetitle','- Edit Profile')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Edit Profile')
+
 @section('myCss')
     <style>
         body {
@@ -185,9 +187,8 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="email" name="email" class="form-control"
-                                            value="{{ $edit->email }}" required disabled >
-                                        <input type="hidden" name="email"
-                                            value="{{ $edit->email }}" >
+                                            value="{{ $edit->email }}" required disabled>
+                                        <input type="hidden" name="email" value="{{ $edit->email }}">
                                     </div>
                                 </div>
                                 <hr>
@@ -220,13 +221,13 @@
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">City</h6>
                                     </div>
-                                    <div class="col-sm-9 text-secondary" >
+                                    <div class="col-sm-9 text-secondary">
                                         <select id="City-dropdown" class="form-control" name="city">
                                             <option value="">-- Select City --</option>
                                             @foreach ($city as $data)
-                                            <option value="{{$data->id}}">
-                                                {{$data->name}}
-                                            </option>
+                                                <option value="{{ $data->id }}">
+                                                    {{ $data->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -308,8 +309,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <button class="btn btn-info " type="submit"
-                                            >Update</button>
+                                        <button class="btn btn-info " type="submit">Update</button>
                                     </div>
                                 </div>
                             </form>
@@ -385,9 +385,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
 
@@ -395,6 +392,7 @@
     </div>
 @endsection
 @section('myJs')
+    <!-- Start KienJs -->
     <script type="module">
         import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
         import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
@@ -410,5 +408,5 @@
                 });
             }
         });
-    </script>
+    </script><!-- End KienJs -->
 @endsection
