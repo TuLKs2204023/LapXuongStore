@@ -91,7 +91,6 @@
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
 
-
     <!-- =========================== Start DuJs =========================== -->
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
@@ -117,6 +116,7 @@
         @endif
     </script>
     <!--Toastr -->
+
     <!--Dropdown address -->
     <script>
         jQuery(document).ready(function($) {
