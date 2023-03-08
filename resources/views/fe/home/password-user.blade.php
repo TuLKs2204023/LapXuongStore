@@ -1,5 +1,7 @@
-@section('fetitle','- Change Password')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Change Password')
+
 @section('myCss')
     <style>
         body {
@@ -109,8 +111,7 @@
                                         <h6 class="mb-0">Old Password</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="password"  class="form-control"
-                                             required name= "old_confirmation">
+                                        <input type="password" class="form-control" required name="old_confirmation">
                                     </div>
                                 </div>
 
@@ -136,10 +137,10 @@
                                     </div>
                                 </div>
                                 <hr>
-                               <div class="row">
+                                <div class="row">
                                     <div class="col-sm-12">
-                                        <button class="btn btn-info " type="submit" style="background-color:#4154f1;border-color:#4154f1"
-                                            >Update</button>
+                                        <button class="btn btn-info " type="submit"
+                                            style="background-color:#4154f1;border-color:#4154f1">Update</button>
                                     </div>
                                 </div>
                             </form>
@@ -153,6 +154,7 @@
     </div>
 @endsection
 @section('myJs')
+    <!-- Start KienJs -->
     <script type="module">
         import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
         import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
@@ -168,5 +170,5 @@
                 });
             }
         });
-    </script>
+    </script><!-- End KienJs -->
 @endsection
