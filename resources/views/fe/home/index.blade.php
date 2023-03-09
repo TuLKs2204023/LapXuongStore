@@ -7,6 +7,14 @@
         .col-lg-4 .single-banner img {
             max-height: 562px;
         }
+
+        .latest-blog {
+            padding-top: 0;
+        }
+
+        .spad {
+            padding-top: 0;
+        }
     </style>
 @endsection
 
@@ -120,7 +128,8 @@
                                     </div>
                                     <ul>
                                         <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                        <li class="quick-view"><a href="{{ Route('product.details', $item->slug) }}">+ Quick View</a></li>
+                                        <li class="quick-view"><a href="{{ Route('product.details', $item->slug) }}">+
+                                                Quick View</a></li>
                                         <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
                                     </ul>
                                 </div>
@@ -235,40 +244,7 @@
 
     <!-- ----------------------------------------------------------------------------------------------- -->
 
-    <!-- INSTAGRAM SECTION BEGIN-->
-    <div class="instagram-photo">
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a1.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a6.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a3.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a4.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a5.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-    </div>
-
+    <!-- Blog SECTION BEGIN-->
     <div class="latest-blog spad">
         <div class="container">
             <div class="row">
@@ -395,5 +371,5 @@
 
         </div>
     </div>
-    <!-- INSTAGRAM SECTION END-->
+    <!-- Blog SECTION END-->
 @endsection

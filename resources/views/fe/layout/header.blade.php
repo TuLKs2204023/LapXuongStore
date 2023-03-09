@@ -59,9 +59,9 @@
                 <div class="lan-selector">
                     <select name="countries" id="countries" class="language_drop" style="width:150px">
                         <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}"
-                            data-imagecss="flag yt" data-title="English">Eng</option>
+                            data-imagecss="flag yt" data-title="English">ENG</option>
                         <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}"
-                            data-imagecss="flag yu" data-title="Vietnamese">Vie</option>
+                            data-imagecss="flag yu" data-title="Vietnamese">VIE</option>
                     </select>
                 </div>
 
