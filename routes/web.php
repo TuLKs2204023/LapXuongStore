@@ -57,7 +57,7 @@ Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->n
 
 
 
-
+Route::get('/about-us', [FE_HomeController::class, 'aboutUs'])->name('aboutUs');
 Route::get('/', [FE_HomeController::class, 'index'])->name('fe.home');
 Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact');
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');

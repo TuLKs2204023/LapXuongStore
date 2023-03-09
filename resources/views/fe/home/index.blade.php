@@ -6,6 +6,26 @@
     <style>
         .col-lg-4 .single-banner img {
             max-height: 562px;
+
+        }
+
+        .col-lg-4 {
+            padding-bottom: 10px !important;
+        }
+
+        .single-banner h4 {
+            padding: 0% !important;
+            background: none !important;
+
+        }
+
+        .single-banner .inner-text a {
+            color: white;
+        }
+        .single-banner .inner-text a:hover{
+            font-style: bold;
+            transition: 0.2s;
+            font-size: 150%;
         }
     </style>
 @endsection
@@ -35,7 +55,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
-                            <span>Laptop Gaming</span>
+                            <span style="color: aliceblue">Laptop Gaming</span>
                             <h1 style="color: aliceblue">Black friday</h1>
                             <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
                                 Hoa Thám. (78 - 80 - 82
@@ -152,11 +172,11 @@
         <div class="container">
             <div class="col-lg-6 text-center">
                 <div class="section-title">
-                    <h2>Deal Of The Week</h2>
-                    <p>Nhấn theo dõi để có thông tin khuyến mãi mới nhất</p>
+                    <h2 style="color: aliceblue">Deal Of The Week</h2>
+                    <p style="color: aliceblue">Nhấn theo dõi để có thông tin khuyến mãi mới nhất</p>
                     <div class="product-price">
                         $400.00
-                        <span>/ MSI Katana /</span>
+                        <span style="color: aliceblue">/ MSI Katana /</span>
                     </div>
                 </div>
                 <div class="countdown-timer" id="countdown">
