@@ -207,8 +207,8 @@
                                         <h6 class="mb-0">Gender</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <select name="gender" class="form-control" rules="required">
-                                            <option value="">--- Select your gender ---</option>
+                                        <select name="gender" class="form-control" rules="required" value="{{ $edit->gender }}">
+                                            <option value=""> {{ $edit->gender }} </option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                             <option value="No thanks">No Thanks</option>
@@ -223,7 +223,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="City-dropdown" class="form-control" name="city">
-                                            <option value="">-- Select City --</option>
+                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->city->name}}</option>
                                             @foreach ($city as $data)
                                                 <option value="{{ $data->id }}">
                                                     {{ $data->name }}
@@ -239,6 +239,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="district-dropdown" class="form-control" name="district">
+                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->district->name}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -248,7 +249,8 @@
                                         <h6 class="mb-0">Ward</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <select id="ward-dropdown" class="form-control" name="ward">
+                                        <select id="ward-dropdown" class="form-control" name="ward" value="">
+                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->ward->name}}</option>
                                         </select>
                                     </div>
                                 </div>

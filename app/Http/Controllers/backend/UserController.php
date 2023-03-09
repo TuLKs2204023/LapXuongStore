@@ -5,7 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
 use App\Models\User;
-use App\Models\City;
+use App\Models\Address\City;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -35,7 +35,7 @@ class UserController extends Controller
     public function InfoUser()
     {
         $all = DB::table('users')->get();
-        
+
 
 
         return view('admin.users.info-user', compact('all'));
@@ -109,11 +109,13 @@ class UserController extends Controller
         // $edit = User::find($id);
 
         $edit = DB::table('users')->where('id', $id)->first();
+
         return view('admin.users.edit-user', compact('edit'));
     }
     public function EditByUser($id)
     {
-        $edit = DB::table('users')->where('id', $id)->first();
+        $edit = User::find($id);
+
         $city = City::get(["name", "id"]);
 
         return view('fe.home.edit-profile', compact('edit','city'));
@@ -150,21 +152,21 @@ class UserController extends Controller
                         'message' => 'Something went wrong,try again !',
                         'alert-type' => 'error',
                     );
-                    return redirect()->route('userProfile')->with($notification);
+                    return redirect()->Route('passwordUser', auth()->user()->id)->with($notification);
                 }
             } else {
                 $notification = array(
                     'message' => 'Plesase confirm old password,try again',
                     'alert-type' => 'error',
                 );
-                return redirect()->route('userProfile')->with($notification);
+                return redirect()->Route('passwordUser', auth()->user()->id)->with($notification);
             }
         } else {
             $notification = array(
                 'message' => 'Please confirm new password ,try again',
                 'alert-type' => 'error',
             );
-            return redirect()->route('userProfile')->with($notification);
+            return redirect()->Route('passwordUser', auth()->user()->id)->with($notification);
         }
     }
 

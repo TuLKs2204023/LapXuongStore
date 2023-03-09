@@ -4,56 +4,54 @@
             <div class="ht-left">
                 <div class="mail-service">
                     <i class="fa fa-envelope"></i>
-                    LapXuongShop@gmail.com
+                    <a href="mailto:LapXuongShop@gmail.com"
+                    style="
+                    color: black;
+                    text-decoration: none;
+                    background-color: white;"
+                    >LapXuongShop@gmail.com</a>
                 </div>
                 <div class="phone-service">
                     <i class="fa fa-phone"></i>
-                    03979-3979-3979
+                    <a href="tel:03979-3979-3979" style="
+                    color: black;
+                    text-decoration: none;
+                    background-color: white;
+                    ">03979-3979-3979</a>
+
                 </div>
             </div>
             <div class="ht-right">
                 @if (Route::has('login'))
-                    @auth
-                        @if (auth()->user()->role == 'Customer')
-                            <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
+                @auth
+                @if (auth()->user()->role == 'Customer')
+                <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}" onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                            <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
-                                style="padding-top:10px;padding-bottom: 7px;" style="width:80px "
-                                type="submit">{{ auth()->user()->name }}
-                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle"
-                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
-                            </a>
-                        @endif
-                        @if (auth()->user()->role == 'Admin')
-                            <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
-                                Hello {{ auth()->user()->name }}
-                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle"
-                                    style="
+                    {{ __('Logout') }}
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+                <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius" style="padding-top:10px;padding-bottom: 7px;" style="width:80px " type="submit">{{ auth()->user()->name }}
+                    <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
+                </a>
+                @endif
+                @if (auth()->user()->role == 'Admin')
+                <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
+                    Hello {{ auth()->user()->name }}
+                    <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="
                                     height: 40px ;width:40px; margin-left:20px;">
-                            </a>
-                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
-                                type="submit">Setting</a>
-                        @endif
-                        @if (auth()->user()->role == 'Manager')
-                            <a href="{{ url('manager') }}" class="login-panel"
-                                style="padding-top:10px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
-                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle"
-                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px"></a>
-                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
-                                type="submit">Setting</a>
-                        @endif
-                    @else
-                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                    @endauth
+                </a>
+                <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px " type="submit">Setting</a>
+                @endif
+                @if (auth()->user()->role == 'Manager')
+                <a href="{{ url('manager') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
+                    <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 40px ;width:40px; margin-left:20px; margin-right:10px"></a>
+                <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px " type="submit">Setting</a>
+                @endif
+                @else
+                <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
+                @endauth
                 @endif
 
                 <div class="lan-selector">
@@ -99,9 +97,9 @@
                             <a href="{{ Route('wishlist') }}">
                                 <i class="icon_heart_alt"></i>
                                 @if (auth()->user())
-                                    <span>{{ count(auth()->user()->wishlistItems) }}</span>
+                                <span>{{ count(auth()->user()->wishlistItems) }}</span>
                                 @else
-                                    <span>0</span>
+                                <span>0</span>
                                 @endif
 
                             </a>
@@ -116,27 +114,25 @@
                                     <table>
                                         <tbody>
                                             @if (session('cart'))
-                                                @foreach (session('cart') as $item)
-                                                    <tr>
-                                                        <td class="si-pic"><img
-                                                                src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                                alt=""></td>
-                                                        <td class="si-text">
-                                                            <div class="product-selected">
-                                                                <p>{{ number_format($item->product->price, 0, ',', '.') }}
-                                                                </p>
-                                                                <h6>{{ $item->product->name }}</h6>
-                                                            </div>
-                                                        </td>
-                                                        <td class="si-close">
-                                                            <i class="ti-close"></i>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                            @foreach (session('cart') as $item)
+                                            <tr>
+                                                <td class="si-pic"><img src="{{ asset('images/' . $item->product->oldestImage->url) }}" alt=""></td>
+                                                <td class="si-text">
+                                                    <div class="product-selected">
+                                                        <p>{{ number_format($item->product->price, 0, ',', '.') }}
+                                                        </p>
+                                                        <h6>{{ $item->product->name }}</h6>
+                                                    </div>
+                                                </td>
+                                                <td class="si-close">
+                                                    <i class="ti-close"></i>
+                                                </td>
+                                            </tr>
+                                            @endforeach
                                             @else
-                                                <tr>
-                                                    <td colspan="3" style="text-align: center">CART IS EMPTY</td>
-                                                </tr>
+                                            <tr>
+                                                <td colspan="3" style="text-align: center">CART IS EMPTY</td>
+                                            </tr>
                                             @endif
 
 
@@ -182,11 +178,11 @@
                             <li><a href="blog-detail.html">Blog Detail</a></li>
                             <li><a href="">Shopping Cart</a></li>
                             <li><a href="{{ Route('checkout') }}">Check Out</a></li>
-                            <li><a href="faq.html">Faq</a></li>
-                            <li><a href="{{ Route('register') }}">Register</a></li>
-                            <li><a href="{{ Route('login') }}">Login</a></li>
-                        </ul>
-                    </li> --}}
+                    <li><a href="faq.html">Faq</a></li>
+                    <li><a href="{{ Route('register') }}">Register</a></li>
+                    <li><a href="{{ Route('login') }}">Login</a></li>
+                </ul>
+                </li> --}}
                 </ul>
             </nav>
         </div>
@@ -195,15 +191,15 @@
         <div class="cate-btn my-toggle"></div>
         <ul class="category-list my-toggle-content myScrollbar">
             @foreach ($cateGroups as $cateGroup)
-                <li>
-                    <div class="category-list-header">{{ $cateGroup->name }}</div>
-                    <ul>
-                        @foreach ($cateGroup->cates as $cate)
-                            <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </li>
+            <li>
+                <div class="category-list-header">{{ $cateGroup->name }}</div>
+                <ul>
+                    @foreach ($cateGroup->cates as $cate)
+                    <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
+                    </li>
+                    @endforeach
+                </ul>
+            </li>
             @endforeach
         </ul>
     </div>

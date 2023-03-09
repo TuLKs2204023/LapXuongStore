@@ -1,5 +1,7 @@
 export { Validator };
 
+const $ = document.querySelector.bind(document);
+
 // Validators
 function Validator(form) {
     const formElement = $(form);

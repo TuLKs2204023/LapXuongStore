@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Address;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class District extends Model
 {
     use HasFactory;
 
 
-
     protected $fillable=[
-        'name'
-
+        'name',
+        'city_id'
     ];
     public function users(){
         return $this->hasMany(User::class);

@@ -55,6 +55,7 @@ Route::get('/customer', [AdminHomeController::class, 'customer'])->name('custome
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
 
 
+Route::get('/about-us', [FE_HomeController::class, 'aboutUs'])->name('aboutUs');
 Route::get('/', [FE_HomeController::class, 'index'])->name('fe.home');
 Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact');
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
@@ -175,6 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/{id}/edit', [ManufactureController::class, 'edit'])->name('edit');
             Route::put('/update', [ManufactureController::class, 'update'])->name('update');
             Route::get('/destroy/{id}', [ManufactureController::class, 'destroy'])->name('destroy');
+            Route::post('/get-series-by-brand', [ManufactureController::class, 'getSeriesByBrand'])->name('getSeriesByBrand');
         });
 
         // CPU

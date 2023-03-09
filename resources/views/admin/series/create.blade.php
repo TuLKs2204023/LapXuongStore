@@ -38,19 +38,42 @@
 
                     <!-- Horizontal Form -->
                     <form action="{{ Route($isUpdate ? 'admin.series.update' : 'admin.series.store') }}" method="post"
-                        class="card-body" enctype="multipart/form-data">
+                        class="card-body myForm" enctype="multipart/form-data" id="createSeries">
                         @csrf
                         @if ($isUpdate)
                             @method('put')
                             <input type="hidden" name="id" value="{{ $series->id }}">
                         @endif
 
+                        <!-- Manufacture Section -->
+                        <div class="form-group row mb-3">
+                            <label for="manufacture_id" class="col-sm-2 col-form-label">
+                                <div>Manufacture<span class="form-required">&nbsp;*</span></div>
+                            </label>
+                            <div class="col-sm-10">
+                                <div class="my-custom-select">
+                                    <select id="manufacture_id" name="manufacture_id" class="form-control" rules="required">
+                                        <option value="">--- Select ---</option>
+                                        @foreach ($manufactures as $item)
+                                            <option
+                                                value="{{ $item->id }}"{{ $isUpdate ? ($series->manufacture->id == $item->id ? 'selected' : '') : '' }}>
+                                                {{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <span class="form-message heighter"></span>
+                            </div>
+                        </div><!-- / Manufacture Section -->
+
                         <!-- Name Section -->
                         <div class="form-group row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <label for="name" class="col-sm-2 col-form-label">
+                                <div>Name<span class="form-required">&nbsp;*</span></div>
+                            </label>
                             <div class="col-sm-10">
-                                <input type="text" id="name" name="name" class="form-control"
+                                <input type="text" id="name" name="name" class="form-control" rules="required"
                                     value="{{ $isUpdate ? $series->name : '' }}">
+                                <span class="form-message heighter"></span>
                             </div>
                         </div><!-- / Name Section -->
 
@@ -68,8 +91,21 @@
                         </div>
                     </form><!-- End Horizontal Form -->
                 </div>
-            </div>
-            <!-- /.card -->
+            </div><!-- /.card -->
         @endif
     </section><!-- End Main Section -->
+@endsection
+
+@section('myJs')
+    <!-- Start KienJs -->
+    <script type="module">
+        import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                // Input validation
+                const seriesForm = new Validator('#createSeries');
+            }
+        });
+    </script><!-- End KienJs -->
 @endsection

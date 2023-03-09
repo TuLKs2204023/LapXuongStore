@@ -47,6 +47,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Manufacture</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>
@@ -57,6 +58,7 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->manufacture->name }}</td>
                                     <td>
                                         <ul>
                                             @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)

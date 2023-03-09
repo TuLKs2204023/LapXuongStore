@@ -36,7 +36,7 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    
+
     <!-- Start Main Section -->
     <section class="section">
         @if (auth()->user()->role == 'Customer')
@@ -70,7 +70,7 @@
                             <div class="col-sm-10">
                                 <input type="text" id="name" name="name" class="form-control" rules="required"
                                     value="{{ $isUpdate ? $manufacture->name : '' }}">
-                                <span class="form-message"></span>
+                                <span class="form-message heighter"></span>
                             </div>
                         </div> <!-- / Name Section -->
 
@@ -80,6 +80,7 @@
                             <div class="col-sm-10">
                                 <input type="text" id="address" name="address" class="form-control"
                                     value="{{ $isUpdate ? $manufacture->address : '' }}">
+                                <span class="form-message heighter"></span>
                             </div>
                         </div> <!-- / Address Section -->
 
@@ -89,6 +90,7 @@
                             <div class="col-sm-10">
                                 <input type="text" id="phone" name="phone" class="form-control"
                                     value="{{ $isUpdate ? $manufacture->phone : '' }}">
+                                <span class="form-message heighter"></span>
                             </div>
                         </div><!-- / Phone Section -->
 
@@ -97,6 +99,7 @@
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
                                 <textarea id="description" name="description" class="form-control" rows="8">{{ $isUpdate ? trim($manufacture->description) : '' }}</textarea>
+                                <span class="form-message heighter"></span>
                             </div>
                         </div> <!-- / Description Section -->
 
@@ -111,7 +114,7 @@
                         </div>
                     </form><!-- End Horizontal Form -->
                 </div>
-            </div><!-- /.card --> 
+            </div><!-- /.card -->
         @endif
     </section><!-- End Main Section -->
 @endsection
@@ -120,15 +123,10 @@
     <!-- Start KienJs -->
     <script type="module">
         import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
-        import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
         import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
 
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
-                // Custom-select
-                const customSelect = new CustomSelect({
-                    orginialInput: "my-custom-select",
-                });
 
                 // Upload images
                 const filesUpload = new FilesUpload({

@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\City;
-use App\Models\District;
-Use App\Models\Ward;
-
+use App\Models\Address\City;
+use App\Models\Address\District;
+Use App\Models\Address\Ward;
 use Illuminate\Http\Request;
 
 class DropdownController extends Controller

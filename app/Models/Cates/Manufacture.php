@@ -35,4 +35,12 @@ class Manufacture extends Model
     {
         return $this->hasMany(\App\Models\Product::class);
     }
+
+    /**
+     * Get the Series for the manufacture.
+     */
+    public function series()
+    {
+        return $this->hasMany(Series::class);
+    }
 }
