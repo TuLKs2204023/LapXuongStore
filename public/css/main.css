@@ -36,6 +36,12 @@
     margin-top: 36px;
 }
 
+.heighter {
+    display: block;
+    height: 1.1rem;
+    line-height: 1.5rem;
+}
+
 .site-btn {
     background: linear-gradient(
             to left,

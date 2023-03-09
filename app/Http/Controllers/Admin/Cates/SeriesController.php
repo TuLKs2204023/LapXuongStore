@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Cates;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
 use App\Models\Cates\Series;
+use App\Models\Cates\Manufacture;
 use Illuminate\Http\Request;
 
 class SeriesController extends Controller
@@ -18,6 +19,7 @@ class SeriesController extends Controller
     public function index()
     {
         $series = Series::all();
+        $series->load('manufacture');
         return view('admin.series.index')->with(['series' => $series]);
     }
 
@@ -29,7 +31,11 @@ class SeriesController extends Controller
     public function create()
     {
         $isUpdate = false;
-        return view('admin.series.create')->with(['isUpdate' => $isUpdate]);
+        $manufactures = Manufacture::all();
+        return view('admin.series.create')->with([
+            'isUpdate' => $isUpdate,
+            'manufactures' => $manufactures,
+        ]);
     }
 
     /**
@@ -68,10 +74,12 @@ class SeriesController extends Controller
     public function edit(int $id)
     {
         $series = Series::find($id);
+        $manufactures = Manufacture::all();
         $isUpdate = true;
 
         return view('admin.series.create')->with([
             'series' => $series,
+            'manufactures' => $manufactures,
             'isUpdate' => $isUpdate
         ]);
     }
