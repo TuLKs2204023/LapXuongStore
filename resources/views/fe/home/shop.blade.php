@@ -237,12 +237,12 @@
                                             </div>
                                             <div class="pi-text">
                                                 <div class="catagory-name">Coat</div>
-                                                <a href="">
+                                                <a href="{{ Route('product.details', $item->slug) }}">
                                                     <h5>{{ $item->name }}</h5>
                                                 </a>
                                                 <div class="product-price">
-                                                    {{ number_format($item->price, 0, ',', '.') . ' VND' }}
-                                                    <span>discount price</span>
+                                                    {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
+                                                    <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
                                                 </div>
                                             </div>
                                         </div>

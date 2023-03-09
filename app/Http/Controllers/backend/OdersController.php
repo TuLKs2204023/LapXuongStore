@@ -28,7 +28,7 @@ class OdersController extends Controller
         $user = auth()->user();
         if($user){
             $uId = $user->id;
-            $orders = Order::where('user_id', $uId)->get();
+            $orders = Order::where('user_id', $uId)->orderByDesc('id')->get();
             return view('fe.home.userOrders', compact('orders'));
         }
         else{

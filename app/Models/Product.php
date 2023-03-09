@@ -339,15 +339,16 @@ class Product extends Model
     }
     public function salePrice()
     {
+        $salePrice = 0;
         $id = $this->id;
-        $price = DB::table('prices')->where('product_id', $id)->avg('origin');
-        $saleprice = $price + $price * 50 / 100;
+        $price = DB::table('prices')->where('product_id', $id)->where('origin', '>', 0)->avg('origin');
+        $salePrice = $price + $price * 50 / 100;
 
-        return $saleprice;
+        return $salePrice;
     }
     public function fakePrice()
     {
-        return $this->salePrice() * 120 / 100;
+        return $this->salePrice() - $this->salePrice() * 20 / 100;
     }
     public function revenue()
     {

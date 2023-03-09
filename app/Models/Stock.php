@@ -27,4 +27,7 @@ class Stock extends Model
             ->where('stock_id', $this->id)->first();
     }
 
+    public function order_detail(){
+        return $this->hasOne(OrderDetail::class);
+    }
 }

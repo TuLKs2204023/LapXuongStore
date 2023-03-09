@@ -75,7 +75,7 @@
                                     <td>{{ $item->ram->amount }}</td>
                                     <td>{{ $item->screen->amount }}</td>
                                     <td>{{ $item->hdd->amount }}</td>
-                                    <td>{{ number_format($item->price, 0, ',', '.') }}</td>
+                                    <td>{{ number_format($item->salePrice(), 0, ',', '.') }}</td>
                                     {{-- <td>
                                     <ul>
                                         @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
