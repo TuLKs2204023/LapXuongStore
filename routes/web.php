@@ -32,6 +32,7 @@ use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderDetailsController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -51,10 +52,7 @@ Auth::routes();
 Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
 Route::get('/manager', [AdminHomeController::class, 'manager'])->name('manager.dashboard');
 Route::get('/customer', [AdminHomeController::class, 'customer'])->name('customer');
-
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
-
-
 
 
 Route::get('/about-us', [FE_HomeController::class, 'aboutUs'])->name('aboutUs');
@@ -82,9 +80,6 @@ Route::post('/update-byuser/{id}', [UserController::class, 'UpdateByUser'])->nam
 Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userProfile');
 Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name('passwordUser');
 Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
-
-//User Orders
-Route::get('/user-orders', [OdersController::class, 'userAllOrders'])->name('userOrders');
 
 //report users
 Route::get('admin/lastweek', [DashboardController::class, 'lastweek'])->name('lastweek');
@@ -117,14 +112,20 @@ Route::get('/view-cart', [FE_HomeController::class, 'viewCart'])->name('viewCart
 Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearCart');
 Route::post('/empty-cart', [FE_HomeController::class, 'emptyCart'])->name('emptyCart');
 
-// Wishlist
-Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
-Route::get('/{id}/add_wishlist', [WishlistItemController::class, 'store'])->name('addWishlist');
-Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'userDestroy'])->name('removeWishlist');
+
 
 
 // For Login purpose
 Route::group(['middleware' => 'auth'], function () {
+    //User Orders
+    Route::get('/user/orders', [OdersController::class, 'userAllOrders'])->name('userOrders');
+    Route::get('/user/{id}/order-details', [OrderDetailsController::class, 'userRights'])->name('userOrderDetails');
+
+    // Wishlist
+    Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
+    Route::get('/{id}/add_wishlist', [WishlistItemController::class, 'store'])->name('addWishlist');
+    Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'userDestroy'])->name('removeWishlist');
+
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::post('/process-checkout', [CheckoutController::class, 'processCheckout'])->name('processCheckout');
@@ -175,6 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/{id}/edit', [ManufactureController::class, 'edit'])->name('edit');
             Route::put('/update', [ManufactureController::class, 'update'])->name('update');
             Route::get('/destroy/{id}', [ManufactureController::class, 'destroy'])->name('destroy');
+            Route::post('/get-series-by-brand', [ManufactureController::class, 'getSeriesByBrand'])->name('getSeriesByBrand');
         });
 
         // CPU

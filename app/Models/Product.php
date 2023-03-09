@@ -183,6 +183,7 @@ class Product extends Model
             ->sum('out_qty');
         return $out_qty;
     }
+
     /* Get the RAM that owns this product.
      */
     public function ram()

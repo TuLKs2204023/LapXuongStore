@@ -3,14 +3,14 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="footer-left">
-                    <a href="index,html">
-                        <img src="{{ asset('frontend/img/footer-logo.png') }}" height="25" alt="">
+                    <a href="{{ Route('fe.home') }}">
+                        <div style="font-size: 150%; font-weight: 800">LapXuongStore</div>
                     </a>
                 </div>
                 <ul>
-                    <li>Cach Mang T8,Tan Binh</li>
-                    <li>Phone: 0522765313</li>
-                    <li>Email: daoducbinh62@gmail.com</li>
+                    <li style="color: #b2b2b2">Cach Mang T8, District 3,Tan Binh</li>
+                    <li style="color: #b2b2b2">Phone: 03979-3979-3979</li>
+                    <li style="color: #b2b2b2">Email: LapXuongShop@gmail.com</li>
                 </ul>
                 <div class="footer-social">
                     <a href=""><i class="fa fa-facebook"></i></a>
@@ -24,9 +24,7 @@
                     <h5>Information</h5>
                     <ul>
                         <li><a href="">About Us</a></li>
-                        <li><a href="">Check Out</a></li>
                         <li><a href="">Contact</a></li>
-                        <li><a href="">Service</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,10 +32,13 @@
                 <div class="footer-widget">
                     <h5>My Account</h5>
                     <ul>
-                        <li><a href="">My Account</a></li>
-                        <li><a href="">Contact</a></li>
-                        <li><a href="">Shopping Cart</a></li>
-                        <li><a href="">Shop</a></li>
+                        @if (auth()->user())
+                            <li><a href="{{ Route('userProfile') }}">My Account</a></li>
+                        @else
+                            <li><a href="{{ Route('login') }}">My Account</a></li>   
+                        @endif
+                        <li><a href="{{ Route('viewCart') }}">Shopping Cart</a></li>
+                        <li><a href="{{ Route('fe.shop.index') }}">Shop</a></li>
                     </ul>
                 </div>
             </div>

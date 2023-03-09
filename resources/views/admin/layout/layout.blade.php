@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>
-        {{auth()->user()->role}} @yield('title')
+        {{ auth()->user()->role }} @yield('title')
     </title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -46,7 +46,7 @@
 
     <!-- Main Css Styles -->
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-    
+
     <!-- Kien CSS File -->
     <link rel="stylesheet" href="{{ asset('css/KienCss/confirmDialog.css') }}">
     <link rel="stylesheet" href="{{ asset('css/KienCss/customSelect.css') }}">
@@ -173,7 +173,20 @@
             });
     </script>
     <!-- end Toastr + SweetAlert -->
-    
+
+    <script type="module">
+        import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+
+                // Custom-select
+                const customSelect = new CustomSelect({});
+                customSelect.initNewOpts();
+            }
+        });
+    </script><!-- End KienJs -->
+
     @yield('myJs')
 </body>
 

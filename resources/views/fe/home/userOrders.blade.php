@@ -4,11 +4,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
-        .container {
-            margin-top: 50px;
-            margin-bottom: 50px
-        }
-
         .card {
             position: relative;
             display: -webkit-box;
@@ -30,7 +25,8 @@
             background-color: #f9fafc;
             border-radius: 4px;
             box-shadow: 2px 2px 6px rgb(1 41 112 / 10%), -2px -2px 6px rgb(1 41 112 / 10%);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            margin-top: 20px;
         }
 
         fieldset legend {
@@ -45,6 +41,15 @@
             border-radius: 4px;
             padding: 10px 50px !important;
             margin: 0;
+        }
+
+        fieldset legend:hover {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        fieldset legend a {
+            color: white;
         }
 
         .card-header:first-child {
@@ -159,18 +164,12 @@
             margin-bottom: 1rem
         }
 
-        .btn-warning {
-            color: #ffffff;
-            background-color: var(--violet);
-            border-color: var(--violet);
-            border-radius: 3px
+        .tu-back-btn {
+            color: var(--violet);
         }
 
-        .btn-warning:hover {
-            color: #ffffff;
-            background-color: var(--violet-main);
-            border-color: var(--violet-main);
-            border-radius: 3px
+        .tu-back-btn:hover {
+            color: var(--violet-main);
         }
     </style>
 @endsection
@@ -195,7 +194,9 @@
         <article class="card">
             @foreach ($orders as $order)
                 <fieldset class="card-body">
-                    <legend>Order ID: LXS-{{ $order->id }}</legend>
+                    <legend class="order-head-name" data-index="{{ $order->id }}">
+                        Order ID: LXS-{{ $order->id }}
+                    </legend>
                     <article class="card">
                         <div class="card-body row">
                             <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2025 </div>
@@ -204,7 +205,7 @@
                                 +8413456789
                             </div>
                             <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
-                            <div class="col"> <strong>Address:</strong> <br> {{$order->address}} </div>
+                            <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>
                         </div>
                     </article>
                     <div class="track">
@@ -240,9 +241,22 @@
                     </ul>
                 </fieldset>
             @endforeach
-            <a href="{{ Route('userProfile') }}" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i>
-                Back to
-                profile</a>
+            <legend><a href="{{ Route('userProfile') }}" class="tu-back-btn"> <i class="fa fa-chevron-left"></i>
+                    Back to
+                    profile</a></legend>
         </article>
     </div>
+@endsection
+
+@section('myJs')
+    <script>
+        const heads = document.querySelectorAll('.card .card-body .order-head-name');
+        heads.forEach(element => {
+            element.onclick = function() {
+                let id = element.getAttribute('data-index');
+                let url = `{{ url('/user/${id}/order-details') }}`;
+                window.location.href = url;
+            };
+        });
+    </script>
 @endsection
