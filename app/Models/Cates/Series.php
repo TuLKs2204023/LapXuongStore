@@ -9,7 +9,7 @@ class Series extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = ['name', 'slug', 'manufacture_id', 'description'];
 
     /**
      * Get the series's cates.
@@ -25,5 +25,13 @@ class Series extends Model
     public function products()
     {
         return $this->hasMany(\App\Models\Product::class);
+    }
+
+    /** 
+     * Get the Manufacture that owns this Series.
+     */
+    public function manufacture()
+    {
+        return $this->belongsTo(Manufacture::class, 'manufacture_id');
     }
 }

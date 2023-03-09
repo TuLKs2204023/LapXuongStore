@@ -1,37 +1,108 @@
 export { CustomSelect };
 
-function CustomSelect(data) {
+function CustomSelect({ orginialInput = "my-custom-select" }) {
     /*look for any elements with the class "custom-select":*/
-    const originalInputs = document.getElementsByClassName(data.orginialInput);
-    if (!originalInputs) {
-        return false;
-    }
-    for (let input of originalInputs) {
-        const selElmnt = input.getElementsByTagName("select")[0];
-        const originalOpts = selElmnt.options;
-
-        /*for each element, create a new DIV that will act as the selected item:*/
-        const newInputCont = document.createElement("DIV");
-        if (selElmnt.getAttribute("rules")) {
-            newInputCont.classList.add("my-custom-select-cont", "form-control");
-            newInputCont.setAttribute("tabindex", "0");
-            newInputCont.setAttribute("data-name", selElmnt.name + "-custom");
-            newInputCont.setAttribute("data-value", selElmnt.selectedIndex);
-            newInputCont.setAttribute("rules", selElmnt.getAttribute("rules"));
+    function initNewOpts() {
+        const originalInputs = document.getElementsByClassName(orginialInput);
+        if (!originalInputs) {
+            return false;
         }
-        input.appendChild(newInputCont);
+        for (let input of originalInputs) {
+            const selElmnt = input.getElementsByTagName("select")[0];
 
-        const newInput = document.createElement("DIV");
-        newInput.classList.add("select-selected");
-        // newInput.setAttribute("tabindex", "0");
+            /*for each element, create a new DIV that will act as the selected item:*/
+            const newInputCont = document.createElement("DIV");
+            if (selElmnt.getAttribute("rules")) {
+                const attrs = {
+                    tabindex: 0,
+                    id: selElmnt.name + "-custom",
+                    class: "my-custom-select-cont form-control",
+                    "data-name": selElmnt.name + "-custom",
+                    "data-value": selElmnt.selectedIndex || "",
+                    rules: selElmnt.getAttribute("rules"),
+                };
+                Object.entries(attrs).forEach(([attrKey, attrVal]) => {
+                    newInputCont.setAttribute(attrKey, attrVal);
+                });
+            }
+            input.appendChild(newInputCont);
+
+            handleCustomOpts(selElmnt, newInputCont);
+
+            // Event fired when clicking on the custom select to show items
+            addEventToNewOpts(selElmnt, newInputCont);
+        }
+        if (!originalInputs[0]) {
+            return false;
+        }
+        const formElement = getParent(originalInputs[0], "form");
+        formElement.addEventListener("mousemove", (e) => {
+            const optsContainer = e.target.closest(".my-custom-select-items");
+            const pageX = e.pageX;
+            if (optsContainer) {
+                scrollBarHover(optsContainer, pageX);
+            } else {
+                const inputs = formElement.getElementsByClassName(
+                    "my-custom-select-items"
+                );
+                Array.from(inputs).forEach((input) => {
+                    input.classList.remove("more-width");
+                });
+            }
+        });
+
+        /* If the user clicks anywhere outside the select box, then close all select boxes:*/
+        document.addEventListener("click", closeAllOptions);
+    }
+
+    /* Create a new DIV that show up selected option*/
+    function getOrCreateNewInput(selElmnt, newInputCont) {
+        const originalOpts = selElmnt.options;
+        let newInput = newInputCont.querySelector(".select-selected");
+        if (!newInput) {
+            newInput = document.createElement("DIV");
+            newInput.classList.add("select-selected");
+            newInputCont.appendChild(newInput);
+        }
         newInput.innerHTML = originalOpts[originalOpts.selectedIndex].innerHTML;
-        newInputCont.appendChild(newInput);
+        return newInput;
+    }
 
-        /*for each element, create a new DIV that will contain the option list:*/
-        const newOptsContainer = document.createElement("DIV");
-        newOptsContainer.setAttribute("class", "my-custom-select-items");
+    /* Create a new DIV that will contain the option list:*/
+    function getOrCreateNewOptsContainer(newInputCont) {
+        let newOptsContainer = newInputCont.querySelector(
+            ".my-custom-select-items"
+        );
+        if (!newOptsContainer) {
+            newOptsContainer = document.createElement("DIV");
+            newOptsContainer.setAttribute("class", "my-custom-select-items");
+        } else {
+            const newOpts = newOptsContainer.getElementsByTagName("DIV");
+            Array.from(newOpts).forEach((newOpt) => newOpt.remove());
+        }
+        return newOptsContainer;
+    }
+
+    function handleCustomOpts(selElmnt, newInputCont) {
+        const originalOpts = selElmnt.options;
+        const newInput = getOrCreateNewInput(selElmnt, newInputCont);
+        const newOptsContainer = getOrCreateNewOptsContainer(newInputCont);
 
         /*for each option in the original select element, create a new DIV that will act as an option item:*/
+        populateOpts(originalOpts, newOptsContainer);
+
+        /*when an item is clicked, update the original select box, and the selected item:*/
+        const newOpts = newOptsContainer.getElementsByTagName("DIV");
+        updateSelectedOpt(newOpts, selElmnt, newInput);
+
+        newInputCont.appendChild(newOptsContainer);
+        newOptsContainer.addEventListener("mousemove", (e) => {
+            scrollBarHover(newOptsContainer, e);
+        });
+    }
+
+    /*for each option in the original select element, create a new DIV that will act as an option item:*/
+    function populateOpts(originalOpts, newOptsContainer) {
         for (let option of originalOpts) {
             if (option.value) {
                 const newOpt = document.createElement("DIV");
@@ -40,12 +111,14 @@ function CustomSelect(data) {
                 newOptsContainer.appendChild(newOpt);
             }
         }
+    }
 
-        const newOpts = newOptsContainer.getElementsByTagName("DIV");
+    /*when an item is clicked, update the original select box, and the selected item:*/
+    function updateSelectedOpt(newOpts, selElmnt, newInput) {
+        const originalOpts = selElmnt.options;
         for (let newOpt of newOpts) {
             newOpt.addEventListener("click", (e) => {
                 e.preventDefault();
-                /*when an item is clicked, update the original select box, and the selected item:*/
                 Array.from(originalOpts).forEach((opt, idx) => {
                     if (opt.innerHTML === e.target.innerHTML) {
                         selElmnt.selectedIndex = idx;
@@ -59,16 +132,18 @@ function CustomSelect(data) {
                 removeFocus(e.target);
             });
         }
+    }
 
-        newInputCont.appendChild(newOptsContainer);
-        newOptsContainer.addEventListener("mousemove", (e) => {
-            scrollBarHover(newOptsContainer, e);
-        });
+    // Event fired when clicking on the custom select to show items
+    function addEventToNewOpts(selElmnt, newInputCont) {
+        const newOptsContainer = newInputCont.querySelector(
+            ".my-custom-select-items"
+        );
+        const newOpts = newOptsContainer.getElementsByTagName("DIV");
 
-        // Event fired when clicking on the custom select to show items
         newInputCont.addEventListener("click", (e) => {
             /*when the select box is clicked, close any other select boxes,
-      and open/close the current select box:*/
+          and open/close the current select box:*/
             e.stopPropagation();
             showOptions(newInputCont);
         });
@@ -245,27 +320,8 @@ function CustomSelect(data) {
             parent = parent.parentElement;
         }
     }
-
-    if (!originalInputs[0]) {
-        return false;
-    }
-    const formElement = getParent(originalInputs[0], "form");
-    formElement.addEventListener("mousemove", (e) => {
-        const optsContainer = e.target.closest(".my-custom-select-items");
-        const pageX = e.pageX;
-        if (optsContainer) {
-            scrollBarHover(optsContainer, pageX);
-        } else {
-            const inputs = formElement.getElementsByClassName(
-                "my-custom-select-items"
-            );
-            Array.from(inputs).forEach((input) => {
-                input.classList.remove("more-width");
-            });
-        }
-    });
-
-    /* If the user clicks anywhere outside the select box,
-  then close all select boxes:*/
-    document.addEventListener("click", closeAllOptions);
+    return {
+        initNewOpts,
+        handleCustomOpts,
+    };
 }

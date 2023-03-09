@@ -133,4 +133,16 @@ class ManufactureController extends Controller
         $manufacture->delete();
         return redirect()->route('admin.manufacture.index');
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getSeriesByBrand(Request $request)
+    {
+        $manufacture = Manufacture::find($request->bId);
+        return $manufacture->series()->get();
+    }
 }

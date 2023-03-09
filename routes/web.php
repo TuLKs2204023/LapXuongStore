@@ -175,6 +175,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/{id}/edit', [ManufactureController::class, 'edit'])->name('edit');
             Route::put('/update', [ManufactureController::class, 'update'])->name('update');
             Route::get('/destroy/{id}', [ManufactureController::class, 'destroy'])->name('destroy');
+            Route::post('/get-series-by-brand', [ManufactureController::class, 'getSeriesByBrand'])->name('getSeriesByBrand');
         });
 
         // CPU

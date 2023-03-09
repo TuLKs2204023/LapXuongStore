@@ -466,23 +466,23 @@
     <!-- Start KienJs -->
     <script type="module">
         import {FilesUpload} from '{{ asset('/js/KienJs/FilesUpload.js') }}';
-        import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
         import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
-
+        import {seriesHandler} from '{{ asset('/js/KienJs/createProduct.js') }}';
 
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
-
-                // Custom-select
-                const customSelect = new CustomSelect({
-                    orginialInput: "my-custom-select",
-                });
-
                 // Upload images
                 const filesUpload = new FilesUpload({filesUpload: ".myFilesUpload"});
 
                 // Input validation
                 const productForm = new Validator('#createProduct');
+
+                // Update series base on Manufacture
+                const updateSeries = new seriesHandler({
+                    url: '{{ Route('admin.manufacture.getSeriesByBrand') }}',
+                    token: '{{ csrf_token() }}',
+                    selectors: {},
+                });
 
                 // Replace the <textarea id="editor1"> with a CKEditor 4
                 // instance, using default configuration.
