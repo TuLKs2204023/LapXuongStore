@@ -27,6 +27,14 @@
             transition: 0.2s;
             font-size: 150%;
         }
+
+        .latest-blog {
+            padding-top: 0;
+        }
+
+        .spad {
+            padding-top: 0;
+        }
     </style>
 @endsection
 
@@ -43,7 +51,7 @@
                             <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
                                 Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
-                            <a href="#" class="primary-btn">Shop now</a>
+                            <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
                     <div class="off-card">
@@ -60,7 +68,7 @@
                             <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
                                 Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
-                            <a href="#" class="primary-btn">Shop now</a>
+                            <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
                     <div class="off-card">
@@ -77,7 +85,7 @@
                             <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
                                 Hoa Thám. (78 - 80 - 82
                                 Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
-                            <a href="#" class="primary-btn">Shop now</a>
+                            <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
                     <div class="off-card">
@@ -140,7 +148,8 @@
                                     </div>
                                     <ul>
                                         <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                        <li class="quick-view"><a href="product.html">+ Quick View</a></li>
+                                        <li class="quick-view"><a href="{{ Route('product.details', $item->slug) }}">+
+                                                Quick View</a></li>
                                         <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
                                     </ul>
                                 </div>
@@ -255,40 +264,7 @@
 
     <!-- ----------------------------------------------------------------------------------------------- -->
 
-    <!-- INSTAGRAM SECTION BEGIN-->
-    <div class="instagram-photo">
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a1.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a6.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a3.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a4.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="{{ asset('frontend/img/a/a5.jpg') }}">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">PC_Collection</a></h5>
-            </div>
-        </div>
-    </div>
-
+    <!-- Blog SECTION BEGIN-->
     <div class="latest-blog spad">
         <div class="container">
             <div class="row">
@@ -415,5 +391,5 @@
 
         </div>
     </div>
-    <!-- INSTAGRAM SECTION END-->
+    <!-- Blog SECTION END-->
 @endsection

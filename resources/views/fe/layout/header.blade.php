@@ -56,8 +56,10 @@
 
                 <div class="lan-selector">
                     <select name="countries" id="countries" class="language_drop" style="width:150px">
-                        <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}" data-imagecss="flag yt" data-title="English">Eng</option>
-                        <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}" data-imagecss="flag yu" data-title="Vietnamese">Vie</option>
+                        <option value="yt" data-image="{{ asset('frontend/img/flag-1.jpg') }}"
+                            data-imagecss="flag yt" data-title="English">ENG</option>
+                        <option value="yu" data-image="{{ asset('frontend/img/flag-3.jpg') }}"
+                            data-imagecss="flag yu" data-title="Vietnamese">VIE</option>
                     </select>
                 </div>
 
@@ -76,7 +78,7 @@
                 <div class="col-lg-1 col-md-1">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="{{ asset('frontend/img/logo3.png') }}" height="30" alt="">
+                            <img src="{{ asset('images/asd-removebg-preview.png') }}" height="30" alt="">
                         </a>
                     </div>
                 </div>

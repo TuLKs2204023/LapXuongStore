@@ -34,21 +34,21 @@
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.promotion.index') }}">
-                    <i class="bi bi-menu-button-wide"></i>
+                    <i class="bi bi-award"></i>
                     <span>Promotion</span>
                 </a>
             </li><!-- End Promotion Nav -->
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.stock.index') }}">
-                    <i class="bi bi-menu-button-wide"></i>
+                    <i class="bi bi-cart"></i>
                     <span>Stock</span>
                 </a>
             </li><!-- End Stock Nav -->
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.wishlist.index') }}">
-                    <i class="bi bi-menu-button-wide"></i>
+                    <i class="bi bi-suit-heart"></i>
                     <span>Wishlist</span>
                 </a>
             </li><!-- End Wishlist Nav -->
