@@ -50,8 +50,8 @@ class StockController extends Controller
         // Save stock for this product
         $product = $this->processInStock($product, $proData);
         
-        // Save price for this Product
-        $product = $this->processPriceWithStockId($product, $proData);
+        // Save price for IN stock
+        $product = $this->processPriceInStock($product, $proData);
 
         $success = 'Successfully added stock for '. $product->name;
 
@@ -62,9 +62,9 @@ class StockController extends Controller
         
         $pid = $request->id;
         $product = Product::where('id', $pid)->get()->first();
-        $stocks = $product->stocks();
+        $product->load('stocks');
 
-        return view('admin.stock.details', compact('product', 'stocks'));
+        return view('admin.stock.details', compact('product'));
     }
 
     public function createStockByDetails(int $id)

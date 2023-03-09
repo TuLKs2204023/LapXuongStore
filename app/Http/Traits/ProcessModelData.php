@@ -38,7 +38,7 @@ trait ProcessModelData
     //     return $product;
     // }
 
-    function processPriceWithStockId(Product $product, array $proData)
+    function processPriceInStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
         $stock = DB::table('stocks')->where('product_id', $product->id)->get()->last();
@@ -79,9 +79,13 @@ trait ProcessModelData
     function processOutStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
-        $product->stocks()->create(['out_qty' => $proData['out_qty']]);
+        $stock = $product->stocks()->create(['out_qty' => $proData['out_qty']]);
+        $product->prices()->create([
+            'sale' => $product->salePrice(),
+            'stock_id' => $stock->id,
+        ]);
         $product->refresh();
-        return $product;
+        return $stock;
     }
 
     function processUsedPromotion(Order $order, string $promotionCode)

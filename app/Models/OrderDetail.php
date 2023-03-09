@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderDetail extends Model
 {
     use HasFactory;
-    protected $fillable = ['product_id', 'price_id', 'order_id', 'quantity'];
+    protected $fillable = ['product_id', 'stock_id', 'order_id', 'quantity'];
 
     /**
      * Get the Order that owns this Order Detail.
@@ -32,5 +32,13 @@ class OrderDetail extends Model
     public function price()
     {
         return $this->belongsTo(Price::class);
+    }
+
+    /**
+     * Get the Stock that owns this Order Detail.
+     */
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class);
     }
 }

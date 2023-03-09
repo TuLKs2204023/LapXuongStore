@@ -51,10 +51,10 @@
                                 <th>ID</th>
                                 <th>P.d Name</th>
                                 <th>P.d ID</th>
-                                <th>In Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Out Quantity</th>
-                                <th>Final Price</th>
+                                <th>In Qty</th>
+                                <th>In U.Price</th>
+                                <th>Out Qty</th>
+                                <th>Out U.Price</th>
                                 <th>Timestamp</th>
                             </tr>
                         </thead>
@@ -68,7 +68,7 @@
                                     <td>{{ $stock->in_qty }}</td>
                                     <td>{{ number_format($stock->price->origin ?? 0, 0, ',', '.') }}</td>
                                     <td>{{ $stock->out_qty }}</td>
-                                    <td>Still not input</td>
+                                    <td>{{ $stock->price->sale }}</td>
                                     <td>{{ $stock->created_at }}</td>
                                 </tr>
                             @endforeach

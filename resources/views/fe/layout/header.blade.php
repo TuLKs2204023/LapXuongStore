@@ -77,7 +77,7 @@
             <div class="row">
                 <div class="col-lg-1 col-md-1">
                     <div class="logo">
-                        <a href="index.html">
+                        <a href="{{ Route('fe.home') }}">
                             <img src="{{ asset('images/asd-removebg-preview.png') }}" height="30" alt="">
                         </a>
                     </div>
@@ -171,7 +171,7 @@
                             <li><a href="">Mục Đích</a></li>
                         </ul>
                     </li> --}}
-                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="{{ Route('aboutUs') }}">About Us</a></li>
                     <li><a href="{{ Route('fe.contact') }}">Contact Us</a></li>
                     {{-- <li><a href="">Pages</a>
                         <ul class="dropdown">
