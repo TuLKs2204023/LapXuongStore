@@ -184,4 +184,8 @@ class HomeController extends Controller
         $user = auth()->user();
         return view('fe.home.profile', compact('user'));
     }
+    public function aboutUs()
+    {
+        return view('fe.home.about-us');
+    }
 }

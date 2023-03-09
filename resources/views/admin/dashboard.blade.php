@@ -236,7 +236,7 @@
                         <div class="col-12">
                             <div class="card recent-sales overflow-auto">
 
-                                <div class="filter">
+                                {{-- <div class="filter">
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                             class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -248,15 +248,15 @@
                                         <li><a class="dropdown-item" href="#">This Month</a></li>
                                         <li><a class="dropdown-item" href="#">This Year</a></li>
                                     </ul>
-                                </div>
+                                </div> --}}
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Recent Sales <span>| Today</span></h5>
+                                    <h5 class="card-title">Recent Sales <span>| This Month</span></h5>
 
                                     <table class="table table-borderless datatable">
                                         <thead>
                                             <tr>
-                                                <th scope="col">#</th>
+                                                <th scope="col">ID Oder</th>
                                                 <th scope="col">Customer</th>
                                                 <th scope="col">Product</th>
                                                 <th scope="col">Price</th>
@@ -264,46 +264,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach ($order as $key => $item)
+                                            @foreach($item->details as $ip)
                                             <tr>
-                                                <th scope="row"><a href="#">#2457</a></th>
-                                                <td>Brandon Jacob</td>
-                                                <td><a href="#" class="text-primary">At praesentium minu</a>
+                                                <th scope="row"><a href="#">{{$item->id}}</a></th>
+                                                <td>{{$item->name}}</td>
+                                                <td><a href="{{ Route('product.details',$ip->product->slug) }}" class="text-primary fw-bold">{{$ip->product->name}}</a>
                                                 </td>
-                                                <td>$64</td>
+                                                <td>{{number_format($ip->product->salePrice(), 0, ',', '.')}}</td>
                                                 <td><span class="badge bg-success">Approved</span></td>
                                             </tr>
-                                            <tr>
-                                                <th scope="row"><a href="#">#2147</a></th>
-                                                <td>Bridie Kessler</td>
-                                                <td><a href="#" class="text-primary">Blanditiis dolor omnis
-                                                        similique</a></td>
-                                                <td>$47</td>
-                                                <td><span class="badge bg-warning">Pending</span></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"><a href="#">#2049</a></th>
-                                                <td>Ashleigh Langosh</td>
-                                                <td><a href="#" class="text-primary">At recusandae
-                                                        consectetur</a></td>
-                                                <td>$147</td>
-                                                <td><span class="badge bg-success">Approved</span></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"><a href="#">#2644</a></th>
-                                                <td>Angus Grady</td>
-                                                <td><a href="#" class="text-primar">Ut voluptatem id earum
-                                                        et</a></td>
-                                                <td>$67</td>
-                                                <td><span class="badge bg-danger">Rejected</span></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row"><a href="#">#2644</a></th>
-                                                <td>Raheem Lehner</td>
-                                                <td><a href="#" class="text-primary">Sunt similique
-                                                        distinctio</a></td>
-                                                <td>$165</td>
-                                                <td><span class="badge bg-success">Approved</span></td>
-                                            </tr>
+                                            @endforeach
+                                            @endforeach
                                         </tbody>
                                     </table>
 
@@ -333,7 +305,7 @@
                                 <div class="card-body pb-0">
                                     <h5 class="card-title">Top Selling <span>| This Month</span></h5>
 
-                                    <table class="table table-borderless">
+                                    <table class="table table-borderless datatable">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Preview</th>
@@ -345,16 +317,15 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($allproduct as $key => $row)
-                                                <tr>
-                                                    <th scope="row"><a href="#"><img
-                                                                src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
-                                                                alt=""></a></th>
-                                                    <td><a href="#"
-                                                            class="text-primary fw-bold">{{ $row->name }}</a></td>
-                                                    <td>{{ $row->price }}</td>
-                                                    <td class="fw-bold">{{ $row->topSale() }}</td>
-                                                    <td>{{ $row->revenue() }}</td>
-                                                </tr>
+                                            <tr>
+                                                <th scope="row"><a href="{{ Route('product.details',$row->slug) }}"><img src="{{ asset('images/' . $row->oldestImage->url) }}"
+                                                            alt=""></a></th>
+                                                <td><a href="{{ Route('product.details',$row->slug) }}" class="text-primary fw-bold">{{$row->name}}</a></td>
+                                                <td>{{number_format($row->salePrice(), 0, ',', '.')}}</td>
+                                                <td class="fw-bold">{{$row->topSale()}}</td>
+                                                <td>{{number_format($row->revenue(), 0, ',', '.')}}</td>
+                                            </tr>
+
                                             @endforeach
                                         </tbody>
                                     </table>
