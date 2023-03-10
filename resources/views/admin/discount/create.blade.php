@@ -1,16 +1,16 @@
 @extends('admin.layout.layout')
 
-@section('title', '- Create Stock')
+@section('title', '- Create Discount')
 
 @section('contents')
     <!-- Start Page Title -->
     <div class="pagetitle">
-        <h1>{{ $isUpdate ? 'Edit' : 'Add' }} Stock</h1>
+        <h1>{{ $isUpdate ? 'Edit' : 'Add' }} Discount</h1>
         <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ Route('admin.stock.index') }}">Stock Management</a></li>
-                <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Add' }} Stock</li>
+                <li class="breadcrumb-item"><a href="{{ Route('admin.discount.index') }}">Discount Management</a></li>
+                <li class="breadcrumb-item active">{{ $isUpdate ? 'Edit' : 'Add' }} Discount</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -30,14 +30,14 @@
             <!-- card -->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Add' }} Stock Form</h5>
+                    <h5 class="card-title">{{ $isUpdate ? 'Edit' : 'Add' }} Discount Form</h5>
 
                     <!-- Message Section -->
                     @include('components.message')
                     <!-- / Message Section -->
 
                     <!-- Horizontal Form -->
-                    <form action="{{ Route('admin.stock.store') }}" method="post" class="card-body"
+                    <form action="{{ Route('admin.discount.store') }}" method="post" class="card-body"
                         enctype="multipart/form-data">
                         @csrf
 
@@ -57,17 +57,10 @@
                         </div>
 
                         <div class="form-group row mb-3">
-                            <label for="price" class="col-sm-2 col-form-label">Unit Price</label>
+                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
                             <div class="col-sm-10">
-                                <input type="text" id="price" name="price" class="form-control" placeholder="In Unit Price (VND)" required
-                                    value="{{ $isUpdate ? $product->price : '' }}">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-3">
-                            <label for="in_qty" class="col-sm-2 col-form-label">In Quantity</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="in_qty" name="in_qty" class="form-control" placeholder="In Quantity" required
-                                    value="{{ $isUpdate ? $product->price : '' }}">
+                                <input type="text" id="amount" name="amount" class="form-control"
+                                    placeholder="(in %)" value="{{ $isUpdate ? $product->discount->amount : '' }}">
                             </div>
                         </div>
 

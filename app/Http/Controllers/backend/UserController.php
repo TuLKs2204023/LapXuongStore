@@ -211,11 +211,9 @@ class UserController extends Controller
     {
         $data = array();
         $data['name'] = $request->name;
-        // $data['email'] = $request->email;
         $data['gender'] = $request->gender;
         $data['address'] = $request->address;
         $data['phone'] = $request->phone;
-        // $data['password'] = Hash::make($request->password);
         $data['city_id']=$request->city;
         $data['district_id']=$request->district;
         $data['ward_id']=$request->ward;
@@ -224,9 +222,9 @@ class UserController extends Controller
 
         $user = User::find($id);
         $image = $user->image;
-        File::delete(public_path("images/" . $image));
-
+        
         if ($request->hasFile('photo')) {
+            File::delete(public_path("images/" . $image));
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
             if ($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg') {
@@ -235,10 +233,9 @@ class UserController extends Controller
             $imageName = $file->getClientOriginalName();
             $file->move("images", $imageName);
         } else {
-            $imageName['image'] = null;
+            $data['image'] = $image;
         }
 
-        $data['image'] = $imageName;
         $edit = $user->update($data);
         if ($edit) {
             $notification = array(

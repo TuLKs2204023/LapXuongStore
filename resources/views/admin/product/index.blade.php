@@ -52,7 +52,7 @@
                                 <th>CPU</th>
                                 <th>RAM</th>
                                 <th>Screen</th>
-                                <th>HDD</th>
+                                <th>SSD</th>
                                 <th>Price</th>
                                 {{-- <th>Description</th> --}}
                                 <th>Action</th>
@@ -74,7 +74,7 @@
                                     <td>{{ $item->cpu->name }}</td>
                                     <td>{{ $item->ram->amount }}</td>
                                     <td>{{ $item->screen->amount }}</td>
-                                    <td>{{ $item->hdd->amount }}</td>
+                                    <td>{{ $item->ssd->amount }}</td>
                                     <td>{{ number_format($item->salePrice(), 0, ',', '.') }}</td>
                                     {{-- <td>
                                     <ul>
@@ -102,8 +102,12 @@
                                             </i>
                                             Stock
                                         </a>
-
-
+                                        <a class="btn btn-outline-warning btn-sm"
+                                            href="{{ Route('admin.discount.details', $item->id) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Discount
+                                        </a>
                                         <a href="{{ URL::to('admin/product/destroy/' . $item->id) }}"
                                             class="btn btn-sm btn-danger" id="delete">
                                             <i class="fas fa-trash"></i>

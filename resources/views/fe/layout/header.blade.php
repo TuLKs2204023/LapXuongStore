@@ -119,7 +119,7 @@
                                                 <td class="si-pic"><img src="{{ asset('images/' . $item->product->oldestImage->url) }}" alt=""></td>
                                                 <td class="si-text">
                                                     <div class="product-selected">
-                                                        <p>{{ number_format($item->product->price, 0, ',', '.') }}
+                                                        <p>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
                                                         </p>
                                                         <h6>{{ $item->product->name }}</h6>
                                                     </div>

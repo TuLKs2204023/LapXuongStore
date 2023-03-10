@@ -40,6 +40,13 @@
             </li><!-- End Promotion Nav -->
 
             <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.discount.index') }}">
+                    <i class="ri-coin-line"></i>
+                    <span>Discount</span>
+                </a>
+            </li><!-- End Discount Nav -->
+
+            <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.stock.index') }}">
                     <i class="bi bi-cart"></i>
                     <span>Stock</span>

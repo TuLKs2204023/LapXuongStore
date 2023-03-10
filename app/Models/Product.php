@@ -348,7 +348,7 @@ class Product extends Model
     }
     public function fakePrice()
     {
-        return $this->salePrice() - $this->salePrice() * 20 / 100;
+        return $this->salePrice() - $this->salePrice() * $this->latestDiscount();
     }
     public function revenue()
     {
@@ -357,15 +357,33 @@ class Product extends Model
         $revenue = $outStock * $price;
         return $revenue;
     }
-    public function topSale(){
-        $count= DB::table('products')->count('id');
+    public function topSale()
+    {
+        $count = DB::table('products')->count('id');
         DB::table('products')->get()->first()->id;
-        $max= $this->outStock();
-        for($i=1; $i<$count; $i++){
-            if($max > $this->outStock()){
-                $max=$this->outStock();
+        $max = $this->outStock();
+        for ($i = 1; $i < $count; $i++) {
+            if ($max > $this->outStock()) {
+                $max = $this->outStock();
             }
+        }
+        return $max;
     }
-    return $max;
-}
+
+    //Discounts belong to this product
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class);
+    }
+
+    //Latest discount for this product
+    public function latestDiscount()
+    {
+        $latestDis = DB::table('discounts')->where('product_id', $this->id)->get()->last();
+        if (!isset($latestDis->amount)) {
+            return 0;
+        } else {
+            return $latestDis->amount;
+        }
+    }
 }

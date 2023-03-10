@@ -215,7 +215,10 @@
                                             <div class="pi-pic">
                                                 <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                                     alt="{{ $item->name }}">
-                                                <div class="sale pp-sale">Sale</div>
+                                                @if ($item->latestDiscount() > 0)
+                                                    <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
+                                                    </div>
+                                                @endif
                                                 <div class="icon">
                                                     @if ($item->findWishlist())
                                                         <a href="{{ Route('removeWishlist', $item->id) }}"><i
@@ -226,7 +229,7 @@
                                                     @endif
                                                 </div>
                                                 <ul>
-                                                    <li class="w-icon active"><a href="{{ Route('addCart') }}"><i
+                                                    <li class="w-icon active"><a href="#"><i
                                                                 class="icon_bag_alt"></i></a></li>
                                                     <li class="quick-view"><a
                                                             href="{{ Route('product.details', $item->slug) }}">+ Quick
@@ -236,13 +239,15 @@
                                                 </ul>
                                             </div>
                                             <div class="pi-text">
-                                                <div class="catagory-name">Coat</div>
+                                                <div class="catagory-name">{{ $item->series->name }}</div>
                                                 <a href="{{ Route('product.details', $item->slug) }}">
                                                     <h5>{{ $item->name }}</h5>
                                                 </a>
                                                 <div class="product-price">
                                                     {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
-                                                    <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                                    @if ($item->latestDiscount() > 0)
+                                                        <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

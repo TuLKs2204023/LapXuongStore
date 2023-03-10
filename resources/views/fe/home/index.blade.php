@@ -143,10 +143,9 @@
                                 <div class="pi-pic">
                                     <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                         alt="{{ $item->name }}">
-                                    <div class="sale">Sale</div>
-                                    <div class="icon">
-                                        <i class="icon_heart_alt"></i>
-                                    </div>
+                                    @if ($item->latestDiscount() > 0)
+                                        <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
+                                    @endif
                                 </div>
                                 <div class="pi-text">
                                     <div class="catagory-name">{{ $item->manufacture->name }}</div>
@@ -155,7 +154,9 @@
                                     </a>
                                     <div class="product-price">
                                         {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
-                                        <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        @if ($item->latestDiscount() > 0)
+                                            <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -220,10 +221,9 @@
                             <div class="product-item">
                                 <div class="pi-pic">
                                     <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
-                                    <div class="sale">Sale 20%</div>
-                                    <div class="icon">
-                                        <i class="icon_heart_alt"></i>
-                                    </div>
+                                    @if ($item->latestDiscount() > 0)
+                                        <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
+                                    @endif
                                 </div>
                                 <div class="pi-text">
                                     <div class="catagory-name">{{ $item->manufacture->name }}</div>
@@ -232,7 +232,9 @@
                                     </a>
                                     <div class="product-price">
                                         {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
-                                        <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        @if ($item->latestDiscount() > 0)
+                                            <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

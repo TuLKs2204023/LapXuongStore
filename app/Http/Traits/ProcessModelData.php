@@ -82,6 +82,7 @@ trait ProcessModelData
         $stock = $product->stocks()->create(['out_qty' => $proData['out_qty']]);
         $product->prices()->create([
             'sale' => $product->salePrice(),
+            'discount' => $product->latestDiscount(),
             'stock_id' => $stock->id,
         ]);
         $product->refresh();
@@ -107,6 +108,15 @@ trait ProcessModelData
 
         $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
         $user->refresh();
+    }
+
+    function processDiscount(Product $product, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
+        $proData['amount'] = $proData['amount'] / 100;
+        $product->discounts()->create(['amount' => $proData['amount']]);
+        $product->refresh();
+        return $product;
     }
 
     function processRam(array $proData)

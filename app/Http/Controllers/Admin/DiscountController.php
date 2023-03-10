@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\ProcessModelData;
+use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Traits\ProcessModelData;
-use App\Models\Stock;
 
-class StockController extends Controller
+class DiscountController extends Controller
 {
     use ProcessModelData;
     /**
@@ -18,9 +18,9 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks = Stock::all()->sortByDesc('id');
+        $discounts = Discount::all()->sortByDesc('id');
         // $stocks = Stock::all();
-        return view('admin.stock.index', compact('stocks'));
+        return view('admin.discount.index', compact('discounts'));
     }
 
     /**
@@ -32,7 +32,7 @@ class StockController extends Controller
     {
         $isUpdate = false;
         $products = Product::all();
-        return view('admin.stock.create', compact('products', 'isUpdate'));
+        return view('admin.discount.create', compact('products', 'isUpdate'));
     }
 
     /**
@@ -48,46 +48,28 @@ class StockController extends Controller
         $product = Product::where('name', $proData['product_name'])->get()->first();
 
         // Save stock for this product
-        $product = $this->processInStock($product, $proData);
+        $product = $this->processDiscount($product, $proData);
+        
+        $success = 'Successfully added discount for '. $product->name;
 
-        // Save price for IN stock
-        $product = $this->processPriceInStock($product, $proData);
-
-        $success = 'Successfully added stock for ' . $product->name;
-
-        return redirect()->route('admin.stock.index')->with('success', $success);
+        return redirect()->route('admin.discount.index')->with('success', $success);
     }
 
-    public function stockDetails(Request $request)
+    public function discountDetails(Request $request)
     {
         $pid = $request->id;
         $product = Product::where('id', $pid)->get()->first();
-        $product->load('stocks');
+        $product->load('discounts');
 
-        return view('admin.stock.details', compact('product'));
+        return view('admin.discount.details', compact('product'));
     }
 
-    public function createStockByDetails(int $id)
+    public function createDiscountByDetails(int $id)
     {
         $isUpdate = true;
         $product = Product::find($id);
-        return view('admin.stock.createByDetails')->with(['product' => $product], ['isUpdate' => $isUpdate]);
+        return view('admin.discount.createByDetails')->with(['product' => $product], ['isUpdate' => $isUpdate]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -112,10 +94,10 @@ class StockController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Stock  $stock
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function show(Stock $stock)
+    public function show(Discount $discount)
     {
         //
     }
@@ -123,10 +105,10 @@ class StockController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Stock  $stock
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function edit(Stock $stock)
+    public function edit(Discount $discount)
     {
         //
     }
@@ -135,10 +117,10 @@ class StockController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Stock  $stock
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Stock $stock)
+    public function update(Request $request, Discount $discount)
     {
         //
     }
@@ -146,13 +128,11 @@ class StockController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Stock  $stock
+     * @param  \App\Models\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Discount $discount)
     {
-        // $stock = Stock::find($request->id);
-        // $stock->delete();
-        // return redirect()->route('admin.stock.index');
+        //
     }
 }
