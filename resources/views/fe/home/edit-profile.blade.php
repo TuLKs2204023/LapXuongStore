@@ -223,7 +223,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="City-dropdown" class="form-control" name="city">
-                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->city->name}}</option>
+                                            <option value="{{ auth()->user()->city_id ?? ''}}">{{ auth()->user()->city->name ?? ''}} </option>
                                             @foreach ($city as $data)
                                                 <option value="{{ $data->id }}">
                                                     {{ $data->name }}
@@ -239,7 +239,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="district-dropdown" class="form-control" name="district">
-                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->district->name}}</option>
+                                            <option value="{{ auth()->user()->district_id ?? ''}}">{{ auth()->user()->district->name ?? ''}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -250,7 +250,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="ward-dropdown" class="form-control" name="ward" value="">
-                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->ward->name}}</option>
+                                            <option value="{{ auth()->user()->ward_id ?? ''}}">{{ auth()->user()->ward->name ?? ''}}</option>
                                         </select>
                                     </div>
                                 </div>
