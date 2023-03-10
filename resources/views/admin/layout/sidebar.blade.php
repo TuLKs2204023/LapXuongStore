@@ -65,7 +65,7 @@
                     href="#">
                     <i class="bi bi-cpu"></i><span>Specifications</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
                         <!-- Manufacture -->
                         <a href="{{ Route('admin.manufacture.index') }}">
@@ -147,7 +147,7 @@
                     href="#">
                     <i class="bi bi-person"></i><span>User Settings</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
                         <!-- User -->
                         <a href="{{ URL::to('/all-user') }}">

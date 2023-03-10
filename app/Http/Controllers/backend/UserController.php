@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
     use ProcessModelData;
     public function __construct()
     {
@@ -50,11 +51,6 @@ class UserController extends Controller
             'list_images' => $imageFiles
         ]);
     }
-    /**
-     * It inserts a new user into the database.
-     *
-     * @param Request request The request object.
-     */
 
     public function InsertUser(Request $request)
     {
@@ -97,13 +93,7 @@ class UserController extends Controller
             return redirect()->route('alluser')->with($notification);
         }
     }
-    /**
-     * A function that is used to edit the user.
-     *
-     * @param id The id of the user you want to edit.
-     *
-     * @return The edit variable is being returned.
-     */
+
     public function EditUser($id)
     {
         // $edit = User::find($id);
@@ -120,6 +110,7 @@ class UserController extends Controller
 
         return view('fe.home.edit-profile', compact('edit','city'));
     }
+
     public function passwordUser($id)
     {
         // $edit = User::find($id);
@@ -170,12 +161,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * It updates the user information.
-     *
-     * @param Request request The request object.
-     * @param id The id of the user to be updated.
-     */
     public function UpdatetUser(Request $request, $id)
     {
         $data = array();
@@ -222,7 +207,8 @@ class UserController extends Controller
 
         $user = User::find($id);
         $image = $user->image;
-        
+
+
         if ($request->hasFile('photo')) {
             File::delete(public_path("images/" . $image));
             $file = $request->file('photo');
@@ -236,8 +222,13 @@ class UserController extends Controller
             $data['image'] = $image;
         }
 
+
+        $this->data($user, $data);
+
         $edit = $user->update($data);
+
         if ($edit) {
+
             $notification = array(
                 'message' => 'Successfully updated',
                 'alert-type' => 'success',
@@ -252,11 +243,6 @@ class UserController extends Controller
             return redirect()->route('userProfile')->with($notification);
         }
     }
-    /**
-     * It deletes a user from the database.
-     *
-     * @param id The id of the user to delete.
-     */
     public function DeleteUser($id)
     {
         $user = User::find($id);

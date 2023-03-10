@@ -13,10 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('order_details', function (Blueprint $table) {
-            $table->dropForeign('order_details_price_id_foreign');
-            $table->dropColumn('price_id');
-            $table->foreignId('stock_id')->after('order_id')->default(1)->constrained();
+        Schema::create('table_history_users', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            $table->longText('data')->nullable();
+            $table->String('action')->nullable();
+
+            $table->timestamps();
         });
     }
 
@@ -27,8 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('order_details', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('table_history_users');
     }
 };

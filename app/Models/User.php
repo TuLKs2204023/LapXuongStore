@@ -77,4 +77,7 @@ class User extends Authenticatable
         return $this->belongsTo(Ward::class);
     }
 
+    public function histories(){
+        return $this->hasMany(HistoryUser::class);
+    }
 }
