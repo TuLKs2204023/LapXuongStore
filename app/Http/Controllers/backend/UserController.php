@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
     use ProcessModelData;
     public function __construct()
     {
@@ -51,6 +50,11 @@ class UserController extends Controller
             'list_images' => $imageFiles
         ]);
     }
+    /**
+     * It inserts a new user into the database.
+     *
+     * @param Request request The request object.
+     */
 
     public function InsertUser(Request $request)
     {
@@ -93,7 +97,13 @@ class UserController extends Controller
             return redirect()->route('alluser')->with($notification);
         }
     }
-
+    /**
+     * A function that is used to edit the user.
+     *
+     * @param id The id of the user you want to edit.
+     *
+     * @return The edit variable is being returned.
+     */
     public function EditUser($id)
     {
         // $edit = User::find($id);
@@ -110,7 +120,6 @@ class UserController extends Controller
 
         return view('fe.home.edit-profile', compact('edit','city'));
     }
-
     public function passwordUser($id)
     {
         // $edit = User::find($id);
@@ -161,6 +170,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * It updates the user information.
+     *
+     * @param Request request The request object.
+     * @param id The id of the user to be updated.
+     */
     public function UpdatetUser(Request $request, $id)
     {
         $data = array();
@@ -196,9 +211,11 @@ class UserController extends Controller
     {
         $data = array();
         $data['name'] = $request->name;
+        // $data['email'] = $request->email;
         $data['gender'] = $request->gender;
         $data['address'] = $request->address;
         $data['phone'] = $request->phone;
+        // $data['password'] = Hash::make($request->password);
         $data['city_id']=$request->city;
         $data['district_id']=$request->district;
         $data['ward_id']=$request->ward;
@@ -207,10 +224,9 @@ class UserController extends Controller
 
         $user = User::find($id);
         $image = $user->image;
-
+        File::delete(public_path("images/" . $image));
 
         if ($request->hasFile('photo')) {
-            File::delete(public_path("images/" . $image));
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
             if ($extension != 'jpg' && $extension != 'png' && $extension != 'jpeg') {
@@ -219,16 +235,12 @@ class UserController extends Controller
             $imageName = $file->getClientOriginalName();
             $file->move("images", $imageName);
         } else {
-            $data['image'] = $image;
+            $imageName['image'] = null;
         }
 
-
-        $this->data($user, $data);
-
+        $data['image'] = $imageName;
         $edit = $user->update($data);
-
         if ($edit) {
-
             $notification = array(
                 'message' => 'Successfully updated',
                 'alert-type' => 'success',
@@ -243,6 +255,11 @@ class UserController extends Controller
             return redirect()->route('userProfile')->with($notification);
         }
     }
+    /**
+     * It deletes a user from the database.
+     *
+     * @param id The id of the user to delete.
+     */
     public function DeleteUser($id)
     {
         $user = User::find($id);
