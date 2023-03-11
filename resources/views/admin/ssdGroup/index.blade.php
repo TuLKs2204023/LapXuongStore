@@ -18,18 +18,15 @@
     <section class="section">
         @if (auth()->user()->role == 'Customer')
             <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-
                 <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
-
                 <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-
             </section>
         @endif
         @if (auth()->user()->role !== 'Customer')
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.ssdGroup.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.ssdGroup.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
                         Create New SSD's category
                     </a>
@@ -48,8 +45,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Exact value</th>
-                                <th>Min value</th>
-                                <th>Max value</th>
+                                <th>Range value</th>
                                 {{-- <th>Image</th> --}}
                                 <th>Description</th>
                                 <th>Action</th>
@@ -62,8 +58,15 @@
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->value }}</td>
-                                    <td>{{ $item->min }}</td>
-                                    <td>{{ $item->max }}</td>
+                                    <td>
+                                        {{ $item->value == 0
+                                            ? ($item->min == 0
+                                                ? '0 → ' . $item->max
+                                                : ($item->max == 0
+                                                    ? $item->min . ' → ∞'
+                                                    : $item->min . ' → ' . $item->max))
+                                            : '' }}
+                                    </td>
                                     {{-- <td>
                                     @if (!empty($item->image))
                                         <img src="{{ asset('images/' . $item->image->url) }}" alt=""

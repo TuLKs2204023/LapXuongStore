@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Cates;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cates\RamGroup;
-use Illuminate\Support\Str;
 use App\Http\Traits\ProcessModelData;
 
 class RamGroupController extends Controller
@@ -45,24 +44,53 @@ class RamGroupController extends Controller
     {
 
         $proData = $request->all();
-
-        if ($this->isExactVal($proData)) {
-            $proData['name'] = $proData['value'] . 'GB';
-        }
-        if ($this->isMinVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . 'GB';
-        }
-        if ($this->isMaxVal($proData)) {
-            $proData['name'] = 'To ' . $proData['max'] . 'GB';
-        }
-        if ($this->isRangeVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . 'GB' . ' to ' . $proData['max'] . 'GB';
-        }
-
-        $proData['slug'] = Str::slug($request->name);
+        $proData = $this->processCateName($proData, 'GB');
 
         // Save RamGroup
         $ramGroup = RamGroup::create($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($ramGroup, 5);
+        $ramGroup->cate()->create($cateData);
+
+        return redirect()->route('admin.ramGroup.index');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(int $id)
+    {
+        $ramGroup = RamGroup::find($id);
+        $isUpdate = true;
+
+        return view('admin.ramGroup.create')->with([
+            'ramGroup' => $ramGroup,
+            'isUpdate' => $isUpdate
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $ramGroup = RamGroup::find($request->id);
+        $proData = $request->all();
+
+        $proData = $this->processCateName($proData, 'GB');
+
+        // Save RamGroup
+        $ramGroup->update($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($ramGroup, 5);
+        $ramGroup->cate()->update($cateData);
 
         return redirect()->route('admin.ramGroup.index');
     }
@@ -76,6 +104,7 @@ class RamGroupController extends Controller
     public function destroy(Request $request)
     {
         $ramGroup = RamGroup::find($request->id);
+        $ramGroup->cate()->delete();
         $ramGroup->delete();
         return redirect()->route('admin.ramGroup.index');
     }

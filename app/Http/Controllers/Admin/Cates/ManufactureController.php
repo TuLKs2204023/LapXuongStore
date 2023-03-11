@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Cates;
 use App\Http\Controllers\Controller;
 use App\Models\Cates\Manufacture;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use App\Http\Traits\ProcessModelData;
 
@@ -62,6 +63,10 @@ class ManufactureController extends Controller
             $manufacture->image()->create($files[0]);
         }
 
+        // Save Cate
+        $cateData = $this->processCate($manufacture, 1);
+        $manufacture->cate()->create($cateData);
+
         return redirect()->route('admin.manufacture.index');
     }
 
@@ -115,6 +120,10 @@ class ManufactureController extends Controller
             $manufacture->image()->create($files[0]);
         }
 
+        // Save Cate
+        $cateData = $this->processCate($manufacture, 1);
+        $manufacture->cate()->update($cateData);
+
         return redirect()->route('admin.manufacture.index');
     }
 
@@ -128,8 +137,11 @@ class ManufactureController extends Controller
     {
         $manufacture = Manufacture::find($request->id);
         $image = $manufacture->image;
-        File::delete(public_path("images/" . $image->url));
-        $image->delete();
+        if (isset($image->url)) {
+            File::delete(public_path("images/" . $image->url));
+            $image->delete();
+        }
+        $manufacture->cate()->delete();
         $manufacture->delete();
         return redirect()->route('admin.manufacture.index');
     }

@@ -29,7 +29,7 @@
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.hddGroup.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.hddGroup.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
                         Create New HDD's category
                     </a>
@@ -48,8 +48,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Exact value</th>
-                                <th>Min value</th>
-                                <th>Max value</th>
+                                <th>Range value</th>
                                 {{-- <th>Image</th> --}}
                                 <th>Description</th>
                                 <th>Action</th>
@@ -62,8 +61,15 @@
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->value }}</td>
-                                    <td>{{ $item->min }}</td>
-                                    <td>{{ $item->max }}</td>
+                                    <td>
+                                        {{ $item->value == 0
+                                            ? ($item->min == 0
+                                                ? '0 → ' . $item->max
+                                                : ($item->max == 0
+                                                    ? $item->min . ' → ∞'
+                                                    : $item->min . ' → ' . $item->max))
+                                            : '' }}
+                                    </td>
                                     {{-- <td>
                                     @if (!empty($item->image))
                                         <img src="{{ asset('images/' . $item->image->url) }}" alt=""

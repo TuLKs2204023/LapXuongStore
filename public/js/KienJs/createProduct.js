@@ -38,12 +38,12 @@ function seriesHandler({
     // Function to update content of Series button
     function updateSeries(res, selectors) {
         const originInput = $(selectors["seriesSelector"]);
-        populateNewOpts(clearOldOpts(originInput), res);
-        const newInputCont = originInput.nextElementSibling;
+        const newOpts = populateNewOpts(clearOldOpts(originInput), res);
+        originInput.selectedIndex = 0;
 
+        const newInputCont = originInput.nextElementSibling;
         const newCustomSelect = new CustomSelect({});
         newCustomSelect.handleCustomOpts(originInput, newInputCont);
-
     }
     function populateNewOpts(selectEle, items) {
         return appendChildren(
@@ -57,7 +57,7 @@ function seriesHandler({
     }
     function clearOldOpts(selectEle) {
         selectEle.options.length = 0;
-        selectEle.appendChild(new Option("--- Select ---", 0));
+        selectEle.appendChild(new Option("--- Select ---", ""));
         return selectEle;
     }
 

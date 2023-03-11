@@ -29,7 +29,7 @@
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.product.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.product.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
                         Create New Product
                     </a>
@@ -104,11 +104,16 @@
                                         </a>
 
 
-                                        <a href="{{ URL::to('admin/product/destroy/' . $item->id) }}"
-                                            class="btn btn-sm btn-danger" id="delete">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </a>
+                                        <form action="{{ Route('admin.product.destroy') }}" method="post"
+                                            style="display:inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="id" value="{{ $item->id }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        </form>
 
 
                                     </td>

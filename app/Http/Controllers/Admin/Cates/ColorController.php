@@ -45,6 +45,10 @@ class ColorController extends Controller
         // Save color
         $color = Color::create($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($color, 9);
+        $color->cate()->create($cateData);
+
         return redirect()->route('admin.color.index');
     }
 
@@ -91,6 +95,10 @@ class ColorController extends Controller
         // Save color
         $color->update($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($color, 9);
+        $color->cate()->update($cateData);
+
         return redirect()->route('admin.color.index');
     }
 
@@ -103,6 +111,7 @@ class ColorController extends Controller
     public function destroy(Request $request)
     {
         $color = Color::find($request->id);
+        $color->cate()->delete();
         $color->delete();
         return redirect()->route('admin.color.index');
     }

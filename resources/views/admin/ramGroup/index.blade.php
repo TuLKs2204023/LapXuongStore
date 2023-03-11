@@ -29,7 +29,7 @@
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.ramGroup.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.ramGroup.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
                         Create New RAM's category
                     </a>
@@ -48,8 +48,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Exact value</th>
-                                <th>Min value</th>
-                                <th>Max value</th>
+                                <th>Range value</th>
                                 {{-- <th>Image</th> --}}
                                 <th>Description</th>
                                 <th>Action</th>
@@ -62,8 +61,15 @@
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->value }}</td>
-                                    <td>{{ $item->min }}</td>
-                                    <td>{{ $item->max }}</td>
+                                    <td>
+                                        {{ $item->value == 0
+                                            ? ($item->min == 0
+                                                ? '0 → ' . $item->max
+                                                : ($item->max == 0
+                                                    ? $item->min . ' → ∞'
+                                                    : $item->min . ' → ' . $item->max))
+                                            : '' }}
+                                    </td>
                                     {{-- <td>
                                     @if (!empty($item->image))
                                         <img src="{{ asset('images/' . $item->image->url) }}" alt=""
@@ -91,11 +97,16 @@
                                             </i>
                                             Edit
                                         </a>
-                                        <a href="{{ URL::to('admin/ram/destroy/' . $item->id) }}"
-                                            class="btn btn-sm btn-danger" id="delete">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </a>
+                                        <form action="{{ Route('admin.ramGroup.destroy') }}" method="post"
+                                            style="display:inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="id" value="{{ $item->id }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        </form>
 
                                     </td>
                                 </tr>

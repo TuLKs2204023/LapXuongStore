@@ -29,7 +29,7 @@
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.resolution.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.resolution.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
                         Create New Resolution
                     </a>

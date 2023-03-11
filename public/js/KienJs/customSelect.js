@@ -79,6 +79,7 @@ function CustomSelect({ orginialInput = "my-custom-select" }) {
         } else {
             const newOpts = newOptsContainer.getElementsByTagName("DIV");
             Array.from(newOpts).forEach((newOpt) => newOpt.remove());
+            newInputCont.setAttribute("data-value", " ");
         }
         return newOptsContainer;
     }
@@ -105,12 +106,21 @@ function CustomSelect({ orginialInput = "my-custom-select" }) {
     function populateOpts(originalOpts, newOptsContainer) {
         for (let option of originalOpts) {
             if (option.value) {
-                const newOpt = document.createElement("DIV");
-                newOpt.innerHTML = option.innerHTML;
-                newOpt.dataset.value = option.value;
-                newOptsContainer.appendChild(newOpt);
+                createNewOpt(newOptsContainer, option);
             }
         }
+        if (originalOpts.length < 2) {
+            const option = new Option("Nothing to select", "");
+            createNewOpt(newOptsContainer, option);
+        }
+    }
+
+    /* Create new Option for new Custom-Select */
+    function createNewOpt(newOptsContainer, option) {
+        const newOpt = document.createElement("DIV");
+        newOpt.innerHTML = option.innerHTML;
+        newOpt.dataset.value = option.value;
+        newOptsContainer.appendChild(newOpt);
     }
 
     /*when an item is clicked, update the original select box, and the selected item:*/

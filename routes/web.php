@@ -155,17 +155,18 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [ProductController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::put('/update', [ProductController::class, 'update'])->name('update');
-            Route::get('/destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [ProductController::class, 'destroy'])->name('destroy');
         });
 
         // Category
         Route::group(['prefix' => 'cate', 'as' => 'cate.'], function () {
             Route::get('/', [CateController::class, 'index'])->name('index');
-            Route::get('/create', [CateController::class, 'create'])->name('create');
+            Route::get('/refresh', [CateController::class, 'refresh'])->name('refresh');
             Route::post('/store', [CateController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [CateController::class, 'edit'])->name('edit');
             Route::put('/update', [CateController::class, 'update'])->name('update');
             Route::delete('/destroy', [CateController::class, 'destroy'])->name('destroy');
+            Route::post('/toggle-display', [CateController::class, 'toggleDisplay'])->name('toggleDisplay');
         });
 
         // Manufacture
@@ -175,7 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [ManufactureController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [ManufactureController::class, 'edit'])->name('edit');
             Route::put('/update', [ManufactureController::class, 'update'])->name('update');
-            Route::get('/destroy/{id}', [ManufactureController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [ManufactureController::class, 'destroy'])->name('destroy');
             Route::post('/get-series-by-brand', [ManufactureController::class, 'getSeriesByBrand'])->name('getSeriesByBrand');
         });
 
@@ -186,7 +187,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [CpuController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [CpuController::class, 'edit'])->name('edit');
             Route::put('/update', [CpuController::class, 'update'])->name('update');
-            Route::get('/destroy/{id}', [CpuController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [CpuController::class, 'destroy'])->name('destroy');
         });
 
         // RAM's Group
@@ -196,7 +197,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [RamGroupController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [RamGroupController::class, 'edit'])->name('edit');
             Route::put('/update', [RamGroupController::class, 'update'])->name('update');
-            Route::get('/destroy{id}', [RamGroupController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [RamGroupController::class, 'destroy'])->name('destroy');
         });
 
         // Screen's Group

@@ -43,7 +43,11 @@ class GpuController extends Controller
         $proData = $this->processData($request);
 
         // Save GPU
-        $cpu = Gpu::create($proData);
+        $gpu = Gpu::create($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($gpu, 4);
+        $gpu->cate()->create($cateData);
 
         return redirect()->route('admin.gpu.index');
     }
@@ -88,8 +92,12 @@ class GpuController extends Controller
         $gpu = Gpu::find($request->id);
         $proData = $this->processData($request);
 
-        // Save Cpu
+        // Save GPU
         $gpu->update($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($gpu, 4);
+        $gpu->cate()->update($cateData);
 
         return redirect()->route('admin.gpu.index');
     }
@@ -103,6 +111,7 @@ class GpuController extends Controller
     public function destroy(Request $request)
     {
         $gpu = Gpu::find($request->id);
+        $gpu->cate()->delete();
         $gpu->delete();
         return redirect()->route('admin.gpu.index');
     }

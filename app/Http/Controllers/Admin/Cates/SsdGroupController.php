@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
 use App\Models\Cates\SsdGroup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class SsdGroupController extends Controller
 {
@@ -42,24 +41,14 @@ class SsdGroupController extends Controller
     public function store(Request $request)
     {
         $proData = $request->all();
+        $proData = $this->processCateName($proData, 'GB');
 
-        if ($this->isExactVal($proData)) {
-            $proData['name'] = $proData['value'] . 'GB';
-        }
-        if ($this->isMinVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . 'GB';
-        }
-        if ($this->isMaxVal($proData)) {
-            $proData['name'] = 'To ' . $proData['max'] . 'GB';
-        }
-        if ($this->isRangeVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . 'GB' . ' to ' . $proData['max'] . 'GB';
-        }
-
-        $proData['slug'] = Str::slug($request->name);
-
-        // Save SSDGroup
+        // Save SsdGroup
         $ssdGroup = SsdGroup::create($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($ssdGroup, 8);
+        $ssdGroup->cate()->create($cateData);
 
         return redirect()->route('admin.ssdGroup.index');
     }
@@ -78,24 +67,40 @@ class SsdGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cates\SsdGroup  $ssdGroup
      * @return \Illuminate\Http\Response
      */
-    public function edit(SsdGroup $ssdGroup)
+    public function edit(int $id)
     {
-        //
+        $ssdGroup = SsdGroup::find($id);
+        $isUpdate = true;
+
+        return view('admin.ssdGroup.create')->with([
+            'ssdGroup' => $ssdGroup,
+            'isUpdate' => $isUpdate
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cates\SsdGroup  $ssdGroup
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SsdGroup $ssdGroup)
+    public function update(Request $request)
     {
-        //
+        $ssdGroup = SsdGroup::find($request->id);
+        $proData = $request->all();
+
+        $proData = $this->processCateName($proData, 'GB');
+
+        // Save SsdGroup
+        $ssdGroup->update($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($ssdGroup, 8);
+        $ssdGroup->cate()->update($cateData);
+
+        return redirect()->route('admin.ssdGroup.index');
     }
 
     /**
@@ -107,6 +112,7 @@ class SsdGroupController extends Controller
     public function destroy(Request $request)
     {
         $ssdGroup = SsdGroup::find($request->id);
+        $ssdGroup->cate()->delete();
         $ssdGroup->delete();
         return redirect()->route('admin.ssdGroup.index');
     }
