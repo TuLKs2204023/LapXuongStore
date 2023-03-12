@@ -77,20 +77,24 @@
             <div class="col-lg-6 offset-lg-1">
                 <div class="contact-form">
                     <div class="leave-comment">
-                        <h4>Leave A Comment</h4>
-                        <p>Our staff will call back later and answer your question.</p>
-                        <form action="#" class="comment-form">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <input type="text" placeholder="Your Name">
-                                </div>
-                                <div class="col-lg-6">
-                                    <input type="text" placeholder="Your Email">
-                                </div>
-                                <div class="col-lg-12">
-                                    <textarea placeholder="Your Message"></textarea>
-                                    <button type="submit" class="site-btn">Send Message</button>
-                                </div>
+                    <h4>Leave A Comment</h4>
+                                <form action="" method="post" class="comment-form">
+                                    @csrf
+                                        <input type="hidden" name="product_id" value="">
+                                        <input type="hidden" name="user_id" value="{{ \Illuminate\Support\Facades\Auth::user()->id ?? null }}">
+                                       
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <input type="text" placeholder="Name" name="name">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" placeholder="Email" name="email">
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <textarea placeholder="Messages" name="messages"></textarea>
+                                               
+                                        <button type="submit" class="site-btn">Send message</button>
+                                            </div>
                             </div>
                         </form>
                     </div>
