@@ -232,7 +232,7 @@
                                     <figcaption class="info align-self-center">
                                         <p class="title">{{ $item->product->name }} <br> x{{ $item->quantity }}</p>
                                         <span
-                                            class="text-muted">{{ number_format($item->stock->price->sale, 0, ',', '.') . ' VND' }}
+                                            class="text-muted">{{ number_format($item->product->fakePrice(), 0, ',', '.') . ' VND' }}
                                         </span>
                                     </figcaption>
                                 </figure>

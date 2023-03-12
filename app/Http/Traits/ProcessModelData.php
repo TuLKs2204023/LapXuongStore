@@ -7,7 +7,6 @@ use App\Models\Product;
 use App\Models\Cates\Ram;
 use App\Models\Cates\Screen;
 use App\Models\Cates\Ssd;
-use App\Models\HistoryUser;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -347,7 +346,7 @@ trait ProcessModelData
         $user->histories()->create(['data' => $final, 'action' => 'Updated']);
     }
 
-
+    // ===================================================Count time===================================================
     private function year($now, $keytime)
     {
         $duration = 0;
@@ -359,7 +358,6 @@ trait ProcessModelData
                 return $duration . ' year';
             }
         } else {
-
             return $duration;
         }
     }
@@ -374,7 +372,6 @@ trait ProcessModelData
                 return $duration . ' month';
             }
         } else {
-
             return $duration;
         }
     }
@@ -389,7 +386,6 @@ trait ProcessModelData
                 return $duration . ' day';
             }
         } else {
-
             return $duration;
         }
     }
@@ -404,27 +400,27 @@ trait ProcessModelData
                 return $duration . ' hour';
             }
         } else {
-
             return $duration;
         }
     }
     private function minute($now, $keytime)
     {
         $duration = 0;
-        if ($now->hour != $keytime->minute) {
+        if ($now->minute != $keytime->minute) {
             $duration = $now->minute - $keytime->minute;
-            if ($duration > 1) {
-                return $duration . ' minutes';
-            } else {
+            if ($duration == 0) {
+                return $duration = 'just now';
+            } elseif ($duration == 1) {
                 return $duration . ' minute';
+            } else {
+                return $duration . ' minutes';
             }
         } else {
-
             return $duration;
         }
     }
 
-
+    //use this function for counting
     public function duration($now, $keytime)
     {
         $duration = $this->year($now, $keytime);
@@ -440,10 +436,8 @@ trait ProcessModelData
         if ($duration == 0) {
             $duration = $this->minute($now, $keytime);
         }
-        if ($duration == 0) {
-            return $duration = "just now";
-        } else {
-            return $duration;
-        }
+        return $duration;
     }
+    // ===================================================end Count time===================================================
+
 }

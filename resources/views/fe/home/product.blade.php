@@ -404,7 +404,7 @@
                                                             {{ $rating->user->role }}
                                                         </div>
                                                         <h5>{{ $rating->user->name }}
-                                                            <span>{{ $rating->created_at }}</span>
+                                                            <span>{{ $rating->timeRating() }}</span>
                                                         </h5>
                                                         <div class="at-reply">{{ $rating->review }}</div>
                                                         @if (auth()->user())
