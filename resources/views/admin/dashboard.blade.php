@@ -265,16 +265,18 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($order as $key => $item)
-                                            @foreach($item->details as $ip)
-                                            <tr>
-                                                <th scope="row"><a href="#">{{$item->id}}</a></th>
-                                                <td>{{$item->name}}</td>
-                                                <td><a href="{{ Route('product.details',$ip->product->slug) }}" class="text-primary fw-bold">{{$ip->product->name}}</a>
-                                                </td>
-                                                <td>{{number_format($ip->product->salePrice(), 0, ',', '.')}}</td>
-                                                <td><span class="badge bg-success">Approved</span></td>
-                                            </tr>
-                                            @endforeach
+                                                @foreach ($item->details as $ip)
+                                                    <tr>
+                                                        <th scope="row"><a href="#">{{ $item->id }}</a></th>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td><a href="{{ Route('product.details', $ip->product->slug) }}"
+                                                                class="text-primary fw-bold">{{ $ip->product->name }}</a>
+                                                        </td>
+                                                        <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
+                                                        </td>
+                                                        <td><span class="badge bg-success">Approved</span></td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -317,15 +319,17 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($allproduct as $key => $row)
-                                            <tr>
-                                                <th scope="row"><a href="{{ Route('product.details',$row->slug) }}"><img src="{{ asset('images/' . $row->oldestImage->url) }}"
-                                                            alt=""></a></th>
-                                                <td><a href="{{ Route('product.details',$row->slug) }}" class="text-primary fw-bold">{{$row->name}}</a></td>
-                                                <td>{{number_format($row->salePrice(), 0, ',', '.')}}</td>
-                                                <td class="fw-bold">{{$row->topSale()}}</td>
-                                                <td>{{number_format($row->revenue(), 0, ',', '.')}}</td>
-                                            </tr>
-
+                                                <tr>
+                                                    <th scope="row"><a
+                                                            href="{{ Route('product.details', $row->slug) }}"><img
+                                                                src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
+                                                                alt=""></a></th>
+                                                    <td><a href="{{ Route('product.details', $row->slug) }}"
+                                                            class="text-primary fw-bold">{{ $row->name }}</a></td>
+                                                    <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
+                                                    <td class="fw-bold">{{ $row->topSale() }}</td>
+                                                    <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -346,6 +350,7 @@
                         {{-- <div class="filter">
                             <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                     class="bi bi-three-dots"></i></a>
+
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                 <li class="dropdown-header text-start">
                                     <h6>Filter</h6>

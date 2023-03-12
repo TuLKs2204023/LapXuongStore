@@ -12,6 +12,13 @@ function Validator(form) {
         required(value) {
             return value ? undefined : `This field is required`;
         },
+        requiredOr(selector) {
+            return (value) => {
+                return value || formElement.querySelector(selector).value
+                    ? undefined
+                    : `Either one of [Min] or [Max] field is required`;
+            };
+        },
         email(value) {
             const regExMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
             return regExMail.test(value)
@@ -35,11 +42,11 @@ function Validator(form) {
         min(min, include = "") {
             return (value) => {
                 if (!include) {
-                    return Number(value) >= Number(min)
+                    return Number(value) >= Number(min) || !value
                         ? undefined
                         : `Value must not be less than ${min}`;
                 } else {
-                    return Number(value) > Number(min)
+                    return Number(value) > Number(min) || !value
                         ? undefined
                         : `Value must be greater than ${min}`;
                 }
@@ -48,11 +55,11 @@ function Validator(form) {
         max(max, include = "") {
             return (value) => {
                 if (!include) {
-                    return Number(value) <= Number(max)
+                    return Number(value) <= Number(max) || !value
                         ? undefined
                         : `Value must not be greater than ${max}`;
                 } else {
-                    return Number(value) < Number(max)
+                    return Number(value) < Number(max) || !value
                         ? undefined
                         : `Value must be less than ${max}`;
                 }
@@ -69,9 +76,17 @@ function Validator(form) {
         compareMin(selector) {
             return (value) => {
                 const selectorVal = formElement.querySelector(selector).value;
-                return Number(value) > selectorVal
+                return Number(value) > selectorVal || !value
                     ? undefined
                     : `Value must be greater than ${selectorVal}`;
+            };
+        },
+        compareMax(selector) {
+            return (value) => {
+                const selectorVal = formElement.querySelector(selector).value;
+                return Number(value) < selectorVal || !value
+                    ? undefined
+                    : `Value must be less than ${selectorVal}`;
             };
         },
         confirmed(selector) {
@@ -270,7 +285,7 @@ function Validator(form) {
 
             for (let rule of rules) {
                 if (!e.target.type) {
-                    errMsg = rule(e.target.dataset.value);
+                    errMsg = rule(e.target.dataset.value.trim());
                 } else {
                     switch (e.target.type) {
                         case "radio":

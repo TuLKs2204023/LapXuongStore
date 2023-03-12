@@ -35,7 +35,7 @@
 
                     <!-- Horizontal Form -->
                     <form action="{{ Route($isUpdate ? 'admin.cpu.update' : 'admin.cpu.store') }}" method="post"
-                        class="card-body" enctype="multipart/form-data">
+                        class="card-body myForm" enctype="multipart/form-data" id="createCpus">
                         @csrf
                         @if ($isUpdate)
                             @method('put')
@@ -44,10 +44,13 @@
 
                         <!-- Name Section -->
                         <div class="form-group row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <label for="name" class="col-sm-2 col-form-label">
+                                <div>Name<span class="form-required">&nbsp;*</span></div>
+                            </label>
                             <div class="col-sm-10">
-                                <input type="text" id="name" name="name" class="form-control"
+                                <input type="text" id="name" name="name" class="form-control" rules="required"
                                     value="{{ $isUpdate ? $cpu->name : '' }}">
+                                <span class="form-message heighter"></span>
                             </div>
                         </div><!-- / Name Section -->
 
@@ -60,7 +63,7 @@
                         </div><!-- / Description Section -->
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
+                            <button type="submit" class="btn btn-primary my-btn">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
                             <button type="reset" class="btn btn-secondary">Reset</button>
                         </div>
                     </form><!-- End Horizontal Form -->
@@ -69,4 +72,18 @@
             <!-- /.card -->
         @endif
     </section><!-- End Main Section -->
+@endsection
+
+@section('myJs')
+    <!-- Start KienJs -->
+    <script type="module">
+        import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                // Input validation
+                const cpusForm = new Validator('#createCpus');
+            }
+        });
+    </script><!-- End KienJs -->
 @endsection

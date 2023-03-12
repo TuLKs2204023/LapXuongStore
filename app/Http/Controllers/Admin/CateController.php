@@ -7,17 +7,7 @@ use App\Models\Cate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Traits\ProcessModelData;
-use App\Models\Cates\Color;
-use App\Models\Cates\Cpu;
-use App\Models\Cates\Demand;
-use App\Models\Cates\Gpu;
-use App\Models\Cates\HddGroup;
-use App\Models\Cates\Manufacture;
-use App\Models\Cates\RamGroup;
-use App\Models\Cates\Resolution;
-use App\Models\Cates\ScreenGroup;
-use App\Models\Cates\Series;
-use App\Models\Cates\SsdGroup;
+use App\Models\CateGroup;
 
 class CateController extends Controller
 {
@@ -33,7 +23,7 @@ class CateController extends Controller
     {
         $cates = Cate::all();
         $cates->load('cate_group');
-        $cates->loadMorph('cateable', ['manufacture', 'cpu', 'ramGroup']);
+        // $cates->loadMorph('cateable', ['manufacture', 'cpu', 'ramGroup']);
 
         return view('admin.cate.index')->with(['cates' => $cates]);
     }
@@ -43,64 +33,16 @@ class CateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function refresh()
     {
-        // -----------------------------Manufacture section-----------------------------------
-        $manufactures = Manufacture::all();
-        $manufactures->load('cate');
-        $this->proccessRefresh($manufactures, 1);
+        $cateGrps = CateGroup::all();
 
-        // -----------------------------Series section-----------------------------------
-        $series = Series::all();
-        $series->load('cate');
-        $this->proccessRefresh($series, 2);
-
-        // -----------------------------CPU section-----------------------------------
-        $cpus = Cpu::all();
-        $cpus->load('cate');
-        $this->proccessRefresh($cpus, 3);
-
-        // -----------------------------GPU section-----------------------------------
-        $gpus = Gpu::all();
-        $gpus->load('cate');
-        $this->proccessRefresh($gpus, 4);
-
-        // -----------------------------RAM section-----------------------------------
-        $ramGroups = RamGroup::all();
-        $ramGroups->load('cate');
-        $this->proccessRefresh($ramGroups, 5);
-
-        // -----------------------------Screen section-----------------------------------
-        $screenGroups = ScreenGroup::all();
-        $screenGroups->load('cate');
-        $this->proccessRefresh($screenGroups, 6);
-
-        // -----------------------------HDD section-----------------------------------
-        $hddGroups = HddGroup::all();
-        $hddGroups->load('cate');
-        $this->proccessRefresh($hddGroups, 7);
-
-        // -----------------------------SSD section-----------------------------------
-        $ssdGroups = SsdGroup::all();
-        $ssdGroups->load('cate');
-        $this->proccessRefresh($ssdGroups, 8);
-
-        // -----------------------------Color section-----------------------------------
-        $colors = Color::all();
-        $colors->load('cate');
-        $this->proccessRefresh($colors, 9);
-
-        // -----------------------------Demand section-----------------------------------
-        $demands = Demand::all();
-        $demands->load('cate');
-        $this->proccessRefresh($demands, 10);
-
-        // -----------------------------Resolution section-----------------------------------
-        $resolutions = Resolution::all();
-        $resolutions->load('cate');
-        $this->proccessRefresh($resolutions, 11);
-
-
+        foreach ($cateGrps as $cateGrp) {
+            $cateClass = 'App\Models\Cates\\' . $cateGrp->reference_name;
+            $cate = $cateClass::all();
+            $cate->load('cate');
+            $this->proccessRefresh($cate, $cateGrp->id);
+        }
         return back()->with('success', 'Data refreshed successfully !');
     }
 
@@ -108,19 +50,90 @@ class CateController extends Controller
     {
         if (count($data) > 0) {
             foreach ($data as $item) {
-                if (Cate::where([
-                    ['name', $item->name],
-                    ['cate_groups_id', $groupId],
-                ])->count() == 0) {
-                    $cateItm['name'] = $item->name;
-                    $cateItm['slug'] = Str::slug($item->name);
-                    $cateItm['cate_groups_id'] = $groupId;
+                $cateItm['name'] = $item->name;
+                $cateItm['slug'] = Str::slug($item->name);
+                $cateItm['cate_groups_id'] = $groupId;
 
-                    $item->cate()->create($cateItm);
-                }
+                $item->cate()->firstOrCreate(
+                    ['name' => $item->name, 'cate_groups_id' => $groupId],
+                    $cateItm
+                );
             }
         } else {
             return false;
         }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(int $id)
+    {
+        $cate = Cate::find($id);
+        $isUpdate = true;
+        return view('admin.cate.create')->with([
+            'cate' => $cate,
+            'isUpdate' => $isUpdate,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $cate = Cate::find($request->id);
+        $proData = $this->processData($request);
+
+        // Save Cate
+        $cate->update($proData);
+
+        return redirect()->route('admin.cate.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        $cate = Cate::find($request->id);
+        $cate->delete();
+        return redirect()->route('admin.cate.index');
+    }
+
+    /**
+     * Toggle specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function toggleDisplay(Request $request)
+    {
+        $cateId = $request->cateId;
+        $cate = Cate::find($cateId);
+        $request->isDisplay ? $result = 1 : $result = 0;
+
+        switch ($request->navOrSearch) {
+            case 'nav':
+                $cate->showOnNav = $result;
+                $cate->save();
+                break;
+            case 'search':
+                $cate->showOnSearch = $result;
+                $cate->save();
+                break;
+            default:
+                break;
+        }
+        return $cate;
     }
 }

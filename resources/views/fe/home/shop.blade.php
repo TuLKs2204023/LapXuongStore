@@ -50,12 +50,13 @@
                         <div class="filter-range-wrap">
                             <div class="range-slider">
                                 <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                                    <input type="text" id="minamount" class="price-min" readonly>
+                                    <div class="range-slider-divider"></div>
+                                    <input type="text" id="maxamount" class="price-max" readonly>
                                 </div>
                             </div>
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="98">
+                                data-min="0" data-max="100000000">
                                 <div class="ui-slider ui-corner-all ui-widget-header">
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
@@ -68,22 +69,47 @@
                     <!-- Usage Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">Usage</h4>
-                        <ul class="filter-catagories">
-                            <li><a href="#">Office</a></li>
-                            <li><a href="#">Gaming</a></li>
-                            <li><a href="#">Build</a></li>
-                        </ul>
+                        <div class="fw-check filter-demand">
+                            @foreach ($cateGroups->find(10)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
+                                <div class="bc-item">
+                                    <label for="demand-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        <input type="checkbox" id="demand-{{ $cate->cateable->id }}"
+                                            data-value="demand-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
                     </div> <!-- // Usage Filter -->
 
                     <!-- Manufacture Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">Manufacture</h4>
-                        <div class="fw-brand-check">
-                            @foreach ($cateGroups->find(1)->cates as $cate)
+                        <div class="fw-check filter-manufacture">
+                            @foreach ($cateGroups->find(1)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
-                                    <label for="bc-calvin">
-                                        {{ $cate->name }}
-                                        <input type="checkbox" id="bc-calvin">
+                                    <label for="manufacture-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        <input type="checkbox" id="manufacture-{{ $cate->cateable->id }}"
+                                            data-value="manufacture-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // Manufacture Filter -->
+
+                    <!-- Series Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Series</h4>
+                        <div class="fw-check filter-series">
+                            @foreach ($cateGroups->find(2)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
+                                <div class="bc-item">
+                                    <label for="series-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        <input type="checkbox" id="series-{{ $cate->cateable->id }}"
+                                            data-value="series-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
@@ -94,12 +120,13 @@
                     <!-- CPU Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">CPU</h4>
-                        <div class="fw-brand-check">
-                            @foreach ($cateGroups->find(3)->cates as $cate)
+                        <div class="fw-check filter-cpu">
+                            @foreach ($cateGroups->find(3)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
-                                    <label for="bc-calvin">
-                                        {{ $cate->name }}
-                                        <input type="checkbox" id="bc-calvin">
+                                    <label for="cpu-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        <input type="checkbox" id="cpu-{{ $cate->cateable->id }}"
+                                            data-value="cpu-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
@@ -110,15 +137,16 @@
                     <!-- RAM Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">RAM</h4>
-                        <div class="fw-brand-check">
-                            @foreach ($cateGroups->find(5)->cates as $cate)
+                        <div class="fw-check filter-ram">
+                            @foreach ($cateGroups->find(5)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 @if ($cate->cateable->value === null)
                                     @continue
                                 @endif
                                 <div class="bc-item">
-                                    <label for="bc-calvin">
-                                        {{ $cate->name }}
-                                        <input type="checkbox" id="bc-calvin">
+                                    <label for="ram-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        <input type="checkbox" id="ram-{{ $cate->cateable->id }}"
+                                            data-value="ram-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
@@ -129,7 +157,8 @@
                     <!-- Screen Size Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">Size</h4>
-                        <div class="fw-size-choose">
+
+                        {{-- <div class="fw-size-choose">
                             <div class="sc-item">
                                 <input type="radio" id="s-size">
                                 <label for="s-size">15.6"</label>
@@ -146,7 +175,7 @@
                                 <input type="radio" id="xs-size">
                                 <label for="xs-size">24"</label>
                             </div>
-                        </div>
+                        </div> --}}
                     </div> <!-- // Screen Size Filter -->
 
                     <!-- Accessories Filter -->
@@ -252,12 +281,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- @endforeach --}}
                                 @endforeach
                             @else
                                 <div class="col-lg-4 col-sm-6">No Product</div>
                             @endif
-
                         </div>
                     </div> <!-- // Main content Body -->
 
@@ -293,4 +320,18 @@
             };
         });
     </script><!-- End TuJs -->
+
+    <script type="module">
+        import {SearchHandler} from '{{ asset('/js/KienJs/searchProduct.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const productSearch = new SearchHandler({
+                    url: '{{ Route('fe.shop.search') }}',
+                    token: '{{ csrf_token() }}',
+                    selectors: {},
+                });
+            }
+        });
+    </script><!-- End KienJs -->
 @endsection

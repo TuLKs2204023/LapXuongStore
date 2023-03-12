@@ -209,6 +209,48 @@ trait ProcessModelData
     }
 
     /**
+     * Processing Input data for saving Cate model.
+     * 
+     * @param  \Illuminate\Database\Eloquent\Model $cate
+     * @param  integer $groupId
+     * 
+     * @return array $cateItm
+     */
+    function processCate($cate, $groupId)
+    {
+        $cateData['name'] = $cate->name;
+        $cateData['slug'] = Str::slug($cate->name);
+        $cateData['cate_groups_id'] = $groupId;
+        return $cateData;
+    }
+    /**
+     * Processing cate-Name for saving Cate model
+     * 
+     * @param  array $proData
+     * @param  string $cateText
+     * 
+     * @return array $proData
+     */
+    function processCateName($proData, $cateText)
+    {
+        if ($this->isExactVal($proData)) {
+            $proData['name'] = $proData['value'] . $cateText;
+        }
+        if ($this->isMinVal($proData)) {
+            $proData['name'] = 'From ' . $proData['min'] . $cateText;
+        }
+        if ($this->isMaxVal($proData)) {
+            $proData['name'] = 'To ' . $proData['max'] . $cateText;
+        }
+        if ($this->isRangeVal($proData)) {
+            $proData['name'] = 'From ' . $proData['min'] . $cateText . ' to ' . $proData['max'] . $cateText;
+        }
+        
+        $proData['slug'] = Str::slug($proData['name']);
+        return $proData;
+    }
+
+    /**
      * Get the sub-items for the corresponding Group model.
      *
      * @param  \Illuminate\Database\Eloquent\Model $groupModel
@@ -255,6 +297,9 @@ trait ProcessModelData
      */
     private function isExactVal(array $proData): bool
     {
+        if (!isset($proData['value'])) {
+            return false;
+        }
         if ($proData['value'] != 0 && !empty($proData['value'])) {
             return true;
         } else {
@@ -267,6 +312,9 @@ trait ProcessModelData
      */
     private function isMinVal(array $proData): bool
     {
+        if (!isset($proData['min'])) {
+            return false;
+        }
         if ($proData['min'] != 0 && !empty($proData['min'])) {
             return true;
         } else {
@@ -279,6 +327,9 @@ trait ProcessModelData
      */
     private function isMaxVal(array $proData): bool
     {
+        if (!isset($proData['max'])) {
+            return false;
+        }
         if ($proData['max'] != 0 && !empty($proData['max'])) {
             return true;
         } else {
@@ -291,6 +342,9 @@ trait ProcessModelData
      */
     private function isRangeVal(array $proData): bool
     {
+        if (!isset($proData['min']) or !isset($proData['max'])) {
+            return false;
+        }
         if ($proData['min'] != 0 && !empty($proData['min']) && $proData['max'] != 0 && !empty($proData['max'])) {
             return true;
         } else {

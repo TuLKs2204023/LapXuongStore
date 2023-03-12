@@ -58,7 +58,13 @@ class ProductController extends Controller
         $colors = Color::all();
         $gpus = Gpu::all();
         $demands = Demand::all();
-        $series = Series::all();
+        $series = collect([
+            (object)[
+                'id' => ' ',
+                'name' => 'Please pick-up Manufacture first'
+            ]
+        ]);
+
         $resolutions = Resolution::all();
         $imageFiles = false;
         return view('admin.product.create')->with([
@@ -145,7 +151,7 @@ class ProductController extends Controller
         $colors = Color::all();
         $gpus = Gpu::all();
         $demands = Demand::all();
-        $series = Series::all();
+        $series = $product->manufacture->series;
         $resolutions = Resolution::all();
         return view('admin.product.create')->with([
             'product' => $product,
@@ -225,9 +231,11 @@ class ProductController extends Controller
         // $product->prices()->delete();
         // $product->order_details()->delete();
         $images = $product->images;
-        foreach ($images as $image) {
-            File::delete(public_path("images/" . $image->url));
-            $image->delete();
+        if (count($images) > 0) {
+            foreach ($images as $image) {
+                File::delete(public_path("images/" . $image->url));
+                $image->delete();
+            }
         }
         $product->delete();
         return redirect()->route('admin.product.index');

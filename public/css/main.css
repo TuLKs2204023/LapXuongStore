@@ -1,3 +1,8 @@
+/*
+*
+*
+* -------------------- General Settings ----------------------
+*/
 :root {
     --violet: #4154f1;
     --violet-main: #0f21c3;
@@ -13,11 +18,13 @@
     --violet-5th: #e7eafe;
     --violet-5th-50: rgba(231, 234, 254, 0.5);
     --blue-dark: #596376;
+    --blue-dark-main: #012970;
     --blue-dark-20: rgba(89, 99, 118, 0.2);
     --blue-dark-50: rgba(89, 99, 118, 0.5);
     --blue-dark-80: rgba(89, 99, 118, 0.8);
     --blue-dark-90: rgba(89, 99, 118, 0.9);
     --blue-dark-2nd: #aab7cf;
+    --blue-dark-3rd: #979faf;
     --grey-dark: #373737;
     --grey-dark-2nd: #b0b0b0;
     --grey-dark-3rd: #495057;
@@ -29,20 +36,25 @@
     --violet-tu: rgba(42, 53, 147, 1);
     --violet-tu-dark: rgb(6, 17, 113);
     --red-warning: #f33a58;
-
     /* --grey-dark: #252525; */
 }
-
 .spacer {
     margin-top: 36px;
 }
-
 .heighter {
     display: block;
     height: 1.1rem;
     line-height: 1.5rem;
 }
+/* ----------------- End of General Settings ----------------- 
+*
+*/
 
+/*
+*
+*
+* ------------------------ My Button ------------------------- 
+*/
 .site-btn {
     background: linear-gradient(
             to left,
@@ -60,6 +72,15 @@
 }
 .my-btn:hover {
     background-color: var(--violet-main) !important;
+}
+.my-btn-outline {
+    background-color: #ffffff00 !important;
+    color: var(--violet) !important;
+    border-color: var(--violet) !important;
+}
+.my-btn-outline:hover {
+    background-color: var(--violet) !important;
+    color: #ffffff !important;
 }
 
 .btn-add-image {
@@ -90,7 +111,6 @@
     background-position: left !important;
     border: 1px solid var(--violet) !important;
 }
-
 .site-btn-alt {
     cursor: pointer;
     background: linear-gradient(to left, var(--grey-dark) 50%, #000000 50%)
@@ -122,16 +142,31 @@
     background-position: left !important;
     border: 1px solid var(--violet-main) !important;
 }
+/* --------------------- End of My Button -------------------- 
+*
+*/
 
+/**
+*
+*
+* ---------------------- Error Section-------------------------
+*/
 .main-errors {
     width: 80%;
     margin: 30px auto 0px;
 }
-
 .main-errors ul {
     margin-left: 40px;
 }
+/* ------------------ End of Error Section -------------------
+*
+*/
 
+/* 
+*
+*
+* ---------------------- My Scrollbar ------------------------ 
+*/
 .myScrollbar::-webkit-scrollbar,
 .myScrollbar::-webkit-scrollbar-thumb {
     width: 8px;
@@ -149,7 +184,15 @@
 .myScrollbar.more-width::-webkit-scrollbar-thumb {
     color: var(--blue-dark-50);
 }
+/* ------------------ End of My Scrollbar -------------------- 
+*
+*/
 
+/*
+*
+*
+* --------------------- My Input Group ----------------------- 
+*/
 .my-input-group .my-custom-select .select-selected {
     display: flex;
     align-items: center;
@@ -170,7 +213,6 @@
     border-top-right-radius: 0.375rem !important;
     border-bottom-right-radius: 0.375rem !important;
 }
-
 .my-input-group .my-custom-select .select-selected:hover {
     background-color: var(--grey-dark-main);
     color: #ffffff;
@@ -178,19 +220,26 @@
     border-color: var(--grey-dark-main);
     box-shadow: 0px 0px 15px 2px rgba(1, 41, 112, 0.2);
 }
-
 .my-input-group .my-custom-select .my-custom-select-items {
     min-width: 150px;
 }
+/* ----------------- End of My Input Group ------------------ 
+*
+*/
 
-/* Tooltip text */
+/*
+*
+*
+* ----------------------- My Tooltip ------------------------ 
+*/
 .myTooltip .tooltiptext {
     visibility: hidden;
     opacity: 0;
     min-width: 120px;
     background-color: var(--grey-dark);
     color: #fff;
-    box-shadow: 2px 2px 6px rgb(1 41 112 / 20%), -2px -2px 4px rgb(1 41 112 / 20%);
+    box-shadow: 2px 2px 6px rgb(1 41 112 / 20%),
+        -2px -2px 4px rgb(1 41 112 / 20%);
     text-align: center;
     font-size: 0.8rem;
     border-radius: 6px;
@@ -202,7 +251,6 @@
     margin-left: -60px;
     transition: all 0.3s ease-out 0s;
 }
-
 .myTooltip .tooltiptext::after {
     content: "";
     position: absolute;
@@ -213,10 +261,193 @@
     border-style: solid;
     border-color: transparent transparent var(--grey-dark) transparent;
 }
-
-/* Show the tooltip text when you mouse over the tooltip container */
 .form-control:focus + .myTooltip .tooltiptext {
     visibility: visible;
     opacity: 1;
     transition: all 0.3s ease-in 1.5s;
 }
+
+/* Top Tooltip for <Button> */
+.button-control {
+    position: relative;
+    z-index: 99;
+}
+.myTooltip.myTooltip-top .tooltiptext {
+    border-radius: 4px;
+    font-size: 0.7rem;
+    min-width: unset;
+    width: 90px;
+    bottom: 125%;
+    top: unset;
+    padding: 4px 10px;
+    background-color: var(--violet);
+    transition: all 0.25s ease-out 0s;
+    text-align: center;
+    left: 100%;
+}
+.myTooltip.myTooltip-top .tooltiptext::after {
+    bottom: unset;
+    top: 100%;
+    left: 50%;
+    border-color: var(--violet) transparent transparent transparent;
+}
+.myTooltip.myTooltip-bottom .tooltiptext {
+    border-radius: 4px;
+    bottom: unset;
+    top: 125%;
+    background-color: var(--violet);
+    transition: all 0.25s ease-out 0s;
+}
+.myTooltip.myTooltip-bottom .tooltiptext::after {
+    top: unset;
+    bottom: 100%;
+    left: 50%;
+    border-color: transparent transparent var(--violet) transparent;
+}
+.button-control:hover > .myTooltip .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.25s ease-in 0s;
+}
+
+/* Top Tooltip for <Button> --Secondary */
+.myTooltip.myTooltip-secondary .tooltiptext {
+    background-color: var(--bs-secondary);
+}
+.myTooltip.myTooltip-secondary .tooltiptext::after {
+    border-color: var(--bs-secondary) transparent transparent transparent;
+}
+
+/* Top Tooltip for <Button> --Success */
+.myTooltip.myTooltip-success .tooltiptext {
+    background-color: var(--bs-success);
+}
+.myTooltip.myTooltip-success .tooltiptext::after {
+    border-color: var(--bs-success) transparent transparent transparent;
+}
+/* Top Tooltip for <Button> --Danger */
+.myTooltip.myTooltip-danger .tooltiptext {
+    background-color: var(--bs-danger);
+}
+.myTooltip.myTooltip-danger .tooltiptext::after {
+    border-color: var(--bs-danger) transparent transparent transparent;
+}
+.myTooltip.myTooltip-bottom.myTooltip-danger .tooltiptext::after {
+    border-color:  transparent transparent var(--bs-danger) transparent;
+}
+
+/* ------------------- End of My Tooltip -------------------- 
+*
+*/
+
+/*
+*
+*
+* --------------------- My Toggle Switch ----------------------
+*/
+.my-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 22px;
+}
+.my-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.my-switch .switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background-color: #ccc; */
+    background-color: var(--blue-dark-3rd);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+.my-switch .switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 1px;
+    bottom: 1px;
+    background-color: #ffffff;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.my-switch input:checked + .switch-slider {
+    background-color: var(--violet);
+}
+.my-switch input:focus + .switch-slider {
+    box-shadow: 0 0 1px var(--violet);
+}
+.my-switch input:checked + .switch-slider:before {
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.my-switch .switch-slider.round {
+    border-radius: 34px;
+}
+.my-switch .switch-slider.round:before {
+    border-radius: 50%;
+}
+/* ----------------- End of My Toggle Switch ------------------
+*
+*/
+
+/*
+*
+*
+* ----------------- Admin Group Categories ------------------
+*/
+.exact-value,
+.range-value {
+    background-color: #f9fafc;
+    border-radius: 4px;
+    margin: 0 auto !important;
+    padding-bottom: 20px;
+    margin-bottom: 20px !important;
+    box-shadow: 2px 2px 6px rgb(1 41 112 / 10%),
+        -2px -2px 6px rgb(1 41 112 / 10%);
+    transition: all 0.3s;
+}
+fieldset.exact-value > legend,
+fieldset.range-value > legend {
+    float: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #ffffff;
+    font-weight: bold;
+    /* text-align: center; */
+    width: auto !important;
+    background-color: var(--blue-dark);
+    border-radius: 4px;
+    padding: 8px 40px !important;
+    margin-bottom: 20px;
+    margin-left: -1px;
+}
+fieldset.exact-value > legend:hover,
+fieldset.range-value > legend:hover {
+    box-shadow: 2px 2px 6px rgb(1 41 112 / 30%),
+        -2px -2px 6px rgb(1 41 112 / 30%);
+}
+.exact-value.active,
+.range-value.active {
+    border: 1px solid var(--violet-50);
+}
+fieldset.exact-value.active > legend,
+fieldset.range-value.active > legend {
+    background-color: var(--violet);
+}
+/* ------------- End of Admin Group Categories --------------
+*
+*/

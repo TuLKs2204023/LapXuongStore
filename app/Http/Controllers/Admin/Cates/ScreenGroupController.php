@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Cates;
 use App\Http\Controllers\Controller;
 use App\Models\Cates\ScreenGroup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Http\Traits\ProcessModelData;
 
 class ScreenGroupController extends Controller
@@ -42,24 +41,14 @@ class ScreenGroupController extends Controller
     public function store(Request $request)
     {
         $proData = $request->all();
+        $proData = $this->processCateName($proData, '"');
 
-        if ($this->isExactVal($proData)) {
-            $proData['name'] = $proData['value'] . '"';
-        }
-        if ($this->isMinVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . '"';
-        }
-        if ($this->isMaxVal($proData)) {
-            $proData['name'] = 'To ' . $proData['max'] . ' "';
-        }
-        if ($this->isRangeVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . '"' . ' to ' . $proData['max'] . '"';
-        }
+        // Save ScreenGroup
+        $screenGroup = ScreenGroup::create($proData);
 
-        $proData['slug'] = Str::slug($request->name);
-
-        // Save RamGroup
-        $ramGroup = ScreenGroup::create($proData);
+        // Save Cate
+        $cateData = $this->processCate($screenGroup, 6);
+        $screenGroup->cate()->create($cateData);
 
         return redirect()->route('admin.screenGroup.index');
     }
@@ -78,24 +67,40 @@ class ScreenGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cates\ScreenGroup  $screenGroup
      * @return \Illuminate\Http\Response
      */
-    public function edit(ScreenGroup $screenGroup)
+    public function edit(int $id)
     {
-        //
+        $screenGroup = ScreenGroup::find($id);
+        $isUpdate = true;
+
+        return view('admin.screenGroup.create')->with([
+            'screenGroup' => $screenGroup,
+            'isUpdate' => $isUpdate
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cates\ScreenGroup  $screenGroup
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ScreenGroup $screenGroup)
+    public function update(Request $request)
     {
-        //
+        $screenGroup = ScreenGroup::find($request->id);
+        $proData = $request->all();
+
+        $proData = $this->processCateName($proData, '"');
+
+        // Save ScreenGroup
+        $screenGroup->update($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($screenGroup, 6);
+        $screenGroup->cate()->update($cateData);
+
+        return redirect()->route('admin.screenGroup.index');
     }
 
     /**
@@ -107,6 +112,7 @@ class ScreenGroupController extends Controller
     public function destroy(Request $request)
     {
         $screenGroup = ScreenGroup::find($request->id);
+        $screenGroup->cate()->delete();
         $screenGroup->delete();
         return redirect()->route('admin.screenGroup.index');
     }

@@ -40,7 +40,7 @@
 
                     <!-- Horizontal Form -->
                     <form action="{{ Route($isUpdate ? 'admin.ssdGroup.update' : 'admin.ssdGroup.store') }}" method="post"
-                        class="card-body" enctype="multipart/form-data">
+                        class="card-body myForm" enctype="multipart/form-data" id="createSsdGroups">
                         @csrf
                         @if ($isUpdate)
                             @method('put')
@@ -48,31 +48,49 @@
                         @endif
 
                         <!-- Exact Value Section -->
-                        <div class="form-group row mb-3">
-                            <label for="value" class="col-sm-2 col-form-label">Exact Value</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="value" name="value" class="form-control"
-                                    value="{{ $isUpdate ? $ssdGroup->value : '' }}">
+                        <fieldset class="exact-value row g-3">
+                            <legend class="exact-value-btn">Exact Value</legend>
+                            <div class="form-group row mb-3">
+                                <label for="value" class="col-sm-2 col-form-label">
+                                    <div>Value<span class="form-required">&nbsp;*</span></div>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="value" name="value" class="form-control"
+                                        rules="required|min:0,exclude" value="{{ $isUpdate ? $ssdGroup->value : '' }}">
+                                    <span class="form-message heighter"></span>
+                                </div>
                             </div>
-                        </div> <!-- / Exact Value Section -->
+                        </fieldset><!-- / Exact Value Section -->
 
-                        <!-- Min Value Section -->
-                        <div class="form-group row mb-3">
-                            <label for="min" class="col-sm-2 col-form-label">Min Value</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="min" name="min" class="form-control"
-                                    value="{{ $isUpdate ? $ssdGroup->min : '' }}">
-                            </div>
-                        </div> <!-- / Min Value Section -->
+                        <!-- Range Value Section -->
+                        <fieldset class="range-value row g-3">
+                            <legend class="range-value-btn">Range Value</legend>
+                            <!-- Min Value Section -->
+                            <div class="form-group row mb-3">
+                                <label for="min" class="col-sm-2 col-form-label">
+                                    <div>Min<span class="form-required">&nbsp;*</span></div>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="range-min" name="min" class="form-control range-value-min"
+                                        rules="requiredOr:#range-max|min:0,exclude"
+                                        value="{{ $isUpdate ? $ssdGroup->min : '' }}">
+                                    <span class="form-message heighter"></span>
+                                </div>
+                            </div> <!-- / Min Value Section -->
 
-                        <!-- Max Value Section -->
-                        <div class="form-group row mb-3">
-                            <label for="max" class="col-sm-2 col-form-label">Max Value</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="max" name="max" class="form-control"
-                                    value="{{ $isUpdate ? $ssdGroup->max : '' }}">
-                            </div>
-                        </div> <!-- / Max Value Section -->
+                            <!-- Max Value Section -->
+                            <div class="form-group row mb-3">
+                                <label for="max" class="col-sm-2 col-form-label">
+                                    <div>Max<span class="form-required">&nbsp;*</span></div>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="range-max" name="max" class="form-control range-value-max"
+                                        rules="requiredOr:#range-min|min:0,exclude|compareMin:.range-value-min"
+                                        value="{{ $isUpdate ? $ssdGroup->max : '' }}">
+                                    <span class="form-message heighter"></span>
+                                </div>
+                            </div> <!-- / Max Value Section -->
+                        </fieldset><!-- / Range Value Section -->
 
                         <!-- Description Section -->
                         <div class="form-group row mb-3">
@@ -83,7 +101,8 @@
                         </div> <!-- / Description Section -->
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
+                            <button type="submit"
+                                class="btn btn-primary my-btn">{{ $isUpdate ? 'Update' : 'Submit' }}</button>
                             <button type="reset" class="btn btn-secondary">Reset</button>
                         </div>
                     </form><!-- End Horizontal Form -->
@@ -92,4 +111,23 @@
             <!-- /.card -->
         @endif
     </section><!-- End Main Section -->
+@endsection
+
+@section('myJs')
+    <!-- Start KienJs -->
+    <script type="module">
+        import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
+        import {GroupHandler} from '{{ asset('/js/KienJs/createGroup.js') }}';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                // Input validation
+                const productForm = new Validator('#createSsdGroups');
+
+                // Update select SSD options
+                const ssdGroupHandler = new GroupHandler({formSelector: "#createSsdGroups"});
+                
+            }
+        });
+    </script><!-- End KienJs -->
 @endsection

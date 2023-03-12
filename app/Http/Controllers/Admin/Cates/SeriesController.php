@@ -51,6 +51,10 @@ class SeriesController extends Controller
         // Save Series
         $series = Series::create($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($series, 2);
+        $series->cate()->create($cateData);
+
         return redirect()->route('admin.series.index');
     }
 
@@ -99,6 +103,10 @@ class SeriesController extends Controller
         // Save Series
         $series->update($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($series, 2);
+        $series->cate()->update($cateData);
+
         return redirect()->route('admin.series.index');
     }
 
@@ -111,6 +119,7 @@ class SeriesController extends Controller
     public function destroy(Request $request)
     {
         $series = Series::find($request->id);
+        $series->cate()->delete();
         $series->delete();
         return redirect()->route('admin.series.index');
     }

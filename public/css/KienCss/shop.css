@@ -1,3 +1,14 @@
-.filter-widget .filter-range-wrap .price-range.ui-widget-content .ui-slider-handle:hover {
-    cursor: pointer;
+.filter-widget
+    .filter-range-wrap
+    .price-range.ui-widget-content
+    .ui-slider-handle:hover,
+.filter-widget
+    .filter-range-wrap
+    .price-range.ui-widget-content
+    .ui-slider-handle:active {
+    -webkit-transform: scale(1.8);
+    -ms-transform: scale(1.8);
+    transform: scale(1.8);
 }
+
+
