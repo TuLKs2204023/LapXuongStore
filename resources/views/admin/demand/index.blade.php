@@ -31,7 +31,7 @@
                 <div class="card-header">
                     <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.demand.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
-                        Create New Demand
+                        Create New
                     </a>
 
                     <!-- Message Section -->
@@ -64,27 +64,30 @@
                                             @endforeach
                                         </ul>
                                     </td>
-                                    <td class="project-actions text-right">
+                                    <td class="project-actions text-center">
                                         {{-- <a class="btn btn-outline-primary btn-sm"
                                     href="{{ Route('demand.details', $item->slug) }}">
                                     <i class="fas fa-folder">
                                     </i>
                                     View
                                 </a> --}}
-                                        <a class="btn btn-outline-info btn-sm"
+                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
                                             href="{{ Route('admin.demand.edit', $item->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
+                                            <i class="bi bi-pencil-square"></i>
+                                            <div class="myTooltip myTooltip-top">
+                                                <span class="tooltiptext">Edit item</span>
+                                            </div>
                                         </a>
                                         <form action="{{ Route('admin.demand.destroy') }}" method="post"
                                             style="display:inline-block">
                                             @csrf
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
+                                            <button type="submit" class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                <i class="bi bi-trash"></i>
+                                                <div class="myTooltip myTooltip-top myTooltip-danger">
+                                                    <span class="tooltiptext">Delete item</span>
+                                                </div>
                                             </button>
                                         </form>
 

@@ -266,6 +266,76 @@
     opacity: 1;
     transition: all 0.3s ease-in 1.5s;
 }
+
+/* Top Tooltip for <Button> */
+.button-control {
+    position: relative;
+    z-index: 99;
+}
+.myTooltip.myTooltip-top .tooltiptext {
+    border-radius: 4px;
+    font-size: 0.7rem;
+    min-width: unset;
+    width: 90px;
+    bottom: 125%;
+    top: unset;
+    padding: 4px 10px;
+    background-color: var(--violet);
+    transition: all 0.25s ease-out 0s;
+    text-align: center;
+    left: 100%;
+}
+.myTooltip.myTooltip-top .tooltiptext::after {
+    bottom: unset;
+    top: 100%;
+    left: 50%;
+    border-color: var(--violet) transparent transparent transparent;
+}
+.myTooltip.myTooltip-bottom .tooltiptext {
+    border-radius: 4px;
+    bottom: unset;
+    top: 125%;
+    background-color: var(--violet);
+    transition: all 0.25s ease-out 0s;
+}
+.myTooltip.myTooltip-bottom .tooltiptext::after {
+    top: unset;
+    bottom: 100%;
+    left: 50%;
+    border-color: transparent transparent var(--violet) transparent;
+}
+.button-control:hover > .myTooltip .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.25s ease-in 0s;
+}
+
+/* Top Tooltip for <Button> --Secondary */
+.myTooltip.myTooltip-secondary .tooltiptext {
+    background-color: var(--bs-secondary);
+}
+.myTooltip.myTooltip-secondary .tooltiptext::after {
+    border-color: var(--bs-secondary) transparent transparent transparent;
+}
+
+/* Top Tooltip for <Button> --Success */
+.myTooltip.myTooltip-success .tooltiptext {
+    background-color: var(--bs-success);
+}
+.myTooltip.myTooltip-success .tooltiptext::after {
+    border-color: var(--bs-success) transparent transparent transparent;
+}
+/* Top Tooltip for <Button> --Danger */
+.myTooltip.myTooltip-danger .tooltiptext {
+    background-color: var(--bs-danger);
+}
+.myTooltip.myTooltip-danger .tooltiptext::after {
+    border-color: var(--bs-danger) transparent transparent transparent;
+}
+.myTooltip.myTooltip-bottom.myTooltip-danger .tooltiptext::after {
+    border-color:  transparent transparent var(--bs-danger) transparent;
+}
+
 /* ------------------- End of My Tooltip -------------------- 
 *
 */
@@ -278,8 +348,8 @@
 .my-switch {
     position: relative;
     display: inline-block;
-    width: 48px;
-    height: 24px;
+    width: 44px;
+    height: 22px;
 }
 .my-switch input {
     opacity: 0;
@@ -301,8 +371,8 @@
 .my-switch .switch-slider:before {
     position: absolute;
     content: "";
-    height: 22px;
-    width: 22px;
+    height: 20px;
+    width: 20px;
     left: 1px;
     bottom: 1px;
     background-color: #ffffff;
@@ -317,9 +387,9 @@
     box-shadow: 0 0 1px var(--violet);
 }
 .my-switch input:checked + .switch-slider:before {
-    -webkit-transform: translateX(24px);
-    -ms-transform: translateX(24px);
-    transform: translateX(24px);
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
 }
 
 /* Rounded sliders */

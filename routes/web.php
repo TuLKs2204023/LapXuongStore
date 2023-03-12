@@ -60,6 +60,7 @@ Route::get('/', [FE_HomeController::class, 'index'])->name('fe.home');
 Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact');
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
 Route::get('/shop/{slug}', [ShopController::class, 'cate'])->name('fe.shop.cate');
+Route::post('/shop-search', [ShopController::class, 'search'])->name('fe.shop.search');
 
 
 //Data tables

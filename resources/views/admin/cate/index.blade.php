@@ -27,7 +27,7 @@
             <div class="card">
                 <div class="card-header">
                     <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.cate.refresh') }}">
-                        <i class="bi bi-plus-circle-fill me-1"></i>
+                        <i class="bi bi-arrow-repeat me-1"></i>
                         Refresh
                     </a>
 
@@ -59,7 +59,7 @@
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->cate_group->name }}</td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">
                                         <label for="showOnNav-{{ $item->id }}" class="my-switch form-label">
                                             <input type="checkbox" id="showOnNav-{{ $item->id }}"
                                                 name="showOnNav-{{ $item->id }}" class="form-control"
@@ -67,13 +67,14 @@
                                             <span class="switch-slider round"></span>
                                         </label>
                                     </td>
-                                    <td style="text-align:center;"><label for="showOnSearch-{{ $item->id }}"
-                                            class="my-switch form-label">
+                                    <td class="text-center">
+                                        <label for="showOnSearch-{{ $item->id }}" class="my-switch form-label">
                                             <input type="checkbox" id="showOnSearch-{{ $item->id }}"
                                                 name="showOnSearch-{{ $item->id }}" class="form-control"
                                                 {{ $item->showOnSearch == 1 ? 'checked' : '' }}>
                                             <span class="switch-slider round"></span>
-                                        </label></td>
+                                        </label>
+                                    </td>
                                     <td>
                                         <ol>
                                             @if (isset($item->cateable->products))
@@ -98,27 +99,30 @@
                                             @endforeach
                                         </ul>
                                     </td> --}}
-                                    <td class="project-actions text-right">
+                                    <td class="project-actions text-center">
                                         {{-- <a class="btn btn-outline-primary btn-sm"
                                         href="{{ Route('cate.details', $item->slug) }}">
                                         <i class="fas fa-folder">
                                         </i>
                                         View
                                     </a>
-                                        <a class="btn btn-outline-info btn-sm"
+                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
                                             href="{{ Route('admin.cate.edit', $item->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
+                                             <i class="bi bi-pencil-square"></i>
+                                            <div class="myTooltip myTooltip-top">
+                                                <span class="tooltiptext">Edit item</span>
+                                            </div>
                                         </a> --}}
                                         <form action="{{ Route('admin.cate.destroy') }}" method="post"
                                             style="display:inline-block">
                                             @csrf
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
+                                            <button type="submit" class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                <i class="bi bi-trash"></i>
+                                                <div class="myTooltip myTooltip-top myTooltip-danger">
+                                                    <span class="tooltiptext">Delete item</span>
+                                                </div>
                                             </button>
                                         </form>
                                     </td>
