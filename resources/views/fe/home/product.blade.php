@@ -1,42 +1,30 @@
-@section('fetitle', '- Product')
 @extends('fe.layout.layout')
+
+@section('fetitle', '- Product')
 
 @section('myCss')
     <style>
         .fa-heart {
             color: red;
         }
-
         .comment-option.overflow-auto {
             max-height: 400px;
         }
-
-        .customer-review-option .comment-option.overflow-auto .co-item .avatar-text .at-role {
-            font-style: italic;
-            font-size: 80%;
-            font-weight: 500;
-            text-shadow: 2px 2px 10px #4154F1;
-            /* ai rảnh chỉnh giùm em với, ko biết sao cho nó đẹp nữa */
-        }
-
         .personal-rating .btn-default,
         .personal-rating .btn-warning {
             transition: all 0.3s;
         }
-
         .personal-rating .btn-default:hover {
             color: #FAC451;
             border-color: white;
             background-color: white;
         }
-
         .personal-rating .btnrating.btn.btn-lg.btn-warning:focus,
         .personal-rating .btn-warning {
             color: #FAC451;
             border-color: white;
             background-color: white;
         }
-
         .personal-rating .btn-warning:hover,
         .personal-rating .btn-default {
             color: gray;
@@ -165,8 +153,8 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
-                                <img src="{{ asset('images/' . $product->oldestImage->url) }}" alt=""
-                                    class="product-big-img">
+                                <img src="{{ isset($product->oldestImage->url) ? asset('images/' . $product->oldestImage->url) : '' }}"
+                                    alt="" class="product-big-img">
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
@@ -186,10 +174,12 @@
                                 </div>
                             </div>
                         </div>
+
+{{-- -------------------------------------------------------------------------------Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
                         <div class="col-lg-6">
                             <div class="product-details">
                                 <div class="pd-title">
-                                    <span>oranges</span>
+                                    <span>{{ $product->series->name }}</span>
                                     <h3>{{ $product->name }}</h3>
                                     @if ($product->findWishlist())
                                         <a href="{{ Route('removeWishlist', $product->id) }}" class="heart-icon"><i
@@ -216,16 +206,19 @@
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
-                                    <h4>${{ number_format($product->price, 0, ',', '.')}}<span>${{ number_format($product->price, 0, ',', '.')}}</span>
+                                    <h4>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}
+                                        @if ($product->latestDiscount() > 0)
+                                        <span>{{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                    @endif
                                     </h4>
-
                                 </div>
                                 <div class="quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
                                             <input name="product-quantity" type="text" value="1">
                                         </div>
-                                        <a href="#" class="primary-btn site-btn-main pd-cart" data-id="{{ $product->id }}">Add
+                                        <a href="#" class="primary-btn site-btn-main pd-cart"
+                                            data-id="{{ $product->id }}">Add
                                             To Cart</a>
                                     </div>
                                 </div>
@@ -233,7 +226,7 @@
                                     <li><span>Categories</span>: Gaming, ASUS</li>
                                 </ul>
                                 <div class="pd-share">
-                                    <div class="p-code">CODE: {{ $product->slug }}</div>
+                                    <div class="p-code">CODE: {{ $product->id }}</div>
                                     <div class="pd-social">
                                         <a href="#"><i class="ti-facebook"></i></a>
                                         <a href="#"><i class="ti-twitter-alt"></i></a>
@@ -242,6 +235,8 @@
                                 </div>
                             </div>
                         </div>
+{{-- -------------------------------------------------------------------------------end Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
+
                     </div>
                     <div class="product-tab">
                         <div class="tab-item">
@@ -299,7 +294,7 @@
                                                 <td class="p-catagory">Price</td>
                                                 <td>
                                                     <div class="p-price">
-                                                        ${{ number_format($product->price, 0, ',', '.')}}
+                                                        {{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -328,7 +323,8 @@
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
-                                                    <div class="p-weight">15.6-inch FHD (1920 x 1080), 144Hz, IPS-level
+                                                    <div class="p-weight">{{ $product->screen->amount }} inch
+                                                        ({{ $product->resolution->name }})
                                                     </div>
                                                 </td>
                                             </tr>
@@ -344,7 +340,7 @@
                                             <tr>
                                                 <td class="p-catagory">Graphics</td>
                                                 <td>
-                                                    <div class="p-weight">NVIDIA® GeForce GTX™ 1650 , 4GB GDDR6</div>
+                                                    <div class="p-weight">{{ $product->gpu->name }}</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -353,7 +349,7 @@
                                                     <div class="p-weight">{{ $product->cpu->name }}</div>
                                                 </td>
                                             </tr>
-
+                                            
                                             @if (isset($product->description->dimension))
                                                 <tr>
                                                     <td class="p-catagory">Dimensions</td>
@@ -368,7 +364,7 @@
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 <td>
-                                                    <div class="p-weight">Graphite Black</div>
+                                                    <div class="p-weight">{{ $product->color->name }}</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -381,47 +377,42 @@
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
                                                 <div class="co-item">
-                                                    <form action="{{ Route('admin.rating.destroy') }}" method="post"
-                                                        style="display:inline-block">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $rating->id }}">
-                                                        <div class="avatar-pic">
-                                                            <img src="{{ asset('images/' . $rating->user->image) }}"
-                                                                alt="">
+                                                    <div class="avatar-pic">
+                                                        <img src="{{ isset($rating->user->image) ? asset('images/' . $rating->user->image) : '' }}"
+                                                            alt="">
+                                                    </div>
+                                                    <div class="avatar-text">
+                                                        <div class="at-rating">
+                                                            @for ($i = 0; $i < $rating->rate; $i++)
+                                                                <i class="fa fa-star"></i>
+                                                            @endfor
+                                                            @for ($i = 0; $i < 5 - $rating->rate; $i++)
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endfor
                                                         </div>
-                                                        <div class="avatar-text">
-                                                            <div class="at-rating">
-                                                                @for ($i = 0; $i < $rating->rate; $i++)
-                                                                    <i class="fa fa-star"></i>
-                                                                @endfor
-                                                                @for ($i = 0; $i < 5 - $rating->rate; $i++)
-                                                                    <i class="fa fa-star-o"></i>
-                                                                @endfor
-                                                            </div>
-                                                            <div
-                                                                @if ($rating->user->role == 'Admin' || $rating->user->role == 'Manager') class="badge rounded-pill bg-info text-light"
+                                                        <div
+                                                            @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
+                                                                @elseif ($rating->user->role == 'Manager') 
+                                                                    style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
                                                                 @else
-                                                                    class="badge rounded-pill bg-secondary text-light" @endif>
-                                                                {{ $rating->user->role }}
-                                                            </div>
-                                                            <h5>{{ $rating->user->name }}
-                                                                <span>{{ $rating->created_at }}</span>
-                                                            </h5>
-                                                            <div class="at-reply">{{ $rating->review }}</div>
-                                                            @if (auth()->user())
-                                                                @if (auth()->user()->role == 'Admin')
-                                                                    <button type="submit"
-                                                                        class="btn btn-outline-danger btn-sm">
-                                                                        <i class="fas fa-trash"></i>
-                                                                        Delete
-                                                                    </button>
-                                                                    
-                                                                @endif
-                                                            @endif
+                                                                    style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
+                                                            {{ $rating->user->role }}
                                                         </div>
-                                                    </form>
+                                                        <h5>{{ $rating->user->name }}
+                                                            <span>{{ $rating->timeRating() }}</span>
+                                                        </h5>
+                                                        <div class="at-reply">{{ $rating->review }}</div>
+                                                        @if (auth()->user())
+                                                            @if (auth()->user()->role == 'Admin')
+                                                                <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
+                                                                    id="deletecomment"
+                                                                    class="btn btn-outline-danger btn-sm">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Delete
+                                                                </a>
+                                                            @endif
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -518,16 +509,14 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection
 
 
-
-
-
 @section('content')
+{{-- -------------------------------------------------------------------------------Relate Products---------------------------------------------------------------------------------------------------------------------------                         --}}
+
     <div class="related-products spad">
         <div class="container">
             <div class="row">
@@ -537,93 +526,101 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                @foreach ($product->relateProducts() as $relate)
-                    <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-12">
+                <div class="filter-control">
+                </div>
+                <div class="product-slider owl-carousel">
+                    @foreach ($product->relateProducts() as $item)
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{asset('images/'. $relate->oldestImage->url)}}" alt="{{$relate->name}}">
-                                <div class="sale pp-sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
+                                <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
+                                @if ($item->latestDiscount() > 0)
+                                    <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
+                                @endif
                             </div>
                             <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>{{$relate->name}}</h5>
+                                <div class="catagory-name">{{ $item->manufacture->name }}</div>
+                                <a href="{{ Route('product.details', $item->slug) }}">
+                                    <h5>{{ $item->name }}</h5>
                                 </a>
                                 <div class="product-price">
-                                    {{$relate->price}}
-                                    <span>$450.00</span>
+                                    {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
+                                    @if ($item->latestDiscount() > 0)
+                                        <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
+    {{-- -------------------------------------------------------------------------------end Relate Products---------------------------------------------------------------------------------------------------------------------------                         --}}
+
 @endsection
 
-
-
-
-
 @section('myJs')
+    <!-- Start KienJs -->
     <script type="module">
-    import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
-    document.addEventListener("readystatechange", (e) => {
-        if (e.target.readyState === "complete") {
-            const addCart = new CartHandler({
-                url: '{{ Route('addCart') }}',
-                token: '{{ csrf_token() }}',
-                isUpdate: false,
-                cartOrBtnSelector: ".pd-cart",
-                inputName: "product-quantity",
-                headerCartSelector: ".cart-icon",
-            });
-        }
-    });
-</script>
+        import {CartHandler} from '{{ asset('/js/KienJs/cart.js') }}';
+        import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const addCart = new CartHandler({
+                    url: '{{ Route('addCart') }}',
+                    token: '{{ csrf_token() }}',
+                    isUpdate: false,
+                    inputName: "product-quantity",
+                    selectors: {
+                        cartOrBtnSelector: ".pd-cart",
+                        headerCartSelector: ".cart-icon",
+                    }
+                });
+            }
+        });
+    </script><!-- End KienJs -->
+
     <script>
         jQuery(document).ready(function($) {
-
+            $(document).on("click", "#deletecomment",
+                function(e) {
+                    e.preventDefault();
+                    var link = $(this).attr("href");
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                'Deleted!',
+                                'This comment has been deleted.',
+                                'success'
+                            )
+                            window.location.href = link;
+                        }
+                    })
+                });
             $(".btnrating").on('click', (function(e) {
-
                 var previous_value = $("#selected_rating").val();
-
                 var selected_value = $(this).attr("data-attr");
                 $("#selected_rating").val(selected_value);
-
                 $(".selected-rating").empty();
                 $(".selected-rating").html(selected_value);
-
                 for (i = 1; i <= selected_value; ++i) {
                     $("#rating-star-" + i).toggleClass('btn-warning');
                     $("#rating-star-" + i).toggleClass('btn-default');
                 }
-
                 for (ix = 1; ix <= previous_value; ++ix) {
                     $("#rating-star-" + ix).toggleClass('btn-warning');
                     $("#rating-star-" + ix).toggleClass('btn-default');
                 }
-
             }));
         });
-    </script>
-    <script type="module">
-        import { showSuccessToast, showErrorToast } from "{{ asset('/js/KienJs/toast.js') }}";
-
-        // const submitBtn = document.querySelector('.review-lapxuong-btn');
-        // console.log(submitBtn)
-        // submitBtn.onclick = function(){
-        //     console.log(submitBtn)
-        // }
     </script>
 @endsection

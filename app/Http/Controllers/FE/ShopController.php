@@ -5,12 +5,12 @@ namespace App\Http\Controllers\FE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Price;
 use App\Models\Cate;
 use App\Models\CateGroup;
-use App\Models\Cates\RamGroup;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
@@ -19,56 +19,19 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $perPage = $request->show ?? 3;
-        $sortBy  = $request->sort_by ??'latest';
-
-        switch($sortBy)
-        {
-            case 'latest';
-                $products = Product::orderBy('id');
-                break;
-            case 'oldest':
-                $products = Product::orderByDesc('id');
-                break;
-            case 'name-ascending':
-                $products = Product::orderBy('name');
-                break;
-            case 'name-descending':
-                $products = Product::orderByDesc('name');
-                // dd($products->get());
-                break;
-            case 'price-ascending':
-                    $products = Price::orderBy('manufacture_id');
-                    break;
-            case 'price-descending':
-                    $products = Price::orderByDesc('manufacture_id');
-                    break;
-           
-            default:
-                $products = Product::orderBy('id');
-                
-
-        }
-
-        
-        //paginate() : ham phan trang
-
-       
-
-        
-
-        $products = $products->paginate($perPage);
+        $products = Product::paginate(10);
+        // $products = Product::all();
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
             'products' => $products,
         ]);
     }
- 
+
     /**
-     * Show the form for editing the specified resource.
+     * Display products based on category specified by user.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
@@ -81,13 +44,14 @@ class ShopController extends Controller
 
         if (isset($cateItems->products)) {
             $cateItems->load('products');
-            $products = $cateItems->products;
+            $products = $cateItems->products()->paginate(10);
         }
         if (method_exists(get_class($cateItems), 'cateItems')) {
             $products = new Collection();
             foreach ($cateItems->cateItems()->load('products') as $item) {
                 $products = $products->merge($item->products);
             }
+            $products = $this->paginate($products);
         }
 
         return view('fe.home.shop')->with([
@@ -96,5 +60,44 @@ class ShopController extends Controller
             'cateItems' => $cateItems,
             'products' => $products
         ]);
+    }
+
+    /**
+     * Generates the pagination of the items for an array or collection.
+     *
+     * @param array|Collection      $items
+     * @param int   $perPage
+     * @param int  $page
+     * @param array $options
+     *
+     * @return LengthAwarePaginator
+     */
+    private function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator(
+            $items->forPage($page, $perPage),
+            $items->count(),
+            $perPage,
+            $page,
+            $options
+        );
+    }
+
+    /**
+     * Display products based on queries specified by user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $queries = $request->queries;
+        $products = DB::table('products');
+        foreach ($queries as $key => $value) {
+            $products->orWhereIn($key . '_id', $value);
+        }
+        return $products->paginate(10);;
     }
 }
