@@ -38,7 +38,7 @@ trait ProcessModelData
     //     return $product;
     // }
 
-    function processPriceWithStockId(Product $product, array $proData)
+    function processPriceInStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
         $stock = DB::table('stocks')->where('product_id', $product->id)->get()->last();
@@ -79,9 +79,14 @@ trait ProcessModelData
     function processOutStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
-        $product->stocks()->create(['out_qty' => $proData['out_qty']]);
+        $stock = $product->stocks()->create(['out_qty' => $proData['out_qty']]);
+        $product->prices()->create([
+            'sale' => $product->salePrice(),
+            'discount' => $product->latestDiscount(),
+            'stock_id' => $stock->id,
+        ]);
         $product->refresh();
-        return $product;
+        return $stock;
     }
 
     function processUsedPromotion(Order $order, string $promotionCode)
@@ -103,6 +108,15 @@ trait ProcessModelData
 
         $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
         $user->refresh();
+    }
+
+    function processDiscount(Product $product, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
+        $proData['amount'] = $proData['amount'] / 100;
+        $product->discounts()->create(['amount' => $proData['amount']]);
+        $product->refresh();
+        return $product;
     }
 
     function processRam(array $proData)
@@ -170,7 +184,7 @@ trait ProcessModelData
 
     /**
      * Remove selected items, used jointly with processImage()
-     * 
+     *
      */
     function removeItems($images, $proData)
     {
@@ -238,10 +252,10 @@ trait ProcessModelData
 
     /**
      * Get the sub-items for the corresponding Group model.
-     * 
+     *
      * @param  \Illuminate\Database\Eloquent\Model $groupModel
      * @param  string $subClass
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     function processCates($groupModel, $subClass)
@@ -279,7 +293,7 @@ trait ProcessModelData
 
     /**
      * Supporting function for processCate()
-     * 
+     *
      */
     private function isExactVal(array $proData): bool
     {
@@ -294,7 +308,7 @@ trait ProcessModelData
     }
     /**
      * Supporting function for processCate()
-     * 
+     *
      */
     private function isMinVal(array $proData): bool
     {
@@ -309,7 +323,7 @@ trait ProcessModelData
     }
     /**
      * Supporting function for processCate()
-     * 
+     *
      */
     private function isMaxVal(array $proData): bool
     {
@@ -324,7 +338,7 @@ trait ProcessModelData
     }
     /**
      * Supporting function for processCate()
-     * 
+     *
      */
     private function isRangeVal(array $proData): bool
     {
@@ -337,4 +351,147 @@ trait ProcessModelData
             return false;
         }
     }
+
+
+    /* A function to update history user' table. */
+    public function data($user, array $data)
+    {
+        $final = "";
+        $old_name = $user->name;
+        $old_phone = $user->phone;
+        $old_address = $user->address;
+        $old_gender = $user->gender;
+        $old_city = $user->city_id;
+        $old_district = $user->district_id;
+        $old_ward = $user->ward_id;
+        if ($data['name'] != $old_name) {
+            $name = $old_name ?? 'Not Updated';
+            $final = $final . 'Name: ' . $name . ' to ' . $data['name']  . ', ';
+        }
+        if ($data['phone'] != $old_phone) {
+            $phone = $old_phone ?? 'Not Updated';
+            $final = $final  . 'Phone: ' . $phone . ' to ' . $data['phone']  . ', ';
+        }
+        if ($data['address'] != $old_address) {
+            $address = $old_address ?? 'Not Updated';
+            $final = $final  . 'Address: ' . $address . ' to ' . $data['address']  . ', ';
+        }
+        if ($data['gender'] != $old_gender) {
+            $gender = $old_gender ?? 'Not Updated';
+            $final = $final  . 'Gender: ' . $gender . ' to ' . $data['gender']  . ', ';
+        }
+
+        if ($data['city_id'] != $old_city) {
+            $city = DB::table('cities')->where('id', $data['city_id'])->first()->name;
+            $oldCity = auth()->user()->city->name ?? '';
+            $final = $final  . 'City: ' . $oldCity . ' to ' . $city . ', ';
+        }
+        if ($data['district_id'] != $old_district) {
+            $oldDistrict = auth()->user()->district->name ?? '';
+            $district = DB::table('districts')->where('id', $data['district_id'])->first()->name;
+            $final = $final  . 'District: ' . $oldDistrict . ' to ' . $district . ', ';
+        }
+        if ($data['ward_id'] != $old_ward) {
+            $oldWard = auth()->user()->ward->name ?? '';
+            $ward = DB::table('wards')->where('id', $data['ward_id'])->first()->name;
+            $final = $final  . 'Ward: ' . $oldWard . ' to ' . $ward . ', ';
+        }
+
+        $user->histories()->create(['data' => $final, 'action' => 'Updated']);
+    }
+
+    // ===================================================Count time===================================================
+    private function year($now, $keytime)
+    {
+        $duration = 0;
+        if ($now->year != $keytime->year) {
+            $duration = $now->year - $keytime->year;
+            if ($duration > 1) {
+                return $duration . ' years';
+            } else {
+                return $duration . ' year';
+            }
+        } else {
+            return $duration;
+        }
+    }
+    private function month($now, $keytime)
+    {
+        $duration = 0;
+        if ($now->month != $keytime->month) {
+            $duration = $now->month - $keytime->month;
+            if ($duration > 1) {
+                return $duration . ' months';
+            } else {
+                return $duration . ' month';
+            }
+        } else {
+            return $duration;
+        }
+    }
+    private function day($now, $keytime)
+    {
+        $duration = 0;
+        if ($now->day != $keytime->day) {
+            $duration = $now->day - $keytime->day;
+            if ($duration > 1) {
+                return $duration . ' days';
+            } else {
+                return $duration . ' day';
+            }
+        } else {
+            return $duration;
+        }
+    }
+    private function hour($now, $keytime)
+    {
+        $duration = 0;
+        if ($now->hour != $keytime->hour) {
+            $duration = $now->hour - $keytime->hour;
+            if ($duration > 1) {
+                return $duration . ' hours';
+            } else {
+                return $duration . ' hour';
+            }
+        } else {
+            return $duration;
+        }
+    }
+    private function minute($now, $keytime)
+    {
+        $duration = 0;
+        if ($now->minute != $keytime->minute) {
+            $duration = $now->minute - $keytime->minute;
+            if ($duration == 0) {
+                return $duration = 'just now';
+            } elseif ($duration == 1) {
+                return $duration . ' minute';
+            } else {
+                return $duration . ' minutes';
+            }
+        } else {
+            return $duration;
+        }
+    }
+
+    //use this function for counting
+    public function duration($now, $keytime)
+    {
+        $duration = $this->year($now, $keytime);
+        if ($duration == 0) {
+            $duration = $this->month($now, $keytime);
+        }
+        if ($duration == 0) {
+            $duration = $this->day($now, $keytime);
+        }
+        if ($duration == 0) {
+            $duration = $this->hour($now, $keytime);
+        }
+        if ($duration == 0) {
+            $duration = $this->minute($now, $keytime);
+        }
+        return $duration;
+    }
+    // ===================================================end Count time===================================================
+
 }

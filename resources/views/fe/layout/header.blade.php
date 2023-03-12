@@ -89,7 +89,7 @@
             <div class="row">
                 <div class="col-lg-1 col-md-1">
                     <div class="logo">
-                        <a href="index.html">
+                        <a href="{{ Route('fe.home') }}">
                             <img src="{{ asset('images/asd-removebg-preview.png') }}" height="30" alt="">
                         </a>
                     </div>
@@ -126,23 +126,21 @@
                                     <table>
                                         <tbody>
                                             @if (session('cart'))
-                                                @foreach (session('cart') as $item)
-                                                    <tr>
-                                                        <td class="si-pic"><img
-                                                                src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                                alt=""></td>
-                                                        <td class="si-text">
-                                                            <div class="product-selected">
-                                                                <p>{{ number_format($item->product->price, 0, ',', '.') }}
-                                                                </p>
-                                                                <h6>{{ $item->product->name }}</h6>
-                                                            </div>
-                                                        </td>
-                                                        <td class="si-close">
-                                                            <i class="ti-close"></i>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                            @foreach (session('cart') as $item)
+                                            <tr>
+                                                <td class="si-pic"><img src="{{ asset('images/' . $item->product->oldestImage->url) }}" alt=""></td>
+                                                <td class="si-text">
+                                                    <div class="product-selected">
+                                                        <p>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
+                                                        </p>
+                                                        <h6>{{ $item->product->name }}</h6>
+                                                    </div>
+                                                </td>
+                                                <td class="si-close">
+                                                    <i class="ti-close"></i>
+                                                </td>
+                                            </tr>
+                                            @endforeach
                                             @else
                                                 <tr>
                                                     <td colspan="3" style="text-align: center">CART IS EMPTY</td>
@@ -185,7 +183,7 @@
                             <li><a href="">Mục Đích</a></li>
                         </ul>
                     </li> --}}
-                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="{{ Route('aboutUs') }}">About Us</a></li>
                     <li><a href="{{ Route('fe.contact') }}">Contact Us</a></li>
                     {{-- <li><a href="">Pages</a>
                         <ul class="dropdown">

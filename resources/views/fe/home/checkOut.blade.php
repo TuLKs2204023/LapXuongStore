@@ -51,10 +51,26 @@
                                     value="{{ auth()->user()->phone ?? '' }}">
                             </div>
                             <div class="col-lg-12">
+                                <label for="city">City<span>*</span></label>
+                                <input type="text" id="city" name="city" class="address"
+                                    placeholder="Shipping city name" value="{{ auth()->user()->city->name ?? '' }}">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="district">District<span>*</span></label>
+                                <input type="text" id="district" name="district" class="address"
+                                    placeholder="Shipping district name" value="{{ auth()->user()->district->name ?? '' }}">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="ward">Ward<span>*</span></label>
+                                <input type="text" id="ward" name="ward" class="address"
+                                    placeholder="Shipping ward name" value="{{ auth()->user()->ward->name ?? '' }}">
+                            </div>
+                            <div class="col-lg-12">
                                 <label for="address">Address<span>*</span></label>
                                 <input type="text" id="address" name="address" class="address"
                                     placeholder="Ship to this address" value="{{ auth()->user()->address ?? '' }}">
                             </div>
+                           
                             <div class="col-lg-12">
                                 <label for="notes">Notes<span></span></label>
                                 <textarea type="text" id="notes" name="notes" rows="3"></textarea>
@@ -96,7 +112,7 @@
                                                                     {{ number_format($item->quantity, 0, ',', '.') }}
                                                                 </span>
                                                             </div>
-                                                            <div>{{ number_format($item->product->price, 0, ',', '.') }}
+                                                            <div>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
                                                                 VND</div>
                                                         </div>
                                                     </li>

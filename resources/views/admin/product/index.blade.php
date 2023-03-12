@@ -51,6 +51,8 @@
                                 <th>Manufacture</th>
                                 <th>CPU</th>
                                 <th>RAM</th>
+                                <th>Screen</th>
+                                <th>SSD</th>
                                 <th>Price</th>
                                 {{-- <th>Description</th> --}}
                                 <th>Action</th>
@@ -71,7 +73,9 @@
                                     <td>{{ $item->manufacture->name }}</td>
                                     <td>{{ $item->cpu->name }}</td>
                                     <td>{{ $item->ram->amount }}</td>
-                                    <td>{{ number_format($item->price, 0, ',', '.') }}</td>
+                                    <td>{{ $item->screen->amount }}</td>
+                                    <td>{{ $item->ssd->amount }}</td>
+                                    <td>{{ number_format($item->salePrice(), 0, ',', '.') }}</td>
                                     {{-- <td>
                                     <ul>
                                         @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
@@ -102,8 +106,6 @@
                                                 <span class="tooltiptext">Stock of item</span>
                                             </div>
                                         </a>
-
-
                                         <form action="{{ Route('admin.product.destroy') }}" method="post"
                                             style="display:inline-block">
                                             @csrf
@@ -117,8 +119,6 @@
                                                 </div>
                                             </button>
                                         </form>
-
-
                                     </td>
                                 </tr>
                             @endforeach

@@ -41,13 +41,13 @@
                     <div class="form-group row mb-3">
                         <label for="price" class="col-sm-2 col-form-label">Unit Price</label>
                         <div class="col-sm-10">
-                            <input type="text" id="price" name="price" class="form-control">
+                            <input type="text" id="price" name="price" class="form-control" placeholder="In Unit Price (VND)" required> 
                         </div>
                     </div>
                     <div class="form-group row mb-3">
                         <label for="in_qty" class="col-sm-2 col-form-label">In Quantity</label>
                         <div class="col-sm-10">
-                            <input type="text" id="in_qty" name="in_qty" class="form-control">
+                            <input type="text" id="in_qty" name="in_qty" class="form-control" placeholder="In Quantity" required>
                         </div>
                     </div>
 

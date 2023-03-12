@@ -179,10 +179,12 @@
                                 </div>
                             </div>
                         </div>
+
+{{-- -------------------------------------------------------------------------------Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
                         <div class="col-lg-6">
                             <div class="product-details">
                                 <div class="pd-title">
-                                    <span>oranges</span>
+                                    <span>{{ $product->series->name }}</span>
                                     <h3>{{ $product->name }}</h3>
                                     @if ($product->findWishlist())
                                         <a href="{{ Route('removeWishlist', $product->id) }}" class="heart-icon"><i
@@ -209,7 +211,10 @@
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
-                                    <h4>{{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}<span>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}</span>
+                                    <h4>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}
+                                        @if ($product->latestDiscount() > 0)
+                                        <span>{{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                    @endif
                                     </h4>
                                 </div>
                                 <div class="quantity">
@@ -235,6 +240,8 @@
                                 </div>
                             </div>
                         </div>
+{{-- -------------------------------------------------------------------------------end Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
+
                     </div>
                     <div class="product-tab">
                         <div class="tab-item">
@@ -321,7 +328,7 @@
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
-                                                    <div class="p-weight">{{ $product->screen->name }}
+                                                    <div class="p-weight">{{ $product->screen->amount }} inch
                                                         ({{ $product->resolution->name }})
                                                     </div>
                                                 </td>
@@ -347,7 +354,7 @@
                                                     <div class="p-weight">{{ $product->cpu->name }}</div>
                                                 </td>
                                             </tr>
-
+                                            
                                             @if (isset($product->description->dimension))
                                                 <tr>
                                                     <td class="p-catagory">Dimensions</td>
@@ -397,13 +404,14 @@
                                                             {{ $rating->user->role }}
                                                         </div>
                                                         <h5>{{ $rating->user->name }}
-                                                            <span>{{ $rating->created_at }}</span>
+                                                            <span>{{ $rating->timeRating() }}</span>
                                                         </h5>
                                                         <div class="at-reply">{{ $rating->review }}</div>
                                                         @if (auth()->user())
                                                             @if (auth()->user()->role == 'Admin')
                                                                 <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
-                                                                    id="deletecomment" class="btn btn-outline-danger btn-sm">
+                                                                    id="deletecomment"
+                                                                    class="btn btn-outline-danger btn-sm">
                                                                     <i class="fas fa-trash"></i>
                                                                     Delete
                                                                 </a>
@@ -512,6 +520,8 @@
 
 
 @section('content')
+{{-- -------------------------------------------------------------------------------Relate Products---------------------------------------------------------------------------------------------------------------------------                         --}}
+
     <div class="related-products spad">
         <div class="container">
             <div class="row">
@@ -521,39 +531,38 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                @foreach ($product->relateProducts() as $relate)
-                    <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-12">
+                <div class="filter-control">
+                </div>
+                <div class="product-slider owl-carousel">
+                    @foreach ($product->relateProducts() as $item)
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ isset($relate->oldestImage->url) ? asset('images/' . $relate->oldestImage->url) : '' }}"
-                                    alt="{{ $relate->name }}">
-                                <div class="sale pp-sale">Sale</div>
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                    <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                </ul>
+                                <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
+                                @if ($item->latestDiscount() > 0)
+                                    <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
+                                @endif
                             </div>
                             <div class="pi-text">
-                                <div class="catagory-name">Coat</div>
-                                <a href="">
-                                    <h5>{{ $relate->name }}</h5>
+                                <div class="catagory-name">{{ $item->manufacture->name }}</div>
+                                <a href="{{ Route('product.details', $item->slug) }}">
+                                    <h5>{{ $item->name }}</h5>
                                 </a>
                                 <div class="product-price">
-                                    {{ $relate->price }}
-                                    <span>$450.00</span>
+                                    {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
+                                    @if ($item->latestDiscount() > 0)
+                                        <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
+    {{-- -------------------------------------------------------------------------------end Relate Products---------------------------------------------------------------------------------------------------------------------------                         --}}
+
 @endsection
 
 @section('myJs')

@@ -75,15 +75,15 @@ class CheckoutController extends HomeController
             // Save Order Details
             $details = [];
             foreach ($cart as $item) {
+                // Out stock
+                $proData['out_qty'] = $item->quantity;
+                $stock = $this->processOutStock($item->product, $proData);
+
                 $details[] = [
                     'product_id' => $item->product->id,
-                    'price_id' => $item->product->price_id,
                     'quantity' => $item->quantity,
+                    'stock_id' => $stock->id,
                 ];
-                $proData['out_qty'] = $item->quantity;
-
-                // Out stock
-                $this->processOutStock($item->product, $proData);
 
                 // $orderDetail = new OrderDetail();
                 // $orderDetail->product_id = $item->product->id;

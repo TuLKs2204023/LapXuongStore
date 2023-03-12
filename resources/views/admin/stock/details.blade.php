@@ -50,10 +50,11 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>In Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Out Quantity</th>
-                                <th>Final Price</th>
+                                <th>In Qty</th>
+                                <th>In U.Price</th>
+                                <th>Out Qty</th>
+                                <th>Out U.Price</th>
+                                <th>Discount</th>
                                 <th>Timestamp</th>
                             </tr>
                         </thead>
@@ -65,7 +66,8 @@
                                     <td>{{ $stock->in_qty }}</td>
                                     <td>{{ number_format($stock->price->origin, 0, ',', '.') }}</td>
                                     <td>{{ $stock->out_qty }}</td>
-                                    <td>Still not input</td>
+                                    <td>{{ $stock->price->sale }}</td>
+                                    <td>{{ $stock->price->discount * 100}}% </td>
                                     <td>{{ $stock->created_at }}</td>
                                 </tr>
                             @endforeach
@@ -73,7 +75,7 @@
 
                         <tfoot>
                             <tr class="table-secondary">
-                                <td colspan="3"></td>
+                                <td colspan="4"></td>
                                 <th style="text-align: right">Condition</th>
                                 @if ($product->inStock() - $product->outStock() > 0)
                                     <td><button class="btn btn-success rounded-pill">In stock</button></td>

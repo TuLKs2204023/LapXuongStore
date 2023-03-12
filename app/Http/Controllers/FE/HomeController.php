@@ -97,7 +97,7 @@ class HomeController extends Controller
         $product = Product::find($key);
 
         $cart[$key]->quantity = $qty;
-        $value = $qty * $cart[$key]->product->price;
+        $value = $qty * $cart[$key]->product->fakePrice();
 
         $total = HomeController::totalCart();
 
@@ -122,7 +122,7 @@ class HomeController extends Controller
         $total = array('value' => 0, 'qty' => 0);
         if (session('cart')) {
             $total = array_reduce(session('cart'), function ($values, $current) {
-                $values['value'] += $current->product->price * $current->quantity;
+                $values['value'] += $current->product->fakePrice() * $current->quantity;
                 $values['qty'] += $current->quantity;
                 return $values;
             }, $total);

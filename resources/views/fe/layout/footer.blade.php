@@ -8,7 +8,7 @@
                     </a>
                 </div>
                 <ul>
-                    <li style="color: #b2b2b2">Cach Mang T8, District 3,Tan Binh</li>
+                    <li style="color: #b2b2b2">2A Nguyen Oanh, Ward 7, Go Vap, Ho Chi Minh City</li>
                     <li style="color: #b2b2b2">Phone: 03979-3979-3979</li>
                     <li style="color: #b2b2b2">Email: LapXuongShop@gmail.com</li>
                 </ul>

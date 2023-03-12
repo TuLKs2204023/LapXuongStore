@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\RatingController;
 use App\Http\Controllers\Admin\WishlistItemController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\DiscountController;
 
 use App\Http\Controllers\Admin\Cates\ColorController;
 use App\Http\Controllers\Admin\Cates\ManufactureController;
@@ -121,6 +122,7 @@ Route::group(['middleware' => 'auth'], function () {
     //User Orders
     Route::get('/user/orders', [OdersController::class, 'userAllOrders'])->name('userOrders');
     Route::get('/user/{id}/order-details', [OrderDetailsController::class, 'userRights'])->name('userOrderDetails');
+    Route::get('/check-order', [OdersController::class, 'afterCheckOut'])->name('afterCheckOut');
 
     // Wishlist
     Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
@@ -128,7 +130,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'userDestroy'])->name('removeWishlist');
 
     // Checkout
-    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout'); 
+    Route::get('/thankyou', [CheckoutController::class, 'asd'])->name('asd'); 
     Route::post('/process-checkout', [CheckoutController::class, 'processCheckout'])->name('processCheckout');
 
     // Coupon
@@ -290,6 +293,20 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store-details', [StockController::class, 'storeStockByDetails'])->name('storeStockByDetails');
             Route::get('/create', [StockController::class, 'create'])->name('create');
             Route::post('/store', [StockController::class, 'store'])->name('store');
+            // Route::get('/{id}/edit', [StockController::class, 'edit'])->name('edit');
+            // Route::put('/update', [StockController::class, 'update'])->name('update');
+            // Route::delete('/destroy', [StockController::class, 'destroy'])->name('destroy');
+        });
+
+        // DISCOUNT
+        Route::group(['prefix' => 'discount', 'as' => 'discount.'], function () {
+
+            Route::get('/', [DiscountController::class, 'index'])->name('index');
+            Route::get('/{id}/details', [DiscountController::class, 'discountDetails'])->name('details');
+            Route::get('/{id}/create', [DiscountController::class, 'createDiscountByDetails'])->name('createDiscountByDetails');
+            Route::post('/store-details', [DiscountController::class, 'storeDiscountByDetails'])->name('storeDiscountByDetails');
+            Route::get('/create', [DiscountController::class, 'create'])->name('create');
+            Route::post('/store', [DiscountController::class, 'store'])->name('store');
             // Route::get('/{id}/edit', [StockController::class, 'edit'])->name('edit');
             // Route::put('/update', [StockController::class, 'update'])->name('update');
             // Route::delete('/destroy', [StockController::class, 'destroy'])->name('destroy');

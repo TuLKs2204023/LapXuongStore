@@ -207,8 +207,8 @@
                                         <h6 class="mb-0">Gender</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <select name="gender" class="form-control" rules="required" value="{{ $edit->gender }}">
-                                            <option value=""> {{ $edit->gender }} </option>
+                                        <select name="gender" class="form-control" rules="required">
+                                            <option value="{{ $edit->gender }}"> {{ $edit->gender }} </option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                             <option value="No thanks">No Thanks</option>
@@ -223,7 +223,8 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="City-dropdown" class="form-control" name="city">
-                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->city->name}}</option>
+                                            <option value="{{ auth()->user()->city_id ?? ''}}">
+                                                {{ auth()->user()->city->name ?? ''}}</option>
                                             @foreach ($city as $data)
                                                 <option value="{{ $data->id }}">
                                                     {{ $data->name }}
@@ -239,7 +240,8 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="district-dropdown" class="form-control" name="district">
-                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->district->name}}</option>
+                                            <option value="{{ auth()->user()->district_id ?? '' }}">
+                                                {{ auth()->user()->district->name ?? ''}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -250,7 +252,8 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <select id="ward-dropdown" class="form-control" name="ward" value="">
-                                            <option value="{{ auth()->user()->city->name}}">{{ auth()->user()->ward->name}}</option>
+                                            <option value="{{ auth()->user()->ward_id ?? ''}}">
+                                                {{ auth()->user()->ward->name ?? ''}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -271,7 +274,16 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="file" name="photo" class="form-control"
-                                            value=""{{ asset('images/' . $edit->image) }}" required>
+                                        @if (isset($edit->image))
+                                            value = "{{ $edit->image }}"
+                                        @endif
+                                        >
+                                        @if (isset($edit->image))
+                                            <div class="col-lg-4">
+                                                <img src="{{ asset('images/' . $edit->image) }}"
+                                                    alt="{{ $edit->image }}">
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr>

@@ -22,7 +22,8 @@
         .single-banner .inner-text a {
             color: white;
         }
-        .single-banner .inner-text a:hover{
+
+        .single-banner .inner-text a:hover {
             font-style: bold;
             transition: 0.2s;
             font-size: 150%;
@@ -130,7 +131,7 @@
                 <div class="col-lg-3">
                     <div class="product-large set-bg" data-setbg="{{ asset('frontend/img/products/02.jpg') }}">
                         <h2>Office</h2>
-                        <a href="#">Discover More</a>
+                        <a href="{{ Route('fe.shop.cate', 'office') }}">Discover More</a>
                     </div>
                 </div>
                 <div class="col-lg-8 offset-lg-1">
@@ -142,25 +143,20 @@
                                 <div class="pi-pic">
                                     <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                         alt="{{ $item->name }}">
-                                    <div class="sale">Sale</div>
-                                    <div class="icon">
-                                        <i class="icon_heart_alt"></i>
-                                    </div>
-                                    <ul>
-                                        <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                        <li class="quick-view"><a href="{{ Route('product.details', $item->slug) }}">+
-                                                Quick View</a></li>
-                                        <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                    </ul>
+                                    @if ($item->latestDiscount() > 0)
+                                        <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
+                                    @endif
                                 </div>
                                 <div class="pi-text">
                                     <div class="catagory-name">{{ $item->manufacture->name }}</div>
-                                    <a href="">
+                                    <a href="{{ Route('product.details', $item->slug) }}">
                                         <h5>{{ $item->name }}</h5>
                                     </a>
                                     <div class="product-price">
-                                        {{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}
-                                        <span>{{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
+                                        @if ($item->latestDiscount() > 0)
+                                            <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -225,24 +221,20 @@
                             <div class="product-item">
                                 <div class="pi-pic">
                                     <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
-                                    <div class="sale">Sale</div>
-                                    <div class="icon">
-                                        <i class="icon_heart_alt"></i>
-                                    </div>
-                                    <ul>
-                                        <li class="w-icon active"><a href=""><i class="icon_bag_alt"></i></a></li>
-                                        <li class="quick-view"><a href="product.html">+ Quick View</a></li>
-                                        <li class="w-icon"><a href=""><i class="fa fa-random"></i></a></li>
-                                    </ul>
+                                    @if ($item->latestDiscount() > 0)
+                                        <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
+                                    @endif
                                 </div>
                                 <div class="pi-text">
                                     <div class="catagory-name">{{ $item->manufacture->name }}</div>
-                                    <a href="">
+                                    <a href="{{ Route('product.details', $item->slug) }}">
                                         <h5>{{ $item->name }}</h5>
                                     </a>
                                     <div class="product-price">
-                                        {{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}
-                                        <span>{{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
+                                        @if ($item->latestDiscount() > 0)
+                                            <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +244,7 @@
                 <div class="col-lg-3 offset-lg-1">
                     <div class="product-large set-bg" data-setbg="{{ asset('frontend/img/products/03-1.jpg') }}">
                         <h2>Gaming</h2>
-                        <a href="#">Discover More</a>
+                        <a href="{{ Route('fe.shop.cate', 'gaming') }}">Discover More</a>
                     </div>
                 </div>
             </div>
