@@ -9,7 +9,7 @@ class Price extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'origin', 'stock_id', 'discount', 'published_at'];
+    protected $fillable = ['product_id', 'origin', 'stock_id', 'discount', 'published_at', 'sale'];
 
     /**
      * Get the product that owns this price.

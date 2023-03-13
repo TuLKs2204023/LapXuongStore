@@ -29,9 +29,9 @@
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.hddGroup.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.hddGroup.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
-                        Create New HDD's category
+                        Create New
                     </a>
 
                     <!-- Message Section -->
@@ -48,8 +48,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Exact value</th>
-                                <th>Min value</th>
-                                <th>Max value</th>
+                                <th>Range value</th>
                                 {{-- <th>Image</th> --}}
                                 <th>Description</th>
                                 <th>Action</th>
@@ -62,8 +61,15 @@
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->value }}</td>
-                                    <td>{{ $item->min }}</td>
-                                    <td>{{ $item->max }}</td>
+                                    <td>
+                                        {{ $item->value == 0
+                                            ? ($item->min == 0
+                                                ? '0 → ' . $item->max
+                                                : ($item->max == 0
+                                                    ? $item->min . ' → ∞'
+                                                    : $item->min . ' → ' . $item->max))
+                                            : '' }}
+                                    </td>
                                     {{-- <td>
                                     @if (!empty($item->image))
                                         <img src="{{ asset('images/' . $item->image->url) }}" alt=""
@@ -78,27 +84,31 @@
                                             @endforeach
                                         </ul>
                                     </td>
-                                    <td class="project-actions text-right">
+                                    <td class="project-actions text-center">
                                         {{-- <a class="btn btn-outline-primary btn-sm"
                                     href="{{ Route('hddGroup.details', $item->slug) }}">
                                     <i class="fas fa-folder">
                                     </i>
                                     View
                                 </a> --}}
-                                        <a class="btn btn-outline-info btn-sm"
+                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
                                             href="{{ Route('admin.hddGroup.edit', $item->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
+                                            <i class="bi bi-pencil-square"></i>
+                                            <div class="myTooltip myTooltip-top">
+                                                <span class="tooltiptext">Edit item</span>
+                                            </div>
                                         </a>
                                         <form action="{{ Route('admin.hddGroup.destroy') }}" method="post"
                                             style="display:inline-block">
                                             @csrf
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
+                                            <button type="submit"
+                                                class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                <i class="bi bi-trash"></i>
+                                                <div class="myTooltip myTooltip-top myTooltip-danger">
+                                                    <span class="tooltiptext">Delete item</span>
+                                                </div>
                                             </button>
                                         </form>
 

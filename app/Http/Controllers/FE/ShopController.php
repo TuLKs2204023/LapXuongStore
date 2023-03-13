@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Cate;
 use App\Models\CateGroup;
-use App\Models\Cates\RamGroup;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 
@@ -22,7 +21,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = Product::paginate(9);
         // $products = Product::all();
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
@@ -32,7 +31,7 @@ class ShopController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display products based on category specified by user.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
@@ -52,7 +51,7 @@ class ShopController extends Controller
             foreach ($cateItems->cateItems()->load('products') as $item) {
                 $products = $products->merge($item->products);
             }
-            $products = $this->paginate($products);
+            $products = $this->paginate($products, 9);
         }
 
         return view('fe.home.shop')->with([
@@ -73,7 +72,7 @@ class ShopController extends Controller
      *
      * @return LengthAwarePaginator
      */
-    public function paginate($items, $perPage = 10, $page = null, $options = [])
+    private function paginate($items, $perPage = 10, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
@@ -84,5 +83,31 @@ class ShopController extends Controller
             $page,
             $options
         );
+    }
+
+    /**
+     * Display products based on queries specified by user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $queries = $request->query();
+        $products = Product::where(function (Builder $query) use ($queries) {
+            foreach ($queries as $key => $value) {
+                if ($key == 'page') continue;
+                $query->whereIn($key . '_id', explode(",", $value));
+            }
+            return $query;
+        })->paginate(9);
+
+        return view('fe.home.shopSearch', ['products' => $products])->render();
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'pagination' => (string)$products->links()
+        ]);
     }
 }

@@ -26,8 +26,8 @@
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.cate.create') }}">
-                        <i class="bi bi-plus-circle-fill me-1"></i>
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.cate.refresh') }}">
+                        <i class="bi bi-arrow-repeat me-1"></i>
                         Refresh
                     </a>
 
@@ -45,18 +45,36 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Cate Group</th>
+                                <th>Show on Nav-bar</th>
+                                <th>Show on Search-page</th>
                                 <th>Products</th>
-                                <th>Description</th>
-                                {{-- <th>Action</th> --}}
+                                {{-- <th>Description</th> --}}
+                                <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @foreach ($cates as $item)
-                                <tr>
+                                <tr data-id={{ $item->id }}>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->cate_group->name }}</td>
+                                    <td class="text-center">
+                                        <label for="showOnNav-{{ $item->id }}" class="my-switch form-label">
+                                            <input type="checkbox" id="showOnNav-{{ $item->id }}"
+                                                name="showOnNav-{{ $item->id }}" class="form-control"
+                                                {{ $item->showOnNav == 1 ? 'checked' : '' }}>
+                                            <span class="switch-slider round"></span>
+                                        </label>
+                                    </td>
+                                    <td class="text-center">
+                                        <label for="showOnSearch-{{ $item->id }}" class="my-switch form-label">
+                                            <input type="checkbox" id="showOnSearch-{{ $item->id }}"
+                                                name="showOnSearch-{{ $item->id }}" class="form-control"
+                                                {{ $item->showOnSearch == 1 ? 'checked' : '' }}>
+                                            <span class="switch-slider round"></span>
+                                        </label>
+                                    </td>
                                     <td>
                                         <ol>
                                             @if (isset($item->cateable->products))
@@ -74,36 +92,40 @@
 
                                         </ol>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <ul>
                                             @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
                                                 <li>{{ $subItm }}</li>
                                             @endforeach
                                         </ul>
-                                    </td>
-                                    {{-- <td class="project-actions text-right">
-                                    <a class="btn btn-outline-primary btn-sm"
-                                        href="{{ Route('cpu.details', $item->slug) }}">
+                                    </td> --}}
+                                    <td class="project-actions text-center">
+                                        {{-- <a class="btn btn-outline-primary btn-sm"
+                                        href="{{ Route('cate.details', $item->slug) }}">
                                         <i class="fas fa-folder">
                                         </i>
                                         View
                                     </a>
-                                    <a class="btn btn-outline-info btn-sm" href="{{ Route('admin.cpu.edit', $item->id) }}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Edit
-                                    </a>
-                                    <form action="{{ Route('admin.cpu.destroy') }}" method="post"
-                                        style="display:inline-block">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="hidden" name="id" value="{{ $item->id }}">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td> --}}
+                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
+                                            href="{{ Route('admin.cate.edit', $item->id) }}">
+                                             <i class="bi bi-pencil-square"></i>
+                                            <div class="myTooltip myTooltip-top">
+                                                <span class="tooltiptext">Edit item</span>
+                                            </div>
+                                        </a> --}}
+                                        <form action="{{ Route('admin.cate.destroy') }}" method="post"
+                                            style="display:inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="id" value="{{ $item->id }}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                <i class="bi bi-trash"></i>
+                                                <div class="myTooltip myTooltip-top myTooltip-danger">
+                                                    <span class="tooltiptext">Delete item</span>
+                                                </div>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -120,14 +142,26 @@
 @endsection
 
 @section('myJs')
-    <script>
-        $(function() {
-            $("#catesMgmt").DataTable({
+    <!-- Start KienJs -->
+    <script type="module">
+        import {CateGroupsHandler} from '{{ asset('/js/KienJs/createGroup.js') }}';
+
+        document.addEventListener("DOMContentLoaded", (e) => {
+            const cateTable = $("#catesMgmt").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#catesMgmt_wrapper .col-md-6:eq(0)');
-        });
-    </script>
+            });
+            cateTable.buttons().container().appendTo('#catesMgmt_wrapper .col-md-6:eq(0)');
+            
+            // Controll items displayed on nav-bar & search-page
+            const catesGroups = new CateGroupsHandler({
+                url: '{{ Route('admin.cate.toggleDisplay') }}',
+                token: '{{ csrf_token() }}',
+                cateTable,
+                selectors: {},
+            });
+        }); 
+    </script><!-- End KienJs -->
 @endsection

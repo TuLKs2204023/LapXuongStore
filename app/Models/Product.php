@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Cates\Manufacture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'slug',
@@ -33,30 +32,80 @@ class Product extends Model
      *
      * @var array
      */
-    protected $appends = ['price', 'price_id'];
-
+    protected $appends = [
+        'imageUrl',
+        'discount',
+        'wishList',
+        'discountPrice',
+        'salePrice',
+        'seriesName'
+    ];
 
     /**
      * The relationships that should always be loaded.
      *
      * @var array
      */
-    protected $with = ['prices', 'latestPrice'];
+    // protected $with = ['prices'];
 
     /**
-     * Get the product's price attribute.
+     * Get the product's image-url attribute.
      */
-    public function getPriceAttribute()
+    public function getImageUrlAttribute()
     {
-        return $this->latestPrice->origin ?? 0;
+        return $this->oldestImage->url ?? '';
     }
+
     /**
-     * Get the product's price_id attribute.
+     * Get the product's discount-amount attribute.
      */
-    public function getPriceIdAttribute()
+    public function getDiscountAttribute()
     {
-        return $this->latestPrice->id ?? 0;
+        return $this->latestDiscount() ?? 0;
     }
+
+    /**
+     * Get the product's wish-list-detail attribute.
+     */
+    public function getWishListAttribute()
+    {
+        if ($this->findWishlist()) {
+            return [
+                'isExisted' => true,
+                'url' => Route('removeWishlist', $this->id)
+            ];
+        } else {
+            return [
+                'isExisted' => false,
+                'url' => Route('addWishlist', $this->id)
+            ];
+        }
+    }
+
+    /**
+     * Get the product's discounted-price attribute.
+     */
+    public function getDiscountPriceAttribute()
+    {
+        return $this->fakePrice() ?? 0;
+    }
+
+    /**
+     * Get the product's normal-sale-price attribute.
+     */
+    public function getSalePriceAttribute()
+    {
+        return $this->salePrice() ?? 0;
+    }
+
+    /**
+     * Get the product's discount-amount attribute.
+     */
+    public function getSeriesNameAttribute()
+    {
+        return $this->series->name;
+    }
+
 
     /**
      * Get the Prices for product
@@ -339,15 +388,16 @@ class Product extends Model
     }
     public function salePrice()
     {
+        $salePrice = 0;
         $id = $this->id;
-        $price = DB::table('prices')->where('product_id', $id)->avg('origin');
-        $saleprice = $price + $price * 50 / 100;
+        $price = DB::table('prices')->where('product_id', $id)->where('origin', '>', 0)->avg('origin');
+        $salePrice = $price + $price * 50 / 100;
 
-        return $saleprice;
+        return $salePrice;
     }
     public function fakePrice()
     {
-        return $this->salePrice() * 120 / 100;
+        return $this->salePrice() - $this->salePrice() * $this->latestDiscount();
     }
     public function revenue()
     {
@@ -356,15 +406,33 @@ class Product extends Model
         $revenue = $outStock * $price;
         return $revenue;
     }
-    public function topSale(){
-        $count= DB::table('products')->count('id');
+    public function topSale()
+    {
+        $count = DB::table('products')->count('id');
         DB::table('products')->get()->first()->id;
-        $max= $this->outStock();
-        for($i=1; $i<$count; $i++){
-            if($max > $this->outStock()){
-                $max=$this->outStock();
+        $max = $this->outStock();
+        for ($i = 1; $i < $count; $i++) {
+            if ($max > $this->outStock()) {
+                $max = $this->outStock();
             }
+        }
+        return $max;
     }
-    return $max;
-}
+
+    //Discounts belong to this product
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class);
+    }
+
+    //Latest discount for this product
+    public function latestDiscount()
+    {
+        $latestDis = DB::table('discounts')->where('product_id', $this->id)->get()->last();
+        if (!isset($latestDis->amount)) {
+            return 0;
+        } else {
+            return $latestDis->amount;
+        }
+    }
 }

@@ -4,11 +4,11 @@
  * .focus-visible utility class.
  */
 .form-control {
-  transition: all 0.3s;
+    transition: all 0.3s;
 }
 .form-control:hover {
-  border: 1px solid rgba(1, 41, 112, 0.3) !important;
-  box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
+    border: 1px solid rgba(1, 41, 112, 0.3) !important;
+    box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
 }
 input:focus,
 textarea:focus,
@@ -33,7 +33,7 @@ textarea:focus,
 }
 .my-custom-select select {
     /*hide original SELECT element:*/
-    display: none; 
+    display: none;
 }
 .my-custom-select > .my-custom-select-cont {
     color: #333;
@@ -67,7 +67,7 @@ textarea:focus,
     color: #333;
     background-color: #fff;
     line-height: 1.5rem;
-    padding: 8px 16px;
+    padding: 8px 18px;
     cursor: pointer;
     user-select: none;
 }
@@ -100,7 +100,8 @@ textarea:focus,
 /*hide the items when the select box is closed:*/
 .select-show {
     visibility: visible;
-    max-height: 330px;
+    max-height: 45vh;
+    padding-bottom: 2px;
     transform: scaleY(1);
     transform-origin: 90% center;
     transition: all 0.222s ease-in-out;

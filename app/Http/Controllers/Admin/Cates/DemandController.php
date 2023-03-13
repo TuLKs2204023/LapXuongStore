@@ -45,6 +45,10 @@ class DemandController extends Controller
         // Save Demand
         $demand = Demand::create($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($demand, 10);
+        $demand->cate()->create($cateData);
+
         return redirect()->route('admin.demand.index');
     }
 
@@ -91,6 +95,10 @@ class DemandController extends Controller
         // Save demand
         $demand->update($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($demand, 10);
+        $demand->cate()->update($cateData);
+
         return redirect()->route('admin.demand.index');
     }
 
@@ -103,6 +111,7 @@ class DemandController extends Controller
     public function destroy(Request $request)
     {
         $demand = Demand::find($request->id);
+        $demand->cate()->delete();
         $demand->delete();
         return redirect()->route('admin.demand.index');
     }
