@@ -292,7 +292,7 @@
                                                 <tr>
                                                     <th scope="row"><a
                                                             href="{{ Route('product.details', $row->slug) }}"><img
-                                                                src="{{ asset('images/' . $row->oldestImage->url) }}"
+                                                                src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
                                                                 alt=""></a></th>
                                                     <td><a href="{{ Route('product.details', $row->slug) }}"
                                                             class="text-primary fw-bold">{{ $row->name }}</a></td>
@@ -339,9 +339,7 @@
                                             </div>
                                         </div><!-- End activity item-->
                                     @endforeach
-
                                 </div>
-
                             </div>
                         </div><!-- End Recent Users Activity -->
                     @endif

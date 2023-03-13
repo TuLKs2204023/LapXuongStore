@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'order_date', 'name', 'phone', 'email', 'address', 'notes', 'payment'];
+    protected $fillable = ['user_id', 'order_date', 'name', 'phone', 'email', 'address', 'notes', 'payment', 'city', 'district', 'ward'];
 
     /**
      * Get the Order Details for this Order
@@ -64,7 +64,7 @@ class Order extends Model
         $oId = $this->id;
         $items = OrderDetail::where('order_id', $oId)->get();
         foreach($items as $item){
-            $total += $item->product->salePrice();
+            $total += $item->product->fakePrice() * $item->quantity;
         }
         return $total;
     }

@@ -45,16 +45,13 @@
                             <label for="product_id" class="col-sm-2 col-form-label">Product Name</label>
 
                             <div class="col-sm-10">
-                                <div class="my-custom-select">
-                                    <select id="product_name" name="product_name" class="form-control" rules="required">
-                                        <option value="">--- Select ---</option>
-                                        @foreach ($products as $item)
-                                            <option
-                                                value="{{ $item->name }}"{{ $isUpdate ? ($product->name == $item->name ? 'selected' : '') : '' }}>
-                                                {{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <input class="form-control" list="datalistOptions" id="product_name"
+                                    placeholder="Type to search..." name="product_name">
+                                <datalist id="datalistOptions">
+                                    @foreach ($products as $item)
+                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </datalist>
                             </div>
                             <span class="form-message"></span>
                         </div>
@@ -62,14 +59,14 @@
                         <div class="form-group row mb-3">
                             <label for="price" class="col-sm-2 col-form-label">Unit Price</label>
                             <div class="col-sm-10">
-                                <input type="text" id="price" name="price" class="form-control"
+                                <input type="text" id="price" name="price" class="form-control" placeholder="In Unit Price (VND)" required
                                     value="{{ $isUpdate ? $product->price : '' }}">
                             </div>
                         </div>
                         <div class="form-group row mb-3">
                             <label for="in_qty" class="col-sm-2 col-form-label">In Quantity</label>
                             <div class="col-sm-10">
-                                <input type="text" id="in_qty" name="in_qty" class="form-control"
+                                <input type="text" id="in_qty" name="in_qty" class="form-control" placeholder="In Quantity" required
                                     value="{{ $isUpdate ? $product->price : '' }}">
                             </div>
                         </div>

@@ -5,15 +5,15 @@
                 <div class="mail-service">
                     <i class="fa fa-envelope"></i>
                     <a href="mailto:LapXuongShop@gmail.com"
-                    style="
+                        style="
                     color: black;
                     text-decoration: none;
-                    background-color: white;"
-                    >LapXuongShop@gmail.com</a>
+                    background-color: white;">LapXuongShop@gmail.com</a>
                 </div>
                 <div class="phone-service">
                     <i class="fa fa-phone"></i>
-                    <a href="tel:03979-3979-3979" style="
+                    <a href="tel:03979-3979-3979"
+                        style="
                     color: black;
                     text-decoration: none;
                     background-color: white;
@@ -23,9 +23,10 @@
             </div>
             <div class="ht-right">
                 @if (Route::has('login'))
-                @auth
-                @if (auth()->user()->role == 'Customer')
-                <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}" onclick="event.preventDefault();
+                    @auth
+                        @if (auth()->user()->role == 'Customer')
+                            <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
                     {{ __('Logout') }}
                 </a>
@@ -81,8 +82,14 @@
                     <div class="advanced-search">
                         <button type="button" class="category-btn">All Categories</button>
                         <div class="input-group">
-                            <input type="text" placeholder="Type something to search ... ">
-                            <button type="button"><i class="ti-search"></i></button>
+                                <input type="text" dir="rtl" list="datalistOptions"
+                                    placeholder="Type something to search ... ">
+                                <datalist id="datalistOptions">
+                                    @foreach ($header_products as $item)
+                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </datalist>
+                                <button type="button"><i class="ti-search"></i></button>
                         </div>
                     </div>
                 </div>
@@ -92,9 +99,9 @@
                             <a href="{{ Route('wishlist') }}">
                                 <i class="icon_heart_alt"></i>
                                 @if (auth()->user())
-                                <span>{{ count(auth()->user()->wishlistItems) }}</span>
+                                    <span>{{ count(auth()->user()->wishlistItems) }}</span>
                                 @else
-                                <span>0</span>
+                                    <span>0</span>
                                 @endif
 
                             </a>
@@ -109,25 +116,27 @@
                                     <table>
                                         <tbody>
                                             @if (session('cart'))
-                                            @foreach (session('cart') as $item)
-                                            <tr>
-                                                <td class="si-pic"><img src="{{ asset('images/' . $item->product->oldestImage->url) }}" alt=""></td>
-                                                <td class="si-text">
-                                                    <div class="product-selected">
-                                                        <p>{{ number_format($item->product->price, 0, ',', '.') }}
-                                                        </p>
-                                                        <h6>{{ $item->product->name }}</h6>
-                                                    </div>
-                                                </td>
-                                                <td class="si-close">
-                                                    <i class="ti-close"></i>
-                                                </td>
-                                            </tr>
-                                            @endforeach
+                                                @foreach (session('cart') as $item)
+                                                    <tr>
+                                                        <td class="si-pic"><img
+                                                                src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                                alt=""></td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
+                                                                </p>
+                                                                <h6>{{ $item->product->name }}</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @else
-                                            <tr>
-                                                <td colspan="3" style="text-align: center">CART IS EMPTY</td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="3" style="text-align: center">CART IS EMPTY</td>
+                                                </tr>
                                             @endif
 
 
@@ -186,15 +195,15 @@
         <div class="cate-btn my-toggle"></div>
         <ul class="category-list my-toggle-content myScrollbar">
             @foreach ($cateGroups as $cateGroup)
-            <li>
-                <div class="category-list-header">{{ $cateGroup->name }}</div>
-                <ul>
-                    @foreach ($cateGroup->cates as $cate)
-                    <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
-                    </li>
-                    @endforeach
-                </ul>
-            </li>
+                <li>
+                    <div class="category-list-header">{{ $cateGroup->name }}</div>
+                    <ul>
+                        @foreach ($cateGroup->cates()->where('showOnNav', '>', 0)->get() as $cate)
+                            <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
             @endforeach
         </ul>
     </div>

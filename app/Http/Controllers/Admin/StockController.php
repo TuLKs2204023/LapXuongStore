@@ -49,17 +49,17 @@ class StockController extends Controller
 
         // Save stock for this product
         $product = $this->processInStock($product, $proData);
-        
+
         // Save price for IN stock
         $product = $this->processPriceInStock($product, $proData);
 
-        $success = 'Successfully added stock for '. $product->name;
+        $success = 'Successfully added stock for ' . $product->name;
 
         return redirect()->route('admin.stock.index')->with('success', $success);
     }
 
-    public function stockDetails(Request $request){
-        
+    public function stockDetails(Request $request)
+    {
         $pid = $request->id;
         $product = Product::where('id', $pid)->get()->first();
         $product->load('stocks');
@@ -71,7 +71,7 @@ class StockController extends Controller
     {
         $isUpdate = true;
         $product = Product::find($id);
-        return view('admin.stock.createByDetails')->with(['product'=> $product], ['isUpdate'=> $isUpdate]);
+        return view('admin.stock.createByDetails')->with(['product' => $product], ['isUpdate' => $isUpdate]);
     }
 
 
@@ -107,9 +107,9 @@ class StockController extends Controller
 
 
 
-    
 
-        /**
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Models\Stock  $stock

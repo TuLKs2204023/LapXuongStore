@@ -46,7 +46,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $row->product->name}}</td>
                                 <td>{{ $row->quantity }}</td>
-                                <td>{{ $row->price->origin }}</td>
+                                <td>{{ number_format($row->product->fakePrice(), 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>

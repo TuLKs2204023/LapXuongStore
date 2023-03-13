@@ -191,6 +191,7 @@
             <table class="table table-borderless">
                 <thead>
                     <tr class="text-uppercase text-muted">
+                        <td scope="col">qty</td>
                         <th scope="col">product</th>
                         <th scope="col" class="text-right">price</th>
                     </tr>
@@ -211,9 +212,19 @@
                         alt="{{ $item->product->subName() }}" class="rounded-circle" width="30" height="30">
                 </div>
                 <div class="order-item">{{ $item->product->name }}</div>
-                <div class="detail-price-tu">{{ number_format($item->product->salePrice(), 0, ',', '.') . ' VND' }}</div>
+                <div class="detail-price-tu">{{ number_format($item->product->fakePrice(), 0, ',', '.') . ' VND' }}</div>
             </div>
         @endforeach
+        <div class="table-responsive">
+            <table class="table table-borderless">
+                <thead>
+                    <tr class="text-uppercase text-muted">
+                        <th >Total</th>
+                        <th class="text-right">{{ number_format($order->total(), 0, ',', '.') . ' VND' }}</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
         <div class="pt-2 border-bottom mb-3"></div>
         <div class="d-flex justify-content-start align-items-center pl-3">
             <div class="text-muted">Payment Method</div>
@@ -239,20 +250,20 @@
             <div class="ml-auto price"> -{{ number_format($order->discountAmount(), 0, ',', '.') . ' VND' }} </div>
         </div>
         <div class="d-flex justify-content-start align-items-center pl-3 py-3 mb-4 border-bottom">
-            <div class="text-muted"> Total </div>
+            <div class="text-muted"> Total Final </div>
             <div class="ml-auto h5"> {{ number_format($order->totalAfterDiscount(), 0, ',', '.') . ' VND' }} </div>
         </div>
         <div class="row border rounded p-1 my-3">
             <div class="col-md-6 py-3">
                 <div class="d-flex flex-column align-items start"> <b>Billing Address</b>
-                    <p class="text-justify pt-2">{{ $order->name }}, 356 Jonathon Apt.220,</p>
-                    <p class="text-justify">Việt Nam</p>
+                    <p class="text-justify">{{ $order->user->name ?? 'No Name' }} | {{ $order->user->phone }}</p>
+                    <p class="text-justify pt-2">{{$order->user->address ?? 'No Address'}}, {{ $order->user->ward->name ?? 'No Ward' }}, {{$order->user->district->name ?? 'No District'}}, {{ $order->user->city->name }}</p>
                 </div>
             </div>
             <div class="col-md-6 py-3">
                 <div class="d-flex flex-column align-items start"> <b>Shipping Address</b>
-                    <p class="text-justify pt-2">{{ $order->address }}</p>
-                    <p class="text-justify">Việt Nam</p>
+                    <p class="text-justify">{{ $order->name }} | {{ $order->phone }}</p>
+                    <p class="text-justify pt-2">{{$order->address}}, {{ $order->ward }}, {{ $order->district }}, {{ $order->city }}</p>
                 </div>
             </div>
         </div>

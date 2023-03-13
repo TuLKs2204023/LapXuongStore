@@ -26,9 +26,9 @@
             <!-- Card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.cpu.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.cpu.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
-                        Create New CPU
+                        Create New
                     </a>
 
                     <!-- Message Section -->
@@ -61,25 +61,33 @@
                                             @endforeach
                                         </ul>
                                     </td>
-                                    <td class="project-actions text-right">
+                                    <td class="project-actions text-center">
                                         {{-- <a class="btn btn-outline-primary btn-sm"
                                     href="{{ Route('cpu.details', $item->slug) }}">
                                     <i class="fas fa-folder">
                                     </i>
                                     View
                                 </a> --}}
-                                        <a class="btn btn-outline-info btn-sm"
+                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
                                             href="{{ Route('admin.cpu.edit', $item->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
+                                            <i class="bi bi-pencil-square"></i>
+                                            <div class="myTooltip myTooltip-top">
+                                                <span class="tooltiptext">Edit item</span>
+                                            </div>
                                         </a>
-                                        <a href="{{ URL::to('admin/cpu/destroy/' . $item->id) }}"
-                                            class="btn btn-sm btn-danger" id="delete">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </a>
-
+                                        <form action="{{ Route('admin.cpu.destroy') }}" method="post"
+                                            style="display:inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="id" value="{{ $item->id }}">
+                                            <button type="submit"
+                                                class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                <i class="bi bi-trash"></i>
+                                                <div class="myTooltip myTooltip-top myTooltip-danger">
+                                                    <span class="tooltiptext">Delete item</span>
+                                                </div>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

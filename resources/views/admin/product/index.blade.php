@@ -29,9 +29,9 @@
             <!-- card -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-outline-primary" href="{{ Route('admin.product.create') }}">
+                    <a class="btn btn-outline-primary my-btn-outline" href="{{ Route('admin.product.create') }}">
                         <i class="bi bi-plus-circle-fill me-1"></i>
-                        Create New Product
+                        Create New
                     </a>
 
                     <!-- Message Section -->
@@ -52,7 +52,7 @@
                                 <th>CPU</th>
                                 <th>RAM</th>
                                 <th>Screen</th>
-                                <th>HDD</th>
+                                <th>SSD</th>
                                 <th>Price</th>
                                 {{-- <th>Description</th> --}}
                                 <th>Action</th>
@@ -74,7 +74,7 @@
                                     <td>{{ $item->cpu->name }}</td>
                                     <td>{{ $item->ram->amount }}</td>
                                     <td>{{ $item->screen->amount }}</td>
-                                    <td>{{ $item->hdd->amount }}</td>
+                                    <td>{{ $item->ssd->amount }}</td>
                                     <td>{{ number_format($item->salePrice(), 0, ',', '.') }}</td>
                                     {{-- <td>
                                     <ul>
@@ -83,34 +83,42 @@
                                         @endforeach
                                     </ul>
                                 </td> --}}
-                                    <td class="project-actions text-right">
-                                        <a class="btn btn-outline-primary btn-sm"
+                                    <td class="project-actions text-center">
+                                        <a class="btn btn-outline-secondary btn-sm mx-1 mb-2 button-control"
                                             href="{{ Route('product.details', $item->slug) }}">
-                                            <i class="fas fa-folder">
-                                            </i>
-                                            View
+                                            <i class="bi bi-folder2-open"></i>
+                                            <div class="myTooltip myTooltip-top myTooltip-secondary">
+                                                <span class="tooltiptext">View item</span>
+                                            </div>
                                         </a>
-                                        <a class="btn btn-outline-info btn-sm"
+
+                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
                                             href="{{ Route('admin.product.edit', $item->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Edit
+                                            <i class="bi bi-pencil-square"></i>
+                                            <div class="myTooltip myTooltip-top">
+                                                <span class="tooltiptext">Edit item</span>
+                                            </div>
                                         </a>
-                                        <a class="btn btn-outline-success btn-sm"
+                                        <a class="btn btn-outline-success btn-sm mx-1 mb-2 button-control"
                                             href="{{ Route('admin.stock.details', $item->id) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            Stock
+                                            <i class="bi bi-cart"></i>
+                                            <div class="myTooltip myTooltip-top myTooltip-success">
+                                                <span class="tooltiptext">Stock of item</span>
+                                            </div>
                                         </a>
-
-
-                                        <a href="{{ URL::to('admin/product/destroy/' . $item->id) }}"
-                                            class="btn btn-sm btn-danger" id="delete">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </a>
-
-
+                                        <form action="{{ Route('admin.product.destroy') }}" method="post"
+                                            style="display:inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="id" value="{{ $item->id }}">
+                                            <button type="submit"
+                                                class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                <i class="bi bi-trash"></i>
+                                                <div class="myTooltip myTooltip-top myTooltip-danger">
+                                                    <span class="tooltiptext">Delete item</span>
+                                                </div>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

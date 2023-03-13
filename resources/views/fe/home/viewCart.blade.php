@@ -58,7 +58,7 @@
                                                 <h5>{{ $item->product->name }}</h5>
                                             </td>
                                             <td class="p-price first-row">
-                                                {{ number_format($item->product->price, 0, ',', '.') }}</td>
+                                                {{ number_format($item->product->fakePrice(), 0, ',', '.') }}</td>
                                             <td class="qua-col first-row">
                                                 <div class="quantity">
                                                     <div class="pro-qty">
@@ -69,7 +69,7 @@
                                                 </div>
                                             </td>
                                             <td class="total-price first-row">
-                                                {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
+                                                {{ number_format($item->product->fakePrice() * $item->quantity, 0, ',', '.') }}
                                             </td>
                                             <td class="close-td first-row"><i class="ti-close"></i></td>
                                         </tr>
@@ -110,7 +110,11 @@
                                 </ul>
                                 <a href="{{ Route('checkout') }}" class="proceed-checkout-btn site-btn proceed-btn">
                                     PROCEED TO CHECK OUT
-                                    <span> (need login)</span>
+                                    @if (auth()->user())
+                                        
+                                    @else
+                                        <span> (need login)</span>
+                                    @endif
                                 </a>
                             </div>
                         </div>

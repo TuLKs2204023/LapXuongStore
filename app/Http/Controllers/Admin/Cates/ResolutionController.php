@@ -45,9 +45,13 @@ class ResolutionController extends Controller
         // Save Resolution
         $resolution = Resolution::create($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($resolution, 11);
+        $resolution->cate()->create($cateData);
+
         return redirect()->route('admin.resolution.index');
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -92,6 +96,10 @@ class ResolutionController extends Controller
         // Save Resolution
         $resolution->update($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($resolution, 11);
+        $resolution->cate()->update($cateData);
+
         return redirect()->route('admin.resolution.index');
     }
 
@@ -104,6 +112,7 @@ class ResolutionController extends Controller
     public function destroy(Request $request)
     {
         $resolution = Resolution::find($request->id);
+        $resolution->cate()->delete();
         $resolution->delete();
         return redirect()->route('admin.resolution.index');
     }

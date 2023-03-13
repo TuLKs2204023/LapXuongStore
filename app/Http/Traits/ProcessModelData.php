@@ -7,7 +7,6 @@ use App\Models\Product;
 use App\Models\Cates\Ram;
 use App\Models\Cates\Screen;
 use App\Models\Cates\Ssd;
-use App\Models\HistoryUser;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -83,6 +82,7 @@ trait ProcessModelData
         $stock = $product->stocks()->create(['out_qty' => $proData['out_qty']]);
         $product->prices()->create([
             'sale' => $product->salePrice(),
+            'discount' => $product->latestDiscount(),
             'stock_id' => $stock->id,
         ]);
         $product->refresh();
@@ -108,6 +108,15 @@ trait ProcessModelData
 
         $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
         $user->refresh();
+    }
+
+    function processDiscount(Product $product, array $proData)
+    {
+        // From 'TU Lele' with ❤❤❤
+        $proData['amount'] = $proData['amount'] / 100;
+        $product->discounts()->create(['amount' => $proData['amount']]);
+        $product->refresh();
+        return $product;
     }
 
     function processRam(array $proData)
@@ -200,6 +209,48 @@ trait ProcessModelData
     }
 
     /**
+     * Processing Input data for saving Cate model.
+     * 
+     * @param  \Illuminate\Database\Eloquent\Model $cate
+     * @param  integer $groupId
+     * 
+     * @return array $cateItm
+     */
+    function processCate($cate, $groupId)
+    {
+        $cateData['name'] = $cate->name;
+        $cateData['slug'] = Str::slug($cate->name);
+        $cateData['cate_groups_id'] = $groupId;
+        return $cateData;
+    }
+    /**
+     * Processing cate-Name for saving Cate model
+     * 
+     * @param  array $proData
+     * @param  string $cateText
+     * 
+     * @return array $proData
+     */
+    function processCateName($proData, $cateText)
+    {
+        if ($this->isExactVal($proData)) {
+            $proData['name'] = $proData['value'] . $cateText;
+        }
+        if ($this->isMinVal($proData)) {
+            $proData['name'] = 'From ' . $proData['min'] . $cateText;
+        }
+        if ($this->isMaxVal($proData)) {
+            $proData['name'] = 'To ' . $proData['max'] . $cateText;
+        }
+        if ($this->isRangeVal($proData)) {
+            $proData['name'] = 'From ' . $proData['min'] . $cateText . ' to ' . $proData['max'] . $cateText;
+        }
+
+        $proData['slug'] = Str::slug($proData['name']);
+        return $proData;
+    }
+
+    /**
      * Get the sub-items for the corresponding Group model.
      *
      * @param  \Illuminate\Database\Eloquent\Model $groupModel
@@ -246,6 +297,9 @@ trait ProcessModelData
      */
     private function isExactVal(array $proData): bool
     {
+        if (!isset($proData['value'])) {
+            return false;
+        }
         if ($proData['value'] != 0 && !empty($proData['value'])) {
             return true;
         } else {
@@ -258,6 +312,9 @@ trait ProcessModelData
      */
     private function isMinVal(array $proData): bool
     {
+        if (!isset($proData['min'])) {
+            return false;
+        }
         if ($proData['min'] != 0 && !empty($proData['min'])) {
             return true;
         } else {
@@ -270,6 +327,9 @@ trait ProcessModelData
      */
     private function isMaxVal(array $proData): bool
     {
+        if (!isset($proData['max'])) {
+            return false;
+        }
         if ($proData['max'] != 0 && !empty($proData['max'])) {
             return true;
         } else {
@@ -282,6 +342,9 @@ trait ProcessModelData
      */
     private function isRangeVal(array $proData): bool
     {
+        if (!isset($proData['min']) or !isset($proData['max'])) {
+            return false;
+        }
         if ($proData['min'] != 0 && !empty($proData['min']) && $proData['max'] != 0 && !empty($proData['max'])) {
             return true;
         } else {
@@ -373,6 +436,8 @@ trait ProcessModelData
         $user->histories()->create(['data' => $final, 'action' => 'Updated', 'by'=> 'by Admin']);
     }
 
+
+    // ===================================================Count time===================================================
     private function year($now, $keytime)
     {
         $duration = 0;
@@ -384,7 +449,6 @@ trait ProcessModelData
                 return $duration . ' year ago';
             }
         } else {
-
             return $duration;
         }
     }
@@ -399,7 +463,6 @@ trait ProcessModelData
                 return $duration . ' month ago';
             }
         } else {
-
             return $duration;
         }
     }
@@ -414,7 +477,6 @@ trait ProcessModelData
                 return $duration . ' day ago';
             }
         } else {
-
             return $duration;
         }
     }
@@ -429,7 +491,6 @@ trait ProcessModelData
                 return $duration . ' hour ago';
             }
         } else {
-
             return $duration;
         }
     }
@@ -438,7 +499,6 @@ trait ProcessModelData
         $duration = 0;
         if ($now->minute != $keytime->minute) {
             $duration = $now->minute - $keytime->minute;
-
             if ($duration > 1) {
                 return $duration . ' minutes ago';
             } else {
@@ -467,4 +527,6 @@ trait ProcessModelData
         }
         return $duration;
     }
+    // ===================================================end Count time===================================================
+
 }

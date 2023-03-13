@@ -23,10 +23,9 @@
         <div class="container">
             <div class="map-inner">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.161425545649!2d106.64525215056754!3d10.798945661692306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175294a0c97a181%3A0x6aece518177f9a92!2sGEARVN%20Ho%C3%A0ng%20Hoa%20Th%C3%A1m!5e0!3m2!1sen!2s!4v1675936609207!5m2!1sen!2s"
-                    height="610" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.752480107732!2d106.67612731474445!3d10.830244561159624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529d5c459ba27%3A0xc82bf04d8e034311!2zUGhvbmcgVsWp!5e0!3m2!1sen!2s!4v1678424292960!5m2!1sen!2s"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
                 <div class="icon">
                     <i class="fa fa-map-marker"></i>
                 </div>
@@ -54,7 +53,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Address:</span>
-                                <p>78-80-82 Hoàng Hoa Thám, Phường 12, Quận Tân Bình.</p>
+                                <p>2A Nguyen Oanh, Ward 7, Go Vap, Ho Chi Minh City</p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -63,7 +62,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Phone:</span>
-                                <p>+84 052 276 5313</p>
+                                <p>03979-3979-3979</p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -72,7 +71,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Email:</span>
-                                <p>daoducbinh62@gamil.com</p>
+                                <p>LapXuongShop@gmail.com</p>
                             </div>
                         </div>
                     </div>
@@ -85,10 +84,18 @@
                             <form action="#" class="comment-form">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <input type="text" placeholder="Your Name">
+                                        @if (auth()->user())
+                                            <input type="text" placeholder="Your Name" value="{{ auth()->user()->name }}" name="name">
+                                        @else
+                                            <input type="text" placeholder="Your Name" name="name">   
+                                        @endif
                                     </div>
                                     <div class="col-lg-6">
-                                        <input type="text" placeholder="Your Email">
+                                        @if (auth()->user())
+                                            <input type="text" placeholder="Your Email" value="{{ auth()->user()->email }}" name="email">
+                                        @else
+                                            <input type="text" placeholder="Your Email" name="email">   
+                                        @endif
                                     </div>
                                     <div class="col-lg-12">
                                         <textarea placeholder="Your Message"></textarea>

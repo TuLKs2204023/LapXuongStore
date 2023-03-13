@@ -32,6 +32,18 @@
         .success-text.order-fail i {
             color: var(--danger);
         }
+
+        button{
+            text-align: center;
+        }
+
+        #back{
+            margin-left: 90px;
+        }
+
+        #view{
+            background-color: var(--violet);
+        }
     </style>
 @endsection
 
@@ -46,6 +58,10 @@
                         <p>Your order is successfully processsed and is on the way</p>
                     </div>
                 </div>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <a href="{{ Route('fe.shop.index') }}"><button id="back" type="button" class="btn btn-secondary btn-lg">Back to shop</button></a>
+                <a href="{{ Route('afterCheckOut') }}"><button id="view" type="button" class="btn btn-primary btn-lg">View order details</button></a>
             </div>
         </div>
     </section>

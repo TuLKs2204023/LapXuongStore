@@ -75,7 +75,7 @@
             </form>
         </div>
         <div class="switch is-txr" id="switch-cnt">
-            <div class="switch__circle"></div>
+            <div class="switch__circle is-txr"></div>
             <div class="switch__circle switch__circle--t is-txr"></div>
             <div class="switch__container is-hidden" id="switch-c1">
                 <h2 class="switch__title title">Welcome Back !</h2>

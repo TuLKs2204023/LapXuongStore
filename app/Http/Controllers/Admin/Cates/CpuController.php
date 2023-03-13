@@ -47,6 +47,10 @@ class CpuController extends Controller
         // Save Cpu
         $cpu = Cpu::create($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($cpu, 3);
+        $cpu->cate()->create($cateData);
+
         return redirect()->route('admin.cpu.index');
     }
 
@@ -81,6 +85,10 @@ class CpuController extends Controller
         // Save Cpu
         $cpu->update($proData);
 
+        // Save Cate
+        $cateData = $this->processCate($cpu, 3);
+        $cpu->cate()->update($cateData);
+
         return redirect()->route('admin.cpu.index');
     }
 
@@ -93,6 +101,7 @@ class CpuController extends Controller
     public function destroy(Request $request)
     {
         $cpu = Cpu::find($request->id);
+        $cpu->cate()->delete();
         $cpu->delete();
         return redirect()->route('admin.cpu.index');
     }

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
 use App\Models\Cates\HddGroup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class HddGroupController extends Controller
 {
@@ -42,24 +41,14 @@ class HddGroupController extends Controller
     public function store(Request $request)
     {
         $proData = $request->all();
+        $proData = $this->processCateName($proData, 'GB');
 
-        if ($this->isExactVal($proData)) {
-            $proData['name'] = $proData['value'] . 'GB';
-        }
-        if ($this->isMinVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . 'GB';
-        }
-        if ($this->isMaxVal($proData)) {
-            $proData['name'] = 'To ' . $proData['max'] . 'GB';
-        }
-        if ($this->isRangeVal($proData)) {
-            $proData['name'] = 'From ' . $proData['min'] . 'GB' . ' to ' . $proData['max'] . 'GB';
-        }
+        // Save HddGroup
+        $hddGroup = HddGroup::create($proData);
 
-        $proData['slug'] = Str::slug($request->name);
-
-        // Save RamGroup
-        $ramGroup = HddGroup::create($proData);
+        // Save Cate
+        $cateData = $this->processCate($hddGroup, 7);
+        $hddGroup->cate()->create($cateData);
 
         return redirect()->route('admin.hddGroup.index');
     }
@@ -78,24 +67,40 @@ class HddGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cates\HddGroup  $hddGroup
      * @return \Illuminate\Http\Response
      */
-    public function edit(HddGroup $hddGroup)
+    public function edit(int $id)
     {
-        //
+        $hddGroup = HddGroup::find($id);
+        $isUpdate = true;
+
+        return view('admin.hddGroup.create')->with([
+            'hddGroup' => $hddGroup,
+            'isUpdate' => $isUpdate
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cates\HddGroup  $hddGroup
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, HddGroup $hddGroup)
+    public function update(Request $request)
     {
-        //
+        $hddGroup = HddGroup::find($request->id);
+        $proData = $request->all();
+
+        $proData = $this->processCateName($proData, 'GB');
+
+        // Save HddGroup
+        $hddGroup->update($proData);
+
+        // Save Cate
+        $cateData = $this->processCate($hddGroup, 7);
+        $hddGroup->cate()->update($cateData);
+
+        return redirect()->route('admin.hddGroup.index');
     }
 
     /**
@@ -107,6 +112,7 @@ class HddGroupController extends Controller
     public function destroy(Request $request)
     {
         $hddGroup = HddGroup::find($request->id);
+        $hddGroup->cate()->delete();
         $hddGroup->delete();
         return redirect()->route('admin.hddGroup.index');
     }
