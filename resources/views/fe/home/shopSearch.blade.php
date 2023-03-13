@@ -3,7 +3,7 @@
     <div class="row">
         @if (count($products) > 0)
             @foreach ($products as $item)
-                <div class="col-lg-4 col-sm-6">
+                <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
                             <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
@@ -20,12 +20,9 @@
                                 @endif
                             </div>
                             <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
                                 <li class="quick-view">
                                     <a href="{{ Route('product.details', $item->slug) }}">+ Quick
                                         View</a>
-                                </li>
-                                <li class="w-icon"><a href=""><i class="fa fa-random"></i></a>
                                 </li>
                             </ul>
                         </div>
