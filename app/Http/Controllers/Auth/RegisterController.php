@@ -69,7 +69,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        $data=$user->name . ' has been registered';
+        $data=$user->name . ' has been registered.';
         $user->histories()->create(['data'=> $data ,'action'=>'created']);
         return $user;
     }

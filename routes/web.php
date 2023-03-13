@@ -51,7 +51,6 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
-Route::get('/manager', [AdminHomeController::class, 'manager'])->name('manager.dashboard');
 Route::get('/customer', [AdminHomeController::class, 'customer'])->name('customer');
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
 

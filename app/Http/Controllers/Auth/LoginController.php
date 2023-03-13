@@ -35,6 +35,11 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $notification = array(
+            'message' => 'Something went wrong,try again',
+            'alert-type' => 'error',
+        );
+
         $this->middleware('guest')->except('logout');
     }
 }

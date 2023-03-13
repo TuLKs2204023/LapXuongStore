@@ -60,10 +60,10 @@
                                     <td>{{ $rating->review }}</td>
                                     <td>{{ $rating->created_at }}</td>
                                     <td> <a class="btn btn-outline-info btn-sm"
-                                            href="{{ Route('admin.rating.edit', $rating->id) }}">
+                                            href="{{ Route('product.details', $rating->product->slug) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
-                                            Edit
+                                            Reply
                                         </a>
                                         <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
                                             class="btn btn-sm btn-danger" id="delete">
