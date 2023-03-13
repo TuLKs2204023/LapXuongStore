@@ -16,6 +16,38 @@
 
 
         {{-- ---------------------------------------------------------start Manager and Admin section--------------------------------------------------------------------- --}}
+        {{-- ---------------------------------------------------------start only Admin section--------------------------------------------------------------------- --}}
+        @if (auth()->user()->role == 'Admin')
+            <li class="nav-item">
+                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
+                    href="#">
+                    <i class="bi bi-person"></i><span>User Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <!-- User -->
+                        <a href="{{ URL::to('/all-user') }}">
+                            <i class="bi bi-circle"></i><span>User List</span>
+                        </a>
+                        <!--End UserList -->
+
+                        <!-- User Orders -->
+                        <a href="{{ URL::to('/admin/order/all-orders') }}">
+                            <i class="bi bi-circle"></i><span>User Orders</span>
+                        </a>
+                        <!--End User Orders -->
+
+                        <!-- User Ratings -->
+                        <a href="{{ Route('admin.rating.index') }}">
+                            <i class="bi bi-circle"></i><span>User Ratings</span>
+                        </a>
+                        <!--End User Ratings -->
+
+                    </li>
+                </ul>
+            </li><!-- End Forms Nav -->
+        @endif
+        {{-- ---------------------------------------------------------end only Admin section--------------------------------------------------------------------- --}}
 
         @if (auth()->user()->role !== 'Customer')
             <li class="nav-item">
@@ -133,38 +165,6 @@
 
 
 
-        {{-- ---------------------------------------------------------start only Admin section--------------------------------------------------------------------- --}}
-        @if (auth()->user()->role == 'Admin')
-            <li class="nav-item">
-                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" aria-expanded="true"
-                    href="#">
-                    <i class="bi bi-person"></i><span>User Settings</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                    <li>
-                        <!-- User -->
-                        <a href="{{ URL::to('/all-user') }}">
-                            <i class="bi bi-circle"></i><span>User List</span>
-                        </a>
-                        <!--End UserList -->
-
-                        <!-- User Orders -->
-                        <a href="{{ URL::to('/admin/order/all-orders') }}">
-                            <i class="bi bi-circle"></i><span>User Orders</span>
-                        </a>
-                        <!--End User Orders -->
-
-                        <!-- User Ratings -->
-                        <a href="{{ Route('admin.rating.index') }}">
-                            <i class="bi bi-circle"></i><span>User Ratings</span>
-                        </a>
-                        <!--End User Ratings -->
-
-                    </li>
-                </ul>
-            </li><!-- End Forms Nav -->
-        @endif
-        {{-- ---------------------------------------------------------end only Admin section--------------------------------------------------------------------- --}}
 
     </ul>
 </aside>

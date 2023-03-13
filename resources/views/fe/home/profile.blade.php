@@ -101,7 +101,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card mt-3">
+                    {{-- <div class="card mt-3">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -160,7 +160,7 @@
                                 <span class="text-secondary">bootdey</span>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-md-8">
                     <div class="card mb-3">

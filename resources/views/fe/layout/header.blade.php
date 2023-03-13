@@ -36,17 +36,12 @@
                     <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
                 </a>
                 @endif
-                @if (auth()->user()->role == 'Admin')
+                @if (auth()->user()->role !== 'Customer')
                 <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
                     Hello {{ auth()->user()->name }}
                     <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="
                                     height: 40px ;width:40px; margin-left:20px;">
                 </a>
-                <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px " type="submit">Setting</a>
-                @endif
-                @if (auth()->user()->role == 'Manager')
-                <a href="{{ url('manager') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;"> Hello {{ auth()->user()->name }}
-                    <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 40px ;width:40px; margin-left:20px; margin-right:10px"></a>
                 <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px " type="submit">Setting</a>
                 @endif
                 @else

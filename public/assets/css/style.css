@@ -861,7 +861,7 @@ h6 {
   position: relative;
   flex-shrink: 0;
   flex-grow: 0;
-  min-width: 64px;
+  max-width: 60px;
 }
 
 .dashboard .activity .activity-item .activite-label::before {

@@ -78,7 +78,10 @@ class UserController extends Controller
             $imageName = null;
         }
         $data['image'] = $imageName;
-        $user = DB::table('users')->insert($data);
+
+        $user = User::create($data);
+        $dataAdmin = $user->name . ' has been created.';
+        $user->histories()->create(['data' => $dataAdmin, 'action' => 'created', 'by' => 'by Admin']);
         if ($user) {
             $notification = array(
                 'message' => 'Successfully added user',
@@ -108,7 +111,7 @@ class UserController extends Controller
 
         $city = City::get(["name", "id"]);
 
-        return view('fe.home.edit-profile', compact('edit','city'));
+        return view('fe.home.edit-profile', compact('edit', 'city'));
     }
 
     public function passwordUser($id)
@@ -163,6 +166,7 @@ class UserController extends Controller
 
     public function UpdatetUser(Request $request, $id)
     {
+        $user = User::find($id);
         $data = array();
         $data['name'] = $request->name;
         $data['email'] = $request->email;
@@ -174,7 +178,7 @@ class UserController extends Controller
 
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
-
+        $this->adminData($user, $data);
 
         $edit = DB::table('users')->where('id', $id)->update($data);
         if ($edit) {
@@ -199,15 +203,15 @@ class UserController extends Controller
         $data['gender'] = $request->gender;
         $data['address'] = $request->address;
         $data['phone'] = $request->phone;
-        $data['city_id']=$request->city;
-        $data['district_id']=$request->district;
-        $data['ward_id']=$request->ward;
+        $data['city_id'] = $request->city;
+        $data['district_id'] = $request->district;
+        $data['ward_id'] = $request->ward;
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         $user = User::find($id);
-        $image = $user->image;
 
+        $image = $user->image;
 
         if ($request->hasFile('photo')) {
             File::delete(public_path("images/" . $image));
@@ -218,15 +222,13 @@ class UserController extends Controller
             }
             $imageName = $file->getClientOriginalName();
             $file->move("images", $imageName);
+            $data['image'] = $imageName;
         } else {
             $data['image'] = $image;
         }
 
-
         $this->data($user, $data);
-
         $edit = $user->update($data);
-
         if ($edit) {
 
             $notification = array(

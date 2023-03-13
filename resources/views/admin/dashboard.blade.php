@@ -31,21 +31,6 @@
                             <!-- Sales Card -->
                             <div class="col-xxl-4 col-md-6">
                                 <div class="card info-card sales-card">
-
-                                    {{-- <div class="filter">
-                                <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                        class="bi bi-three-dots"></i></a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <li class="dropdown-header text-start">
-                                        <h6>Filter</h6>
-                                    </li>
-
-                                    <li><a class="dropdown-item" href="#">Lastweek</a></li>
-                                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                                </ul>
-                            </div> --}}
-
                                     <div class="card-body">
                                         <h5 class="card-title">Sales <span>| This Month</span></h5>
 
@@ -69,21 +54,6 @@
                             <!-- Revenue Card -->
                             <div class="col-xxl-4 col-md-6">
                                 <div class="card info-card revenue-card">
-
-                                    {{-- <div class="filter">
-                                <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                        class="bi bi-three-dots"></i></a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <li class="dropdown-header text-start">
-                                        <h6>Filter</h6>
-                                    </li>
-
-                                    <li><a class="dropdown-item" href="#">Today</a></li>
-                                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                                </ul>
-                            </div> --}}
-
                                     <div class="card-body">
                                         <h5 class="card-title">Product <span>| This Month</span></h5>
 
@@ -265,16 +235,18 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($order as $key => $item)
-                                            @foreach($item->details as $ip)
-                                            <tr>
-                                                <th scope="row"><a href="#">{{$item->id}}</a></th>
-                                                <td>{{$item->name}}</td>
-                                                <td><a href="{{ Route('product.details',$ip->product->slug) }}" class="text-primary fw-bold">{{$ip->product->name}}</a>
-                                                </td>
-                                                <td>{{number_format($ip->product->salePrice(), 0, ',', '.')}}</td>
-                                                <td><span class="badge bg-success">Approved</span></td>
-                                            </tr>
-                                            @endforeach
+                                                @foreach ($item->details as $ip)
+                                                    <tr>
+                                                        <th scope="row"><a href="#">{{ $item->id }}</a></th>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td><a href="{{ Route('product.details', $ip->product->slug) }}"
+                                                                class="text-primary fw-bold">{{ $ip->product->name }}</a>
+                                                        </td>
+                                                        <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
+                                                        </td>
+                                                        <td><span class="badge bg-success">Approved</span></td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -317,15 +289,17 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($allproduct as $key => $row)
-                                            <tr>
-                                                <th scope="row"><a href="{{ Route('product.details',$row->slug) }}"><img src="{{ asset('images/' . $row->oldestImage->url) }}"
-                                                            alt=""></a></th>
-                                                <td><a href="{{ Route('product.details',$row->slug) }}" class="text-primary fw-bold">{{$row->name}}</a></td>
-                                                <td>{{number_format($row->salePrice(), 0, ',', '.')}}</td>
-                                                <td class="fw-bold">{{$row->topSale()}}</td>
-                                                <td>{{number_format($row->revenue(), 0, ',', '.')}}</td>
-                                            </tr>
-
+                                                <tr>
+                                                    <th scope="row"><a
+                                                            href="{{ Route('product.details', $row->slug) }}"><img
+                                                                src="{{ asset('images/' . $row->oldestImage->url) }}"
+                                                                alt=""></a></th>
+                                                    <td><a href="{{ Route('product.details', $row->slug) }}"
+                                                            class="text-primary fw-bold">{{ $row->name }}</a></td>
+                                                    <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
+                                                    <td class="fw-bold">{{ $row->topSale() }}</td>
+                                                    <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -340,119 +314,65 @@
 
                 <!-- Right side columns -->
                 <div class="col-lg-4">
+                    @if (auth()->user()->role == 'Admin')
+                        <!-- Recent Users Activity -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Recent Users Activity </h5>
 
-                    <!-- Recent Activity -->
-                    <div class="card">
-                        {{-- <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                    class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div> --}}
-
-                        <div class="card-body">
-                            <h5 class="card-title">Recent Activity </h5>
-
-                            <div class="activity">
-                                @foreach($history as $key => $value)
-                                <div class="activity-item d-flex">
-                                    <div class="activite-label">{{$duration}}</div>
-                                    <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                                    <div class="activity-content">
-                                        Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo
-                                            officiis</a> beatae
-                                    </div>
-                                </div><!-- End activity item-->
+                                <div class="activity"
+                                    style="
+                                        height: 300px;
+                                        overflow: auto;">
+                                    @foreach ($history as $key => $val)
+                                        <div class="activity-item d-flex">
+                                            <div class="activite-label" style="word-wrap:break-word;">{{ $val->time() }}
+                                            </div>
+                                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                            <div class="activity-content">
+                                                <p class="fw-bold text-dark" style="margin-block-end:0.5em;">
+                                                    <span class="fw-light">{{ $val->user->name }}</span>
+                                                    {{ $val->action }}
+                                                    {{ $val->by }}
+                                                </p>
+                                                {{ $val->data }}
+                                            </div>
+                                        </div><!-- End activity item-->
                                     @endforeach
 
+                                </div>
+
+                            </div>
+                        </div><!-- End Recent Users Activity -->
+                    @endif
+                    <!-- Recent Manager Activity -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Manager Activity </h5>
+                            <div class="activity"
+                                style="
+                                    height: 300px;
+                                    overflow: auto;">
+                                @foreach ($history as $key => $val)
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label" style="word-wrap:break-word;">{{ $val->time() }}
+                                        </div>
+                                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                        <div class="activity-content">
+                                            <p class="fw-bold text-dark" style="margin-block-end:0.5em;">
+                                                <span class="fw-light">{{ $val->user->name }}</span>
+                                                {{ $val->action }}
+                                                {{ $val->by }}
+                                            </p>
+                                            {{ $val->data }}
+                                        </div>
+                                    </div><!-- End activity item-->
+                                @endforeach
 
                             </div>
 
                         </div>
-                    </div><!-- End Recent Activity -->
-
-                    <!-- Budget Report -->
-                    <div class="card">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                    class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="card-body pb-0">
-                            <h5 class="card-title">Budget Report <span>| This Month</span></h5>
-
-                            <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", () => {
-                                    var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                                        legend: {
-                                            data: ['Allocated Budget', 'Actual Spending']
-                                        },
-                                        radar: {
-                                            // shape: 'circle',
-                                            indicator: [{
-                                                    name: 'Sales',
-                                                    max: 6500
-                                                },
-                                                {
-                                                    name: 'Administration',
-                                                    max: 16000
-                                                },
-                                                {
-                                                    name: 'Information Technology',
-                                                    max: 30000
-                                                },
-                                                {
-                                                    name: 'Customer Support',
-                                                    max: 38000
-                                                },
-                                                {
-                                                    name: 'Development',
-                                                    max: 52000
-                                                },
-                                                {
-                                                    name: 'Marketing',
-                                                    max: 25000
-                                                }
-                                            ]
-                                        },
-                                        series: [{
-                                            name: 'Budget vs spending',
-                                            type: 'radar',
-                                            data: [{
-                                                    value: [4200, 3000, 20000, 35000, 50000, 18000],
-                                                    name: 'Allocated Budget'
-                                                },
-                                                {
-                                                    value: [5000, 14000, 28000, 26000, 42000, 21000],
-                                                    name: 'Actual Spending'
-                                                }
-                                            ]
-                                        }]
-                                    });
-                                });
-                            </script>
-
-                        </div>
-                    </div><!-- End Budget Report -->
-
+                    </div><!-- End Recent Manager Activity -->
                     <!-- Website Traffic -->
                     <div class="card">
                         <div class="filter">
@@ -504,7 +424,7 @@
                                                 show: false
                                             },
                                             data: [{
-                                                    value: 1048,
+                                                    value: 25,
                                                     name: 'Search Engine'
                                                 },
                                                 {

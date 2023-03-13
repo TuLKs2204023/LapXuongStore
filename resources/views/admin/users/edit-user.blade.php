@@ -88,7 +88,7 @@
                         <label for="address" class="col-sm-2 col-form-label">Address</label>
                         <div class="col-sm-10">
                             <input type="text" id="address" name="address" class="form-control"
-                                value="{{ $edit->address }}" required>
+                                value="Not update" disabled>
                         </div>
                     </div> <!-- / Address Section -->
 
@@ -96,7 +96,7 @@
                     <div class="form-group row mb-3">
                         <label for="phone" class="col-sm-2 col-form-label">Phone</label>
                         <div class="col-sm-10">
-                            <input type="text" name="phone" class="form-control" value="{{ $edit->phone }}"" required>
+                            <input type="text" name="phone" class="form-control" value="{{ $edit->phone }}" required>
                         </div>
                     </div><!-- / Phone Section -->
                     {{-- <!-- Image Section -->

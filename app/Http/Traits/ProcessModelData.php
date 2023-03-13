@@ -309,10 +309,7 @@ trait ProcessModelData
             $phone = $old_phone ?? 'Not Updated';
             $final = $final  . 'Phone: ' . $phone . ' to ' . $data['phone']  . ', ';
         }
-        if ($data['address'] != $old_address) {
-            $address = $old_address ?? 'Not Updated';
-            $final = $final  . 'Address: ' . $address . ' to ' . $data['address']  . ', ';
-        }
+
         if ($data['gender'] != $old_gender) {
             $gender = $old_gender ?? 'Not Updated';
             $final = $final  . 'Gender: ' . $gender . ' to ' . $data['gender']  . ', ';
@@ -331,12 +328,50 @@ trait ProcessModelData
         if ($data['ward_id'] != $old_ward) {
             $oldWard = auth()->user()->ward->name ?? '';
             $ward = DB::table('wards')->where('id', $data['ward_id'])->first()->name;
-            $final = $final  . 'Ward: ' . $oldWard . ' to ' . $ward . ', ';
+            $final = $final  . 'Ward: ' . $oldWard . ' to ' . $ward . ',';
+        }
+        if ($data['address'] != $old_address) {
+            $address = $old_address ?? 'Not Updated';
+            $final = $final  . 'Address: ' . $address . ' to ' . $data['address']  . '. ';
         }
 
         $user->histories()->create(['data' => $final, 'action' => 'Updated']);
     }
 
+    public function adminData($user, array $data)
+    {
+        $final = "";
+        $old_name = $user->name;
+        $old_phone = $user->phone;
+        $old_address = $user->address;
+        $old_gender = $user->gender;
+        $old_role = $user->role;
+
+        if ($data['name'] != $old_name) {
+            $name = $old_name ?? 'Not Updated';
+            $final = $final . 'Name: ' . $name . ' to ' . $data['name']  . ', ';
+        }
+        if ($data['phone'] != $old_phone) {
+            $phone = $old_phone ?? 'Not Updated';
+            $final = $final  . 'Phone: ' . $phone . ' to ' . $data['phone']  . ', ';
+        }
+        if ($data['address'] != $old_address) {
+            $address = $old_address ?? 'Not Updated';
+            $final = $final  . 'Address: ' . $address . ' to ' . $data['address']  . ', ';
+        }
+        if ($data['gender'] != $old_gender) {
+            $gender = $old_gender ?? 'Not Updated';
+            $final = $final  . 'Gender: ' . $gender . ' to ' . $data['gender']  . ', ';
+        }
+        if ($data['role'] != $old_role) {
+            $role = $old_role ?? 'Not Updated';
+            $final = $final  . 'Role: ' . $role . ' to ' . $data['role']  . '. ';
+        }
+
+
+
+        $user->histories()->create(['data' => $final, 'action' => 'Updated', 'by'=> 'by Admin']);
+    }
 
     private function year($now, $keytime)
     {
@@ -344,9 +379,9 @@ trait ProcessModelData
         if ($now->year != $keytime->year) {
             $duration = $now->year - $keytime->year;
             if ($duration > 1) {
-                return $duration . ' years';
+                return $duration . ' years ago';
             } else {
-                return $duration . ' year';
+                return $duration . ' year ago';
             }
         } else {
 
@@ -359,9 +394,9 @@ trait ProcessModelData
         if ($now->month != $keytime->month) {
             $duration = $now->month - $keytime->month;
             if ($duration > 1) {
-                return $duration . ' months';
+                return $duration . ' months ago';
             } else {
-                return $duration . ' month';
+                return $duration . ' month ago';
             }
         } else {
 
@@ -374,9 +409,9 @@ trait ProcessModelData
         if ($now->day != $keytime->day) {
             $duration = $now->day - $keytime->day;
             if ($duration > 1) {
-                return $duration . ' days';
+                return $duration . ' days ago';
             } else {
-                return $duration . ' day';
+                return $duration . ' day ago';
             }
         } else {
 
@@ -389,9 +424,9 @@ trait ProcessModelData
         if ($now->hour != $keytime->hour) {
             $duration = $now->hour - $keytime->hour;
             if ($duration > 1) {
-                return $duration . ' hours';
+                return $duration . ' hours ago';
             } else {
-                return $duration . ' hour';
+                return $duration . ' hour ago';
             }
         } else {
 
@@ -401,19 +436,19 @@ trait ProcessModelData
     private function minute($now, $keytime)
     {
         $duration = 0;
-        if ($now->hour != $keytime->minute) {
+        if ($now->minute != $keytime->minute) {
             $duration = $now->minute - $keytime->minute;
+
             if ($duration > 1) {
-                return $duration . ' minutes';
+                return $duration . ' minutes ago';
             } else {
-                return $duration . ' minute';
+                return $duration . ' minute ago';
             }
         } else {
 
-            return $duration;
+            return $duration= 'Just now';
         }
     }
-
 
     public function duration($now, $keytime)
     {
@@ -430,10 +465,6 @@ trait ProcessModelData
         if ($duration == 0) {
             $duration = $this->minute($now, $keytime);
         }
-        if ($duration == 0) {
-            return $duration = "just now";
-        } else {
-            return $duration;
-        }
+        return $duration;
     }
 }
