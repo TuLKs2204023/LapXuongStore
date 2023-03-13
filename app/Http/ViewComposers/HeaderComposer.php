@@ -7,7 +7,7 @@ use App\Http\Controllers\FE\HeaderController;
 
 class HeaderComposer
 {
-    public $headerCart, $cateGroups;
+    public $headerCart, $cateGroups, $header_products;
 
     /**
      * Create a header composer.
@@ -18,6 +18,7 @@ class HeaderComposer
     {
         $this->headerCart = HeaderController::totalCart();
         $this->cateGroups = HeaderController::cateGroups();
+        $this->header_products = HeaderController::header_products();
     }
 
     /**
@@ -31,7 +32,8 @@ class HeaderComposer
 
         $view->with([
             'headerCart' => $this->headerCart,
-            'cateGroups' => $this->cateGroups
+            'cateGroups' => $this->cateGroups,
+            'header_products' => $this->header_products,
         ]);
     }
 }

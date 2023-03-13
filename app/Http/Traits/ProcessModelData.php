@@ -245,7 +245,7 @@ trait ProcessModelData
         if ($this->isRangeVal($proData)) {
             $proData['name'] = 'From ' . $proData['min'] . $cateText . ' to ' . $proData['max'] . $cateText;
         }
-        
+
         $proData['slug'] = Str::slug($proData['name']);
         return $proData;
     }
@@ -435,9 +435,9 @@ trait ProcessModelData
         if ($now->day != $keytime->day) {
             $duration = $now->day - $keytime->day;
             if ($duration > 1) {
-                return $duration . ' days';
+                return $duration . ' days ago';
             } else {
-                return $duration . ' day';
+                return $duration . ' day ago';
             }
         } else {
             return $duration;
@@ -449,9 +449,9 @@ trait ProcessModelData
         if ($now->hour != $keytime->hour) {
             $duration = $now->hour - $keytime->hour;
             if ($duration > 1) {
-                return $duration . ' hours';
+                return $duration . ' hours ago';
             } else {
-                return $duration . ' hour';
+                return $duration . ' hour ago';
             }
         } else {
             return $duration;
@@ -462,15 +462,13 @@ trait ProcessModelData
         $duration = 0;
         if ($now->minute != $keytime->minute) {
             $duration = $now->minute - $keytime->minute;
-            if ($duration == 0) {
-                return $duration = 'just now';
-            } elseif ($duration == 1) {
-                return $duration . ' minute';
+            if ($duration == 1) {
+                return $duration . ' minute ago';
             } else {
-                return $duration . ' minutes';
+                return $duration . ' minutes ago';
             }
         } else {
-            return $duration;
+            return $duration = "Just Now";
         }
     }
 

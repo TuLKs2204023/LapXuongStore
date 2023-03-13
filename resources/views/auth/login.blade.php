@@ -14,7 +14,7 @@
 
 <body>
     <div class="main">
-        <div class="container b-container" id="b-container">
+        <div class="container b-container is-txl is-z200" id="b-container">
             <form class="form" id="b-form" method="post" action="{{ Route('login') }}">
                 @csrf
                 <h2 class="form_title title">Sign in to LapXuong</h2>
@@ -33,7 +33,7 @@
 
             </form>
         </div>
-        <div class="container a-container" id="a-container">
+        <div class="container a-container is-txl" id="a-container">
             <form class="form" id="a-form" method="post" action="{{ Route('register') }}">
                 @csrf
                 <h2 class="form_title title">Create Account</h2>
@@ -46,10 +46,10 @@
                 <button class="form__button button " type="submit" style="background-color:#4154f1">SIGN UP</button>
             </form>
         </div>
-        <div class="switch" id="switch-cnt">
-            <div class="switch__circle"></div>
-            <div class="switch__circle switch__circle--t"></div>
-            <div class="switch__container" id="switch-c1">
+        <div class="switch is-txr" id="switch-cnt">
+            <div class="switch__circle is-txr"></div>
+            <div class="switch__circle switch__circle--t is-txr"></div>
+            <div class="switch__container is-hidden" id="switch-c1">
                 <h2 class="switch__title title">Welcome Back !</h2>
                 <p class="switch__description description">To keep connected with us please login with your personal info</p>
 
@@ -75,7 +75,7 @@
 
                     </p>
             </div>
-            <div class="switch__container is-hidden" id="switch-c2">
+            <div class="switch__container" id="switch-c2">
 
                 <h2 class="switch__title title">Hello Friend !</h2>
                 <p class="switch__description description">Enter your personal details and start journey with us</p>
