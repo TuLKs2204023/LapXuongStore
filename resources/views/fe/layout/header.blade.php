@@ -98,8 +98,14 @@
                     <div class="advanced-search">
                         <button type="button" class="category-btn">All Categories</button>
                         <div class="input-group">
-                            <input type="text" placeholder="Type something to search ... ">
-                            <button type="button"><i class="ti-search"></i></button>
+                                <input type="text" dir="rtl" list="datalistOptions"
+                                    placeholder="Type something to search ... ">
+                                <datalist id="datalistOptions">
+                                    @foreach ($header_products as $item)
+                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </datalist>
+                                <button type="button"><i class="ti-search"></i></button>
                         </div>
                     </div>
                 </div>
@@ -126,21 +132,23 @@
                                     <table>
                                         <tbody>
                                             @if (session('cart'))
-                                            @foreach (session('cart') as $item)
-                                            <tr>
-                                                <td class="si-pic"><img src="{{ asset('images/' . $item->product->oldestImage->url) }}" alt=""></td>
-                                                <td class="si-text">
-                                                    <div class="product-selected">
-                                                        <p>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
-                                                        </p>
-                                                        <h6>{{ $item->product->name }}</h6>
-                                                    </div>
-                                                </td>
-                                                <td class="si-close">
-                                                    <i class="ti-close"></i>
-                                                </td>
-                                            </tr>
-                                            @endforeach
+                                                @foreach (session('cart') as $item)
+                                                    <tr>
+                                                        <td class="si-pic"><img
+                                                                src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                                alt=""></td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
+                                                                </p>
+                                                                <h6>{{ $item->product->name }}</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @else
                                                 <tr>
                                                     <td colspan="3" style="text-align: center">CART IS EMPTY</td>
