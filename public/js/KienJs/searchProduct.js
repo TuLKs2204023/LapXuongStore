@@ -3,12 +3,21 @@ export { SearchHandler };
 $ = document.querySelector.bind(document);
 
 function SearchHandler({
-    url = "",
-    token = "",
-    selectors: { sidebarSelector = ".produts-sidebar-filter" },
+    selectors: {
+        sliderSelector = ".price-range",
+        sidebarSelector = ".produts-sidebar-filter",
+        productListSelector = ".product-search",
+        paginateSelector = ".loading-more",
+    },
 }) {
-    const selectors = { sidebarSelector };
+    const selectors = {
+        sliderSelector,
+        sidebarSelector,
+        productListSelector,
+        paginateSelector,
+    };
 
+    const priceSlider = $(selectors["sliderSelector"]);
     const queries = {};
     const sidebar = $(selectors["sidebarSelector"]);
 
@@ -34,35 +43,66 @@ function SearchHandler({
                 if (!value.length) delete queries[key];
             });
 
+            const url = new URL(window.location.href.split("?")[0] + "-search");
+            Object.keys(queries).forEach((key) =>
+                url.searchParams.append(key, queries[key])
+            );
+            fetch(url);
+
             // Process to call HttpRequest
-            processQueries(e, queries);
+            processQueries(url);
         });
     });
 
     // Function to Process to call HttpRequest
-    function processQueries(e, queries) {
+    function processQueries(url) {
+        const ajaxReq = new XMLHttpRequest();
+        ajaxReq.onreadystatechange = () => {
+            if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
+                renderSearch(ajaxReq.responseText);
+            }
+        };
+        ajaxReq.open("GET", url, true);
+        ajaxReq.setRequestHeader("Content-type", "html");
+        ajaxReq.send();
+    }
+
+    // Function to render search view
+    function renderSearch(res) {
+        const productList = $(selectors["productListSelector"]);
+        productList.innerHTML = res;
+
+        const paginate = $(selectors["paginateSelector"]);
+        const paginateLinks = paginate.querySelectorAll(".pagination li a");
+
+        paginateLinks.forEach((link) => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                const page = new URL(link.href);
+                Object.keys(queries).forEach((key) =>
+                    page.searchParams.append(key, queries[key])
+                );
+                fetch(page);
+
+                // Process to call HttpRequest
+                processPaginate(page);
+            });
+        });
+    }
+
+    // Function to Process to call HttpRequest
+    function processPaginate(page) {
         setTimeout(() => {
-            const params = {
-                queries,
-                _token: token,
-            };
-
             const ajaxReq = new XMLHttpRequest();
-
             ajaxReq.onreadystatechange = () => {
                 if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
-                    const res = JSON.parse(ajaxReq.responseText);
-
-                    console.log(res);
+                    renderSearch(ajaxReq.responseText, page);
                 }
             };
-
-            ajaxReq.open("POST", url, true);
-            ajaxReq.setRequestHeader(
-                "Content-type",
-                "application/json;charset=UTF-8"
-            );
-            ajaxReq.send(JSON.stringify(params));
+            ajaxReq.open("GET", page, true);
+            ajaxReq.setRequestHeader("Content-type", "html");
+            ajaxReq.send();
         }, 1);
     }
 }

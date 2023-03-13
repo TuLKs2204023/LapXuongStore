@@ -13,8 +13,6 @@ use App\Models\Cates\Color;
 use App\Models\Cates\Demand;
 use App\Models\Cates\Gpu;
 use App\Models\Cates\Resolution;
-use App\Models\Cates\Series;
-use App\Models\Stock;
 
 class ProductController extends Controller
 {

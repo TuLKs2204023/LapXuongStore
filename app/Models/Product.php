@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Cates\Manufacture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'slug',
@@ -33,30 +32,80 @@ class Product extends Model
      *
      * @var array
      */
-    protected $appends = ['price', 'price_id'];
-
+    protected $appends = [
+        'imageUrl',
+        'discount',
+        'wishList',
+        'discountPrice',
+        'salePrice',
+        'seriesName'
+    ];
 
     /**
      * The relationships that should always be loaded.
      *
      * @var array
      */
-    protected $with = ['prices', 'latestPrice'];
+    // protected $with = ['prices'];
 
     /**
-     * Get the product's price attribute.
+     * Get the product's image-url attribute.
      */
-    public function getPriceAttribute()
+    public function getImageUrlAttribute()
     {
-        return $this->latestPrice->origin ?? 0;
+        return $this->oldestImage->url ?? '';
     }
+
     /**
-     * Get the product's price_id attribute.
+     * Get the product's discount-amount attribute.
      */
-    public function getPriceIdAttribute()
+    public function getDiscountAttribute()
     {
-        return $this->latestPrice->id ?? 0;
+        return $this->latestDiscount() ?? 0;
     }
+
+    /**
+     * Get the product's wish-list-detail attribute.
+     */
+    public function getWishListAttribute()
+    {
+        if ($this->findWishlist()) {
+            return [
+                'isExisted' => true,
+                'url' => Route('removeWishlist', $this->id)
+            ];
+        } else {
+            return [
+                'isExisted' => false,
+                'url' => Route('addWishlist', $this->id)
+            ];
+        }
+    }
+
+    /**
+     * Get the product's discounted-price attribute.
+     */
+    public function getDiscountPriceAttribute()
+    {
+        return $this->fakePrice() ?? 0;
+    }
+
+    /**
+     * Get the product's normal-sale-price attribute.
+     */
+    public function getSalePriceAttribute()
+    {
+        return $this->salePrice() ?? 0;
+    }
+
+    /**
+     * Get the product's discount-amount attribute.
+     */
+    public function getSeriesNameAttribute()
+    {
+        return $this->series->name;
+    }
+
 
     /**
      * Get the Prices for product

@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Cate;
 use App\Models\CateGroup;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
@@ -21,7 +21,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = Product::paginate(9);
         // $products = Product::all();
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
@@ -51,7 +51,7 @@ class ShopController extends Controller
             foreach ($cateItems->cateItems()->load('products') as $item) {
                 $products = $products->merge($item->products);
             }
-            $products = $this->paginate($products);
+            $products = $this->paginate($products, 9);
         }
 
         return view('fe.home.shop')->with([
@@ -93,11 +93,21 @@ class ShopController extends Controller
      */
     public function search(Request $request)
     {
-        $queries = $request->queries;
-        $products = DB::table('products');
-        foreach ($queries as $key => $value) {
-            $products->orWhereIn($key . '_id', $value);
-        }
-        return $products->paginate(10);;
+        $queries = $request->query();
+        $products = Product::where(function (Builder $query) use ($queries) {
+            foreach ($queries as $key => $value) {
+                if ($key == 'page') continue;
+                $query->whereIn($key . '_id', explode(",", $value));
+            }
+            return $query;
+        })->paginate(9);
+
+        return view('fe.home.shopSearch', ['products' => $products])->render();
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'pagination' => (string)$products->links()
+        ]);
     }
 }
