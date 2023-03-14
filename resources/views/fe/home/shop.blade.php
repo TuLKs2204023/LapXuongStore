@@ -285,7 +285,7 @@
                             id: id,
                         },
                         success: function(response) {
-                            headerHeart.find("span").html(response.totalWishlist);
+                            $(headerHeart).find("span").html(response.totalWishlist);
                         },
                         error: function(error) {
                             console.log(error);

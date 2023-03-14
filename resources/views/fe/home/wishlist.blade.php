@@ -51,9 +51,9 @@
                                             <td class="cart-title first-row">
                                                 <h5>{{ $item->product->name }}</h5>
                                             </td>
-                                            <td class="close-td first-row"><a
-                                                    href="{{ Route('removeWishlist', $item->product->id) }}"><i
-                                                        class="ti-close"></i></a></td>
+                                            <td class="close-td first-row">
+                                                <i class="ti-close"></i>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -79,4 +79,50 @@
 @endsection
 
 @section('myJs')
+    <script>
+        jQuery(document).ready(function($) {
+            const productCart = $(".pr-cart-item");
+            const headerHeart = $(".heart-icon");
+            productCart.each(function(index, element) {
+                const removeButton = $(element).find(".ti-close");
+                $(removeButton).on("click", function(e) {
+                    e.preventDefault();
+                    const id = $(element).attr("data-index");
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                'Deleted!',
+                                'This comment has been deleted.',
+                                'success'
+                            )
+                            $.ajax({
+                                url: "{{ Route('removeWishlist') }}",
+                                type: "DELETE",
+                                headers: {
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                },
+                                data: {
+                                    id: id,
+                                },
+                                success: function(response) {
+                                    $(element).remove();
+                                    headerHeart.find("span").html(response
+                                        .totalWishlist);
+                                }
+                            })
+                        }
+                    })
+
+                })
+            })
+        });
+    </script>
 @endsection
