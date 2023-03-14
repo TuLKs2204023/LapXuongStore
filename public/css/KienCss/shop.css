@@ -11,4 +11,33 @@
     transform: scale(1.8);
 }
 
+.product-search .displaying-products {
+    text-align: right;
+    margin-top: -64px;
+    margin-bottom: 30px;
+}
 
+.product-search .displaying-products p {
+    margin-bottom: 0;
+}
+
+.product-search .loading-more {
+    margin-top: 30px;
+}
+.product-search .loading-more li a {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.product-search .loading-more li a:before {
+    background-color: unset;
+}
+.product-search .loading-more li.active a {
+    background-color: var(--violet);
+    border-color: var(--violet);
+}
+
+@media only screen and (max-width: 767px) {
+    .product-search .displaying-products {
+        margin: 0;
+    }
+}

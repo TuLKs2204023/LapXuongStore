@@ -22,10 +22,12 @@
                         {{-- <span>{{ ($cate->cate_group->name ?? '') . ($cate->name ?? 'All') }}</span> --}}
                         <span>
                             @if (isset($cate->cate_group->name))
-                                {{ $cate->cate_group->name . ': ' }}
+                                <span class="breader-cateGroup-id"
+                                    data-value="{{ $cate->cate_group->id }}">{{ $cate->cate_group->name }}</span>:
                             @endif
                             @if (isset($cate->name))
-                                {{ $cate->name }}
+                                <span class="breader-cate-id" data-value="{{ $cate->id }}">
+                                    {{ $cate->name }}</span>
                             @else
                                 {{ 'All' }}
                             @endif
@@ -225,12 +227,16 @@
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
+                                        <option value="12">12 items</option>
+                                        <option value="16">16 items</option>
+                                        <option value="20">20 items</option>
+                                        <option value="24">24 items</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-md-5 text-right">
+                            {{-- <div class="col-lg-5 col-md-5 text-right">
                                 <p>Show 01- 09 Of {{ $products->total() }} Product</p>
-                            </div>
+                            </div> --}}
                         </div>
                     </div> <!-- // Main content Header -->
 
@@ -271,8 +277,7 @@
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
                 const productSearch = new SearchHandler({
-                    // url: '{{ Route('fe.shop.search') }}',
-                    // token: '{{ csrf_token() }}',
+                    paginateConfig: {},
                     selectors: {},
                 });
             }

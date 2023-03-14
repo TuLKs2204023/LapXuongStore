@@ -11,18 +11,21 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use App\Http\Traits\ProcessModelData;
 
 class ShopController extends Controller
 {
+    use ProcessModelData;
+
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::paginate(9);
-        // $products = Product::all();
+        $products = Product::paginate(8);
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
@@ -36,23 +39,34 @@ class ShopController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
+    public function getProductsByCate($cate)
+    {
+        $cateItems = $cate->cateable;
+
+        if (isset($cateItems->products)) {
+            $cateItems->load('products');
+            return $cateItems->products();
+        } else {
+            $cateMorphClass = $cateItems->getMorphClass();
+            $cateClass = substr($cateMorphClass, strripos($cateMorphClass, '\\') + 1, strlen($cateItems->getMorphClass()) - strripos($cateMorphClass, '\\'));
+            $cateName = strtolower(substr($cateClass, 0, strlen($cateClass) - 5));
+            $cateIdRange = $cateItems->cateItems()->pluck('id');
+            return Product::whereIn($cateName . '_id', $cateIdRange);
+        }
+    }
+    /**
+     * Display products based on category specified by user.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
     public function cate($slug)
     {
         $cateGroups = CateGroup::all()->load('cates');
         $cate = Cate::where('slug', $slug)->get()->first();
         $cateItems = $cate->cateable;
-
-        if (isset($cateItems->products)) {
-            $cateItems->load('products');
-            $products = $cateItems->products()->paginate(10);
-        }
-        if (method_exists(get_class($cateItems), 'cateItems')) {
-            $products = new Collection();
-            foreach ($cateItems->cateItems()->load('products') as $item) {
-                $products = $products->merge($item->products);
-            }
-            $products = $this->paginate($products, 9);
-        }
+        $products = $this->getProductsByCate($cate)->paginate(12);
+        // $products = $this->paginate($products, 9)->setPath(Route('fe.shop.index') . '/' . $slug);
 
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
@@ -94,20 +108,28 @@ class ShopController extends Controller
     public function search(Request $request)
     {
         $queries = $request->query();
-        $products = Product::where(function (Builder $query) use ($queries) {
+        if (!isset($queries['slug'])) {
+            $products = Product::query();
+        } else {
+            $cate = Cate::where('slug', $queries['slug'])->get()->first();
+            $products = $this->getProductsByCate($cate);
+        }
+
+        $products = $products->where(function (Builder $query) use ($queries) {
             foreach ($queries as $key => $value) {
-                if ($key == 'page') continue;
-                $query->whereIn($key . '_id', explode(",", $value));
+                switch ($key) {
+                    case 'page':
+                    case 'show':
+                    case 'slug':
+                        break;
+                    default:
+                        $query->whereIn($key . '_id', explode(",", $value));
+                        break;
+                }
             }
             return $query;
-        })->paginate(9);
+        })->paginate($queries['show']);
 
         return view('fe.home.shopSearch', ['products' => $products])->render();
-
-        return response()->json([
-            'success' => true,
-            'products' => $products,
-            'pagination' => (string)$products->links()
-        ]);
     }
 }
