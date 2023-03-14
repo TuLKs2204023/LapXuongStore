@@ -84,7 +84,7 @@
                                     </ul>
                                 </td> --}}
                                     <td class="project-actions text-center">
-                                        <a class="btn btn-outline-secondary btn-sm mx-1 mb-2 button-control"
+                                        <a class="btn btn-outline-secondary btn-sm mb-2 button-control"
                                             href="{{ Route('product.details', $item->slug) }}">
                                             <i class="bi bi-folder2-open"></i>
                                             <div class="myTooltip myTooltip-top myTooltip-secondary">
@@ -92,14 +92,14 @@
                                             </div>
                                         </a>
 
-                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
+                                        <a class="btn btn-outline-primary btn-sm mb-2 my-btn-outline button-control"
                                             href="{{ Route('admin.product.edit', $item->id) }}">
                                             <i class="bi bi-pencil-square"></i>
                                             <div class="myTooltip myTooltip-top">
                                                 <span class="tooltiptext">Edit item</span>
                                             </div>
                                         </a>
-                                        <a class="btn btn-outline-success btn-sm mx-1 mb-2 button-control"
+                                        <a class="btn btn-outline-success btn-sm mb-2 button-control"
                                             href="{{ Route('admin.stock.details', $item->id) }}">
                                             <i class="bi bi-cart"></i>
                                             <div class="myTooltip myTooltip-top myTooltip-success">
@@ -112,7 +112,7 @@
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
                                             <button type="submit"
-                                                class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                class="btn btn-outline-danger btn-sm mb-2 button-control">
                                                 <i class="bi bi-trash"></i>
                                                 <div class="myTooltip myTooltip-top myTooltip-danger">
                                                     <span class="tooltiptext">Delete item</span>

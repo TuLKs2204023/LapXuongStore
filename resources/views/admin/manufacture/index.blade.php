@@ -83,7 +83,7 @@
                                     </i>
                                     View
                                 </a> --}}
-                                        <a class="btn btn-outline-primary btn-sm mx-1 mb-2 my-btn-outline button-control"
+                                        <a class="btn btn-outline-primary btn-sm mb-2 my-btn-outline button-control"
                                             href="{{ Route('admin.manufacture.edit', $item->id) }}">
                                             <i class="bi bi-pencil-square"></i>
                                             <div class="myTooltip myTooltip-top">
@@ -96,7 +96,7 @@
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
                                             <button type="submit"
-                                                class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                                class="btn btn-outline-danger btn-sm mb-2 button-control">
                                                 <i class="bi bi-trash"></i>
                                                 <div class="myTooltip myTooltip-top myTooltip-danger">
                                                     <span class="tooltiptext">Delete item</span>

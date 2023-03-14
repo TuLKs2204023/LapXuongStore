@@ -1,3 +1,8 @@
+<!-- Main content Header -->
+<div class="displaying-products">
+    {{ $products->withQueryString()->links('vendor.pagination.header') }}
+</div> <!-- // Main content Header -->
+
 <!-- Main content Body -->
 <div class="product-list">
     <div class="row">
@@ -49,5 +54,5 @@
 
 <!-- Main content Footer -->
 <div class="loading-more">
-    {{ $products->withQueryString()->links('vendor.pagination.custom') }}
+    {{ $products->withQueryString()->links('vendor.pagination.footer') }}
 </div> <!-- // Main content Footer -->
