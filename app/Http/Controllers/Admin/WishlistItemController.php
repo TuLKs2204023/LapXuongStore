@@ -58,7 +58,7 @@ class WishlistItemController extends Controller
         if ($loggedUser) {
             $user = User::find($loggedUser->id);
             $user->wishlistItems()->create(['product_id' => $pId]);
-            return back();
+            return response()->json(['message' => 'Wishlist saved successfully', 'totalWishlist' => count(auth()->user()->wishlistItems)]);
         } else {
             return redirect()->route('login');
         }
@@ -111,7 +111,7 @@ class WishlistItemController extends Controller
         $userId = $user->id;
         $wishlistItem = WishlistItem::where('user_id', $userId)->where('product_id', $pId)->first();
         $wishlistItem->delete();
-        return back();
+        return response()->json(['message' => 'Wishlist deleted successfully', 'totalWishlist' => count(auth()->user()->wishlistItems)]);
     }
 
     public function adminDestroy(Request $request)

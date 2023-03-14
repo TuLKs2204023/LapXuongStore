@@ -1,3 +1,8 @@
+<!-- Main content Header -->
+<div class="displaying-products">
+    {{ $products->withQueryString()->links('vendor.pagination.header') }}
+</div> <!-- // Main content Header -->
+
 <!-- Main content Body -->
 <div class="product-list">
     <div class="row">
@@ -12,11 +17,11 @@
                                 <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
                             @endif
-                            <div class="icon">
+                            <div class="icon" data-index="{{ $item->id }}">
                                 @if ($item->findWishlist())
-                                    <a href="{{ Route('removeWishlist', $item->id) }}"><i class="fas fa-heart"></i></a>
+                                    <a href="#"><i class="fas fa-heart"></i></a>
                                 @else
-                                    <a href="{{ Route('addWishlist', $item->id) }}"><i class="far fa-heart"></i></a>
+                                    <a href="#"><i class="far fa-heart"></i></a>
                                 @endif
                             </div>
                             <ul>
@@ -49,5 +54,5 @@
 
 <!-- Main content Footer -->
 <div class="loading-more">
-    {{ $products->withQueryString()->links('vendor.pagination.custom') }}
+    {{ $products->withQueryString()->links('vendor.pagination.footer') }}
 </div> <!-- // Main content Footer -->

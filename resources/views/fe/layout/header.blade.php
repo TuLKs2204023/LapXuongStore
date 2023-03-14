@@ -86,13 +86,15 @@
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-7">
-                    <div class="advanced-search">
-                        <button type="button" class="category-btn">All Categories</button>
-                        <div class="input-group">
-                            <input type="text" placeholder="Type something to search ... ">
-                            <button type="button"><i class="ti-search"></i></button>
+                    <form action="{{ Route('fe.header.search') }}" method="GET">
+                        <div class="advanced-search">
+                            <button type="button" class="category-btn">All Categories</button>
+                            <div class="input-group">
+                                <input type="text" placeholder="Type something to search ... " name="headerSearch">
+                                <button type="submit"><i class="ti-search"></i></button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">

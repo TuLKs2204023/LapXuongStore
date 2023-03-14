@@ -18,7 +18,6 @@ class HeaderComposer
     {
         $this->headerCart = HeaderController::totalCart();
         $this->cateGroups = HeaderController::cateGroups();
-        $this->header_products = HeaderController::header_products();
     }
 
     /**
@@ -33,7 +32,6 @@ class HeaderComposer
         $view->with([
             'headerCart' => $this->headerCart,
             'cateGroups' => $this->cateGroups,
-            'header_products' => $this->header_products,
         ]);
     }
 }

@@ -22,10 +22,12 @@
                         {{-- <span>{{ ($cate->cate_group->name ?? '') . ($cate->name ?? 'All') }}</span> --}}
                         <span>
                             @if (isset($cate->cate_group->name))
-                                {{ $cate->cate_group->name . ': ' }}
+                                <span class="breader-cateGroup-id"
+                                    data-value="{{ $cate->cate_group->id }}">{{ $cate->cate_group->name }}</span>:
                             @endif
                             @if (isset($cate->name))
-                                {{ $cate->name }}
+                                <span class="breader-cate-id" data-value="{{ $cate->id }}">
+                                    {{ $cate->name }}</span>
                             @else
                                 {{ 'All' }}
                             @endif
@@ -225,12 +227,16 @@
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
+                                        <option value="12">12 items</option>
+                                        <option value="16">16 items</option>
+                                        <option value="20">20 items</option>
+                                        <option value="24">24 items</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-md-5 text-right">
+                            {{-- <div class="col-lg-5 col-md-5 text-right">
                                 <p>Show 01- 09 Of {{ $products->total() }} Product</p>
-                            </div>
+                            </div> --}}
                         </div>
                     </div> <!-- // Main content Header -->
 
@@ -247,22 +253,47 @@
 @section('myJs')
     <!-- Start TuJs -->
     <script>
-        const empty = document.querySelectorAll(".product-item .pi-pic .icon .fa-heart");
-        let isFilled = false;
-
-        empty.forEach(element => {
-            element.onclick = function() {
-                if (!isFilled) {
-                    isFilled = true;
-                    element.classList.remove('far');
-                    element.classList.add('fas');
-                } else {
-                    isFilled = false;
-                    element.classList.remove('fas');
-                    element.classList.add('far');
-                }
-            };
-        });
+        jQuery(document).ready(function($) {
+            const heart = $(".product-item .pi-pic .icon");
+            const headerHeart = $(".heart-icon");
+            heart.each(function(index, element) {
+                $(element).on("click", function(e) {
+                    e.preventDefault();
+                    let url, type, token;
+                    const id = $(this).attr("data-index");
+                    // const anchor = $(this).children().first().get(0);
+                    const childElement = $(this).children().children().first().get(0);
+                    const redHeart = $(childElement).hasClass("fas")
+                    if (redHeart) {
+                        $(childElement).removeClass("fas");
+                        $(childElement).addClass("far");
+                        url = "{{ Route('removeWishlist') }}";
+                        type = "DELETE";
+                    } else {
+                        $(childElement).addClass("fas");
+                        $(childElement).removeClass("far");
+                        url = "{{ Route('addWishlist') }}";
+                        type = "POST";
+                    }
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        },
+                        data: {
+                            id: id,
+                        },
+                        success: function(response) {
+                            headerHeart.find("span").html(response.totalWishlist);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                })
+            })
+        })
     </script><!-- End TuJs -->
 
     <script type="module">
@@ -271,8 +302,7 @@
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
                 const productSearch = new SearchHandler({
-                    // url: '{{ Route('fe.shop.search') }}',
-                    // token: '{{ csrf_token() }}',
+                    paginateConfig: {},
                     selectors: {},
                 });
             }

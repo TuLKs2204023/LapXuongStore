@@ -32,80 +32,14 @@ class Product extends Model
      *
      * @var array
      */
-    protected $appends = [
-        'imageUrl',
-        'discount',
-        'wishList',
-        'discountPrice',
-        'salePrice',
-        'seriesName'
-    ];
+    protected $appends = [];
 
     /**
      * The relationships that should always be loaded.
      *
      * @var array
      */
-    // protected $with = ['prices'];
-
-    /**
-     * Get the product's image-url attribute.
-     */
-    public function getImageUrlAttribute()
-    {
-        return $this->oldestImage->url ?? '';
-    }
-
-    /**
-     * Get the product's discount-amount attribute.
-     */
-    public function getDiscountAttribute()
-    {
-        return $this->latestDiscount() ?? 0;
-    }
-
-    /**
-     * Get the product's wish-list-detail attribute.
-     */
-    public function getWishListAttribute()
-    {
-        if ($this->findWishlist()) {
-            return [
-                'isExisted' => true,
-                'url' => Route('removeWishlist', $this->id)
-            ];
-        } else {
-            return [
-                'isExisted' => false,
-                'url' => Route('addWishlist', $this->id)
-            ];
-        }
-    }
-
-    /**
-     * Get the product's discounted-price attribute.
-     */
-    public function getDiscountPriceAttribute()
-    {
-        return $this->fakePrice() ?? 0;
-    }
-
-    /**
-     * Get the product's normal-sale-price attribute.
-     */
-    public function getSalePriceAttribute()
-    {
-        return $this->salePrice() ?? 0;
-    }
-
-    /**
-     * Get the product's discount-amount attribute.
-     */
-    public function getSeriesNameAttribute()
-    {
-        return $this->series->name;
-    }
-
+    protected $with = [];
 
     /**
      * Get the Prices for product

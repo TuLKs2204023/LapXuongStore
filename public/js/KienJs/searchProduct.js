@@ -3,11 +3,13 @@ export { SearchHandler };
 $ = document.querySelector.bind(document);
 
 function SearchHandler({
+    paginateConfig: { pageDefaultItems = 12, pageSorting = "" },
     selectors: {
         sliderSelector = ".price-range",
         sidebarSelector = ".produts-sidebar-filter",
         productListSelector = ".product-search",
         paginateSelector = ".loading-more",
+        paginateShowSelector = ".product-show-option",
     },
 }) {
     const selectors = {
@@ -15,10 +17,16 @@ function SearchHandler({
         sidebarSelector,
         productListSelector,
         paginateSelector,
+        paginateShowSelector,
     };
 
     const priceSlider = $(selectors["sliderSelector"]);
-    const queries = {};
+    const currentUrl = getCurrentUrlInfo();
+    console.log(currentUrl);
+    const queries = {
+        show: pageDefaultItems,
+        slug: currentUrl.slug,
+    };
     const sidebar = $(selectors["sidebarSelector"]);
 
     const cateInputs = sidebar.querySelectorAll(
@@ -28,29 +36,42 @@ function SearchHandler({
         input.addEventListener("click", (e) => {
             const inputData = input.dataset.value.split("-");
             const cateName = inputData[0];
-            const cateVal = inputData[1];
+            const cateVal = Number(inputData[1]);
             if (!Array.isArray(queries[cateName])) {
                 queries[cateName] = [];
             }
             if (input.matches(":checked")) {
-                queries[cateName].push(Number(cateVal));
+                queries[cateName].push(cateVal);
             } else {
                 const cateIndex = queries[cateName].indexOf(cateVal);
                 queries[cateName].splice(cateIndex, 1);
             }
 
             Object.entries(queries).forEach(([key, value]) => {
-                if (!value.length) delete queries[key];
+                if (!value.length && key !== "show") delete queries[key];
             });
 
-            const url = new URL(window.location.href.split("?")[0] + "-search");
-            Object.keys(queries).forEach((key) =>
-                url.searchParams.append(key, queries[key])
-            );
-            fetch(url);
+            const url = new URL(currentUrl.mainPath);
 
             // Process to call HttpRequest
-            processQueries(url);
+            processQueries(appendQueriesToUrl(url, queries));
+        });
+    });
+
+    // Get paginate items
+    const paginateShow = $(selectors["paginateShowSelector"]);
+    const paginateSelect = paginateShow.querySelector(".nice-select.p-show");
+    const paginateOpts = paginateSelect.querySelectorAll("ul li");
+
+    paginateOpts.forEach((opt) => {
+        opt.addEventListener("click", (e) => {
+            const paginateItms = opt.dataset.value || pageDefaultItems;
+            queries["show"] = paginateItms;
+
+            const url = new URL(currentUrl.mainPath);
+
+            // Process to call HttpRequest
+            processQueries(appendQueriesToUrl(url, queries));
         });
     });
 
@@ -78,31 +99,53 @@ function SearchHandler({
         paginateLinks.forEach((link) => {
             link.addEventListener("click", (e) => {
                 e.preventDefault();
-
-                const page = new URL(link.href);
-                Object.keys(queries).forEach((key) =>
-                    page.searchParams.append(key, queries[key])
-                );
-                fetch(page);
+                const url = new URL(link.href);
 
                 // Process to call HttpRequest
-                processPaginate(page);
+                processPaginate(appendQueriesToUrl(url, queries));
             });
         });
     }
 
+    // Function to Append params into URL
+    function appendQueriesToUrl(url, params) {
+        Object.keys(params).forEach((key) =>
+            url.searchParams.append(key, params[key])
+        );
+        fetch(url);
+        return url;
+    }
+
     // Function to Process to call HttpRequest
     function processPaginate(page) {
-        setTimeout(() => {
-            const ajaxReq = new XMLHttpRequest();
-            ajaxReq.onreadystatechange = () => {
-                if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
-                    renderSearch(ajaxReq.responseText, page);
-                }
-            };
-            ajaxReq.open("GET", page, true);
-            ajaxReq.setRequestHeader("Content-type", "html");
-            ajaxReq.send();
-        }, 1);
+        const ajaxReq = new XMLHttpRequest();
+        ajaxReq.onreadystatechange = () => {
+            if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
+                renderSearch(ajaxReq.responseText, page);
+                window.scrollTo({ top: 60, behavior: "smooth" });
+            }
+        };
+        ajaxReq.open("GET", page, true);
+        ajaxReq.setRequestHeader("Content-type", "html");
+        ajaxReq.send();
+    }
+
+    // Function to extract information in current URL path
+    function getCurrentUrlInfo() {
+        const currentHref = window.location.href.replace("/search", "/shop");
+        const searchHref = currentHref.search(/shop/);
+        const tempSlug =
+            searchHref < 0 ? "" : currentHref.substring(searchHref + 4);
+
+        const slugRemovedPage = tempSlug.replace(/.page=[0-9]*/, "");
+
+        const slug = slugRemovedPage.replace(/[\/\?]/, "");
+
+        const mainPath =
+            (searchHref < 0
+                ? currentHref
+                : currentHref.substring(0, searchHref + 4)) + "-search";
+
+        return { slug, mainPath };
     }
 }
