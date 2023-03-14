@@ -247,22 +247,47 @@
 @section('myJs')
     <!-- Start TuJs -->
     <script>
-        const empty = document.querySelectorAll(".product-item .pi-pic .icon .fa-heart");
-        let isFilled = false;
-
-        empty.forEach(element => {
-            element.onclick = function() {
-                if (!isFilled) {
-                    isFilled = true;
-                    element.classList.remove('far');
-                    element.classList.add('fas');
-                } else {
-                    isFilled = false;
-                    element.classList.remove('fas');
-                    element.classList.add('far');
-                }
-            };
-        });
+        jQuery(document).ready(function($) {
+            const heart = $(".product-item .pi-pic .icon");
+            const headerHeart = $(".heart-icon");
+            heart.each(function(index, element) {
+                $(element).on("click", function(e) {
+                    e.preventDefault();
+                    let url, type, token;
+                    const id = $(this).attr("data-index");
+                    // const anchor = $(this).children().first().get(0);
+                    const childElement = $(this).children().children().first().get(0);
+                    const redHeart = $(childElement).hasClass("fas")
+                    if (redHeart) {
+                        $(childElement).removeClass("fas");
+                        $(childElement).addClass("far");
+                        url = "{{ Route('removeWishlist') }}";
+                        type = "DELETE";
+                    } else {
+                        $(childElement).addClass("fas");
+                        $(childElement).removeClass("far");
+                        url = "{{ Route('addWishlist') }}";
+                        type = "POST";
+                    }
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        },
+                        data: {
+                            id: id,
+                        },
+                        success: function(response) {
+                            headerHeart.find("span").html(response.totalWishlist);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                })
+            })
+        })
     </script><!-- End TuJs -->
 
     <script type="module">

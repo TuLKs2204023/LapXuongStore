@@ -12,11 +12,11 @@
                                 <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
                             @endif
-                            <div class="icon">
+                            <div class="icon" data-index="{{ $item->id }}">
                                 @if ($item->findWishlist())
-                                    <a href="{{ Route('removeWishlist', $item->id) }}"><i class="fas fa-heart"></i></a>
+                                    <a href="#"><i class="fas fa-heart"></i></a>
                                 @else
-                                    <a href="{{ Route('addWishlist', $item->id) }}"><i class="far fa-heart"></i></a>
+                                    <a href="#"><i class="far fa-heart"></i></a>
                                 @endif
                             </div>
                             <ul>
