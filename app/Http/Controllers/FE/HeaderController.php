@@ -18,7 +18,7 @@ class HeaderController extends HomeController
 
     public static function header_products(Request $request){
         $request = $request->headerSearch;
-        $products = Product::where('name', 'like', '%'.$request.'%')->paginate(9);
+        $products = Product::where('name', 'like', '%'.$request.'%')->paginate(12);
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop', compact('products', 'cateGroups'));
     }

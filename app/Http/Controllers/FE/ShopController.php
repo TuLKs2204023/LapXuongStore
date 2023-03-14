@@ -108,19 +108,36 @@ class ShopController extends Controller
     public function search(Request $request)
     {
         $queries = $request->query();
+
+        // If default pagination items does not exists, create one by 12
+        if (!isset($queries['show'])) {
+            $queries['show'] = 12;
+        }
+
+        // Render seach items by accessing products via Shop page
         if (!isset($queries['slug'])) {
             $products = Product::query();
         } else {
-            $cate = Cate::where('slug', $queries['slug'])->get()->first();
-            $products = $this->getProductsByCate($cate);
+            // Render seach items by searching on header
+            if (substr($queries['slug'], 0, 12) === 'headerSearch') {
+                $header = $queries['slug'];
+                $headerQuery = str_replace("+", " ", substr($header, strripos($header, '=') + 1));
+                $products = Product::where('name', 'LIKE', '%' . $headerQuery . '%');
+            } else {
+                // Render seach items by accessing products on nav-bar
+                $cate = Cate::where('slug', $queries['slug'])->get()->first();
+                $products = $this->getProductsByCate($cate);
+            }
         }
 
+        // Render filtered search items
         $products = $products->where(function (Builder $query) use ($queries) {
             foreach ($queries as $key => $value) {
                 switch ($key) {
                     case 'page':
                     case 'show':
                     case 'slug':
+                    case 'headerSearch':
                         break;
                     default:
                         $query->whereIn($key . '_id', explode(",", $value));
@@ -129,7 +146,6 @@ class ShopController extends Controller
             }
             return $query;
         })->paginate($queries['show']);
-
         return view('fe.home.shopSearch', ['products' => $products])->render();
     }
 }

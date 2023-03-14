@@ -22,7 +22,11 @@ function SearchHandler({
 
     const priceSlider = $(selectors["sliderSelector"]);
     const currentUrl = getCurrentUrlInfo();
-    const queries = { show: pageDefaultItems, slug: currentUrl.slug };
+    console.log(currentUrl);
+    const queries = {
+        show: pageDefaultItems,
+        slug: currentUrl.slug,
+    };
     const sidebar = $(selectors["sidebarSelector"]);
 
     const cateInputs = sidebar.querySelectorAll(
@@ -128,16 +132,19 @@ function SearchHandler({
 
     // Function to extract information in current URL path
     function getCurrentUrlInfo() {
-        const currentHref = window.location.href;
-        const slug =
-            currentHref.search("shop/") < 0
-                ? ""
-                : currentHref.substring(currentHref.search("shop/") + 5);
+        const currentHref = window.location.href.replace("/search", "/shop");
+        const searchHref = currentHref.search(/shop/);
+        const tempSlug =
+            searchHref < 0 ? "" : currentHref.substring(searchHref + 4);
+
+        const slugRemovedPage = tempSlug.replace(/.page=[0-9]*/, "");
+
+        const slug = slugRemovedPage.replace(/[\/\?]/, "");
+
         const mainPath =
-            (currentHref.search("shop/") < 0
+            (searchHref < 0
                 ? currentHref
-                : currentHref.substring(0, currentHref.search(slug) - 1)) +
-            "-search";
+                : currentHref.substring(0, searchHref + 4)) + "-search";
 
         return { slug, mainPath };
     }
