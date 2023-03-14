@@ -16,7 +16,6 @@ use App\Models\Cates\Resolution;
 
 class ProductController extends Controller
 {
-
     use ProcessModelData;
 
     /**
@@ -27,19 +26,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $products->load(
-            'images',
-            'manufacture',
-            'cpu',
-            'ram',
-            'screen',
-            'hdd',
-            'ssd',
-            'color',
-            'gpu',
-            'demand',
-            'resolution'
-        );
+        $products->load('images', 'manufacture', 'cpu', 'ram', 'screen', 'hdd', 'ssd', 'color', 'gpu', 'demand', 'resolution');
         return view('admin.product.index')->with(['products' => $products]);
     }
 
@@ -57,10 +44,10 @@ class ProductController extends Controller
         $gpus = Gpu::all();
         $demands = Demand::all();
         $series = collect([
-            (object)[
+            (object) [
                 'id' => ' ',
-                'name' => 'Please pick-up Manufacture first'
-            ]
+                'name' => 'Please pick-up Manufacture first',
+            ],
         ]);
 
         $resolutions = Resolution::all();
@@ -74,7 +61,7 @@ class ProductController extends Controller
             'demands' => $demands,
             'series' => $series,
             'resolutions' => $resolutions,
-            'list_images' => $imageFiles
+            'list_images' => $imageFiles,
         ]);
     }
 
@@ -102,6 +89,9 @@ class ProductController extends Controller
 
         // Save Product
         $product = Product::create($proData);
+        // Save Histories of products
+        $data = $product->name . ' has been created.';
+        $product->historyProduct()->create(['data' => $data, 'action' => 'Created', 'user_id' => auth()->user()->id, 'product_id' => $product->id]);
         $product->refresh();
 
         // Save Price
@@ -161,7 +151,7 @@ class ProductController extends Controller
             'demands' => $demands,
             'series' => $series,
             'resolutions' => $resolutions,
-            'list_images' => $imageFiles
+            'list_images' => $imageFiles,
         ]);
     }
 
@@ -188,6 +178,8 @@ class ProductController extends Controller
         // Save SSD
         $proData = $this->processSsd($proData);
 
+        // Save Histories of products
+        $this->dataProduct($proData, $product);
         // Save Product
         $product->update($proData);
         $product->refresh();
@@ -235,7 +227,12 @@ class ProductController extends Controller
                 $image->delete();
             }
         }
+
+        // Save Histories of products
+        $data = $product->name . ' has been deleted.';
+        $product->historyProduct()->create(['data' => $data, 'action' => 'Deleted', 'user_id' => auth()->user()->id, 'product_id' => $product->id]);
         $product->delete();
+        
         return redirect()->route('admin.product.index');
     }
 }

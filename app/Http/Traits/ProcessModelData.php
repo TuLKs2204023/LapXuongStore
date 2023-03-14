@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 trait ProcessModelData
 {
-
     function processData(Request $request)
     {
         $proData = $request->all();
@@ -41,7 +40,10 @@ trait ProcessModelData
     function processPriceInStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
-        $stock = DB::table('stocks')->where('product_id', $product->id)->get()->last();
+        $stock = DB::table('stocks')
+            ->where('product_id', $product->id)
+            ->get()
+            ->last();
 
         $product->prices()->create(['origin' => $proData['price'], 'stock_id' => $stock->id]);
         $product->push();
@@ -62,7 +64,7 @@ trait ProcessModelData
                 'warranty' => $proData['warranty'],
                 'instruction' => $proData['instruction'],
                 'feature' => $proData['feature'],
-            ]
+            ],
         );
         $product->refresh();
         return $product;
@@ -92,7 +94,9 @@ trait ProcessModelData
     function processUsedPromotion(Order $order, string $promotionCode)
     {
         // From 'TU Lele' with ❤❤❤
-        $promotionId = DB::table('promotions')->where('code', $promotionCode)->first();
+        $promotionId = DB::table('promotions')
+            ->where('code', $promotionCode)
+            ->first();
 
         $order->usedPromotion()->create(['promotion_id' => $promotionId]);
         $order->refresh();
@@ -102,12 +106,15 @@ trait ProcessModelData
     function processRating(User $user, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
-        $product = DB::table('products')->where('id', $proData['product_id'])->first();
+        $product = DB::table('products')
+            ->where('id', $proData['product_id'])
+            ->first();
 
         $productId = $product->id;
 
         $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
         $user->refresh();
+        return $user;
     }
 
     function processDiscount(Product $product, array $proData)
@@ -202,7 +209,7 @@ trait ProcessModelData
 
         foreach ($images as $image) {
             if (in_array($image->url, $filesRemove)) {
-                File::delete(public_path("images/" . $image->url));
+                File::delete(public_path('images/' . $image->url));
                 $image->delete();
             }
         }
@@ -210,10 +217,10 @@ trait ProcessModelData
 
     /**
      * Processing Input data for saving Cate model.
-     * 
+     *
      * @param  \Illuminate\Database\Eloquent\Model $cate
      * @param  integer $groupId
-     * 
+     *
      * @return array $cateItm
      */
     function processCate($cate, $groupId)
@@ -225,10 +232,10 @@ trait ProcessModelData
     }
     /**
      * Processing cate-Name for saving Cate model
-     * 
+     *
      * @param  array $proData
      * @param  string $cateText
-     * 
+     *
      * @return array $proData
      */
     function processCateName($proData, $cateText)
@@ -275,18 +282,17 @@ trait ProcessModelData
                 return $query->where('amount', '<=', $groupData['max']);
             },
             $this->isRangeVal($groupData) => function ($query) use ($groupData) {
-                return $query->where([
-                    ['amount', '>=', $groupData['min']],
-                    ['amount', '<=', $groupData['max']]
-                ]);
+                return $query->where([['amount', '>=', $groupData['min']], ['amount', '<=', $groupData['max']]]);
             },
         ];
 
         foreach ($cateCases as $key => $case) {
             if ($key) {
-                return $subModel::where(function (Builder $query) use ($case) {
-                    return $case($query);
-                })->get();
+                return $subModel
+                    ::where(function (Builder $query) use ($case) {
+                        return $case($query);
+                    })
+                    ->get();
             }
         }
     }
@@ -352,11 +358,10 @@ trait ProcessModelData
         }
     }
 
-
-    /* A function to update history user' table. */
+    /* A function to update history user's table. */
     public function data($user, array $data)
     {
-        $final = "";
+        $final = '';
         $old_name = $user->name;
         $old_phone = $user->phone;
         $old_address = $user->address;
@@ -366,44 +371,49 @@ trait ProcessModelData
         $old_ward = $user->ward_id;
         if ($data['name'] != $old_name) {
             $name = $old_name ?? 'Not Updated';
-            $final = $final . 'Name: ' . $name . ' to ' . $data['name']  . ', ';
+            $final = $final . 'Name: ' . $name . ' to ' . $data['name'] . ', ';
         }
         if ($data['phone'] != $old_phone) {
             $phone = $old_phone ?? 'Not Updated';
-            $final = $final  . 'Phone: ' . $phone . ' to ' . $data['phone']  . ', ';
+            $final = $final . 'Phone: ' . $phone . ' to ' . $data['phone'] . ', ';
         }
 
         if ($data['gender'] != $old_gender) {
             $gender = $old_gender ?? 'Not Updated';
-            $final = $final  . 'Gender: ' . $gender . ' to ' . $data['gender']  . ', ';
+            $final = $final . 'Gender: ' . $gender . ' to ' . $data['gender'] . ', ';
         }
 
         if ($data['city_id'] != $old_city) {
-            $city = DB::table('cities')->where('id', $data['city_id'])->first()->name;
+            $city = DB::table('cities')
+                ->where('id', $data['city_id'])
+                ->first()->name;
             $oldCity = auth()->user()->city->name ?? '';
-            $final = $final  . 'City: ' . $oldCity . ' to ' . $city . ', ';
+            $final = $final . 'City: ' . $oldCity . ' to ' . $city . ', ';
         }
         if ($data['district_id'] != $old_district) {
             $oldDistrict = auth()->user()->district->name ?? '';
-            $district = DB::table('districts')->where('id', $data['district_id'])->first()->name;
-            $final = $final  . 'District: ' . $oldDistrict . ' to ' . $district . ', ';
+            $district = DB::table('districts')
+                ->where('id', $data['district_id'])
+                ->first()->name;
+            $final = $final . 'District: ' . $oldDistrict . ' to ' . $district . ', ';
         }
         if ($data['ward_id'] != $old_ward) {
             $oldWard = auth()->user()->ward->name ?? '';
-            $ward = DB::table('wards')->where('id', $data['ward_id'])->first()->name;
-            $final = $final  . 'Ward: ' . $oldWard . ' to ' . $ward . ',';
+            $ward = DB::table('wards')
+                ->where('id', $data['ward_id'])
+                ->first()->name;
+            $final = $final . 'Ward: ' . $oldWard . ' to ' . $ward . ',';
         }
         if ($data['address'] != $old_address) {
             $address = $old_address ?? 'Not Updated';
-            $final = $final  . 'Address: ' . $address . ' to ' . $data['address']  . '. ';
+            $final = $final . 'Address: ' . $address . ' to ' . $data['address'] . '. ';
         }
 
         $user->histories()->create(['data' => $final, 'action' => 'Updated']);
     }
-
     public function adminData($user, array $data)
     {
-        $final = "";
+        $final = '';
         $old_name = $user->name;
         $old_phone = $user->phone;
         $old_address = $user->address;
@@ -412,30 +422,149 @@ trait ProcessModelData
 
         if ($data['name'] != $old_name) {
             $name = $old_name ?? 'Not Updated';
-            $final = $final . 'Name: ' . $name . ' to ' . $data['name']  . ', ';
+            $final = $final . 'Name: ' . $name . ' to ' . $data['name'] . ', ';
         }
         if ($data['phone'] != $old_phone) {
             $phone = $old_phone ?? 'Not Updated';
-            $final = $final  . 'Phone: ' . $phone . ' to ' . $data['phone']  . ', ';
+            $final = $final . 'Phone: ' . $phone . ' to ' . $data['phone'] . ', ';
         }
         if ($data['address'] != $old_address) {
             $address = $old_address ?? 'Not Updated';
-            $final = $final  . 'Address: ' . $address . ' to ' . $data['address']  . ', ';
+            $final = $final . 'Address: ' . $address . ' to ' . $data['address'] . ', ';
         }
         if ($data['gender'] != $old_gender) {
             $gender = $old_gender ?? 'Not Updated';
-            $final = $final  . 'Gender: ' . $gender . ' to ' . $data['gender']  . ', ';
+            $final = $final . 'Gender: ' . $gender . ' to ' . $data['gender'] . ', ';
         }
         if ($data['role'] != $old_role) {
             $role = $old_role ?? 'Not Updated';
-            $final = $final  . 'Role: ' . $role . ' to ' . $data['role']  . '. ';
+            $final = $final . 'Role: ' . $role . ' to ' . $data['role'] . '. ';
         }
 
-
-
-        $user->histories()->create(['data' => $final, 'action' => 'Updated', 'by'=> 'by Admin']);
+        $user->histories()->create(['data' => $final, 'action' => 'Updated', 'by' => 'by Admin']);
+    }
+    public function adminRating($user, array $proData)
+    {
+        $proname = Product::find($proData['product_id'])->name;
+        if ($proData['selected_rating'] == 1) {
+            $final = 'Rated ' . $proData['selected_rating'] . ' star and commented: ' . $proData['review'] . ' on ' . $proname . '.';
+        } else {
+            $final = 'Rated ' . $proData['selected_rating'] . ' stars and commented: ' . $proData['review'] . ' on ' . $proname . '.';
+        }
+        $user->histories()->create(['data' => $final, 'action' => 'Rated and Reviewed']);
+    }
+    public function adminDelete($admin, $user)
+    {
+        $final = $user->name . ' has been deleted.';
+        $admin->histories()->create(['data' => $final, 'action' => 'Deleted']);
     }
 
+    /* End function to update history user's table. */
+
+    /* A function to update history products's table. */
+    public function dataProduct(array $data, Product $product)
+    {
+        $user = User::find(auth()->user()->id);
+        $id = $product->id;
+        $final = '';
+        $finalFull = '';
+        $old_name = $product->name;
+        $old_manufacture = $product->manufacture_id;
+        $old_cpu = $product->cpu_id;
+        $old_ram = $product->ram_id;
+        $old_ssd = $product->ssd_id;
+        $old_hdd = $product->hdd_id;
+        $old_screen = $product->screen_id;
+        $old_resolution = $product->resolution_id;
+        $old_series = $product->series_id;
+        $old_demand = $product->demand_id;
+        $old_gpu = $product->gpu_id;
+        $old_color = $product->color_id;
+        $old_slug = $product->slug;
+
+        if ($data['name'] != $old_name) {
+            $name = $old_name ?? 'Not Updated';
+            $final = $final . 'NAME' . ', ';
+            $finalFull = $finalFull . 'NAME: ' . $name . ' to ' . $data['name'] . ', ';
+        }
+        if ($data['manufacture_id'] != $old_manufacture) {
+            $manufacture = Product::find($old_manufacture)->name ?? 'Not Updated';
+            $nManu = Product::find($data['manufacture_id'])->name;
+            $final = $final . 'MANUFACTURE' . ', ';
+            $finalFull = $finalFull . 'MANUFACTURE: ' . $manufacture . ' to ' . $nManu . ', ';
+        }
+
+        if ($data['cpu_id'] != $old_cpu) {
+            $cpu = Product::find($old_cpu)->name ?? 'Not Updated';
+            $nCpu = Product::find($data['cpu_id'])->name;
+            $final = $final . 'CPU' . ', ';
+            $finalFull = $finalFull . 'CPU: ' . $cpu . ' to ' . $nCpu . ', ';
+        }
+
+        if ($data['ram_id'] != $old_ram) {
+            $ram = Product::find($old_ram)->name ?? 'Not Updated';
+            $nRam = Product::find($data['ram_id'])->name;
+            $final = $final . 'RAM' . ', ';
+            $finalFull = $finalFull . 'RAM: ' . $ram . ' to ' . $nRam . ', ';
+        }
+        if ($data['ssd_id'] != $old_ssd) {
+            $ssd = Product::find($old_ssd)->name ?? 'Not Updated';
+            $nSsd = Product::find($data['ssd_id'])->name;
+            $final = $final . 'SSD' . ', ';
+            $finalFull = $finalFull . 'SSD: ' . $ssd . ' to ' . $nSsd . ', ';
+        }
+        if ($data['hdd_id'] != $old_hdd) {
+            $hdd = Product::find($hdd_ram)->name ?? 'Not Updated';
+            $nHdd = Product::find($data['hdd_id'])->name;
+            $final = $final . 'HDD' . ', ';
+            $finalFull = $finalFull . 'HDD: ' . $hdd . ' to ' . $nHdd . ', ';
+        }
+        if ($data['screen_id'] != $old_screen) {
+            $screen = Product::find($old_screen)->name ?? 'Not Updated';
+            $nScreen = Product::find($data['screen_id'])->name;
+            $final = $final . 'SCREEN' . ', ';
+            $finalFull = $finalFull . 'SCREEN: ' . $screen . ' to ' . $nScreen . ', ';
+        }
+        if ($data['resolution_id'] != $old_resolution) {
+            $resolution = Product::find($old_resolution)->name ?? 'Not Updated';
+            $nResolution = Product::find($data['resolution_id'])->name;
+            $final = $final . 'RESOLUTION' . ', ';
+            $finalFull = $finalFull . 'RESOLUTION: ' . $resolution . ' to ' . $nResolution . ', ';
+        }
+        if ($data['series_id'] != $old_series) {
+            $series = Product::find($old_series)->name ?? 'Not Updated';
+            $nSeries = Product::find($data['series_id'])->name;
+            $final = $final . 'SERIES' . ', ';
+            $finalFull = $finalFull . 'SERIES: ' . $series . ' to ' . $nSeries . ', ';
+        }
+        if ($data['demand_id'] != $old_demand) {
+            $demand = Product::find($old_demand)->name ?? 'Not Updated';
+            $nDemand = Product::find($data['demand_id'])->name;
+            $final = $final . 'DEMAND' . ', ';
+            $finalFull = $finalFull . 'DEMAND: ' . $demand . ' to ' . $nDemand . ', ';
+        }
+        if ($data['gpu_id'] != $old_gpu) {
+            $gpu = Product::find($old_gpu)->name ?? 'Not Updated';
+            $nGpu = Product::find($data['gpu_id'])->name;
+            $final = $final . 'GPU' . ', ';
+            $final = $final . 'GPU: ' . $gpu . ' to ' . $nGpu . ', ';
+        }
+        if ($data['color_id'] != $old_color) {
+            $color = Product::find($old_color)->name ?? 'Not Updated';
+            $nColor = Product::find($data['color_id'])->name;
+            $final = $final . 'COLOR' . ', ';
+            $finalFull = $finalFull . 'COLOR: ' . $color . ' to ' . $nColor . ', ';
+        }
+        if ($data['slug'] != $old_slug) {
+            $slug = $old_slug ?? 'Not Updated';
+            $final = $final . 'SLUG' . '. ';
+            $finalFull = $finalFull . 'SLUG: ' . $name . ' to ' . $data['slug'] . '. ';
+        }
+
+        $user->historyProduct()->create(['data' => $final, 'fulldata' => $finalFull, 'action' => 'Updated', 'product_id' => $id]);
+    }
+
+    /* End function to update history products's table. */
 
     // ===================================================Count time===================================================
     private function year($now, $keytime)
@@ -505,8 +634,7 @@ trait ProcessModelData
                 return $duration . ' minute ago';
             }
         } else {
-
-            return $duration= 'Just now';
+            return $duration = 'Just now';
         }
     }
 
@@ -528,5 +656,4 @@ trait ProcessModelData
         return $duration;
     }
     // ===================================================end Count time===================================================
-
 }

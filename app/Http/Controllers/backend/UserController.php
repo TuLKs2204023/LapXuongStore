@@ -248,8 +248,11 @@ class UserController extends Controller
     public function DeleteUser($id)
     {
         $user = User::find($id);
+        $admin= User::find(auth()->user()->id);
+
         $image = $user->image;
         File::delete(public_path("images/" . $image));
+        $this->adminDelete($admin,$user);
         $delete = $user->delete();
 
         if ($delete) {
