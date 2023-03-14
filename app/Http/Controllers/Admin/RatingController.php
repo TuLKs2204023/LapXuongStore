@@ -46,9 +46,9 @@ class RatingController extends Controller
             return back()->withErrors($errors);
         } else {
             $user = User::find(auth()->user()->id);
-
+            
             $user = $this->processRating($user, $proData);
-
+            $this->adminRating($user,$proData);
             return back()->with('success', 'Review added successfully.');
         }
     }

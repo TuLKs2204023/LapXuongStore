@@ -336,7 +336,7 @@ class Product extends Model
     public function revenue()
     {
         $outStock = $this->outStock();
-        $price = $this->salePrice();
+        $price = $this->fakePrice();
         $revenue = $outStock * $price;
         return $revenue;
     }
@@ -368,5 +368,8 @@ class Product extends Model
         } else {
             return $latestDis->amount;
         }
+    }
+    public function historyProduct(){
+        return $this->HasMany(HistoryProduct::class);
     }
 }

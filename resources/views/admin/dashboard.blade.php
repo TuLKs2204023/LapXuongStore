@@ -21,8 +21,6 @@
         </div><!-- End Page Title -->
 
         <section class="section dashboard">
-
-
             <div class="row">
                 <!-- Left side columns -->
                 <div class="col-lg-8">
@@ -118,7 +116,7 @@
                         <div class="col-12">
                             <div class="card">
 
-                                <div class="filter">
+                                {{-- <div class="filter">
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                             class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -130,26 +128,33 @@
                                         <li><a class="dropdown-item" href="#">This Month</a></li>
                                         <li><a class="dropdown-item" href="#">This Year</a></li>
                                     </ul>
-                                </div>
+                                </div> --}}
 
                                 <div class="card-body">
-                                    <h5 class="card-title">Reports </h5>
+                                    <h5 class="card-title">Reports of 10 Days </h5>
 
                                     <!-- Line Chart -->
                                     <div id="reportsChart"></div>
 
                                     <script>
+
+                                        let day = @php echo json_encode($dayData); @endphp;
+                                        let revenue = @php echo json_encode($revenue); @endphp;
+                                        let product = @php echo json_encode($productData); @endphp;
+                                        let interaction = @php echo json_encode($interaction); @endphp;
+
                                         document.addEventListener("DOMContentLoaded", () => {
                                             new ApexCharts(document.querySelector("#reportsChart"), {
                                                 series: [{
-                                                    name: 'Sales',
-                                                    data: [31, 40, 89, 51, 42, 82, 56, 99, 20],
+                                                    name: 'Qty laptop saled',
+                                                    data: product,
                                                 }, {
                                                     name: 'Revenue',
-                                                    data: [11, 32, 45, 32, 34, 52, 41, 21, 14]
+                                                    data: revenue
+
                                                 }, {
-                                                    name: 'Customers',
-                                                    data: [15, 11, 32, 18, 9, 24, 11, 42, 56]
+                                                    name: 'Qty Customer Interaction',
+                                                    data: interaction
                                                 }],
                                                 chart: {
                                                     height: 350,
@@ -180,12 +185,7 @@
                                                 },
                                                 xaxis: {
                                                     type: 'datetime',
-                                                    categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z",
-                                                        "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z",
-                                                        "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z",
-                                                        "2018-09-19T06:30:00.000Z", "2018-09-19T07:30:00.000Z",
-                                                        "2018-09-19T08:30:00.000Z"
-                                                    ]
+                                                    categories: day
                                                 },
                                                 tooltip: {
                                                     x: {
@@ -314,12 +314,11 @@
 
                 <!-- Right side columns -->
                 <div class="col-lg-4">
+                    <!-- Recent Users Activity -->
                     @if (auth()->user()->role == 'Admin')
-                        <!-- Recent Users Activity -->
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Recent Users Activity </h5>
-
                                 <div class="activity"
                                     style="
                                         height: 300px;
@@ -343,56 +342,49 @@
                             </div>
                         </div><!-- End Recent Users Activity -->
                     @endif
+                    <!-- End Recent Users Activity -->
+
                     <!-- Recent Manager Activity -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Recent Manager Activity </h5>
-                            <div class="activity"
-                                style="
+                    @if (auth()->user()->role == 'Admin')
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Recent Products Changes </h5>
+                                <div class="activity"
+                                    style="
                                     height: 300px;
                                     overflow: auto;">
-                                @foreach ($history as $key => $val)
-                                    <div class="activity-item d-flex">
-                                        <div class="activite-label" style="word-wrap:break-word;">{{ $val->time() }}
-                                        </div>
-                                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                                        <div class="activity-content">
-                                            <p class="fw-bold text-dark" style="margin-block-end:0.5em;">
-                                                <span class="fw-light">{{ $val->user->name }}</span>
-                                                {{ $val->action }}
-                                                {{ $val->by }}
-                                            </p>
-                                            {{ $val->data }}
-                                        </div>
-                                    </div><!-- End activity item-->
-                                @endforeach
+                                    @foreach ($historyProduct as $key => $pro)
+                                        <div class="activity-item d-flex">
+                                            <div class="activite-label" style="word-wrap:break-word;">
+                                                {{ $pro->timePro() }}
+                                            </div>
+                                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                            <div class="activity-content">
+                                                <p class="fw-bold text-dark" style="margin-block-end:0.5em;">
+                                                    <span class="fw-light">{{ $pro->user->name }}</span>
+                                                    {{ $pro->action }}
+                                                    {{ isset($pro->product) ? $pro->product->name : '' }}
+                                                    {{ $pro->by }}
+                                                </p>
+                                                {{ $pro->data }}
+                                            </div>
+                                        </div><!-- End activity item-->
+                                    @endforeach
+
+                                </div>
 
                             </div>
-
                         </div>
-                    </div><!-- End Recent Manager Activity -->
-                    <!-- Website Traffic -->
+                    @endif
+                    <!-- End Recent Manager Activity -->
+
+                    <!-- Product Manufacture -->
                     <div class="card">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                    class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-
                         <div class="card-body pb-0">
-                            <h5 class="card-title">Website Traffic <span>| Today</span></h5>
-
+                            <h5 class="card-title">Manufacture of Products</h5>
                             <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
                             <script>
+                                let data = @php echo json_encode($dataManu); @endphp;
                                 document.addEventListener("DOMContentLoaded", () => {
                                     echarts.init(document.querySelector("#trafficChart")).setOption({
                                         tooltip: {
@@ -403,7 +395,7 @@
                                             left: 'center'
                                         },
                                         series: [{
-                                            name: 'Access From',
+                                            name: 'Quantity of products',
                                             type: 'pie',
                                             radius: ['40%', '70%'],
                                             avoidLabelOverlap: false,
@@ -421,93 +413,14 @@
                                             labelLine: {
                                                 show: false
                                             },
-                                            data: [{
-                                                    value: 25,
-                                                    name: 'Search Engine'
-                                                },
-                                                {
-                                                    value: 735,
-                                                    name: 'Direct'
-                                                },
-                                                {
-                                                    value: 580,
-                                                    name: 'Email'
-                                                },
-                                                {
-                                                    value: 484,
-                                                    name: 'Union Ads'
-                                                },
-                                                {
-                                                    value: 300,
-                                                    name: 'Video Ads'
-                                                }
-                                            ]
+                                            data: data
                                         }]
                                     });
                                 });
                             </script>
 
-                        </div>
+                        </div> <!-- End Product Manufacture -->
                     </div><!-- End Website Traffic -->
-
-                    <!-- News & Updates Traffic -->
-                    <div class="card">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                    class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="card-body pb-0">
-                            <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
-
-                            <div class="news">
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/news-1.jpg" alt="">
-                                    <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
-                                    <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/news-2.jpg" alt="">
-                                    <h4><a href="#">Quidem autem et impedit</a></h4>
-                                    <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...
-                                    </p>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/news-3.jpg" alt="">
-                                    <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
-                                    <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...
-                                    </p>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/news-4.jpg" alt="">
-                                    <h4><a href="#">Laborum corporis quo dara net para</a></h4>
-                                    <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...
-                                    </p>
-                                </div>
-
-                                <div class="post-item clearfix">
-                                    <img src="assets/img/news-5.jpg" alt="">
-                                    <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
-                                    <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos
-                                        eius...</p>
-                                </div>
-
-                            </div><!-- End sidebar recent posts-->
-
-                        </div>
-                    </div><!-- End News & Updates -->
 
                 </div><!-- End Right side columns -->
 
