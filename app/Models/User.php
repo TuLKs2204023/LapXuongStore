@@ -80,4 +80,7 @@ class User extends Authenticatable
     public function histories(){
         return $this->hasMany(HistoryUser::class);
     }
+    public function historyProduct(){
+        return $this->HasMany(HistoryProduct::class);
+    }
 }
