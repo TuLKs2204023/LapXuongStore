@@ -4,6 +4,26 @@
 
 @section('myCss')
     <style>
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
         .fa-heart {
             color: red;
         }
@@ -182,16 +202,14 @@
 
                         {{-- -------------------------------------------------------------------------------Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
                         <div class="col-lg-6">
-                            <div class="product-details">
+                            <div class="product-details" data-index="{{ $product->id }}">
                                 <div class="pd-title">
                                     <span>{{ $product->series->name }}</span>
                                     <h3>{{ $product->name }}</h3>
                                     @if ($product->findWishlist())
-                                        <a href="{{ Route('removeWishlist', $product->id) }}" class="heart-icon"><i
-                                                class="fas fa-heart"></i></a>
+                                        <a href="#" class="heart-icon"><i class="fas fa-heart"></i></a>
                                     @else
-                                        <a href="{{ Route('addWishlist', $product->id) }}" class="heart-icon"><i
-                                                class="far fa-heart"></i></a>
+                                        <a href="#" class="heart-icon"><i class="far fa-heart"></i></a>
                                     @endif
                                 </div>
                                 <div class="pd-rating">
@@ -499,10 +517,10 @@
                                                 </div>
                                             @endauth
                                         @else
-                                            <div  class="leave-comment">
-                                                <h4 >Please log-in to comment</h4>
+                                            <div class="leave-comment">
+                                                <h4>Please log-in to comment</h4>
                                                 <a href="{{ Route('login') }}"><button type="button"
-                                                        class="btn btn-secondary" >Click me to log-in</button></a>
+                                                        class="btn btn-secondary">Click me to log-in</button></a>
                                             </div>
                                         @endif
 
@@ -590,13 +608,52 @@
 
     <script>
         jQuery(document).ready(function($) {
+            //Tú wishlist
+            const headerHeart = $(".heart-icon").get(0);
+            console.log(headerHeart)
+            const heart = $(".product-details");
+            const childElement = $(heart).find(".fa-heart").first().get(0);
+            const id = $(heart).attr("data-index");
+            console.log(heart, childElement, id)
+            $(childElement).on("click", function(e) {
+                e.preventDefault();
+                const redHeart = $(childElement).hasClass("fas");
 
+                if (redHeart) {
+                    $(childElement).removeClass("fas");
+                    $(childElement).addClass("far");
+                    url = "{{ Route('removeWishlist') }}";
+                    type = "DELETE";
+                } else {
+                    $(childElement).addClass("fas");
+                    $(childElement).removeClass("far");
+                    url = "{{ Route('addWishlist') }}";
+                    type = "POST";
+                }
+                $.ajax({
+                    url: url,
+                    type: type,
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    },
+                    data: {
+                        id: id,
+                    },
+                    success: function(response) {
+                        $(headerHeart).find("span").html(response.totalWishlist);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            })
+            //end Tú Wishlist
+
+            //Thầy Dự
             $(document).on("click", "#deletecomment",
                 function(e) {
-
                     e.preventDefault();
                     var link = $(this).attr("href");
-
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "You won't be able to revert this!",
@@ -616,7 +673,9 @@
                         }
                     })
                 });
+            //end Thầy Dự
 
+            //Rating Star
             $(".btnrating").on('click', (function(e) {
 
                 var previous_value = $("#selected_rating").val();
@@ -636,8 +695,8 @@
                     $("#rating-star-" + ix).toggleClass('btn-warning');
                     $("#rating-star-" + ix).toggleClass('btn-default');
                 }
-
             }));
+            //end Rating Star
         });
     </script>
 @endsection
