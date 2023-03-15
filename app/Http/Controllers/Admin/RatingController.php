@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
+use App\Models\Product;
 use App\Models\Rating;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,15 +43,21 @@ class RatingController extends Controller
     {
         $proData = $this->processDataWithOutSlug($request);
         if ($proData['selected_rating'] == null || $proData['review'] == null) {
-            $errors = ['msg' => 'Stars and review cannot be left blank.'];
-            return back()->withErrors($errors);
+            return response()->json(['msg' => 'Stars and review cannot be left blank.']);
         } else {
             $user = User::find(auth()->user()->id);
-
             $user = $this->processRating($user, $proData);
+            
+            //history thầy Dự
             $this->adminRating($user,$proData);
             $this->userRating($user,$proData);
-            return back()->with('success', 'Review added successfully.');
+            // Render the view and include it in the JSON response
+            $rating = $user->latestRate();
+            $view = view('fe.home.rating', ['rating' => $rating])->render();
+            return response()->json([
+                'success' => true,
+                'view' => $view,
+            ]);
         }
     }
 
@@ -96,9 +103,14 @@ class RatingController extends Controller
      */
     public function destroy(Request $request)
     {
-        $rId = $request->id;
+        $rId = $request->rId;
+        $pId = $request->pId;
         $rating = Rating::find($rId);
         $rating->delete();
-        return back();
+        $product = Product::find($pId);
+        return response()->json([
+            'message' => 'Rating saved successfully',
+            'totalRate' => $product->countRates(),
+        ]);
     }
 }

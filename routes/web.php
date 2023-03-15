@@ -32,6 +32,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FE\HeaderController;
 use App\Http\Controllers\OrderDetailsController;
 
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +65,9 @@ Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
 Route::get('/shop/{slug}', [ShopController::class, 'cate'])->name('fe.shop.cate');
 Route::get('/shop-search', [ShopController::class, 'search'])->name('fe.shop.search');
 
+
+//Header Search
+Route::get('/search', [HeaderController::class, 'header_products'])->name('fe.header.search');
 
 //Data tables
 Route::get('/datatable', function () {
@@ -124,8 +128,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Wishlist
     Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
-    Route::get('/{id}/add_wishlist', [WishlistItemController::class, 'store'])->name('addWishlist');
-    Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'userDestroy'])->name('removeWishlist');
+    Route::post('/add_wishlist', [WishlistItemController::class, 'store'])->name('addWishlist');
+    Route::delete('/remove_wishlist', [WishlistItemController::class, 'userDestroy'])->name('removeWishlist');
 
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
@@ -327,7 +331,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [RatingController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
             Route::put('/update', [RatingController::class, 'update'])->name('update');
-            Route::get('/destroy/{id}', [RatingController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
         });
 
         //Order management

@@ -32,80 +32,25 @@ class Product extends Model
      *
      * @var array
      */
-    protected $appends = [
-        'imageUrl',
-        'discount',
-        'wishList',
-        'discountPrice',
-        'salePrice',
-        'seriesName'
-    ];
+    protected $appends = ['discountedPrice'];
 
     /**
      * The relationships that should always be loaded.
      *
      * @var array
      */
-    // protected $with = ['prices'];
+    protected $with = [];
+
 
     /**
-     * Get the product's image-url attribute.
+     * Get the appended Discounted Price for the product
+     * 
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function getImageUrlAttribute()
+    public function getDiscountedPriceAttribute()
     {
-        return $this->oldestImage->url ?? '';
+        return $this->fakePrice();
     }
-
-    /**
-     * Get the product's discount-amount attribute.
-     */
-    public function getDiscountAttribute()
-    {
-        return $this->latestDiscount() ?? 0;
-    }
-
-    /**
-     * Get the product's wish-list-detail attribute.
-     */
-    public function getWishListAttribute()
-    {
-        if ($this->findWishlist()) {
-            return [
-                'isExisted' => true,
-                'url' => Route('removeWishlist', $this->id)
-            ];
-        } else {
-            return [
-                'isExisted' => false,
-                'url' => Route('addWishlist', $this->id)
-            ];
-        }
-    }
-
-    /**
-     * Get the product's discounted-price attribute.
-     */
-    public function getDiscountPriceAttribute()
-    {
-        return $this->fakePrice() ?? 0;
-    }
-
-    /**
-     * Get the product's normal-sale-price attribute.
-     */
-    public function getSalePriceAttribute()
-    {
-        return $this->salePrice() ?? 0;
-    }
-
-    /**
-     * Get the product's discount-amount attribute.
-     */
-    public function getSeriesNameAttribute()
-    {
-        return $this->series->name;
-    }
-
 
     /**
      * Get the Prices for product
@@ -435,7 +380,8 @@ class Product extends Model
             return $latestDis->amount;
         }
     }
-    public function historyProduct(){
+    public function historyProduct()
+    {
         return $this->HasMany(HistoryProduct::class);
     }
     public function historyRating(){

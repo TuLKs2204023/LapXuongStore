@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FE;
 use App\Http\Controllers\FE\HomeController;
 use App\Models\CateGroup;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class HeaderController extends HomeController
 {
@@ -15,8 +16,10 @@ class HeaderController extends HomeController
         return $cateGroups;
     }
 
-    public static function header_products(){
-        $header_products = Product::all();
-        return $header_products;
+    public static function header_products(Request $request){
+        $request = $request->headerSearch;
+        $products = Product::where('name', 'like', '%'.$request.'%')->paginate(12);
+        $cateGroups = CateGroup::all()->load('cates');
+        return view('fe.home.shop', compact('products', 'cateGroups'));
     }
 }

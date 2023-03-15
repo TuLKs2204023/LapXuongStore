@@ -64,6 +64,10 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class);
     }
 
+    public function latestRate(){
+        return Rating::where('user_id', $this->id)->get()->last();
+    }
+
     public function wishlistItems(){
         return $this->hasMany(WishlistItem::class);
     }

@@ -22,10 +22,12 @@
                         {{-- <span>{{ ($cate->cate_group->name ?? '') . ($cate->name ?? 'All') }}</span> --}}
                         <span>
                             @if (isset($cate->cate_group->name))
-                                {{ $cate->cate_group->name . ': ' }}
+                                <span class="breader-cateGroup-id"
+                                    data-value="{{ $cate->cate_group->id }}">{{ $cate->cate_group->name }}</span>:
                             @endif
                             @if (isset($cate->name))
-                                {{ $cate->name }}
+                                <span class="breader-cate-id" data-value="{{ $cate->id }}">
+                                    {{ $cate->name }}</span>
                             @else
                                 {{ 'All' }}
                             @endif
@@ -225,12 +227,16 @@
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
+                                        <option value="12">12 items</option>
+                                        <option value="16">16 items</option>
+                                        <option value="20">20 items</option>
+                                        <option value="24">24 items</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-md-5 text-right">
+                            {{-- <div class="col-lg-5 col-md-5 text-right">
                                 <p>Show 01- 09 Of {{ $products->total() }} Product</p>
-                            </div>
+                            </div> --}}
                         </div>
                     </div> <!-- // Main content Header -->
 
@@ -247,35 +253,94 @@
 @section('myJs')
     <!-- Start TuJs -->
     <script>
-        const empty = document.querySelectorAll(".product-item .pi-pic .icon .fa-heart");
-        let isFilled = false;
-
-        empty.forEach(element => {
-            element.onclick = function() {
-                if (!isFilled) {
-                    isFilled = true;
-                    element.classList.remove('far');
-                    element.classList.add('fas');
-                } else {
-                    isFilled = false;
-                    element.classList.remove('fas');
-                    element.classList.add('far');
-                }
-            };
-        });
+        jQuery(document).ready(function($) {
+            const productItem = $(".product-item");
+            const headerHeart = $(".heart-icon");
+            productItem.each(function(index, element) {
+                const heart = $(element).find(".icon").get(0);
+                $(heart).on("click", function(e) {
+                    e.preventDefault();
+                    let url, type, token;
+                    const id = $(".product-item").attr("data-index");
+                    const childElement = $(heart).children().children().first().get(0);
+                    const redHeart = $(childElement).hasClass("fas")
+                    if (redHeart) {
+                        $(childElement).removeClass("fas");
+                        $(childElement).addClass("far");
+                        url = "{{ Route('removeWishlist') }}";
+                        type = "DELETE";
+                    } else {
+                        $(childElement).addClass("fas");
+                        $(childElement).removeClass("far");
+                        url = "{{ Route('addWishlist') }}";
+                        type = "POST";
+                    }
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        },
+                        data: {
+                            id: id,
+                        },
+                        success: function(response) {
+                            $(headerHeart).find("span").html(response.totalWishlist);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                })
+            })
+        })
     </script><!-- End TuJs -->
 
-    <script type="module">
-        import {SearchHandler} from '{{ asset('/js/KienJs/searchProduct.js') }}';
+    <script src="{{ asset('frontend/js/jquery-ui.min.js') }}"></script>
 
-        document.addEventListener("readystatechange", (e) => {
-            if (e.target.readyState === "complete") {
-                const productSearch = new SearchHandler({
-                    // url: '{{ Route('fe.shop.search') }}',
-                    // token: '{{ csrf_token() }}',
-                    selectors: {},
-                });
-            }
+    <!-- KienJs -->
+    <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
+    <script>
+        /*-------------------
+                                    	Range Slider
+                                    --------------------- */
+        jQuery(document).ready(function($) {
+            const rangeSlider = $(".price-range"),
+                minamount = $("#minamount"),
+                maxamount = $("#maxamount"),
+                minPrice = rangeSlider.data("min"),
+                maxPrice = rangeSlider.data("max");
+
+            const productSearch = new SearchHandler({
+                price: {
+                    priceMin: minPrice,
+                    priceMax: maxPrice,
+                },
+                paginateConfig: {},
+                selectors: {},
+            });
+            productSearch.initSearch();
+
+            rangeSlider.slider({
+                range: true,
+                min: minPrice,
+                max: maxPrice,
+                step: 500000,
+                values: [minPrice, maxPrice],
+                start: function(event, ui) {
+                    event.stopPropagation();
+                },
+                slide: function(event, ui) {
+                    minamount.val(new Intl.NumberFormat("vi-VN").format(ui.values[0]) + " đ");
+                    maxamount.val(new Intl.NumberFormat("vi-VN").format(ui.values[1]) + " đ");
+
+                },
+                stop: function(event, ui) {
+                    productSearch.updatePrice(ui.values[0], ui.values[1]);
+                }
+            });
+            minamount.val(new Intl.NumberFormat("vi-VN").format(rangeSlider.slider("values", 0)) + " đ");
+            maxamount.val(new Intl.NumberFormat("vi-VN").format(rangeSlider.slider("values", 1)) + " đ");
         });
     </script><!-- End KienJs -->
 @endsection

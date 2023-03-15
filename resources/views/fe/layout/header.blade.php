@@ -28,26 +28,33 @@
                             <a class="login-panel dd ddcommon borderRadius" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-                <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius" style="padding-top:10px;padding-bottom: 7px;" style="width:80px " type="submit">{{ auth()->user()->name }}
-                    <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
-                </a>
-                @endif
-                @if (auth()->user()->role !== 'Customer')
-                <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
-                    Hello {{ auth()->user()->name }}
-                    <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded-circle" style="
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
+                                style="padding-top:10px;padding-bottom: 7px;" style="width:80px "
+                                type="submit">{{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
+                            </a>
+                        @endif
+                        @if (auth()->user()->role !== 'Customer')
+                            <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
+                                Hello {{ auth()->user()->name }}
+                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
+                                    class="rounded-circle"
+                                    style="
                                     height: 40px ;width:40px; margin-left:20px;">
-                </a>
-                <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px " type="submit">Setting</a>
-                @endif
-                @else
-                <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
-                @endauth
+                            </a>
+                            <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
+                                type="submit">Setting</a>
+                        @endif
+                    @else
+                        <a href="{{ Route('login') }}" class="login-panel"><i class="fa fa-user"></i> Login</a>
+                    @endauth
                 @endif
 
                 <div class="lan-selector">
@@ -79,19 +86,15 @@
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-7">
-                    <div class="advanced-search">
-                        <button type="button" class="category-btn">All Categories</button>
-                        <div class="input-group">
-                                <input type="text" dir="rtl" list="datalistOptions"
-                                    placeholder="Type something to search ... ">
-                                <datalist id="datalistOptions">
-                                    @foreach ($header_products as $item)
-                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </datalist>
-                                <button type="button"><i class="ti-search"></i></button>
+                    <form action="{{ Route('fe.header.search') }}" method="GET">
+                        <div class="advanced-search">
+                            <button type="button" class="category-btn">All Categories</button>
+                            <div class="input-group">
+                                <input type="text" placeholder="Type something to search ... " name="headerSearch">
+                                <button type="submit"><i class="ti-search"></i></button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="col-lg-4 col-md-4 text-right">
                     <ul class="nav-right">

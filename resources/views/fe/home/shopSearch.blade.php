@@ -1,10 +1,15 @@
+<!-- Main content Header -->
+<div class="displaying-products">
+    {{ $products->withQueryString()->links('vendor.pagination.header') }}
+</div> <!-- // Main content Header -->
+
 <!-- Main content Body -->
 <div class="product-list">
     <div class="row">
         @if (count($products) > 0)
             @foreach ($products as $item)
-                <div class="col-lg-4 col-sm-6">
-                    <div class="product-item">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="product-item" data-index="{{ $item->id }}">
                         <div class="pi-pic">
                             <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                 alt="{{ $item->name }}">
@@ -14,18 +19,15 @@
                             @endif
                             <div class="icon">
                                 @if ($item->findWishlist())
-                                    <a href="{{ Route('removeWishlist', $item->id) }}"><i class="fas fa-heart"></i></a>
+                                    <a href="#"><i class="fas fa-heart"></i></a>
                                 @else
-                                    <a href="{{ Route('addWishlist', $item->id) }}"><i class="far fa-heart"></i></a>
+                                    <a href="#"><i class="far fa-heart"></i></a>
                                 @endif
                             </div>
                             <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
                                 <li class="quick-view">
                                     <a href="{{ Route('product.details', $item->slug) }}">+ Quick
                                         View</a>
-                                </li>
-                                <li class="w-icon"><a href=""><i class="fa fa-random"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -52,5 +54,5 @@
 
 <!-- Main content Footer -->
 <div class="loading-more">
-    {{ $products->withQueryString()->links('vendor.pagination.custom') }}
+    {{ $products->withQueryString()->links('vendor.pagination.footer') }}
 </div> <!-- // Main content Footer -->

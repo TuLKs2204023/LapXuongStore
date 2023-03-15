@@ -92,7 +92,7 @@ class CheckoutController extends HomeController
                 // $order->details()->save($orderDetail);
             }
             $order->details()->createMany($details);
-
+            $this->completeOrder($order);
             $this->clearCart();
             return view('fe.home.thankyou');
         } else {
