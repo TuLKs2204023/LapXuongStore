@@ -49,8 +49,8 @@ class RatingController extends Controller
             $user = $this->processRating($user, $proData);
             
             //history thầy Dự
-            $this->adminRating($user, $proData);
-
+            $this->adminRating($user,$proData);
+            $this->userRating($user,$proData);
             // Render the view and include it in the JSON response
             $rating = $user->latestRate();
             $view = view('fe.home.rating', ['rating' => $rating])->render();

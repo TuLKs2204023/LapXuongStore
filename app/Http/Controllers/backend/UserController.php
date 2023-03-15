@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
+use App\Models\HistoryUser;
 use App\Models\User;
 use App\Models\Address\City;
 use Illuminate\Http\Request;
@@ -59,9 +60,9 @@ class UserController extends Controller
         $data['email'] = $request->email;
         $data['role'] = $request->role;
         $data['gender'] = $request->gender;
-        $data['address'] = $request->address;
-        $data['phone'] = $request->phone;
-        $data['password'] = Hash::make($request->password);
+        $data['address'] = '';
+        $data['phone'] = '039797979';
+        $data['password'] = Hash::make('12345678');
 
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
@@ -173,8 +174,8 @@ class UserController extends Controller
         $data['role'] = $request->role;
         $data['gender'] = $request->gender;
         $data['address'] = $request->address;
-        $data['phone'] = $request->phone;
-        $data['password'] = Hash::make($request->password);
+        $data['phone'] ='039797979';
+        $data['password'] = Hash::make('12345678');
 
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');

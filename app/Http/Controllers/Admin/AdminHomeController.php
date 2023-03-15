@@ -7,7 +7,6 @@ use App\Http\Traits\ProcessModelData;
 use App\Models\HistoryProduct;
 use App\Models\HistoryUser;
 use App\Models\Cates\Manufacture;
-
 use App\Models\Order;
 use App\Models\Stock;
 use Carbon\Carbon;
@@ -38,11 +37,10 @@ class AdminHomeController extends Controller
     {
         if (auth()->user()->role !== 'Customer') {
             $now = Carbon::now();
-            $order = Order::all();
+            $order = Order::all()->sortByDesc('created_at');
             $allproduct = Product::all();
             $history = HistoryUser::all()->sortByDesc('id');
             $historyProduct = HistoryProduct::all()->sortByDesc('id');
-
             $dataManu = [];
             $manufactures = Manufacture::all();
             foreach ($manufactures as $key => $manu) {
@@ -88,24 +86,6 @@ class AdminHomeController extends Controller
                 }
             }
 
-
-
-
-
-
-
-
-            // for($i=0;$i<=6;$i++) {
-            //     $data=0;
-
-            //     if (!in_array($data, $productData)) {
-            //         array_push($productData, $data);
-            //     }
-
-            // }
-
-
-
             $totalUser = DB::table('users')
                 ->where('role', 'Customer')
                 ->where('created_at', '>', $now->subDays(30))
@@ -139,7 +119,10 @@ class AdminHomeController extends Controller
     {
         return view('fe.home.profile');
     }
-
+    public function historyProduct(){
+        $historyProduct=HistoryProduct::all();
+        return view('admin.users.product-history',compact('historyProduct'));
+    }
     public function backFromError()
     {
         return redirect()->route('fe.home');

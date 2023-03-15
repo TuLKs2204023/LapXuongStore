@@ -5,11 +5,11 @@
 @section('contents')
     <!-- Start Page Title -->
     <div class="pagetitle">
-        <h1>Order {{$order->id}} Details</h1>
+        <h1>Order Details Id : {{$order->id}}</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ Route('admin.dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Order {{$order->id}} Details</li>
+                <li class="breadcrumb-item active">Order Details Id : {{$order->id}}</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->

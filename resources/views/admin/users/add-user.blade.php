@@ -39,7 +39,7 @@
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" placeholder="Enter your name"
+                            <input type="text" name="name" class="form-control" placeholder="Please enter User name"
                                 required>
                         </div>
                     </div> <!-- / Name Section -->
@@ -47,7 +47,7 @@
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                            <input type="text" name="email" class="form-control" placeholder="Enter your email"
+                            <input type="text" name="email" class="form-control" placeholder="Please enter User email"
                                 required>
                         </div>
                     </div> <!-- / Name Section -->
@@ -55,8 +55,8 @@
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
-                            <input type="password" name="password" class="form-control" placeholder="Enter your password"
-                                required>
+                            <input type="password" name="password" class="form-control" placeholder="This creation will set user password to default"
+                                required disabled>
                         </div>
                     </div> <!-- / Password Section -->
                     <!-- Gender section -->
@@ -64,8 +64,8 @@
                         <label for="name" class="col-sm-2 col-form-label">Gender</label>
                         <div class="col-sm-10">
                             <div class="my-custom-select">
-                                <select name="gender" class="form-control" rules="required">
-                                    <option value="">--- Select your gender ---</option>
+                                <select name="gender" class="form-control" rules="required" required>
+                                    <option value="">--- Plesae select User gender ---</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                     <option value="no thanks">No Thanks</option>
@@ -80,8 +80,8 @@
                         <label for="name" class="col-sm-2 col-form-label">Role</label>
                         <div class="col-sm-10">
                             <div class="my-custom-select">
-                                <select name="role" class="form-control" rules="required">
-                                    <option value="">--- Select your role ---</option>
+                                <select name="role" class="form-control" rules="required" required>
+                                    <option value="">---Please select User role ---</option>
                                     <option value="Admin">Admin</option>
                                     <option value="Customer">Customer</option>
                                     <option value="Manager">Manager</option>
@@ -97,7 +97,7 @@
                         <label for="address" class="col-sm-2 col-form-label">Address</label>
                         <div class="col-sm-10">
                             <input type="text" id="address" name="address" class="form-control"
-                                placeholder="Enter your address" required>
+                                disabled required placeholder="This creation will set user address to default">
                         </div>
                     </div> <!-- / Address Section -->
 
@@ -105,8 +105,7 @@
                     <div class="form-group row mb-3">
                         <label for="phone" class="col-sm-2 col-form-label">Phone</label>
                         <div class="col-sm-10">
-                            <input type="text" name="phone" class="form-control" placeholder="Enter your phone"
-                                required>
+                            <input type="text" name="phone" class="form-control" disabled required placeholder="This creation will set user phone number to default">
                         </div>
                     </div><!-- / Phone Section -->
                     <!-- Image Section -->

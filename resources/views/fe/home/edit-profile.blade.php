@@ -78,7 +78,6 @@
                         <div class="col-lg-12">
                             <div class="breadcrumb-text">
                                 <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
-
                                 <a href="{{ Route('userProfile') }}">{{ auth()->user()->name }}</a>
                                 <span>Update Information</span>
                             </div>
@@ -86,322 +85,156 @@
                     </div>
                 </div>
             </div>
+
             <!-- /Breadcrumb -->
-            <div class="row gutters-sm">
-                <div class="col-md-4 mb-3">
-                    {{-- <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-column align-items-center text-center">
-
-                                <div class="mt-3">
-
-
-                                    <button class="btn btn-primary">Follow</button>
-                                    <button class="btn btn-outline-primary">Message</button>
+            <div class="col-lg-10">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form action="{{ URL::to('/update-byuser/' . $edit->id) }}" role="form" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <h4 class="d-flex align-items-center mb-3" style="padding-left: 270px"><i
+                                    class="material-icons text-info mr-2">Information Update
+                                    of {{ auth()->user()->name }}</i></h4>
+                                    <br>
+                            <input type="hidden" name="role" value="Customer">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0" style="vertical-align: middle">Full Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" name="name" class="form-control" value="{{ $edit->name }}"
+                                        required placeholder="Please update your name">
                                 </div>
                             </div>
-                        </div>
-                    </div> --}}
-                    <div class="card mt-3">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-globe mr-2 icon-inline">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                                        <path
-                                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                        </path>
-                                    </svg>Website</h6>
-                                <span class="text-secondary">https://bootdey.com</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-github mr-2 icon-inline">
-                                        <path
-                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                        </path>
-                                    </svg>Github</h6>
-                                <span class="text-secondary">bootdey</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-twitter mr-2 icon-inline text-info">
-                                        <path
-                                            d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                                        </path>
-                                    </svg>Twitter</h6>
-                                <span class="text-secondary">@bootdey</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-instagram mr-2 icon-inline text-danger">
-                                        <rect x="2" y="2" width="20" height="20" rx="5"
-                                            ry="5"></rect>
-                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                    </svg>Instagram</h6>
-                                <span class="text-secondary">bootdey</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-facebook mr-2 icon-inline text-primary">
-                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                                    </svg>Facebook</h6>
-                                <span class="text-secondary">bootdey</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <form action="{{ URL::to('/update-byuser/' . $edit->id) }}" role="form" method="POST"
-                                enctype="multipart/form-data">
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Email</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="email" name="email" class="form-control" value="{{ $edit->email }}"
+                                        required disabled>
+                                    <input type="hidden" name="email" value="{{ $edit->email }}">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="phone" name="phone" class="form-control" value="{{ $edit->phone }}"
+                                        required placeholder="Please update your Phone numer">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Gender</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select name="gender" class="form-control" rules="required">
+                                        <option value="{{ $edit->gender }}">
+                                            {{ isset($edit->gender) ? $edit->gender : 'Select Gender' }} </option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="No thanks">No Thanks</option>
 
-                                @csrf
-                                <input type="hidden" name="role" value="Customer">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0" style="vertical-align: middle">Full Name</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" name="name" class="form-control"
-                                            value="{{ $edit->name }}" required>
-                                    </div>
+                                    </select>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Email</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="email" name="email" class="form-control"
-                                            value="{{ $edit->email }}" required disabled>
-                                        <input type="hidden" name="email" value="{{ $edit->email }}">
-                                    </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">City</h6>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Phone</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="phone" name="phone" class="form-control"
-                                            value="{{ $edit->phone }}" required>
-                                    </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select id="City-dropdown" class="form-control" name="city">
+                                        <option value="{{ auth()->user()->city_id ?? '' }}">
+                                            {{ isset(auth()->user()->city->name) ? auth()->user()->city->name : 'Select your city' }}
+                                        </option>
+                                        @foreach ($city as $data)
+                                            <option value="{{ $data->id }}">
+                                                {{ $data->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Gender</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <select name="gender" class="form-control" rules="required">
-                                            <option value="{{ $edit->gender }}"> {{ $edit->gender }} </option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="No thanks">No Thanks</option>
-
-                                        </select>
-                                    </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">District</h6>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">City</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <select id="City-dropdown" class="form-control" name="city">
-                                            <option value="{{ auth()->user()->city_id ?? ''}}">
-                                                {{ auth()->user()->city->name ?? ''}}</option>
-                                            @foreach ($city as $data)
-                                                <option value="{{ $data->id }}">
-                                                    {{ $data->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select id="district-dropdown" class="form-control" name="district">
+                                        <option value="{{ auth()->user()->district_id ?? '' }}">
+                                            {{ isset(auth()->user()->district->name) ? auth()->user()->district->name : 'Select your district' }}
+                                        </option>
+                                    </select>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">District</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <select id="district-dropdown" class="form-control" name="district">
-                                            <option value="{{ auth()->user()->district_id ?? '' }}">
-                                                {{ auth()->user()->district->name ?? ''}}</option>
-                                        </select>
-                                    </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Ward</h6>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Ward</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <select id="ward-dropdown" class="form-control" name="ward" value="">
-                                            <option value="{{ auth()->user()->ward_id ?? ''}}">
-                                                {{ auth()->user()->ward->name ?? ''}}</option>
-                                        </select>
-                                    </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <select id="ward-dropdown" class="form-control" name="ward" value="">
+                                        <option value="{{ auth()->user()->ward_id ?? '' }}">
+                                            {{ isset(auth()->user()->ward->name) ? auth()->user()->ward->name : 'Select your ward' }}
+                                        </option>
+                                    </select>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Street</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" name="address" class="form-control"
-                                            value="{{ $edit->address }}" required>
-                                    </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Street</h6>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Image</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="file" name="photo" class="form-control"
-                                        @if (isset($edit->image))
-                                            value = "{{ $edit->image }}"
-                                        @endif
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" name="address" class="form-control" value="{{ $edit->address }}"
+                                        required placeholder="Please update your address">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Image</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="file" name="photo" class="form-control"
+                                        @if (isset($edit->image)) value = "{{ $edit->image }}" @endif
+                                        onchange="loadFile(event)" accept="image/*"
                                         >
-                                        @if (isset($edit->image))
-                                            <div class="col-lg-4">
-                                                <img src="{{ asset('images/' . $edit->image) }}"
-                                                    alt="{{ $edit->image }}">
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                                <hr>
-                                {{-- <!-- Image Section -->
-                                <div class="card-body">
-                                    <div class="form-group row mb-3 myFilesUpload">
-                                        <label for="photo" class="col-sm-2 col-form-label">Image</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group hdtuto control-group lst increment">
-                                                <div class="list-input-hidden">
-                                                    <input type="file" name="photo" id="file_upload" multiple
-                                                        class="myfrm form-control hidden">
-
-                                                </div>
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-success btn-add-image" type="button">
-                                                        <i class="fldemo glyphicon glyphicon-plus"></i>
-                                                        + Add image
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                            <div class="list-images">
-                                                <div class="box-image">
-                                                    <input type="hidden" name="images_edited" value=""
-                                                        id="">
-                                                    <img src="{{ asset('images/' . $edit->image) }}" class="picture-box " style="height: 12%">
-                                                    <div class="wrap-btn-delete"><span data-id=""
-                                                            class="btn-delete-image">x</span></div>
-                                                </div>
-                                            </div>
+                                    @if (isset($edit->image))
+                                        <div class="col-lg-3">
+                                            <br>
+                                            <img id="output"/ src="{{ asset('images/' . $edit->image) }}" alt="{{ $edit->image }}" >
 
                                         </div>
-                                    </div>
-                                </div>
-                                <!-- / Image Section --> --}}
 
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <button class="btn btn-info " type="submit">Update</button>
-                                    </div>
-                                </div>
-                            </form>
 
-                        </div>
-                    </div>
+                                    @endif
 
-                    <div class="row gutters-sm">
-                        <div class="col-sm-6 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="d-flex align-items-center mb-3"><i
-                                            class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                                    <small>Web Design</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Website Markup</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%"
-                                            aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>One Page</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%"
-                                            aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Mobile Template</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"
-                                            aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Backend API</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%"
-                                            aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 mb-3">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h6 class="d-flex align-items-center mb-3"><i
-                                            class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                                    <small>Web Design</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Website Markup</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%"
-                                            aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>One Page</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%"
-                                            aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Mobile Template</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"
-                                            aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <small>Backend API</small>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%"
-                                            aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-info " type="submit" style="background-color:#4154f1;border-color:#4154f1">Update</button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+
                     </div>
                 </div>
-            </div>
 
+            </div>
+        </div>
+    </div>
         </div>
     </div>
 @endsection
@@ -423,4 +256,16 @@
             }
         });
     </script><!-- End KienJs -->
+    <!-- Start imgpreviewJs -->
+    <script>
+        var loadFile = function(event) {
+          var output = document.getElementById('output');
+          output.src = URL.createObjectURL(event.target.files[0]);
+          output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+          }
+        };
+        </script>
+    <!-- End imgpreviewJs -->
+
 @endsection
