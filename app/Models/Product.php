@@ -32,7 +32,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $appends = [];
+    protected $appends = ['discountedPrice'];
 
     /**
      * The relationships that should always be loaded.
@@ -40,6 +40,17 @@ class Product extends Model
      * @var array
      */
     protected $with = [];
+
+
+    /**
+     * Get the appended Discounted Price for the product
+     * 
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function getDiscountedPriceAttribute()
+    {
+        return $this->fakePrice();
+    }
 
     /**
      * Get the Prices for product
@@ -369,7 +380,8 @@ class Product extends Model
             return $latestDis->amount;
         }
     }
-    public function historyProduct(){
+    public function historyProduct()
+    {
         return $this->HasMany(HistoryProduct::class);
     }
 }

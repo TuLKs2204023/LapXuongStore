@@ -1,11 +1,9 @@
-export { SearchHandler };
-
 $ = document.querySelector.bind(document);
 
 function SearchHandler({
     paginateConfig: { pageDefaultItems = 12, pageSorting = "" },
+    price: { priceMin = 0, priceMax = 500000000 },
     selectors: {
-        sliderSelector = ".price-range",
         sidebarSelector = ".produts-sidebar-filter",
         productListSelector = ".product-search",
         paginateSelector = ".loading-more",
@@ -13,67 +11,72 @@ function SearchHandler({
     },
 }) {
     const selectors = {
-        sliderSelector,
         sidebarSelector,
         productListSelector,
         paginateSelector,
         paginateShowSelector,
     };
 
-    const priceSlider = $(selectors["sliderSelector"]);
     const currentUrl = getCurrentUrlInfo();
-    console.log(currentUrl);
     const queries = {
         show: pageDefaultItems,
         slug: currentUrl.slug,
+        price: [priceMin, priceMax],
     };
-    const sidebar = $(selectors["sidebarSelector"]);
 
-    const cateInputs = sidebar.querySelectorAll(
-        "input[type='checkbox']:not([disabled])"
-    );
-    cateInputs.forEach((input) => {
-        input.addEventListener("click", (e) => {
-            const inputData = input.dataset.value.split("-");
-            const cateName = inputData[0];
-            const cateVal = Number(inputData[1]);
-            if (!Array.isArray(queries[cateName])) {
-                queries[cateName] = [];
-            }
-            if (input.matches(":checked")) {
-                queries[cateName].push(cateVal);
-            } else {
-                const cateIndex = queries[cateName].indexOf(cateVal);
-                queries[cateName].splice(cateIndex, 1);
-            }
+    // Add event for filtering Checboxes & Pagination
+    function initSearch() {
+        const sidebar = $(selectors["sidebarSelector"]);
+        const cateInputs = sidebar.querySelectorAll(
+            "input[type='checkbox']:not([disabled])"
+        );
 
-            Object.entries(queries).forEach(([key, value]) => {
-                if (!value.length && key !== "show") delete queries[key];
+        // Add event for filtering Checboxes
+        cateInputs.forEach((input) => {
+            input.addEventListener("click", (e) => {
+                const inputData = input.dataset.value.split("-");
+                const cateName = inputData[0];
+                const cateVal = Number(inputData[1]);
+                if (!Array.isArray(queries[cateName])) {
+                    queries[cateName] = [];
+                }
+                if (input.matches(":checked")) {
+                    queries[cateName].push(cateVal);
+                } else {
+                    const cateIndex = queries[cateName].indexOf(cateVal);
+                    queries[cateName].splice(cateIndex, 1);
+                }
+
+                Object.entries(queries).forEach(([key, value]) => {
+                    if (!value.length && key !== "show") delete queries[key];
+                });
+
+                const url = new URL(currentUrl.mainPath);
+
+                // Process to call HttpRequest
+                processQueries(appendQueriesToUrl(url, queries));
             });
-
-            const url = new URL(currentUrl.mainPath);
-
-            // Process to call HttpRequest
-            processQueries(appendQueriesToUrl(url, queries));
         });
-    });
 
-    // Get paginate items
-    const paginateShow = $(selectors["paginateShowSelector"]);
-    const paginateSelect = paginateShow.querySelector(".nice-select.p-show");
-    const paginateOpts = paginateSelect.querySelectorAll("ul li");
+        // Add event for filtering Pagination
+        const paginateShow = $(selectors["paginateShowSelector"]);
+        const paginateSelect = paginateShow.querySelector(
+            ".nice-select.p-show"
+        );
+        const paginateOpts = paginateSelect.querySelectorAll("ul li");
 
-    paginateOpts.forEach((opt) => {
-        opt.addEventListener("click", (e) => {
-            const paginateItms = opt.dataset.value || pageDefaultItems;
-            queries["show"] = paginateItms;
+        paginateOpts.forEach((opt) => {
+            opt.addEventListener("click", (e) => {
+                const paginateItms = opt.dataset.value || pageDefaultItems;
+                queries["show"] = paginateItms;
 
-            const url = new URL(currentUrl.mainPath);
+                const url = new URL(currentUrl.mainPath);
 
-            // Process to call HttpRequest
-            processQueries(appendQueriesToUrl(url, queries));
+                // Process to call HttpRequest
+                processQueries(appendQueriesToUrl(url, queries));
+            });
         });
-    });
+    }
 
     // Function to Process to call HttpRequest
     function processQueries(url) {
@@ -148,4 +151,19 @@ function SearchHandler({
 
         return { slug, mainPath };
     }
+
+    function updatePrice(min, max) {
+        queries["price"][0] = Number(min);
+        queries["price"][1] = Number(max);
+
+        const url = new URL(currentUrl.mainPath);
+        
+        // Process to call HttpRequest
+        processQueries(appendQueriesToUrl(url, queries));
+    }
+
+    return {
+        initSearch,
+        updatePrice,
+    };
 }

@@ -9,7 +9,6 @@ use App\Models\Cates\Ram;
 use App\Models\Cates\Screen;
 use App\Models\Cates\Ssd;
 use App\Models\Order;
-use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -43,12 +42,13 @@ trait ProcessModelData
     function processPriceInStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
-        $stock = DB::table('stocks')
-            ->where('product_id', $product->id)
-            ->get()
-            ->last();
+        $product->prices()->create(['origin' => $proData['price']]);
+        $product->push();
 
-        $product->prices()->create(['origin' => $proData['price'], 'stock_id' => $stock->id]);
+        $salePrice = $product->salePrice();
+        $discount = $product->latestDiscount();
+        $product->prices()->create(['sale_discounted' => $salePrice * (1 - $discount), 'sale' => $salePrice]);
+
         $product->push();
         return $product;
     }
@@ -76,7 +76,15 @@ trait ProcessModelData
     function processInStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
-        $product->stocks()->create(['in_qty' => $proData['in_qty']]);
+        $price = DB::table('prices')
+            ->where([
+                ['product_id', $product->id],
+                ['origin', '>', 0],
+            ])
+            ->get()
+            ->last();
+
+        $product->stocks()->create(['in_qty' => $proData['in_qty'], 'price_id' => $price->id]);
         $product->refresh();
         return $product;
     }
@@ -89,12 +97,15 @@ trait ProcessModelData
     function processOutStock(Product $product, array $proData)
     {
         // From 'TU Lele' with ❤❤❤
-        $stock = $product->stocks()->create(['out_qty' => $proData['out_qty']]);
-        $product->prices()->create([
-            'sale' => $product->salePrice(),
-            'discount' => $product->latestDiscount(),
-            'stock_id' => $stock->id,
-        ]);
+        $price = DB::table('prices')
+            ->where([
+                ['product_id', $product->id],
+                ['sale_discounted', '>', 0],
+            ])
+            ->get()
+            ->last();
+        $stock = $product->stocks()->create(['price_id' => $price->id, 'out_qty' => $proData['out_qty']]);
+
         $product->refresh();
         return $stock;
     }
@@ -131,6 +142,17 @@ trait ProcessModelData
         $proData['amount'] = $proData['amount'] / 100;
         $product->discounts()->create(['amount' => $proData['amount']]);
         $product->refresh();
+
+        $latestSalePrice = DB::table('prices')
+        ->where([
+            ['product_id', $product->id],
+            ['sale', '>', 0],
+        ])
+        ->get()
+        ->last();
+        $discountedSale = $latestSalePrice->sale * (1 - $proData['amount']);
+
+        $product->prices()->create(['sale' => $latestSalePrice->sale, 'sale_discounted' => $discountedSale]);
         return $product;
     }
 
@@ -522,7 +544,7 @@ trait ProcessModelData
             $finalFull = $finalFull . 'SSD: ' . $ssd . ' to ' . $nSsd . ', ';
         }
         if ($data['hdd_id'] != $old_hdd) {
-            $hdd = Product::find($hdd_ram)->name ?? 'Not Updated';
+            $hdd = Product::find($old_hdd)->name ?? 'Not Updated';
             $nHdd = Product::find($data['hdd_id'])->name;
             $final = $final . 'HDD' . ', ';
             $finalFull = $finalFull . 'HDD: ' . $hdd . ' to ' . $nHdd . ', ';

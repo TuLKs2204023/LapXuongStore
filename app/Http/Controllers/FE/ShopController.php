@@ -121,7 +121,7 @@ class ShopController extends Controller
             // Render seach items by searching on header
             if (substr($queries['slug'], 0, 12) === 'headerSearch') {
                 $header = $queries['slug'];
-                $headerQuery = str_replace("+", " ", substr($header, strripos($header, '=') + 1));
+                $headerQuery = str_replace("+", "%", substr($header, strripos($header, '=') + 1));
                 $products = Product::where('name', 'LIKE', '%' . $headerQuery . '%');
             } else {
                 // Render seach items by accessing products on nav-bar
@@ -138,6 +138,11 @@ class ShopController extends Controller
                     case 'show':
                     case 'slug':
                     case 'headerSearch':
+                        break;
+                    case 'price':
+                        $query->whereHas('prices', function (Builder $query) use ($value) {
+                            $query->whereBetween('sale_discounted', explode(",", $value))->orderBy('id', 'desc');
+                        });
                         break;
                     default:
                         $query->whereIn($key . '_id', explode(",", $value));
