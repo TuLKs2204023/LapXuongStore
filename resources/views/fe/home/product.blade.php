@@ -56,6 +56,10 @@
             border-color: white;
             background-color: white;
         }
+
+        .customer-review-option h4 {
+            margin-top: 20px;
+        }
     </style>
 @endsection
 
@@ -267,7 +271,7 @@
                                 <li><a class="active" href="#tab-1" data-toggle="tab" role="tab">DESCRIPTION</a>
                                 </li>
                                 <li><a href="#tab-2" data-toggle="tab" role="tab">SPECIFICATIONS</a></li>
-                                <li><a href="#tab-3" data-toggle="tab" role="tab">Customer Review
+                                <li><a id="review-tab" href="#tab-3" data-toggle="tab" role="tab">Customer Review
                                         ({{ $product->countRates() }})</a></li>
                             </ul>
                         </div>
@@ -396,47 +400,12 @@
                                 {{-- ---------------------------------Comment View------------------------------------------------ --}}
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     <div class="customer-review-option">
-                                        <h4>{{ $product->countRates() }} Comments</h4>
+                                        <h4 class="tu-comment">{{ $product->countRates() }} Comments</h4>
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
-                                                <div class="co-item">
-                                                    <div class="avatar-pic">
-                                                        <img src="{{ isset($rating->user->image) ? asset('images/' . $rating->user->image) : '' }}"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="avatar-text">
-                                                        <div class="at-rating">
-                                                            @for ($i = 0; $i < $rating->rate; $i++)
-                                                                <i class="fa fa-star"></i>
-                                                            @endfor
-                                                            @for ($i = 0; $i < 5 - $rating->rate; $i++)
-                                                                <i class="fa fa-star-o"></i>
-                                                            @endfor
-                                                        </div>
-                                                        <div
-                                                            @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
-                                                                @elseif ($rating->user->role == 'Manager') 
-                                                                    style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
-                                                                @else
-                                                                    style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
-                                                            {{ $rating->user->role }}
-                                                        </div>
-                                                        <h5>{{ $rating->user->name }}
-                                                            <span>{{ $rating->timeRating() }}</span>
-                                                        </h5>
-                                                        <div class="at-reply">{{ $rating->review }}</div>
-                                                        @if (auth()->user())
-                                                            @if (auth()->user()->role == 'Admin')
-                                                                <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
-                                                                    id="deletecomment"
-                                                                    class="btn btn-outline-danger btn-sm">
-                                                                    <i class="fas fa-trash"></i>
-                                                                    Delete
-                                                                </a>
-                                                            @endif
-                                                        @endif
-                                                    </div>
-                                                </div>
+                                                {{-- Ratings --}}
+                                                @include('fe.home.rating')
+                                                {{-- end Ratings --}}
                                             @endforeach
                                         </div>
                                         {{-- ---------------------------------end Comment View------------------------------------------------ --}}
@@ -449,9 +418,7 @@
                                                     <!-- Message Section -->
                                                     @include('components.message')
                                                     <!-- / Message Section -->
-                                                    <form action="{{ Route('admin.rating.store') }}" class="comment-form"
-                                                        method="POST">
-                                                        @csrf
+                                                    <form class="comment-form">
                                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                         <div class="personal-rating">
                                                             <div class="form-group" id="rating-ability-wrapper">
@@ -507,10 +474,9 @@
                                                                     value="{{ auth()->user()->email }}">
                                                             </div>
                                                             <div class="col-lg-12">
-                                                                <textarea placeholder="Review" name="review" rows="8"></textarea>
-                                                                <button type="submit"
-                                                                    class="site-btn review-lapxuong-btn">Send
-                                                                    Review</button>
+                                                                <textarea id="review" placeholder="Review" name="review" rows="8"></textarea>
+                                                                <a href="#" class="site-btn review-lapxuong-btn">Send
+                                                                    Review</a>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -520,7 +486,9 @@
                                             <div class="leave-comment">
                                                 <h4>Please log-in to comment</h4>
                                                 <a href="{{ Route('login') }}"><button type="button"
-                                                        class="btn btn-secondary">Click me to log-in</button></a>
+                                                        style="background-color: var(--grey-dark);"
+                                                        class="btn btn-secondary">Click
+                                                        me to log-in</button></a>
                                             </div>
                                         @endif
 
@@ -610,11 +578,9 @@
         jQuery(document).ready(function($) {
             //Tú wishlist
             const headerHeart = $(".heart-icon").get(0);
-            console.log(headerHeart)
             const heart = $(".product-details");
             const childElement = $(heart).find(".fa-heart").first().get(0);
-            const id = $(heart).attr("data-index");
-            console.log(heart, childElement, id)
+            const pId = $(heart).attr("data-index");
             $(childElement).on("click", function(e) {
                 e.preventDefault();
                 const redHeart = $(childElement).hasClass("fas");
@@ -637,7 +603,7 @@
                         "X-CSRF-TOKEN": "{{ csrf_token() }}",
                     },
                     data: {
-                        id: id,
+                        id: pId,
                     },
                     success: function(response) {
                         $(headerHeart).find("span").html(response.totalWishlist);
@@ -649,30 +615,96 @@
             })
             //end Tú Wishlist
 
-            //Thầy Dự
-            $(document).on("click", "#deletecomment",
-                function(e) {
-                    e.preventDefault();
-                    var link = $(this).attr("href");
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                'Deleted!',
-                                'This comment has been deleted.',
-                                'success'
-                            )
-                            window.location.href = link;
-                        }
-                    })
+            //Send review
+            const starWrap = $("#rating-ability-wrapper .btnrating");
+            const cmtArea = $("#review").get(0);
+            const sendReview = $(".site-btn.review-lapxuong-btn").get(0);
+            $(sendReview).on("click", function(e) {
+                e.preventDefault();
+                const formArray = $(".comment-form").serializeArray();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ Route('admin.rating.store') }}",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    },
+                    data: formArray,
+                    success: function(response) {
+                        $(".selected-rating").html(0);
+                        $(starWrap).each(function(index, element) {
+                            const hasWaring = $(element).hasClass("btn-warning");
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: $("#review-tab").offset().top
+                            }, 100);
+                            if (hasWaring) {
+                                $(element).removeClass("btn-warning");
+                                $(element).addClass("btn-default");
+                            }
+                        })
+                        $(cmtArea).val("");
+                        $(".comment-option.overflow-auto").children().first().before(response
+                            .view);
+                        const reviewDelBtn = $(".comment-option.overflow-auto").children()
+                            .first().get(0);
+                        reviewDelBtn.onclick =
+                            function(e) {
+                                tuDeleteComment(reviewDelBtn);
+                            };
+                    }
                 });
+            })
+            //end Send Review
+
+            //Thầy Dự xóa Rating (Tú có fix lại)
+            //hàm delete của tú
+            function tuDeleteComment(element) {
+                const rId = $("#deletecomment").attr("data-index");
+                const pId = $(heart).attr("data-index");
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#4154f1',
+                    cancelButtonColor: 'crimson',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ Route('admin.rating.destroy') }}",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            },
+                            data: {
+                                rId: rId,
+                                pId: pId,
+                            },
+                            success: function(response) {
+                                $(element).remove();
+                                $("#review-tab").html("Customer Review " +
+                                    "(" + response.totalRate + ")");
+                                $(".customer-review-option .tu-comment")
+                                    .html(response.totalRate + " Comments");
+
+                            }
+                        })
+                        Swal.fire(
+                            'Deleted!',
+                            'This comment has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+            }
+            //end hàm delete rồi nha
+            const ratingItem = $(".co-item");
+            ratingItem.each(function(index, element) {
+                $(element).on("click", "#deletecomment", function(e) {
+                    e.preventDefault();
+                    tuDeleteComment(element);
+                });
+            })
             //end Thầy Dự
 
             //Rating Star

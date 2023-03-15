@@ -91,7 +91,8 @@ trait ProcessModelData
 
     function completeOrder(Order $order)
     {
-        Mail::to($order->email)->send(new OrderConfirmation($order));
+        $message = new OrderConfirmation($order);
+        Mail::to($order->email)->send($message);
     }
 
     function processOutStock(Product $product, array $proData)

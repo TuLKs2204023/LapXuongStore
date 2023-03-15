@@ -167,7 +167,7 @@
                         <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
                         <a href="{{ Route('userProfile') }}">{{ auth()->user()->name }}</a>
                         <a href="{{ Route('userOrders') }}">Orders</a>
-                        <span>Orders LXS-{{ $order->id }} Details</span>
+                        <span>Orders #LXS-{{ $order->id }} Details</span>
                     </div>
                 </div>
             </div>
@@ -257,7 +257,7 @@
             <div class="col-md-6 py-3">
                 <div class="d-flex flex-column align-items start"> <b>Billing Address</b>
                     <p class="text-justify">{{ $order->user->name ?? 'No Name' }} | {{ $order->user->phone }}</p>
-                    <p class="text-justify pt-2">{{$order->user->address ?? 'No Address'}}, {{ $order->user->ward->name ?? 'No Ward' }}, {{$order->user->district->name ?? 'No District'}}, {{ $order->user->city->name }}</p>
+                    <p class="text-justify pt-2">{{$order->user->address ?? 'No Address'}}, {{ $order->user->ward->name ?? 'No Ward' }}, {{$order->user->district->name ?? 'No District'}}, {{ $order->user->city->name ?? 'No District'}}</p>
                 </div>
             </div>
             <div class="col-md-6 py-3">
