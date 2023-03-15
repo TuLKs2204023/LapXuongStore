@@ -11,14 +11,14 @@ class Stock extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['in_qty', 'out_qty'];
+    protected $fillable = ['in_qty', 'out_qty', 'price_id'];
 
     public function product():BelongsTo{
         return $this->belongsTo(Product::class);
     }
 
     public function price(){
-        return $this->hasOne(Price::class);
+        return $this->belongsTo(Price::class);
     }
 
     public function getPrice()

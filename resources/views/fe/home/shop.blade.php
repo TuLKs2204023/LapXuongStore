@@ -296,16 +296,51 @@
         })
     </script><!-- End TuJs -->
 
-    <script type="module">
-        import {SearchHandler} from '{{ asset('/js/KienJs/searchProduct.js') }}';
+    <script src="{{ asset('frontend/js/jquery-ui.min.js') }}"></script>
 
-        document.addEventListener("readystatechange", (e) => {
-            if (e.target.readyState === "complete") {
-                const productSearch = new SearchHandler({
-                    paginateConfig: {},
-                    selectors: {},
-                });
-            }
+    <!-- KienJs -->
+    <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
+    <script>
+        /*-------------------
+                                    	Range Slider
+                                    --------------------- */
+        jQuery(document).ready(function($) {
+            const rangeSlider = $(".price-range"),
+                minamount = $("#minamount"),
+                maxamount = $("#maxamount"),
+                minPrice = rangeSlider.data("min"),
+                maxPrice = rangeSlider.data("max");
+
+            const productSearch = new SearchHandler({
+                price: {
+                    priceMin: minPrice,
+                    priceMax: maxPrice,
+                },
+                paginateConfig: {},
+                selectors: {},
+            });
+            productSearch.initSearch();
+
+            rangeSlider.slider({
+                range: true,
+                min: minPrice,
+                max: maxPrice,
+                step: 500000,
+                values: [minPrice, maxPrice],
+                start: function(event, ui) {
+                    event.stopPropagation();
+                },
+                slide: function(event, ui) {
+                    minamount.val(new Intl.NumberFormat("vi-VN").format(ui.values[0]) + " đ");
+                    maxamount.val(new Intl.NumberFormat("vi-VN").format(ui.values[1]) + " đ");
+
+                },
+                stop: function(event, ui) {
+                    productSearch.updatePrice(ui.values[0], ui.values[1]);
+                }
+            });
+            minamount.val(new Intl.NumberFormat("vi-VN").format(rangeSlider.slider("values", 0)) + " đ");
+            maxamount.val(new Intl.NumberFormat("vi-VN").format(rangeSlider.slider("values", 1)) + " đ");
         });
     </script><!-- End KienJs -->
 @endsection
