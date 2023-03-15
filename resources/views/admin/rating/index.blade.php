@@ -63,7 +63,7 @@
                                             href="{{ Route('product.details', $rating->product->slug) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
-                                            Reply
+                                            View
                                         </a>
                                         <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
                                             class="btn btn-sm btn-danger" id="delete">

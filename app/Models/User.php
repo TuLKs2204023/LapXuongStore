@@ -83,4 +83,7 @@ class User extends Authenticatable
     public function historyProduct(){
         return $this->HasMany(HistoryProduct::class);
     }
+    public function historyRating(){
+        return $this->HasMany(HistoryRating::class);
+    }
 }

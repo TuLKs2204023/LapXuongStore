@@ -32,21 +32,21 @@
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" value="{{ $edit->name }}" required>
+                            <input type="text" name="name" class="form-control" value="{{ $edit->name }}" required placeholder="Please enter User name">
                         </div>
                     </div> <!-- / Name Section -->
                     <!-- Email Section -->
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                            <input type="text" name="email" class="form-control" value="{{ $edit->email }}"" required>
+                            <input type="text" name="email" class="form-control" value="{{ $edit->email }}"" required placeholder="Please enter User email">
                         </div>
                     </div> <!-- / Email Section -->
                     <!-- Password Section -->
                     <div class="form-group row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
-                            <input type="password" name="password" class="form-control" placeholder="Enter your password"
+                            <input type="password" name="password" class="form-control" placeholder="Confirm edit will set User password to default" disabled
                                 required>
                         </div>
                     </div> <!-- / Password Section -->
@@ -55,11 +55,11 @@
                         <label for="name" class="col-sm-2 col-form-label">Gender</label>
                         <div class="col-sm-10">
                             <div class="my-custom-select">
-                                <select name="gender" class="form-control" rules="required">
-                                    <option value="">--- Select your gender ---</option>
+                                <select name="gender" class="form-control" rules="required" required>
+                                    <option value="">--- Please select User gender ---</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
-                                    <option value="no thanks">No Thanks</option>
+                                    <option value="No thanks">No Thanks</option>
 
                                 </select>
                             </div>
@@ -71,8 +71,8 @@
                         <label for="name" class="col-sm-2 col-form-label">Role</label>
                         <div class="col-sm-10">
                             <div class="my-custom-select">
-                                <select name="role" class="form-control" rules="required">
-                                    <option value="">--- Select your role ---</option>
+                                <select name="role" class="form-control" rules="required" required>
+                                    <option value="">--- Please select User role ---</option>
                                     <option value="Admin">Admin</option>
                                     <option value="Customer">Customer</option>
                                     <option value="Manager">Manager</option>
@@ -83,52 +83,14 @@
                         <span class="form-message"></span>
                     </div><!-- / Role section -->
 
-                    <!-- Address Section -->
-                    <div class="form-group row mb-3">
-                        <label for="address" class="col-sm-2 col-form-label">Address</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="address" name="address" class="form-control"
-                                value="Not update" disabled>
-                        </div>
-                    </div> <!-- / Address Section -->
-
                     <!-- Phone Section -->
                     <div class="form-group row mb-3">
                         <label for="phone" class="col-sm-2 col-form-label">Phone</label>
                         <div class="col-sm-10">
-                            <input type="text" name="phone" class="form-control" value="{{ $edit->phone }}" required>
+                            <input type="text" name="phone" class="form-control" value="" required placeholder="Confirm edit will set User phone number to default" disabled>
                         </div>
                     </div><!-- / Phone Section -->
-                    {{-- <!-- Image Section -->
-                    <div class="form-group row mb-3 myFilesUpload">
-                        <label for="photo" class="col-sm-2 col-form-label">Image</label>
-                        <div class="col-sm-10">
-                            <div class="input-group hdtuto control-group lst increment">
-                                <div class="list-input-hidden-upload">
-                                    <input type="file" name="photo" id="file_upload" multiple
-                                        class="myfrm form-control hidden" >
 
-                                </div>
-                                <div class="input-group-btn">
-                                    <button class="btn btn-success btn-add-image" type="button">
-                                        <i class="fldemo glyphicon glyphicon-plus"></i>
-                                        + Add image
-                                    </button>
-                                </div>
-
-                            </div>
-                            <div class="list-images">
-                                <div class="box-image">
-                                    <input type="hidden" name="images_edited" value="" id="">
-                                    <img src="{{ asset('images/' . $edit->image) }}" class="picture-box">
-                                    <div class="wrap-btn-delete"><span data-id=""
-                                        class="btn-delete-image">x</span></div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- / Image Section --> --}}
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Confirm Edit</button>
                         <button type="reset" class="btn btn-secondary">Reset</button>

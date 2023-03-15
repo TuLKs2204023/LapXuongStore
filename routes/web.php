@@ -51,8 +51,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
-Route::get('/customer', [AdminHomeController::class, 'customer'])->name('customer');
+Route::get('/customer', [FE_HomeController::class, 'userProfile'])->name('userProfile');
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
+Route::get('/product-history', [AdminHomeController::class, 'historyProduct'])->name('historyProduct');
+
 
 
 Route::get('/about-us', [FE_HomeController::class, 'aboutUs'])->name('aboutUs');
@@ -126,8 +128,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/{id}/remove_wishlist', [WishlistItemController::class, 'userDestroy'])->name('removeWishlist');
 
     // Checkout
-    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout'); 
-    Route::get('/thankyou', [CheckoutController::class, 'asd'])->name('asd'); 
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/thankyou', [CheckoutController::class, 'asd'])->name('asd');
     Route::post('/process-checkout', [CheckoutController::class, 'processCheckout'])->name('processCheckout');
 
     // Coupon

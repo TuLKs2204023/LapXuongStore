@@ -94,6 +94,9 @@
                             <form action="{{ URL::to('/password-user/' . $edit->id) }}" role="form" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
+                                <h4 class="d-flex align-items-center mb-3" style="padding-left: 200px"><i
+                                    class="material-icons text-info mr-2">Password of {{ auth()->user()->name }}  Changes
+                                    </i></h4>
                                 <input type="hidden" name="role" value="Customer">
                                 <div class="row">
                                     <div class="col-sm-3">
@@ -111,7 +114,7 @@
                                         <h6 class="mb-0">Old Password</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="password" class="form-control" required name="old_confirmation">
+                                        <input type="password" class="form-control" required name="old_confirmation" placeholder="Please enter your old password">
                                     </div>
                                 </div>
 
@@ -123,7 +126,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="password" name="password" class="form-control"
-                                            placeholder="Please enter new password" required>
+                                            placeholder="Please enter your new password" required>
                                     </div>
                                 </div>
                                 <hr>
@@ -133,12 +136,12 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="password" name="confirm_new_password" class="form-control"
-                                            placeholder="Please confirm new password" required>
+                                            placeholder="Please confirm your new password" required>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12" style="text-align:center">
                                         <button class="btn btn-info " type="submit"
                                             style="background-color:#4154f1;border-color:#4154f1">Update</button>
                                     </div>

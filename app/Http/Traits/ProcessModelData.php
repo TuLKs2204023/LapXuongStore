@@ -365,10 +365,16 @@ trait ProcessModelData
         $old_name = $user->name;
         $old_phone = $user->phone;
         $old_address = $user->address;
+        $old_image = $user->image;
         $old_gender = $user->gender;
         $old_city = $user->city_id;
         $old_district = $user->district_id;
         $old_ward = $user->ward_id;
+
+        if ($data['image'] != $old_image) {
+            $image = $old_image ?? 'Not Updated';
+            $final = $final . 'New avatar'  . ', ';
+        }
         if ($data['name'] != $old_name) {
             $name = $old_name ?? 'Not Updated';
             $final = $final . 'Name: ' . $name . ' to ' . $data['name'] . ', ';
@@ -416,7 +422,7 @@ trait ProcessModelData
         $final = '';
         $old_name = $user->name;
         $old_phone = $user->phone;
-        $old_address = $user->address;
+
         $old_gender = $user->gender;
         $old_role = $user->role;
 
@@ -428,10 +434,7 @@ trait ProcessModelData
             $phone = $old_phone ?? 'Not Updated';
             $final = $final . 'Phone: ' . $phone . ' to ' . $data['phone'] . ', ';
         }
-        if ($data['address'] != $old_address) {
-            $address = $old_address ?? 'Not Updated';
-            $final = $final . 'Address: ' . $address . ' to ' . $data['address'] . ', ';
-        }
+
         if ($data['gender'] != $old_gender) {
             $gender = $old_gender ?? 'Not Updated';
             $final = $final . 'Gender: ' . $gender . ' to ' . $data['gender'] . ', ';
@@ -460,7 +463,18 @@ trait ProcessModelData
     }
 
     /* End function to update history user's table. */
-
+    public function userRating($user, array $data)
+    {
+        $proName = Product::find($data['product_id'])->name;
+        $proId = Product::find($data['product_id'])->id;
+        if ($data['selected_rating'] == 1) {
+            $rating = 'Rated ' . $data['selected_rating'] . ' star';
+        } else {
+            $rating = 'Rated ' . $data['selected_rating'] . ' stars';
+        }
+        $review = $data['review'];
+        $user->historyRating()->create(['rating' => $rating, 'review' => $review, 'action' => 'Rated and Reviewed', 'product_id' => $proId]);
+    }
     /* A function to update history products's table. */
     public function dataProduct(array $data, Product $product)
     {
@@ -563,6 +577,10 @@ trait ProcessModelData
 
         $user->historyProduct()->create(['data' => $final, 'fulldata' => $finalFull, 'action' => 'Updated', 'product_id' => $id]);
     }
+
+    /* End function to update history products's table. */
+
+    /* A function to update history rating's table. */
 
     /* End function to update history products's table. */
 

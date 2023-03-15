@@ -438,4 +438,7 @@ class Product extends Model
     public function historyProduct(){
         return $this->HasMany(HistoryProduct::class);
     }
+    public function historyRating(){
+        return $this->HasMany(HistoryRating::class);
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\FE;
 
 use App\Http\Controllers\Controller;
+use App\Models\HistoryRating;
+use App\Models\HistoryUser;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
@@ -182,7 +184,8 @@ class HomeController extends Controller
     public function userProfile()
     {
         $user = auth()->user();
-        return view('fe.home.profile', compact('user'));
+        $rating =HistoryRating::all();
+        return view('fe.home.profile', compact('user','rating'));
     }
     public function aboutUs()
     {
