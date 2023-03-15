@@ -254,15 +254,15 @@
     <!-- Start TuJs -->
     <script>
         jQuery(document).ready(function($) {
-            const heart = $(".product-item .pi-pic .icon");
+            const productItem = $(".product-item");
             const headerHeart = $(".heart-icon");
-            heart.each(function(index, element) {
-                $(element).on("click", function(e) {
+            productItem.each(function(index, element) {
+                const heart = $(element).find(".icon").get(0);
+                $(heart).on("click", function(e) {
                     e.preventDefault();
                     let url, type, token;
-                    const id = $(this).attr("data-index");
-                    // const anchor = $(this).children().first().get(0);
-                    const childElement = $(this).children().children().first().get(0);
+                    const id = $(".product-item").attr("data-index");
+                    const childElement = $(heart).children().children().first().get(0);
                     const redHeart = $(childElement).hasClass("fas")
                     if (redHeart) {
                         $(childElement).removeClass("fas");

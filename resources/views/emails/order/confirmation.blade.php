@@ -1,160 +1,98 @@
-    <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Email</title>
-        <!-- Css Styles -->
-        <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/themify-icons.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/elegant-icons.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/owl.carousel.min.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/nice-select.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/jquery-ui.min.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/slicknav.min.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" type="text/css">
-
-        <!-- Main Css Styles -->
-        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
-        <style>
-            @media (min-width: 1025px) {
-                .h-custom {
-                    height: 100vh !important;
-                }
-            }
-
-            .horizontal-timeline .items {
-                border-top: 2px solid #ddd;
-            }
-
-            .horizontal-timeline .items .items-list {
-                position: relative;
-                margin-right: 0;
-            }
-
-            .horizontal-timeline .items .items-list:before {
-                content: "";
-                position: absolute;
-                height: 8px;
-                width: 8px;
-                border-radius: 50%;
-                background-color: #ddd;
-                top: 0;
-                margin-top: -5px;
-            }
-
-            .horizontal-timeline .items .items-list {
-                padding-top: 15px;
-            }
-        </style>
-    </head>
-
-    <body>
-        <section class="h-100 h-custom" style="background-color: #eee;">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-lg-8 col-xl-6">
-                        <div class="card border-top border-bottom border-3" style="border-color: #4154f1 !important;">
-                            <div class="card-body p-5">
-
-                                <p class="lead fw-bold mb-5" style="color: #4154f1;">Purchase Reciept</p>
-
-                                <div class="row">
-                                    <div class="col mb-3">
-                                        <p class="small text-muted mb-1">Date</p>
-                                        <p>{{ $order->created_at }}</p>
-                                    </div>
-                                    <div class="col mb-3">
-                                        <p class="small text-muted mb-1">Order No.</p>
-                                        <p>(LXS-{{ $order->id }})</p>
-                                    </div>
-                                </div>
-                                @foreach ($order->details as $item)
-                                    <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
-                                        <div class="row">
-                                            <div class="col-md-8 col-lg-9">
-                                                <p>{{ $item->product->name }}</p>
-                                            </div>
-                                            <div class="col-md-4 col-lg-3">
-                                                <p>{{ number_format($item->stock->price->sale, 0, ',', '.') . ' VND' }}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                @endforeach
-                                <div class="row">
-                                    <div class="col-md-8 col-lg-9">
-                                        <p class="mb-0">Shipping</p>
-                                    </div>
-                                    <div class="col-md-4 col-lg-3">
-                                        <p class="mb-0">FREE</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8 col-lg-9">
-                                        <p class="mb-0">Discount</p>
-                                    </div>
-                                    <div class="col-md-4 col-lg-3">
-                                        <p>{{ number_format($order->discountAmount(), 0, ',', '.') . ' VND' }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row my-4">
-                                    <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
-                                        <p class="lead fw-bold mb-0" style="color: #4154f1;">
-                                            {{ number_format($order->totalAfterDiscount(), 0, ',', '.') . ' VND' }}</p>
-                                    </div>
-                                </div>
-
-                                <p class="lead fw-bold mb-4 pb-2" style="color: #4154f1;">Tracking Order</p>
-
-                                <div class="row">
-                                    <div class="col-lg-12">
-
-                                        <div class="horizontal-timeline">
-
-                                            <ul class="list-inline items d-flex justify-content-between">
-                                                <li class="list-inline-item items-list">
-                                                    <p class="py-1 px-2 rounded text-white"
-                                                        style="background-color: #4154f1;">Ordered</p
-                                                        class="py-1 px-2 rounded text-white"
-                                                        style="background-color: #4154f1;">
-                                                </li>
-                                                <li class="list-inline-item items-list text-end"
-                                                    style="margin-right: 8px;">
-                                                    <p style="margin-right: -8px;">Shipped</p>
-                                                </li>
-                                                <li class="list-inline-item items-list text-end"
-                                                    style="margin-right: 8px;">
-                                                    <p style="margin-right: -8px;">On the way</p>
-                                                </li>
-                                                <li class="list-inline-item items-list text-end"
-                                                    style="margin-right: 8px;">
-                                                    <p style="margin-right: -8px;">Delivered</p>
-                                                </li>
-                                            </ul>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <p class="mt-4 pt-2 mb-0">Want any help? <a href="#!"
-                                        style="color: #4154f1;">Please
-                                        contact
-                                        us</a></p>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </body>
-
-    </html>
+<div style="background-color:#f8f8f8;margin:0;padding:0">
+    <table cellpadding="0" cellspacing="0" height="100%" width="100%">
+      <tbody>
+        <tr>
+          <td align="center" style="padding-top:2px;padding-left:0;padding-right:0;min-width:600px" valign="top">
+          <center>
+          <table cellpadding="0" cellspacing="0" width="600">
+            <tbody>
+              <tr>
+                <td style="padding-top:20px;padding-bottom:22px;float:left" valign="top"><img src="{{ $message->embed('images/asd-removebg-preview.png') }}" alt="" style="margin:0;display:block;height:30px;"></td>
+              </tr>
+            </tbody>
+          </table>
+  
+          <hr align="center" color="#E7E7E7" size="1px" width="600">
+          <table cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+              <tr>
+                <td align="center" style="padding-left:10px;padding-right:10px" valign="top">
+                <table cellpadding="0" cellspacing="0" width="600">
+                  <tbody>
+                    <tr>
+                      <td>
+                      <table cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                          <tr>
+                            <td align="left" style="padding:30px 0;padding-top:25px;padding-bottom:15px;font-size:16px;line-height:25px;color:#565a5c;font-weight:normal;font-family:Helvetica Neue,Helvetica,Arial,sans-serif" valign="top">
+                            <p style="margin-top:5px;margin-bottom:12px;font-weight:bold;font-size:20px">Hi {{ $order->user->name }},</p>
+  
+                            <p style="margin-bottom:12px">Thank you so much for your business. We will get started on your order right away. When we shipped, we will send you another email to make sure you can track your order easier.
+                            <br>In the meantime, if you have any questions or asking about your order, you can email us through <i>LapXuongShop@support.com</i></p>
+  
+                            <h4 style="font-size: 20px;color: #333;border-bottom: 1px solid #ADABAB;margin-bottom: 5px;">YOUR ORDER CONFIRMATION</h4>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Number: <b>#LXS-{{ $order->id }}</b></p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Date: <b>{{ $order->created_at->format('jS F Y h:i:s A') }}</b></p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Note: <b>"{{ $order->notes ?? "No Note" }}"</b></p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Status: <b>Processing</b></p>
+                            <h4 style="font-size: 20px;color: #333;border-bottom: 1px solid #ADABAB;margin-top: 20px;margin-bottom: 5px;">SHIPPING INFO</h4>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">{{ $order->name }}</p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">{{ $order->email}}</p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">{{ $order->phone}}</p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">{{ $order->address}}, {{ $order->ward}}, {{ $order->district}}, {{ $order->city}}</p>
+                            <h4 style="font-size: 20px;color: #333;border-bottom: 1px solid #ADABAB;margin-top: 20px;margin-bottom: 5px;">ORDER SUMMARY</h4>
+                            <table style="width: 100%;max-width: 100%;margin-bottom: 20px;border-spacing: 0;border-collapse: collapse;background-color: transparent;">
+                                <thead>
+                                    <tr>
+                                        <th style="border-top: 0;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.4;text-align: left;"></th>
+                                        <th style="border-top: 0;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.4;text-align: left;">Name</th>
+                                        <th  style="border-top: 0;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.4;text-align: left;">Price</th>
+                                        <th  style="border-top: 0;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.4;text-align: left;">Qty</th>
+                                        <th  style="border-top: 0;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.4;text-align: left;">Sub Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($order->details as $item)
+                                    <tr>
+                                        <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;">
+                                            <img src="{{ $message->embed('images/' . $item->product->oldestImage->url) }}"
+                                            alt="{{ $item->product->subName() }}" class="rounded-circle" width="30" height="30">
+                                        </td>
+                                        <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;">{{ $item->product->name }}</td>
+                                        <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;">{{ number_format($item->stock->price->sale, 0, ',', '.') . ' VND' }}</td>
+                                        <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;">{{ $item->quantity }}</td>
+                                        <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;">{{ number_format($item->quantity * $item->stock->price->sale, 0, ',', '.') . ' VND' }}</td>
+                                      </tr>
+                                    @endforeach
+                                    <tr>
+                                      <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="2">Discount</td>
+                                      <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="3">{{ number_format($order->discountAmount(), 0, ',', '.') . ' VND' }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="2">Total</td>
+                                      <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="3">{{ number_format($order->total(), 0, ',', '.') . ' VND' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+  
+                            <p style="margin-bottom:25px">Thank you for shopping with us, have a nice day, wish you all the bests!</p>
+  
+                            <p style="margin-bottom:12px">Best Regards,<br><strong>LapXuongStore</strong></p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </center>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -9,7 +9,7 @@
         @if (count($products) > 0)
             @foreach ($products as $item)
                 <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
+                    <div class="product-item" data-index="{{ $item->id }}">
                         <div class="pi-pic">
                             <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
                                 alt="{{ $item->name }}">
@@ -17,7 +17,7 @@
                                 <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
                             @endif
-                            <div class="icon" data-index="{{ $item->id }}">
+                            <div class="icon">
                                 @if ($item->findWishlist())
                                     <a href="#"><i class="fas fa-heart"></i></a>
                                 @else

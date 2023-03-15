@@ -329,7 +329,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [RatingController::class, 'store'])->name('store');
             Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
             Route::put('/update', [RatingController::class, 'update'])->name('update');
-            Route::get('/destroy/{id}', [RatingController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
         });
 
         //Order management

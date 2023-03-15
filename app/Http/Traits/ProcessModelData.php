@@ -9,7 +9,6 @@ use App\Models\Cates\Ram;
 use App\Models\Cates\Screen;
 use App\Models\Cates\Ssd;
 use App\Models\Order;
-use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -83,7 +82,8 @@ trait ProcessModelData
 
     function completeOrder(Order $order)
     {
-        Mail::to($order->email)->send(new OrderConfirmation($order));
+        $message = new OrderConfirmation($order);
+        Mail::to($order->email)->send($message);
     }
 
     function processOutStock(Product $product, array $proData)
@@ -522,7 +522,7 @@ trait ProcessModelData
             $finalFull = $finalFull . 'SSD: ' . $ssd . ' to ' . $nSsd . ', ';
         }
         if ($data['hdd_id'] != $old_hdd) {
-            $hdd = Product::find($hdd_ram)->name ?? 'Not Updated';
+            $hdd = Product::find($old_hdd)->name ?? 'Not Updated';
             $nHdd = Product::find($data['hdd_id'])->name;
             $final = $final . 'HDD' . ', ';
             $finalFull = $finalFull . 'HDD: ' . $hdd . ' to ' . $nHdd . ', ';
