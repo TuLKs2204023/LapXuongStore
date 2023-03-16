@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Price;
 use App\Models\Cate;
 use App\Models\CateGroup;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +26,7 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::paginate(8);
+        $products = Product::orderBy('id', 'DESC')->paginate(12);
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
@@ -54,6 +55,27 @@ class ShopController extends Controller
             return Product::whereIn($cateName . '_id', $cateIdRange);
         }
     }
+
+    public function test()
+    {
+        $value = "5000000,20000000";
+        $products = Product::addSelect(['price' => Price::select('sale_discounted')
+            ->whereColumn('product_id', 'products.id')
+            ->orderByDesc('created_at')
+            ->orderByDesc('sale_discounted')
+            ->limit(1)]);
+        $products->whereIn('id', function ($query) use ($value) {
+            $query->select('product_id')
+                ->from(with(new Price)->getTable())
+                ->orderByDesc('created_at')
+                // ->limit(1)
+                ->whereBetween('sale_discounted', explode(",", $value));
+        });
+
+        dd($products->orderBy('price', 'DESC')->pluck('price'));
+    }
+
+
     /**
      * Display products based on category specified by user.
      *
@@ -65,8 +87,7 @@ class ShopController extends Controller
         $cateGroups = CateGroup::all()->load('cates');
         $cate = Cate::where('slug', $slug)->get()->first();
         $cateItems = $cate->cateable;
-        $products = $this->getProductsByCate($cate)->paginate(12);
-        // $products = $this->paginate($products, 9)->setPath(Route('fe.shop.index') . '/' . $slug);
+        $products = $this->getProductsByCate($cate)->orderBy('id', 'DESC')->paginate(12);
 
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
@@ -100,6 +121,22 @@ class ShopController extends Controller
     }
 
     /**
+     * Append latest sale price to 'Product' Model
+     * 
+     * @param  \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function appendSalePrice($products)
+    {
+        $products->addSelect(['price' => Price::select('sale_discounted')
+            ->whereColumn('product_id', 'products.id')
+            ->orderByDesc('created_at')
+            ->orderByDesc('sale_discounted')
+            ->limit(1)]);
+        return $products;
+    }
+
+    /**
      * Display products based on queries specified by user.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -113,22 +150,55 @@ class ShopController extends Controller
         if (!isset($queries['show'])) {
             $queries['show'] = 12;
         }
+        // If default pagination sorting does not exists, create one by ID desc.
+        if (!isset($queries['sort'])) {
+            $queries['sort'] = 0;
+        }
+
+        // Append sale price to products
+        $products = $this->appendSalePrice(Product::query());
+
 
         // Render seach items by accessing products via Shop page
-        if (!isset($queries['slug'])) {
-            $products = Product::query();
-        } else {
+        if (isset($queries['slug'])) {
             // Render seach items by searching on header
             if (substr($queries['slug'], 0, 12) === 'headerSearch') {
                 $header = $queries['slug'];
                 $headerQuery = str_replace("+", "%", substr($header, strripos($header, '=') + 1));
-                $products = Product::where('name', 'LIKE', '%' . $headerQuery . '%');
+                $products = $products->where('name', 'LIKE', '%' . $headerQuery . '%');
             } else {
                 // Render seach items by accessing products on nav-bar
                 $cate = Cate::where('slug', $queries['slug'])->get()->first();
-                $products = $this->getProductsByCate($cate);
+                $products = $this->appendSalePrice($this->getProductsByCate($cate));
             }
         }
+
+
+        // Result sorting configs
+        $sort = [
+            0 => [
+                'orderBy' => 'id',
+                'direction' => 'DESC'
+            ],
+            1 => [
+                'orderBy' => 'name',
+                'direction' => 'ASC'
+            ],
+            2 => [
+                'orderBy' => 'name',
+                'direction' => 'DESC'
+            ],
+            3 => [
+                'orderBy' => 'price',
+                'direction' => 'DESC'
+            ],
+            4 => [
+                'orderBy' => 'price',
+                'direction' => 'ASC'
+            ],
+        ];
+        $sortBy = $sort[$queries['sort']]['orderBy'];
+        $sortDirection = $sort[$queries['sort']]['direction'];
 
         // Render filtered search items
         $products = $products->where(function (Builder $query) use ($queries) {
@@ -136,6 +206,7 @@ class ShopController extends Controller
                 switch ($key) {
                     case 'page':
                     case 'show':
+                    case 'sort':
                     case 'slug':
                     case 'headerSearch':
                         break;
@@ -150,7 +221,14 @@ class ShopController extends Controller
                 }
             }
             return $query;
-        })->paginate($queries['show']);
+        });
+
+        // Apply sorting on results
+        $products = $products->orderBy($sortBy, $sortDirection);
+
+        // Apply pagination
+        $products = $products->paginate($queries['show']);
+
         return view('fe.home.shopSearch', ['products' => $products])->render();
     }
 }

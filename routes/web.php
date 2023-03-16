@@ -64,6 +64,7 @@ Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact'
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
 Route::get('/shop/{slug}', [ShopController::class, 'cate'])->name('fe.shop.cate');
 Route::get('/shop-search', [ShopController::class, 'search'])->name('fe.shop.search');
+Route::get('/shop-test', [ShopController::class, 'test'])->name('fe.shop.test');
 
 
 //Header Search
