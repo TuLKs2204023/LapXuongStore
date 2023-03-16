@@ -40,13 +40,15 @@ class GoogleController extends Controller
                 return redirect()->intended('profile');
 
             }else{
-                $newUser = User::Create([
+                $newUser = User::UpdateOrCreate([
                         'email' => $user->email],[
                         'name' => $user->name,
                         'google_id'=> $user->id,
                         'password' => encrypt('123456dummy')
                     ]);
 
+                    $data=$newUser->name . ' has been registered by Google Authenticator.';
+                    $newUser->histories()->create(['data'=> $data ,'action'=>'registered']);
                 Auth::login($newUser);
 
                 return redirect()->intended('profile');

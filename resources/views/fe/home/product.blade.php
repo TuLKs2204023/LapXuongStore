@@ -526,7 +526,7 @@
                     @foreach ($product->relateProducts() as $item)
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ asset('images/' . $item->oldestImage->url) }}" alt="{{ $item->name }}">
+                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) :'' }}" alt="{{ $item->name }}">
                                 @if ($item->latestDiscount() > 0)
                                     <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
                                 @endif

@@ -7,7 +7,7 @@ Sửa file ".env.example" thành ".env"
 1. Kiểm tra key
 2. Kiểm tra tên database trước khi migrate
 3. Kiểm tra Password database (nếu có)
-4. Kiểm ra MAIL fields
+4. Kiểm ra MAIL , GOOGLE_CLIENT, FACEBOOK_CLIENT
 
 # Chạy lệnh sau khi clone project
 

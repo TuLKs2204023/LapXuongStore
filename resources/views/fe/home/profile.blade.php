@@ -87,21 +87,25 @@
                 <div class="col-md-4 mb-3">
                     <div class="card ">
                         <div class="card-body >
-                            <h5 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" style="padding-left: 95px">Avatar
-                                    of</i>{{ auth()->user()->name }}</h5>
+                            <h5 class="d-flex align-items-center mb-3"><i
+                                class="material-icons text-info mr-2" style="padding-left: 95px">Avatar
+                                of</i>{{ auth()->user()->name }}</h5>
 
 
                             <div class="d-flex flex-column align-items-center text-center">
                                 <br>
-                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Admin" class="rounded"
-                                    width="150">
+                                <img src="{{ isset(auth()->user()->image)
+                                    ? asset('images/' . auth()->user()->image)
+                                    : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png' }}"
+                                    alt="Admin" class="rounded" width="150">
                                 <div class="mt-3">
                                     <h4>{{ auth()->user()->name }}</h4>
                                     <p class="text-secondary mb-1">{{ auth()->user()->role }}</p>
                                     <p class="text-muted font-size-sm">{{ auth()->user()->address }}</p>
                                     <a class="btn btn-info " style="background-color:#4154f1;border-color:#4154f1;"
                                         href="{{ Route('wishlist') }}">Wishlist</a>
-                                    <a href="{{ Route('userOrders') }}" class="btn  btn-info" style="border-color:#4154f1; background-color:#4154f1;">My Orders</a>
+                                    <a href="{{ Route('userOrders') }}" class="btn  btn-info"
+                                        style="border-color:#4154f1; background-color:#4154f1;">My Orders</a>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +115,8 @@
                 <div class="col-md-8">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="d-flex align-items-center mb-3" style="padding-left: 250px"><i class="material-icons text-info mr-2">Information
+                            <h5 class="d-flex align-items-center mb-3" style="padding-left: 250px"><i
+                                    class="material-icons text-info mr-2">Information
                                     of</i>{{ auth()->user()->name }}</h5>
                             <div class="row">
                                 <div class="col-sm-3">
@@ -179,8 +184,8 @@
                                     style="
                                 height: 300px;
                                 overflow: auto;">
-                                    <h5 class="d-flex align-items-center mb-3"><i
-                                            class="material-icons text-info mr-2" style="padding-left: 220px">History Interaction
+                                    <h5 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"
+                                            style="padding-left: 220px">History Interaction
                                             of</i>{{ auth()->user()->name }}</h5>
 
                                     @foreach ($rating as $key => $val)
