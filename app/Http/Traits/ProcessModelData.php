@@ -2,7 +2,6 @@
 
 namespace App\Http\Traits;
 
-use App\Mail\OrderConfirmation;
 use App\Models\Cates\Hdd;
 use App\Models\Product;
 use App\Models\Cates\Ram;
@@ -15,7 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+
 
 trait ProcessModelData
 {
@@ -87,12 +86,6 @@ trait ProcessModelData
         $product->stocks()->create(['in_qty' => $proData['in_qty'], 'price_id' => $price->id]);
         $product->refresh();
         return $product;
-    }
-
-    function completeOrder(Order $order)
-    {
-        $message = new OrderConfirmation($order);
-        Mail::to($order->email)->send($message);
     }
 
     function processOutStock(Product $product, array $proData)

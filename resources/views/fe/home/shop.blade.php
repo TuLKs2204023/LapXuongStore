@@ -261,7 +261,7 @@
                 $(heart).on("click", function(e) {
                     e.preventDefault();
                     let url, type, token;
-                    const id = $(".product-item").attr("data-index");
+                    const id = $(element).attr("data-index");
                     const childElement = $(heart).children().children().first().get(0);
                     const redHeart = $(childElement).hasClass("fas")
                     if (redHeart) {

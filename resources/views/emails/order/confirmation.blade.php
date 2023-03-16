@@ -8,6 +8,7 @@
             <tbody>
               <tr>
                 <td style="padding-top:20px;padding-bottom:22px;float:left" valign="top"><img src="{{ $message->embed('images/asd-removebg-preview.png') }}" alt="" style="margin:0;display:block;height:30px;"></td>
+                <td><h1 style="font-size: 20px;color: #333;margin-bottom: 5px;">LapXuongStore</h1></td>
               </tr>
             </tbody>
           </table>
@@ -25,7 +26,7 @@
                         <tbody>
                           <tr>
                             <td align="left" style="padding:30px 0;padding-top:25px;padding-bottom:15px;font-size:16px;line-height:25px;color:#565a5c;font-weight:normal;font-family:Helvetica Neue,Helvetica,Arial,sans-serif" valign="top">
-                            <p style="margin-top:5px;margin-bottom:12px;font-weight:bold;font-size:20px">Hi {{ $order->user->name }},</p>
+                            <p style="margin-top:5px;margin-bottom:12px;font-weight:bold;font-size:20px">Hi {{ $order->name }},</p>
   
                             <p style="margin-bottom:12px">Thank you so much for your business. We will get started on your order right away. When we shipped, we will send you another email to make sure you can track your order easier.
                             <br>In the meantime, if you have any questions or asking about your order, you can email us through <i>LapXuongShop@support.com</i></p>
@@ -33,8 +34,9 @@
                             <h4 style="font-size: 20px;color: #333;border-bottom: 1px solid #ADABAB;margin-bottom: 5px;">YOUR ORDER CONFIRMATION</h4>
                             <p style="margin-top: 2px; margin-bottom: 2px;">Order Number: <b>#LXS-{{ $order->id }}</b></p>
                             <p style="margin-top: 2px; margin-bottom: 2px;">Order Date: <b>{{ $order->created_at->format('jS F Y h:i:s A') }}</b></p>
-                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Note: <b>"{{ $order->notes ?? "No Note" }}"</b></p>
-                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Status: <b>Processing</b></p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Note: <b>"{{ $order->notes ?? "No note" }}"</b></p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Promotion: <b>{{ $order->usedPromotion->promotion->code ?? "Not promoted" }}</b></p>
+                            <p style="margin-top: 2px; margin-bottom: 2px;">Order Status: <b>Confirmed</b></p>
                             <h4 style="font-size: 20px;color: #333;border-bottom: 1px solid #ADABAB;margin-top: 20px;margin-bottom: 5px;">SHIPPING INFO</h4>
                             <p style="margin-top: 2px; margin-bottom: 2px;">{{ $order->name }}</p>
                             <p style="margin-top: 2px; margin-bottom: 2px;">{{ $order->email}}</p>
@@ -54,7 +56,7 @@
                                 <tbody>
                                     @foreach ($order->details as $item)
                                     <tr>
-                                        <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;">
+                                        <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd; border-radius: 3px;">
                                             <img src="{{ $message->embed('images/' . $item->product->oldestImage->url) }}"
                                             alt="{{ $item->product->subName() }}" class="rounded-circle" width="30" height="30">
                                         </td>
@@ -71,6 +73,10 @@
                                     <tr>
                                       <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="2">Total</td>
                                       <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="3">{{ number_format($order->total(), 0, ',', '.') . ' VND' }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="2">Total Final</td>
+                                      <td style="padding: 8px;line-height: 1.4;vertical-align: top;border-top: 1px solid #ddd;" colspan="3">{{ number_format($order->totalAfterDiscount(), 0, ',', '.') . ' VND' }}</td>
                                     </tr>
                                 </tbody>
                             </table>

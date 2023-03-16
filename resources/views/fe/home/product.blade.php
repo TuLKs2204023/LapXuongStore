@@ -60,6 +60,10 @@
         .customer-review-option h4 {
             margin-top: 20px;
         }
+
+        .product-item .pi-pic .sale {
+            background-color: var(--violet);
+        }
     </style>
 @endsection
 
@@ -630,26 +634,37 @@
                     },
                     data: formArray,
                     success: function(response) {
+                        $(cmtArea).val("");
                         $(".selected-rating").html(0);
                         $(starWrap).each(function(index, element) {
-                            const hasWaring = $(element).hasClass("btn-warning");
+                            const hasFilled = $(element).hasClass("btn-warning");
                             $([document.documentElement, document.body]).animate({
                                 scrollTop: $("#review-tab").offset().top
                             }, 100);
-                            if (hasWaring) {
+                            if (hasFilled) {
                                 $(element).removeClass("btn-warning");
                                 $(element).addClass("btn-default");
                             }
                         })
-                        $(cmtArea).val("");
-                        $(".comment-option.overflow-auto").children().first().before(response
+                        if(response.totalRate == 1){
+                            const test = $(".comment-option.overflow-auto").get(0);
+                            $(test).html(response.view);
+                        }
+                        else{
+                            $(".comment-option.overflow-auto").children().first().before(response
                             .view);
+                        }
                         const reviewDelBtn = $(".comment-option.overflow-auto").children()
                             .first().get(0);
                         reviewDelBtn.onclick =
                             function(e) {
+                                e.preventDefault();
                                 tuDeleteComment(reviewDelBtn);
                             };
+                        $("#review-tab").html("Customer Review " +
+                                    "(" + response.totalRate + ")");
+                        $(".customer-review-option .tu-comment")
+                                    .html(response.totalRate + " Comments");
                     }
                 });
             })
@@ -686,7 +701,6 @@
                                     "(" + response.totalRate + ")");
                                 $(".customer-review-option .tu-comment")
                                     .html(response.totalRate + " Comments");
-
                             }
                         })
                         Swal.fire(

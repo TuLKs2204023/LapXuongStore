@@ -47,7 +47,9 @@ class RatingController extends Controller
         } else {
             $user = User::find(auth()->user()->id);
             $user = $this->processRating($user, $proData);
-            
+            //get all ratings of this product
+            $product = Product::find($proData['product_id']);
+            $rateAmount = $product->countRates();
             //history thầy Dự
             $this->adminRating($user,$proData);
             $this->userRating($user,$proData);
@@ -57,6 +59,7 @@ class RatingController extends Controller
             return response()->json([
                 'success' => true,
                 'view' => $view,
+                'totalRate' => $rateAmount,
             ]);
         }
     }

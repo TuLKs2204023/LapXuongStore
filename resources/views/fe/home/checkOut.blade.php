@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="email">Email<span>*</span></label>
-                                <input type="text" id="email" name="email" placeholder="Your email address"
+                                <input type="email" id="email" name="email" placeholder="Your email address"
                                     value="{{ auth()->user()->email ?? '' }}">
                             </div>
                             <div class="col-lg-6">

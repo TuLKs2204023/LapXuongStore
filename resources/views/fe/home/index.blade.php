@@ -36,6 +36,14 @@
         .spad {
             padding-top: 0;
         }
+
+        .pd-rating i {
+            color: #fac451;
+        }
+
+        .product-item .pi-pic .sale {
+            background-color: var(--violet);
+        }
     </style>
 @endsection
 
@@ -49,9 +57,9 @@
                         <div class="col-lg-5">
                             <span style="color: aliceblue">Laptop Gaming</span>
                             <h1 style="color: aliceblue">Valentine</h1>
-                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
-                                Hoa Thám. (78 - 80 - 82
-                                Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom LapXuongStore
+                                (Phong Vũ) 2A
+                                Nguyễn Oanh, Phường 7, Gò Vấp, Thành phố Hồ Chí Minh</p>
                             <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
@@ -66,9 +74,9 @@
                         <div class="col-lg-5">
                             <span style="color: aliceblue">Laptop Gaming</span>
                             <h1 style="color: aliceblue">Black friday</h1>
-                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
-                                Hoa Thám. (78 - 80 - 82
-                                Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom LapXuongStore
+                                (Phong Vũ) 2A
+                                Nguyễn Oanh, Phường 7, Gò Vấp, Thành phố Hồ Chí Minh</p>
                             <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
@@ -83,9 +91,9 @@
                         <div class="col-lg-5">
                             <span>Laptop Gaming</span>
                             <h1 style="color: aliceblue">Black friday</h1>
-                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom GEARVN Hoàng
-                                Hoa Thám. (78 - 80 - 82
-                                Hoàng Hoa Thám, P.12, Q.Tân Bình, TP.HCM)</p>
+                            <p style="color: aliceblue">Sản phẩm được trưng bày và bán trực tiếp tại showroom LapXuongStore
+                                (Phong Vũ) 2A
+                                Nguyễn Oanh, Phường 7, Gò Vấp, Thành phố Hồ Chí Minh</p>
                             <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop now</a>
                         </div>
                     </div>
@@ -220,7 +228,8 @@
                         @foreach ($gamingProducts as $item)
                             <div class="product-item">
                                 <div class="pi-pic">
-                                    <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}" alt="{{ $item->name }}">
+                                    <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
+                                        alt="{{ $item->name }}">
                                     @if ($item->latestDiscount() > 0)
                                         <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
                                     @endif
@@ -256,90 +265,52 @@
 
     <!-- ----------------------------------------------------------------------------------------------- -->
 
-    <!-- Blog SECTION BEGIN-->
+    <!-- Top RateSECTION BEGIN-->
     <div class="latest-blog spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>From the blog</h2>
+                        <h2>Top of ratings</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('frontend/img/b01.png') }}" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    February 6,2023
+                <div class="col-lg-12">
+                    <div class="product-slider owl-carousel">
+                        @foreach ($productsHighRate as $item)
+                            <div class="product-item">
+                                <div class="pi-pic">
+                                    <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
+                                        alt="{{ $item->name }}">
+                                    @if ($item->latestDiscount() > 0)
+                                        <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
+                                    @endif
                                 </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="">
-                                <h4>The Best sell of the years</h4>
-                            </a>
-                            <p>
-                                If you are a gamer with the desire to own a laptop that
-                                looks really gaming, muscular and powerful, then this Asus TUF
-                                Gaming HN188W is a typical name worth referring to.</p>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('frontend/img/b2.png') }}" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    February 6,2023
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
+                                <div class="pi-text">
+                                    <div class="pd-rating">
+                                        @if ($item->countRates() > 0)
+                                            @for ($i = 0; $i < $item->avgRates(); $i++)
+                                                <i class="fa fa-star"></i>
+                                            @endfor
+                                            @for ($i = 0; $i < 5 - $item->avgRates(); $i++)
+                                                <i class="fa fa-star-o"></i>
+                                            @endfor
+                                        @endif
+                                    </div>
+                                    <div class="catagory-name">{{ $item->manufacture->name }}</div>
+                                    <a href="{{ Route('product.details', $item->slug) }}">
+                                        <h5>{{ $item->name }}</h5>
+                                    </a>
+                                    <div class="product-price">
+                                        {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}
+                                        @if ($item->latestDiscount() > 0)
+                                            <span>{{ number_format($item->salePrice(), 0, ',', '.') . ' VND' }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
-                            <a href="">
-                                <h4>5 laptops for students</h4>
-                            </a>
-                            <p>
-                                If you are a follower of eSport games with the desire to have an
-                                "eye-catching and pleasing" experience,
-                                you cannot ignore the name Nitro 5 Gaming AN515-45-R6EV from Acer.
-                            </p>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('frontend/img/b3.png') }}" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    February 6,2023
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="">
-                                <h4>Laptops for good office people</h4>
-                            </a>
-                            <p>
-                                Laptop is a companion with office people to support quick office tasks. So don't hesitate,
-                                let's immediately refer to the Top 10 good office laptops.</p>
-
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -352,7 +323,7 @@
                             </div>
                             <div class="sb-text">
                                 <h6>FREE SHIP</h6>
-                                <p>For all oder over 1000.00$</p>
+                                <p>For all orders online bought</p>
                             </div>
                         </div>
                     </div>
@@ -381,7 +352,8 @@
                 </div>
             </div>
 
+            </div>
         </div>
     </div>
-    <!-- Blog SECTION END-->
+    <!-- Top Rate SECTION END-->
 @endsection

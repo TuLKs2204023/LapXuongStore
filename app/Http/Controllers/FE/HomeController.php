@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Cates\Demand;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -22,7 +23,33 @@ class HomeController extends Controller
         $demands = Demand::all();
         $officeProducts = Product::where('demand_id', 1)->get();
         $gamingProducts = Product::where('demand_id', 2)->get();
-        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts'));
+        $productsHighRate = Product::selectRaw('products.*, COUNT(ratings.id) as ratings_count, ROUND(AVG(ratings.rate), 2) as avg_rating')
+            ->leftJoin('ratings', 'products.id', '=', 'ratings.product_id')
+            ->groupBy(
+                'products.id',
+                'products.name',
+                'products.slug',
+                'products.manufacture_id',
+                'products.cpu_id',
+                'products.ram_id',
+                'products.ssd_id',
+                'products.hdd_id',
+                'products.screen_id',
+                'products.resolution_id',
+                'products.series_id',
+                'products.demand_id',
+                'products.gpu_id',
+                'products.color_id',
+                'products.created_at',
+                'products.updated_at',
+            )
+            ->havingRaw('AVG(ratings.rate) > 4')
+            ->orderByDesc('avg_rating')
+            ->limit(10)
+            ->get();
+
+        // dd($productsHighRate);
+        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts', 'productsHighRate'));
     }
 
     public function product($slug)
@@ -184,8 +211,8 @@ class HomeController extends Controller
     public function userProfile()
     {
         $user = auth()->user();
-        $rating =HistoryRating::all();
-        return view('fe.home.profile', compact('user','rating'));
+        $rating = HistoryRating::all();
+        return view('fe.home.profile', compact('user', 'rating'));
     }
     public function aboutUs()
     {
