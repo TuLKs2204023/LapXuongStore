@@ -32,7 +32,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $appends = ['discountedPrice'];
+    protected $appends = [];
 
     /**
      * The relationships that should always be loaded.
@@ -40,17 +40,6 @@ class Product extends Model
      * @var array
      */
     protected $with = [];
-
-
-    /**
-     * Get the appended Discounted Price for the product
-     * 
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    public function getDiscountedPriceAttribute()
-    {
-        return $this->fakePrice();
-    }
 
     /**
      * Get the Prices for product
@@ -64,13 +53,14 @@ class Product extends Model
     /**
      * Get the current pricing for the product.
      */
-    public function currentPrice()
+    public function currentSalePrice()
     {
         return $this->hasOne(Price::class)->ofMany([
-            'published_at' => 'max',
+            'created_at' => 'max',
             'id' => 'max',
         ], function ($query) {
-            $query->where('published_at', '<', now());
+            $query->where('created_at', '<=', now())
+                ->where('sale_discounted', '>', 0);
         });
     }
 
@@ -384,7 +374,8 @@ class Product extends Model
     {
         return $this->HasMany(HistoryProduct::class);
     }
-    public function historyRating(){
+    public function historyRating()
+    {
         return $this->HasMany(HistoryRating::class);
     }
 }

@@ -16,10 +16,11 @@ class HeaderController extends HomeController
         return $cateGroups;
     }
 
-    public static function header_products(Request $request){
-        $request = $request->headerSearch;
-        $products = Product::where('name', 'like', '%'.$request.'%')->paginate(12);
+    public static function header_products(Request $request)
+    {
+        $headerSearch = $request->headerSearch;
+        $products = Product::where('name', 'like', '%' . str_replace(" ", "%", $headerSearch) . '%')->orderBy('id', 'DESC')->paginate(12);
         $cateGroups = CateGroup::all()->load('cates');
-        return view('fe.home.shop', compact('products', 'cateGroups'));
+        return view('fe.home.shop', compact('products', 'cateGroups', 'headerSearch'));
     }
 }
