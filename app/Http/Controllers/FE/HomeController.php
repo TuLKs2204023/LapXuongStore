@@ -92,10 +92,10 @@ class HomeController extends Controller
         }
 
         // Add Cart Item
-        $cartItem = new CartItem($product, $qty);
         if ($existedKey) {
             $cart[$existedKey]->quantity += $qty;
         } else {
+            $cartItem = new CartItem($product, $qty);
             $cart[$pid] = $cartItem;
             session()->put('cart', $cart);
         }
@@ -107,6 +107,7 @@ class HomeController extends Controller
         $res = array(
             'key' => $existedKey,
             'totalQty' => $total['qty'],
+            'cartItem' => $cart[$pid],
             'stockBalance' => $this->stockBalance($product, $cartQty),
         );
         return $res;
@@ -135,6 +136,7 @@ class HomeController extends Controller
             'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
             'totalQty' => $total['qty'],
+            'cartItem' => $cart[$key],
             'stockBalance' => $this->stockBalance($product, $qty),
         );
         return $res;
@@ -163,6 +165,7 @@ class HomeController extends Controller
     {
         $cart = session('cart');
         $key = $request->pid;
+        $cartItem = $cart[$key];
         if ($cart) {
             unset($cart[$key]);
             session()->put('cart', $cart);
@@ -172,7 +175,8 @@ class HomeController extends Controller
         $res = array(
             'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
-            'totalQty' => $total['qty']
+            'totalQty' => $total['qty'],
+            'cartItem' => $cartItem
         );
         return $res;
     }

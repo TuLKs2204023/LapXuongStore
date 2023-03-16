@@ -32,7 +32,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $appends = [];
+    protected $appends = ['salePrice', 'imageUrl', 'shortName'];
 
     /**
      * The relationships that should always be loaded.
@@ -40,6 +40,19 @@ class Product extends Model
      * @var array
      */
     protected $with = [];
+
+    public function getSalePriceAttribute()
+    {
+        return $this->currentSalePrice->sale_discounted;
+    }
+    public function getImageUrlAttribute()
+    {
+        return $this->oldestImage->url;
+    }
+    public function getShortNameAttribute()
+    {
+        return $this->subName();
+    }
 
     /**
      * Get the Prices for product

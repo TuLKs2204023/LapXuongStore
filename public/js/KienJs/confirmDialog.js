@@ -3,6 +3,7 @@ import {
     getParent,
     processUpdateCartPage,
     updateCartHeader,
+    deleteItemsCartHeader,
     preventCheckout,
 } from "./cart.js";
 
@@ -168,6 +169,7 @@ function DeleteDialog({
         summaryContSelector = ".order-summary",
         summariesSelector = ".ajax-summary",
         headerCartSelector = ".minicart",
+        headerCartItemsSelector = ".cart-header-list",
         checkoutBtnSelector = ".proceed-checkout-btn",
     },
 }) {
@@ -179,6 +181,7 @@ function DeleteDialog({
         summaryContSelector,
         summariesSelector,
         headerCartSelector,
+        headerCartItemsSelector,
         checkoutBtnSelector,
     };
 
@@ -223,7 +226,14 @@ function DeleteDialog({
             res,
             selectors,
         });
+
+        // Update header-cart total items count
         updateCartHeader(res, selectors);
+
+        // Update quantities of items in header-cart
+        const headerCartItems = $(selectors["headerCartItemsSelector"]);
+        const cartItems = headerCartItems.querySelectorAll("tr.cart-section");
+        deleteItemsCartHeader(res, headerCartItems, cartItems);
 
         // Check empty Cart
         const checkoutBtn = $(selectors["checkoutBtnSelector"]);

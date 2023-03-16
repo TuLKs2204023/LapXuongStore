@@ -11,8 +11,11 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item" data-index="{{ $item->id }}">
                         <div class="pi-pic">
-                            <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
-                                alt="{{ $item->name }}">
+                            <a href="{{ Route('product.details', $item->slug) }}">
+                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
+                                    alt="{{ $item->name }}">
+                            </a>
+
                             @if ($item->latestDiscount() > 0)
                                 <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
@@ -24,17 +27,17 @@
                                     <a href="#"><i class="far fa-heart"></i></a>
                                 @endif
                             </div>
-                            <ul>
+                            {{-- <ul>
                                 <li class="quick-view">
                                     <a href="{{ Route('product.details', $item->slug) }}">+ Quick
                                         View</a>
                                 </li>
-                            </ul>
+                            </ul> --}}
                         </div>
                         <div class="pi-text">
                             <div class="catagory-name">{{ $item->series->name }}</div>
                             <a href="{{ Route('product.details', $item->slug) }}">
-                                <h5>{{ $item->name }}</h5>
+                                <h6>{{ $item->name }}</h6>
                             </a>
                             <div class="product-price">
                                 {{ number_format($item->fakePrice(), 0, ',', '.') . ' VND' }}

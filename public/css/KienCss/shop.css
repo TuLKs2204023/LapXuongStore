@@ -58,3 +58,18 @@
         margin: 0;
     }
 }
+
+.product-item {
+    margin-bottom: 32px;
+}
+.product-item .pi-text {
+    padding-top: 10px;
+}
+.product-item .pi-text a h6 {
+    font-size: 0.98rem;
+    line-height: 1.4rem;
+}
+.product-item .pi-text .product-price {
+    font-size: 0.98rem;
+    padding-top: 8px;
+}

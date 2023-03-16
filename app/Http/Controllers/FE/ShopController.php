@@ -58,6 +58,8 @@ class ShopController extends Controller
 
     public function test()
     {
+        $product= Product::find(30);
+        dd($product->salePrice);
         $value = "5000000,20000000";
         $products = Product::addSelect(['price' => Price::select('sale_discounted')
             ->whereColumn('product_id', 'products.id')
