@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\Cates\SsdGroupController;
 use App\Http\Controllers\FE\HomeController as FE_HomeController;
 use App\Http\Controllers\FE\ShopController;
 use App\Http\Controllers\FE\CheckoutController;
+use App\Http\Controllers\FE\HeaderController;
 
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\backend\OdersController;
@@ -32,7 +33,6 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\DropdownController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FE\HeaderController;
 use App\Http\Controllers\OrderDetailsController;
 
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +64,7 @@ Route::get('/contact', [FE_HomeController::class, 'contact'])->name('fe.contact'
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop.index');
 Route::get('/shop/{slug}', [ShopController::class, 'cate'])->name('fe.shop.cate');
 Route::get('/shop-search', [ShopController::class, 'search'])->name('fe.shop.search');
+Route::get('/shop-test', [ShopController::class, 'test'])->name('fe.shop.test');
 
 
 //Header Search
@@ -125,6 +126,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/user/orders', [OdersController::class, 'userAllOrders'])->name('userOrders');
     Route::get('/user/{id}/order-details', [OrderDetailsController::class, 'userRights'])->name('userOrderDetails');
     Route::get('/check-order', [OdersController::class, 'afterCheckOut'])->name('afterCheckOut');
+    Route::get('/cancel-order', [OdersController::class, 'cancelOrder'])->name('cancelOrder');
 
     // Wishlist
     Route::get('/wishlist', [WishlistItemController::class, 'index'])->name('wishlist');
@@ -141,7 +143,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // For Admin purpose
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-        // Dashboard
+        // wishlist
         Route::group(['prefix' => 'wishlist', 'as' => 'wishlist.'], function () {
             Route::get('/', [WishlistItemController::class, 'adminIndex'])->name('index');
             // Route::get('/create', [WishlistItemController::class, 'create'])->name('create');

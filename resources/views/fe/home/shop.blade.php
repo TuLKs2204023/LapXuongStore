@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="0" data-max="100000000">
+                                data-min="500000" data-max="110000000">
                                 <div class="ui-slider ui-corner-all ui-widget-header">
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
@@ -75,7 +75,7 @@
                             @foreach ($cateGroups->find(10)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="demand-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="demand-{{ $cate->cateable->id }}"
                                             data-value="demand-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -92,7 +92,7 @@
                             @foreach ($cateGroups->find(1)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="manufacture-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="manufacture-{{ $cate->cateable->id }}"
                                             data-value="manufacture-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -109,7 +109,7 @@
                             @foreach ($cateGroups->find(2)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="series-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="series-{{ $cate->cateable->id }}"
                                             data-value="series-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -126,7 +126,7 @@
                             @foreach ($cateGroups->find(3)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="cpu-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="cpu-{{ $cate->cateable->id }}"
                                             data-value="cpu-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -146,7 +146,7 @@
                                 @endif
                                 <div class="bc-item">
                                     <label for="ram-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="ram-{{ $cate->cateable->id }}"
                                             data-value="ram-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -221,12 +221,14 @@
                             <div class="col-lg-7 col-md-7">
                                 <div class="select-option">
                                     <select class="sorting">
-                                        <option value="">Default Sorting</option>
-                                        <option value="1">Ascending</option>
-                                        <option value="2">Descending</option>
+                                        <option value="">Sorting by: </option>
+                                        <option value="1">Name (A &rarr; Z)</option>
+                                        <option value="2">Name (Z &rarr; A)</option>
+                                        <option value="3">Price (High &rarr; Low)</option>
+                                        <option value="4">Price (Low &rarr; High)</option>
                                     </select>
                                     <select class="p-show">
-                                        <option value="">Show:</option>
+                                        <option value="0">Show: </option>
                                         <option value="12">12 items</option>
                                         <option value="16">16 items</option>
                                         <option value="20">20 items</option>
@@ -261,7 +263,7 @@
                 $(heart).on("click", function(e) {
                     e.preventDefault();
                     let url, type, token;
-                    const id = $(".product-item").attr("data-index");
+                    const id = $(element).attr("data-index");
                     const childElement = $(heart).children().children().first().get(0);
                     const redHeart = $(childElement).hasClass("fas")
                     if (redHeart) {
@@ -302,8 +304,8 @@
     <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
     <script>
         /*-------------------
-                                    	Range Slider
-                                    --------------------- */
+                                        	Range Slider
+                                        --------------------- */
         jQuery(document).ready(function($) {
             const rangeSlider = $(".price-range"),
                 minamount = $("#minamount"),
@@ -316,7 +318,7 @@
                     priceMin: minPrice,
                     priceMax: maxPrice,
                 },
-                paginateConfig: {},
+                paginateConfigs: {},
                 selectors: {},
             });
             productSearch.initSearch();

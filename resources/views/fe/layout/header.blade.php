@@ -91,9 +91,10 @@
                 <div class="col-lg-7 col-md-7">
                     <form action="{{ Route('fe.header.search') }}" method="GET">
                         <div class="advanced-search">
-                            <button type="button" class="category-btn">All Categories</button>
+                            {{-- <button type="button" class="category-btn">All Categories</button> --}}
                             <div class="input-group">
-                                <input type="text" placeholder="Type something to search ... " name="headerSearch">
+                                <input type="text" placeholder="Type something to search ... " name="headerSearch"
+                                    value="{{ $headerSearch ?? '' }}">
                                 <button type="submit"><i class="ti-search"></i></button>
                             </div>
                         </div>
@@ -103,6 +104,7 @@
                     <ul class="nav-right">
                         <li class="heart-icon">
                             <a href="{{ Route('wishlist') }}">
+                                <div>Wish List</div>
                                 <i class="icon_heart_alt"></i>
                                 @if (auth()->user())
                                     <span>{{ count(auth()->user()->wishlistItems) }}</span>
@@ -112,18 +114,21 @@
 
                             </a>
                         </li>
+
+                        <!-- Header Cart -->
                         <li class="cart-icon">
                             <a href="{{ Route('viewCart') }}">
+                                <div>Your Cart</div>
                                 <i class="icon_bag_alt"></i>
                                 <span class="index">{{ $headerCart['qty'] }}</span>
                             </a>
                             <div class="cart-hover shadowed">
                                 <div class="select-items">
                                     <table>
-                                        <tbody>
+                                        <tbody class="cart-header-list">
                                             @if (session('cart'))
                                                 @foreach (session('cart') as $item)
-                                                    <tr>
+                                                    <tr data-index={{ $item->product->id }} class="cart-section">
                                                         <td class="si-pic"><img
                                                                 src="{{ asset('images/' . $item->product->oldestImage->url) }}"
                                                                 alt=""></td>
@@ -131,17 +136,20 @@
                                                             <div class="product-selected">
                                                                 <p>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
                                                                 </p>
-                                                                <h6>{{ $item->product->name }}</h6>
+                                                                <h6>{{ $item->product->shortName }}</h6>
                                                             </div>
                                                         </td>
-                                                        <td class="si-close">
-                                                            <i class="ti-close"></i>
+                                                        {{-- <td class="si-close"> --}}
+                                                        <td>
+                                                            {{-- <i class="ti-close"></i> --}}
+                                                            x <h6 class="product-selected-price">{{ $item->quantity }}
+                                                            </h6>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td colspan="3" style="text-align: center">CART IS EMPTY</td>
+                                                    <td colspan="3" style="text-align: center;">CART IS EMPTY</td>
                                                 </tr>
                                             @endif
 
@@ -155,7 +163,7 @@
                                         OUT</a>
                                 </div>
                             </div>
-                        </li>
+                        </li><!-- // Header Cart -->
                     </ul>
                 </div>
             </div>

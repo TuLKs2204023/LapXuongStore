@@ -171,6 +171,10 @@
         .tu-back-btn:hover {
             color: var(--violet-main);
         }
+
+        .cancelBtn {
+            text-align: right !important;
+        }
     </style>
 @endsection
 
@@ -193,33 +197,58 @@
     <div class="container">
         <article class="card">
             @foreach ($orders as $order)
-                <fieldset class="card-body">
-                    <legend class="order-head-name" data-index="{{ $order->id }}">
+                <fieldset class="card-body" data-index="{{ $order->id }}">
+                    <legend class="order-head-name">
                         Order ID: LXS-{{ $order->id }}
                     </legend>
                     <article class="card">
                         <div class="card-body row">
-                            <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2025 </div>
+                            <div class="col"> <strong>Estimated Delivery time:</strong>
+                                <br>{{ $order->arrivalEstimate() }}
+                            </div>
                             <div class="col"> <strong>Shipping BY:</strong> <br> LapXuongStore's Shipper<br>
                                 <i class="fa fa-phone"></i>
                                 +8413456789
                             </div>
-                            <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
+                            <div class="col"> <strong>Status:</strong> <br>
+                                <div class="status">
+                                    @if ($order->status == 1)
+                                        @if ($order->statusByTime() >= 0 && $order->statusByTime() < 1)
+                                            Order confirmed
+                                        @elseif($order->statusByTime() >= 1 && $order->statusByTime() < 3)
+                                            Picked by courier
+                                        @elseif($order->statusByTime() >= 3 && $order->statusByTime() < 7)
+                                            On the way
+                                        @else
+                                            Ready for pickup
+                                        @endif
+                                    @else
+                                        Canceled
+                                    @endif
+                                </div>
+                            </div>
                             <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>
                         </div>
                     </article>
                     <div class="track">
-                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span
-                                class="text">Order confirmed</span> </div>
-                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span
-                                class="text">
-                                Picked by courier</span> </div>
-                        <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
-                                On
-                                the way </span> </div>
-                        <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span
-                                class="text">Ready
-                                for pickup</span> </div>
+                        @if ($order->status == 1)
+                            <div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span
+                                    class="text">Order confirmed</span> </div>
+                            <div class="step pick @if ($order->statusByTime() >= 1) active @endif"> <span class="icon"> <i
+                                        class="fa fa-user"></i> </span> <span class="text">
+                                    Picked by courier</span> </div>
+                            <div class="step on-way @if ($order->statusByTime() >= 3) active @endif">
+                                <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
+                                    On
+                                    the way </span>
+                            </div>
+                            <div class="step arrived @if ($order->statusByTime() >= 7) active @endif"> <span class="icon">
+                                    <i class="fa fa-box"></i> </span> <span class="text">Ready
+                                    for pickup</span> </div>
+                        @elseif($order->status == 0)
+                            <div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span
+                                    class="text">Canceled</span> </div>
+                        @endif
                     </div>
                     <hr>
                     <ul class="row">
@@ -239,8 +268,21 @@
                             </li>
                         @endforeach
                     </ul>
+                    @if ($order->statusByTime() >= 7)
+                        <button class="btn btn-sm btn-success">Deliver successfully</button>
+                    @else
+                        @if ($order->status == 1)
+                            <button class="btn btn-sm btn-danger cancelBtn">Cancel Order
+                                LXS-{{ $order->id }}</button>
+                        @elseif($order->status == 0)
+                            <button class="btn btn-sm btn-warning">Your order has been canceled</button>
+                        @endif
+                    @endif
                 </fieldset>
             @endforeach
+            <div>
+                {{ $orders->withQueryString()->links('vendor.pagination.footer') }}
+            </div>
             <legend><a href="{{ Route('userProfile') }}" class="tu-back-btn"> <i class="fa fa-chevron-left"></i>
                     Back to
                     profile</a></legend>
@@ -250,13 +292,61 @@
 
 @section('myJs')
     <script>
-        const heads = document.querySelectorAll('.card .card-body .order-head-name');
-        heads.forEach(element => {
-            element.onclick = function() {
-                let id = element.getAttribute('data-index');
-                let url = `{{ url('/user/${id}/order-details') }}`;
-                window.location.href = url;
-            };
-        });
+        jQuery(document).ready(function($) {
+            const cardBody = $(".card-body");
+
+            //go to details of an order
+            cardBody.each((index, element) => {
+                const head = $(element).find("legend").get(0);
+                $(head).on("click", function() {
+                    let id = $(cardBody).attr('data-index');
+                    let url = `{{ url('/user/${id}/order-details') }}`;
+                    window.location.href = url;
+                });
+            });
+
+            //cancel order
+            cardBody.each(function(index, element) {
+                const deleteBtn = $(element).find(".cancelBtn").get(0);
+                $(deleteBtn).on("click", function(e) {
+                    e.preventDefault();
+                    const oId = $(element).attr('data-index');
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this, once cancled your promotion code won't be returned back anymore!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#4154f1',
+                        cancelButtonColor: 'crimson',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "GET",
+                                url: "{{ Route('cancelOrder') }}",
+                                data: {
+                                    oId: oId,
+                                },
+                                success: function(response) {
+                                    const orderStt = $(element).find(".status")
+                                        .get(0);
+                                    $(deleteBtn).removeClass("btn-danger");
+                                    $(deleteBtn).addClass("btn-warning");
+                                    $(deleteBtn).html(
+                                        "Your order has been canceled");
+                                    $(deleteBtn).removeClass("cancelBtn");
+                                    $(orderStt).html("Canceled");
+                                }
+                            })
+                            Swal.fire(
+                                'Canceled!',
+                                'Your order is canceled successfully.',
+                                'success',
+                            )
+                        }
+                    })
+                })
+            })
+        })
     </script>
 @endsection

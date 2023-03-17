@@ -228,9 +228,8 @@
                                                         </td>
                                                         <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
                                                         </td>
-                                                        <td><td>
+                                                        <td>
                                                             <span class="badge bg-success">Approved</span>
-                                                        </td>
                                                         </td>
                                                     </tr>
                                                 @endforeach

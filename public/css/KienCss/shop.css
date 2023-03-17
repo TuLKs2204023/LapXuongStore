@@ -24,9 +24,26 @@
 .product-search .loading-more {
     margin-top: 30px;
 }
+.product-search .myTooltip.myTooltip-top .tooltiptext {
+    min-width: fit-content;
+    width: 50px;
+    left: 140%;
+}
+.product-search .loading-more li {
+    z-index: 1;
+}
 .product-search .loading-more li a {
     font-size: 0.9rem;
     font-weight: 500;
+    padding: 0.65rem 0.9rem;
+}
+.product-search .loading-more li.first a,
+.product-search .loading-more li.previous a,
+.product-search .loading-more li.next a,
+.product-search .loading-more li.last a {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.585rem 0.9rem;
 }
 .product-search .loading-more li a:before {
     background-color: unset;
@@ -40,4 +57,19 @@
     .product-search .displaying-products {
         margin: 0;
     }
+}
+
+.product-item {
+    margin-bottom: 32px;
+}
+.product-item .pi-text {
+    padding-top: 10px;
+}
+.product-item .pi-text a h6 {
+    font-size: 0.98rem;
+    line-height: 1.4rem;
+}
+.product-item .pi-text .product-price {
+    font-size: 0.98rem;
+    padding-top: 8px;
 }

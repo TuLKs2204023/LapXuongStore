@@ -55,7 +55,9 @@
                 <div class="col-md-12">
                     <div class="success-text"><i class="fa fa-check-circle" aria-hidden="true"></i>
                         <h2>Thank you</h2>
+                        <p>A confirmation email has been sent to you</p>
                         <p>Your order is successfully processsed and is on the way</p>
+                        <p>&hearts; Have a nice day &hearts;</p>
                     </div>
                 </div>
             </div>

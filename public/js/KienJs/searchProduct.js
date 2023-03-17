@@ -1,25 +1,30 @@
 $ = document.querySelector.bind(document);
 
 function SearchHandler({
-    paginateConfig: { pageDefaultItems = 12, pageSorting = "" },
-    price: { priceMin = 0, priceMax = 500000000 },
+    paginateConfigs: { pageDefaultItems = 12, pageDefaultSort = 0 },
+    price: { priceMin = 1, priceMax = 500000000 },
     selectors: {
         sidebarSelector = ".produts-sidebar-filter",
         productListSelector = ".product-search",
         paginateSelector = ".loading-more",
-        paginateShowSelector = ".product-show-option",
+        paginateConfigSelector = ".product-show-option",
+        paginateShowSelector = ".nice-select.p-show",
+        paginateSortSelector = ".sorting.nice-select",
     },
 }) {
     const selectors = {
         sidebarSelector,
         productListSelector,
         paginateSelector,
+        paginateConfigSelector,
         paginateShowSelector,
+        paginateSortSelector,
     };
-
+    const pageConfigCont = $(selectors["paginateConfigSelector"]);
     const currentUrl = getCurrentUrlInfo();
     const queries = {
         show: pageDefaultItems,
+        sort: pageDefaultSort,
         slug: currentUrl.slug,
         price: [priceMin, priceMax],
     };
@@ -31,7 +36,11 @@ function SearchHandler({
             "input[type='checkbox']:not([disabled])"
         );
 
-        // Add event for filtering Checboxes
+        processPaginate(
+            appendQueriesToUrl(new URL(currentUrl.mainPath), queries)
+        );
+
+        // Add event for filtering Categories-checboxes
         cateInputs.forEach((input) => {
             input.addEventListener("click", (e) => {
                 const inputData = input.dataset.value.split("-");
@@ -48,7 +57,8 @@ function SearchHandler({
                 }
 
                 Object.entries(queries).forEach(([key, value]) => {
-                    if (!value.length && key !== "show") delete queries[key];
+                    if (!value.length && key !== "show" && key !== "sort")
+                        delete queries[key];
                 });
 
                 const url = new URL(currentUrl.mainPath);
@@ -58,17 +68,48 @@ function SearchHandler({
             });
         });
 
-        // Add event for filtering Pagination
-        const paginateShow = $(selectors["paginateShowSelector"]);
-        const paginateSelect = paginateShow.querySelector(
-            ".nice-select.p-show"
+        // Configuring number of items Displayed per Pagination page
+        processPaginateConfig(
+            "show",
+            selectors["paginateShowSelector"],
+            pageDefaultItems
         );
-        const paginateOpts = paginateSelect.querySelectorAll("ul li");
 
-        paginateOpts.forEach((opt) => {
+        // Configuring Sorting of items on Pagination page
+        processPaginateConfig(
+            "sort",
+            selectors["paginateSortSelector"],
+            pageDefaultSort
+        );
+
+        function processPaginateConfig(type, configSelector, pageDefault) {
+            paginateConfigHandler({
+                type,
+                configCont: pageConfigCont,
+                configSelector,
+                currentUrl,
+                queries,
+                pageDefault,
+            });
+        }
+    }
+
+    // Function to configure Sorting of items on Pagination page
+    function paginateConfigHandler({
+        type,
+        configCont,
+        configSelector,
+        currentUrl,
+        queries,
+        pageDefault,
+    }) {
+        const configSelect = configCont.querySelector(configSelector);
+        const configOpts = configSelect.querySelectorAll("ul li");
+
+        configOpts.forEach((opt) => {
             opt.addEventListener("click", (e) => {
-                const paginateItms = opt.dataset.value || pageDefaultItems;
-                queries["show"] = paginateItms;
+                const paginateConfig = opt.dataset.value || pageDefault;
+                queries[type] = paginateConfig;
 
                 const url = new URL(currentUrl.mainPath);
 
@@ -96,6 +137,12 @@ function SearchHandler({
         const productList = $(selectors["productListSelector"]);
         productList.innerHTML = res;
 
+        // Add ajaxRequest to pagination buttons
+        renderPaginateBtns(selectors, queries);
+    }
+
+    // Function to add ajaxRequest to pagination buttons
+    function renderPaginateBtns(selectors, queries) {
         const paginate = $(selectors["paginateSelector"]);
         const paginateLinks = paginate.querySelectorAll(".pagination li a");
 
@@ -105,7 +152,7 @@ function SearchHandler({
                 const url = new URL(link.href);
 
                 // Process to call HttpRequest
-                processPaginate(appendQueriesToUrl(url, queries));
+                processPaginate(appendQueriesToUrl(url, queries), true);
             });
         });
     }
@@ -120,12 +167,14 @@ function SearchHandler({
     }
 
     // Function to Process to call HttpRequest
-    function processPaginate(page) {
+    function processPaginate(page, scrollToTop = false) {
         const ajaxReq = new XMLHttpRequest();
         ajaxReq.onreadystatechange = () => {
             if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
                 renderSearch(ajaxReq.responseText, page);
-                window.scrollTo({ top: 60, behavior: "smooth" });
+                if (scrollToTop) {
+                    window.scrollTo({ top: 60, behavior: "smooth" });
+                }
             }
         };
         ajaxReq.open("GET", page, true);
@@ -157,7 +206,7 @@ function SearchHandler({
         queries["price"][1] = Number(max);
 
         const url = new URL(currentUrl.mainPath);
-        
+
         // Process to call HttpRequest
         processQueries(appendQueriesToUrl(url, queries));
     }

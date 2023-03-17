@@ -60,6 +60,10 @@
         .customer-review-option h4 {
             margin-top: 20px;
         }
+
+        .product-item .pi-pic .sale {
+            background-color: var(--violet);
+        }
     </style>
 @endsection
 
@@ -526,7 +530,8 @@
                     @foreach ($product->relateProducts() as $item)
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) :'' }}" alt="{{ $item->name }}">
+                                <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"
+                                    alt="{{ $item->name }}">
                                 @if ($item->latestDiscount() > 0)
                                     <div class="sale">Sale {{ $item->latestDiscount() * 100 }}%</div>
                                 @endif
@@ -630,26 +635,38 @@
                     },
                     data: formArray,
                     success: function(response) {
+                        $(cmtArea).val("");
                         $(".selected-rating").html(0);
                         $(starWrap).each(function(index, element) {
-                            const hasWaring = $(element).hasClass("btn-warning");
+                            const hasFilled = $(element).hasClass("btn-warning");
                             $([document.documentElement, document.body]).animate({
                                 scrollTop: $("#review-tab").offset().top
                             }, 100);
-                            if (hasWaring) {
+                            if (hasFilled) {
                                 $(element).removeClass("btn-warning");
                                 $(element).addClass("btn-default");
                             }
                         })
-                        $(cmtArea).val("");
-                        $(".comment-option.overflow-auto").children().first().before(response
-                            .view);
-                        const reviewDelBtn = $(".comment-option.overflow-auto").children()
+                        if (response.totalRate == 1) {
+                            const test = $(".comment-option.overflow-auto").get(0);
+                            $(test).html(response.view);
+                        } else {
+                            $(".comment-option.overflow-auto").children().first().before(
+                                response
+                                .view);
+                        }
+                        const reviewItm = $(".comment-option.overflow-auto").children()
                             .first().get(0);
+                        const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
                         reviewDelBtn.onclick =
                             function(e) {
-                                tuDeleteComment(reviewDelBtn);
+                                e.preventDefault();
+                                tuDeleteComment(reviewItm);
                             };
+                        $("#review-tab").html("Customer Review " +
+                            "(" + response.totalRate + ")");
+                        $(".customer-review-option .tu-comment")
+                            .html(response.totalRate + " Comments");
                     }
                 });
             })
@@ -686,7 +703,6 @@
                                     "(" + response.totalRate + ")");
                                 $(".customer-review-option .tu-comment")
                                     .html(response.totalRate + " Comments");
-
                             }
                         })
                         Swal.fire(
@@ -700,7 +716,8 @@
             //end hàm delete rồi nha
             const ratingItem = $(".co-item");
             ratingItem.each(function(index, element) {
-                $(element).on("click", "#deletecomment", function(e) {
+                const deleteBtn = $(element).find("#deletecomment").get(0);
+                $(deleteBtn).on("click", function(e) {
                     e.preventDefault();
                     tuDeleteComment(element);
                 });

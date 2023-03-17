@@ -31,12 +31,6 @@
                         </a>
                         <!--End UserList -->
 
-                        <!-- User Orders -->
-                        <a href="{{ URL::to('/admin/order/all-orders') }}">
-                            <i class="bi bi-circle"></i><span>User Orders</span>
-                        </a>
-                        <!--End User Orders -->
-
                         <!-- User Ratings -->
                         <a href="{{ Route('admin.rating.index') }}">
                             <i class="bi bi-circle"></i><span>User Ratings</span>
@@ -89,6 +83,13 @@
                     <span>Stock</span>
                 </a>
             </li><!-- End Stock Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.order.allorders') }}">
+                    <i class="bi bi-mailbox2"></i>
+                    <span>Order</span>
+                </a>
+            </li><!-- End Order Nav -->
 
             <li class="nav-item">
                 <a class="nav-link " href="{{ Route('admin.wishlist.index') }}">

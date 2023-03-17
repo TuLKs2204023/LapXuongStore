@@ -92,7 +92,6 @@ class HomeController extends Controller
         }
 
         // Add Cart Item
-
         if ($existedKey) {
             $cart[$existedKey]->quantity += $qty;
         } else {
@@ -176,7 +175,6 @@ class HomeController extends Controller
         $res = array(
             'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
-
             'totalQty' => $total['qty'],
             'cartItem' => $cartItem
         );
