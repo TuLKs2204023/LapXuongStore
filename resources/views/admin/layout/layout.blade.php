@@ -57,6 +57,7 @@
     <!--Toastr + SweetAlert -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/FeCss/toast.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css\loading.css') }}">
     @yield('myHead')
 
     <!-- =======================================================
@@ -104,7 +105,8 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <!-- jQuery -->
-    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>
+    {{-- <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script> --}}
 
     <!-- DataTables  & Plugins -->
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -188,6 +190,35 @@
     </script><!-- End KienJs -->
 
     @yield('myJs')
+
+    <!-- Loading effect -->
+
+    <div class="loader">
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+    </div>
+
+    <script type='text/javascript'>
+        $(window).load(function() {
+            setTimeout(function() {
+                $(".loader").fadeOut("slow");
+            }, 500)
+        }
+        );
+        $(window).load(function() {
+            setTimeout(function() {
+                $(".base").fadeOut("slow");
+            }, 500)
+        }
+        );
+    </script>
+    <!-- End Loading effect -->
 </body>
 
 </html>

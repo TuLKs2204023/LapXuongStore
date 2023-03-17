@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Http\Traits\ProcessModelData;
 use App\Models\Promotion;
+use App\Http\Traits\ProcessMail;
 
 class CheckoutController extends HomeController
 {

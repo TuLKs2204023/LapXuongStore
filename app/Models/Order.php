@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
-use Termwind\Components\Span;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -47,6 +47,7 @@ class Order extends Model
     }
 
     // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
+    
     //Get promotion discount 
     public function discount()
     {
@@ -87,7 +88,7 @@ class Order extends Model
         $afterDis = $this->discountAmount();
         return $total - $afterDis;
     }
-
+    
     //Estimate time arrival (ETA)
     public function arrivalEstimate()
     {
@@ -122,5 +123,6 @@ class Order extends Model
             return '<span class="badge rounded-pill bg-danger">Canceled</span>';
         }
     }
+
     // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
 }
