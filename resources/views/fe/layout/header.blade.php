@@ -36,18 +36,21 @@
                             <a href="{{ url('customer') }}" class="login-panel dd ddcommon borderRadius"
                                 style="padding-top:10px;padding-bottom: 7px;" style="width:80px "
                                 type="submit">{{ auth()->user()->name }}
-                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle"
+                                <img src="{{ isset(auth()->user()->image)
+                                    ? asset('images/' . auth()->user()->image)
+                                    : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png' }}"
+                                    alt="Profile Picture" class="rounded-circle"
                                     style="height: 40px ;width:40px; margin-left:20px; margin-right:10px ">
                             </a>
                         @endif
                         @if (auth()->user()->role !== 'Customer')
                             <a href="{{ url('admin') }}" class="login-panel" style="padding-top:10px;padding-bottom: 7px;">
                                 Hello {{ auth()->user()->name }}
-                                <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture"
-                                    class="rounded-circle"
-                                    style="
-                                    height: 40px ;width:40px; margin-left:20px;">
+                                <img src="{{ isset(auth()->user()->image)
+                                    ? asset('images/' . auth()->user()->image)
+                                    : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png' }}"
+                                    alt="Profile Picture" class="rounded-circle"
+                                    style="height: 40px ;width:40px; margin-left:20px;">
                             </a>
                             <a href="{{ url('profile') }}" class="login-panel dd ddcommon borderRadius" style="width:90px "
                                 type="submit">Setting</a>

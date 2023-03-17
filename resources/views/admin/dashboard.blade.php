@@ -350,10 +350,12 @@
                                                 <p class="fw-bold text-dark" style="margin-block-end:0.5em;">
                                                     <span class="fw-light">{{ $pro->user->name }}</span>
                                                     {{ $pro->action }}
-                                                    {{ isset($pro->product) ? $pro->product->name : '' }}
+                                                    <span class="fw-light">{{ isset($pro->product) ? $pro->product->name : '' }}</span>
                                                     {{ $pro->by }}
                                                 </p>
-                                                {{ $pro->data }}
+
+                                                <a class="fw-light text-dark"
+                                                href="{{ isset($pro->product) ? Route('product.details', $pro->product->slug ) : '' }}">{{ $pro->data }}</a>
                                             </div>
                                         </div><!-- End activity item-->
                                     @endforeach

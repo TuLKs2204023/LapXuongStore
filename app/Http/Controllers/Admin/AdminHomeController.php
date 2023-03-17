@@ -46,7 +46,7 @@ class AdminHomeController extends Controller
             foreach ($manufactures as $key => $manu) {
                 $name = $manu->name;
                 $value = $manu->products->count();
-                $dataManu[] = (object)['name' => $name, 'value' => $value];
+                $dataManu[] = (object) ['name' => $name, 'value' => $value];
             }
             $dayData = [];
             for ($i = 0; $i <= 9; $i++) {
@@ -69,12 +69,15 @@ class AdminHomeController extends Controller
             }
             $revenue = [];
             $out = Stock::where('created_at', '>', Carbon::today()->subDays(9))->get();
+
             foreach ($out as $key => $item) {
-                $rev = $item->out_qty * isset($item->price->sale) ? $item->price->sale : '0';
+                $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
+
                 if (!in_array($rev, $revenue)) {
                     array_push($revenue, $rev);
                 }
             }
+
             $interaction = [];
             for ($i = 0; $i <= 9; $i++) {
                 $data = 0;
@@ -95,21 +98,7 @@ class AdminHomeController extends Controller
                 ->where('created_at', '>', $now->subDays(30))
                 ->count();
 
-            return view('admin.dashboard', compact(
-                'totalUser',
-                'totalProduct',
-                'totalItem',
-                'allproduct',
-                'order',
-                'history',
-                'historyProduct',
-                'dataManu',
-                'dayData',
-                'productData',
-                'revenue',
-                'interaction',
-
-            ));
+            return view('admin.dashboard', compact('totalUser', 'totalProduct', 'totalItem', 'allproduct', 'order', 'history', 'historyProduct', 'dataManu', 'dayData', 'productData', 'revenue', 'interaction'));
         } else {
             return redirect()->route('fe.home');
         }
@@ -119,9 +108,10 @@ class AdminHomeController extends Controller
     {
         return view('fe.home.profile');
     }
-    public function historyProduct(){
-        $historyProduct=HistoryProduct::all();
-        return view('admin.users.product-history',compact('historyProduct'));
+    public function historyProduct()
+    {
+        $hisPro = HistoryProduct::all()->sortByDesc('id');
+        return view('admin.users.product-history', compact('hisPro'));
     }
     public function backFromError()
     {

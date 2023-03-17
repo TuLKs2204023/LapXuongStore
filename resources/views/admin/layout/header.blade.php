@@ -172,7 +172,10 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="{{ asset('images/' . auth()->user()->image) }}" alt="Profile Picture" class="rounded" >
+                    <img src="{{ isset(auth()->user()->image)
+                        ? asset('images/' . auth()->user()->image)
+                        : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png' }}"
+                        alt="Profile Picture" class="rounded">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->name }}</span>
                 </a><!-- End Profile Iamge Icon -->
 

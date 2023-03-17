@@ -1,6 +1,6 @@
 <div class="co-item">
     <div class="avatar-pic">
-        <img src="{{ isset($rating->user->image) ? asset('images/' . $rating->user->image) : '' }}"
+        <img src="{{ isset($rating->user->image) ? asset('images/' . $rating->user->image) : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png' }}"
             alt="">
     </div>
     <div class="avatar-text">
@@ -14,7 +14,7 @@
         </div>
         <div
             @if ($rating->user->role == 'Admin') style="background-color: var(--red-dark-tu) !important" class="badge rounded-pill bg-info text-light"
-                @elseif ($rating->user->role == 'Manager') 
+                @elseif ($rating->user->role == 'Manager')
                     style="background-color: var(--violet-2nd) !important" class="badge rounded-pill bg-info text-light"
                 @else
                     style="background-color: var(--grey-dark-2nd) !important" class="badge rounded-pill bg-secondary text-light" @endif>
