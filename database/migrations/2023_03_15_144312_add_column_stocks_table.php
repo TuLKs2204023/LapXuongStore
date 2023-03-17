@@ -16,7 +16,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('stocks', function (Blueprint $table) {
-            $table->foreignId('price_id')->after('product_id')->default(12)->constrained();
+            $table->foreignId('price_id')->after('product_id')->default(12)->constrained()->onDelete('cascade');
         });
 
         $stocks = Stock::all();

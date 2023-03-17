@@ -44,7 +44,6 @@
                                 <th>User Name</th>
                                 <th>Product Name</th>
                                 <th>Rating Level</th>
-                                <th>Review</th>
                                 <th>Timestamp</th>
                                 <th>Actions</th>
                             </tr>
@@ -55,9 +54,8 @@
                                 <tr>
                                     <td>{{ $rating->id }}</td>
                                     <td>{{ $rating->user->name }}</td>
-                                    <td>{{ $rating->product->name }}</td>
+                                    <td>{{ $rating->product->subName() }}</td>
                                     <td>{{ $rating->rate }}</td>
-                                    <td>{{ $rating->review }}</td>
                                     <td>{{ $rating->created_at }}</td>
                                     <td> <a class="btn btn-outline-info btn-sm"
                                             href="{{ Route('product.details', $rating->product->slug) }}">

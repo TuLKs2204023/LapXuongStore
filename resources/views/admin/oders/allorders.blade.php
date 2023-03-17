@@ -34,12 +34,12 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Customer ID</th>
+                            <th>C.ID</th>
                             <th>Oder Date</th>
                             <th>Shipping Name</th>
                             <th>Shipping Phone</th>
                             <th>Shipping Address</th>
-
+                            <th>Payment</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -52,7 +52,14 @@
                                 <td>{{ $row->order_date }}</td>
                                 <td>{{ $row->name }}</td>
                                 <td>{{ $row->phone }}</td>
-                                <td>{{ $row->address }}</td>
+                                <td>{{ $row->address }}, {{ $row->ward }}, {{ $row->district }}, {{ $row->city }}</td>
+                                <td>
+                                    @if ($row->payment == 1)
+                                        Cash
+                                    @elseif($row->payment == 2)
+                                        Bank
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="{{ Route('admin.order.details', $row->id) }}"
                                         class="btn btn-sm btn-outline-info">Details</a>
