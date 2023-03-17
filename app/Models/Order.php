@@ -64,21 +64,23 @@ class Order extends Model
         $total = 0;
         $oId = $this->id;
         $items = OrderDetail::where('order_id', $oId)->get();
-        foreach($items as $item){
+        foreach ($items as $item) {
             $total += $item->product->fakePrice() * $item->quantity;
         }
         return $total;
     }
 
     //Discount amount
-    public function discountAmount(){
+    public function discountAmount()
+    {
         $total = $this->total();
         $discount = $this->discount();
         return $total * $discount;
     }
 
     //Total after discount
-    public function totalAfterDiscount(){
+    public function totalAfterDiscount()
+    {
         $total = $this->total();
         $afterDis = $this->discountAmount();
         return $total - $afterDis;
@@ -100,18 +102,19 @@ class Order extends Model
         }
     }
     //Estimate time arrival (ETA)
-    public function arrivalEstimate(){
+    public function arrivalEstimate()
+    {
         $created_date = $this->created_at;
         $eta = Carbon::parse($created_date)->addDays(7)->format('Y-m-d');
         return $eta;
     }
 
     //Status by time
-    public function statusByTime(){
+    public function statusByTime()
+    {
         $currentStatus = 0;
         $created_date = $this->created_at;
         $currentStatus = Carbon::now()->day - $created_date->day;
         return $currentStatus;
     }
-
 }
