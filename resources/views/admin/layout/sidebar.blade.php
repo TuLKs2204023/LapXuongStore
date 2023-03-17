@@ -42,6 +42,11 @@
                             <i class="bi bi-circle"></i><span>User Ratings</span>
                         </a>
                         <!--End User Ratings -->
+                        <!-- User Ratings -->
+                        <a href="{{ Route('historyProduct') }}">
+                            <i class="bi bi-circle"></i><span>Product History</span>
+                        </a>
+                        <!--End User Ratings -->
 
                     </li>
                 </ul>

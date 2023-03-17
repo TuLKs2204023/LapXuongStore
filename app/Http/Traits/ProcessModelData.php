@@ -3,13 +3,23 @@
 namespace App\Http\Traits;
 
 use App\Mail\OrderConfirmation;
-use App\Models\Cates\Hdd;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\User;
+use App\Models\Cates\Hdd;
 use App\Models\Cates\Ram;
 use App\Models\Cates\Screen;
 use App\Models\Cates\Ssd;
-use App\Models\Order;
-use App\Models\User;
+use App\Models\Cates\Series;
+use App\Models\Cates\Resolution;
+use App\Models\Cates\Manufacture;
+use App\Models\Cates\Gpu;
+use App\Models\Cates\Demand;
+use App\Models\Cates\Cpu;
+use App\Models\Cates\Color;
+use App\Models\Description;
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -404,7 +414,7 @@ trait ProcessModelData
 
         if ($data['image'] != $old_image) {
             $image = $old_image ?? 'Not Updated';
-            $final = $final . 'New avatar'  . ', ';
+            $final = $final . 'New avatar has been set'  . ', ';
         }
         if ($data['name'] != $old_name) {
             $name = $old_name ?? 'Not Updated';
@@ -424,18 +434,18 @@ trait ProcessModelData
             $city = DB::table('cities')
                 ->where('id', $data['city_id'])
                 ->first()->name;
-            $oldCity = auth()->user()->city->name ?? '';
+            $oldCity = auth()->user()->city->name ?? 'Not updated';
             $final = $final . 'City: ' . $oldCity . ' to ' . $city . ', ';
         }
         if ($data['district_id'] != $old_district) {
-            $oldDistrict = auth()->user()->district->name ?? '';
+            $oldDistrict = auth()->user()->district->name ?? 'Not updated';
             $district = DB::table('districts')
                 ->where('id', $data['district_id'])
                 ->first()->name;
             $final = $final . 'District: ' . $oldDistrict . ' to ' . $district . ', ';
         }
         if ($data['ward_id'] != $old_ward) {
-            $oldWard = auth()->user()->ward->name ?? '';
+            $oldWard = auth()->user()->ward->name ?? 'Not updated';
             $ward = DB::table('wards')
                 ->where('id', $data['ward_id'])
                 ->first()->name;
@@ -445,9 +455,15 @@ trait ProcessModelData
             $address = $old_address ?? 'Not Updated';
             $final = $final . 'Address: ' . $address . ' to ' . $data['address'] . '. ';
         }
+            if($final==''){
+                $user->histories()->create(['data' => 'Nothing change.', 'action' => 'Updated profile']);
+            }
+            else{
+                $user->histories()->create(['data' =>  $final, 'action' => 'Updated profile']);
 
-        $user->histories()->create(['data' => $final, 'action' => 'Updated']);
-    }
+            }
+        }
+
     public function adminData($user, array $data)
     {
         $final = '';
@@ -475,7 +491,7 @@ trait ProcessModelData
             $final = $final . 'Role: ' . $role . ' to ' . $data['role'] . '. ';
         }
 
-        $user->histories()->create(['data' => $final, 'action' => 'Updated', 'by' => 'by Admin']);
+        $user->histories()->create(['data' => $final, 'action' => 'Updated profile', 'by' => 'by Admin']);
     }
     public function adminRating($user, array $proData)
     {
@@ -531,80 +547,86 @@ trait ProcessModelData
             $name = $old_name ?? 'Not Updated';
             $final = $final . 'NAME' . ', ';
             $finalFull = $finalFull . 'NAME: ' . $name . ' to ' . $data['name'] . ', ';
+
         }
         if ($data['manufacture_id'] != $old_manufacture) {
-            $manufacture = Product::find($old_manufacture)->name ?? 'Not Updated';
-            $nManu = Product::find($data['manufacture_id'])->name;
+            $manufacture = Manufacture::find($old_manufacture)->name ?? 'Not Updated';
+            $nManu =  Manufacture::find($data['manufacture_id'])->name;
             $final = $final . 'MANUFACTURE' . ', ';
-            $finalFull = $finalFull . 'MANUFACTURE: ' . $manufacture . ' to ' . $nManu . ', ';
+            $finalFull = $finalFull . 'MANUFACTURE: ' . $manufacture  . ' to ' . $nManu . ', ';
+
         }
 
         if ($data['cpu_id'] != $old_cpu) {
-            $cpu = Product::find($old_cpu)->name ?? 'Not Updated';
-            $nCpu = Product::find($data['cpu_id'])->name;
+            $cpu = Cpu::find($old_cpu)->name ?? 'Not Updated';
+            $nCpu = Cpu::find($data['cpu_id'])->name;
             $final = $final . 'CPU' . ', ';
             $finalFull = $finalFull . 'CPU: ' . $cpu . ' to ' . $nCpu . ', ';
+
         }
 
         if ($data['ram_id'] != $old_ram) {
-            $ram = Product::find($old_ram)->name ?? 'Not Updated';
-            $nRam = Product::find($data['ram_id'])->name;
+            $ram = Ram::find($old_ram)->amount ?? 'Not Updated';
+            $nRam = Ram::find($data['ram_id'])->amount;
             $final = $final . 'RAM' . ', ';
             $finalFull = $finalFull . 'RAM: ' . $ram . ' to ' . $nRam . ', ';
+
         }
         if ($data['ssd_id'] != $old_ssd) {
-            $ssd = Product::find($old_ssd)->name ?? 'Not Updated';
-            $nSsd = Product::find($data['ssd_id'])->name;
+            $ssd = Ssd::find($old_ssd)->amount ?? 'Not Updated';
+            $nSsd = Ssd::find($data['ssd_id'])->amount;
             $final = $final . 'SSD' . ', ';
             $finalFull = $finalFull . 'SSD: ' . $ssd . ' to ' . $nSsd . ', ';
+
         }
         if ($data['hdd_id'] != $old_hdd) {
-            $hdd = Product::find($old_hdd)->name ?? 'Not Updated';
-            $nHdd = Product::find($data['hdd_id'])->name;
+            $hdd = Hdd::find($old_hdd)->amount ?? 'Not Updated';
+            $nHdd = Hdd::find($data['hdd_id'])->amount;
             $final = $final . 'HDD' . ', ';
             $finalFull = $finalFull . 'HDD: ' . $hdd . ' to ' . $nHdd . ', ';
         }
         if ($data['screen_id'] != $old_screen) {
-            $screen = Product::find($old_screen)->name ?? 'Not Updated';
-            $nScreen = Product::find($data['screen_id'])->name;
+            $screen = Screen::find($old_screen)->amount ?? 'Not Updated';
+            $nScreen = Screen::find($data['screen_id'])->amount;
             $final = $final . 'SCREEN' . ', ';
             $finalFull = $finalFull . 'SCREEN: ' . $screen . ' to ' . $nScreen . ', ';
         }
         if ($data['resolution_id'] != $old_resolution) {
-            $resolution = Product::find($old_resolution)->name ?? 'Not Updated';
-            $nResolution = Product::find($data['resolution_id'])->name;
+            $resolution = Resolution::find($old_resolution)->name ?? 'Not Updated';
+            $nResolution = Resolution::find($data['resolution_id'])->name;
             $final = $final . 'RESOLUTION' . ', ';
             $finalFull = $finalFull . 'RESOLUTION: ' . $resolution . ' to ' . $nResolution . ', ';
         }
         if ($data['series_id'] != $old_series) {
-            $series = Product::find($old_series)->name ?? 'Not Updated';
-            $nSeries = Product::find($data['series_id'])->name;
+            $series = Series::find($old_series)->name ?? 'Not Updated';
+            $nSeries = Series::find($data['series_id'])->name;
             $final = $final . 'SERIES' . ', ';
             $finalFull = $finalFull . 'SERIES: ' . $series . ' to ' . $nSeries . ', ';
         }
         if ($data['demand_id'] != $old_demand) {
-            $demand = Product::find($old_demand)->name ?? 'Not Updated';
-            $nDemand = Product::find($data['demand_id'])->name;
+            $demand = Demand::find($old_demand)->name ?? 'Not Updated';
+            $nDemand = Demand::find($data['demand_id'])->name;
             $final = $final . 'DEMAND' . ', ';
             $finalFull = $finalFull . 'DEMAND: ' . $demand . ' to ' . $nDemand . ', ';
         }
         if ($data['gpu_id'] != $old_gpu) {
-            $gpu = Product::find($old_gpu)->name ?? 'Not Updated';
-            $nGpu = Product::find($data['gpu_id'])->name;
+            $gpu = Gpu::find($old_gpu)->name ?? 'Not Updated';
+            $nGpu = Gpu::find($data['gpu_id'])->name;
             $final = $final . 'GPU' . ', ';
-            $final = $final . 'GPU: ' . $gpu . ' to ' . $nGpu . ', ';
+            $finalFull = $finalFull . 'GPU: ' . $gpu . ' to ' . $nGpu . ', ';
         }
         if ($data['color_id'] != $old_color) {
-            $color = Product::find($old_color)->name ?? 'Not Updated';
-            $nColor = Product::find($data['color_id'])->name;
+            $color = Color::find($old_color)->name ?? 'Not Updated';
+            $nColor = Color::find($data['color_id'])->name;
             $final = $final . 'COLOR' . ', ';
             $finalFull = $finalFull . 'COLOR: ' . $color . ' to ' . $nColor . ', ';
         }
         if ($data['slug'] != $old_slug) {
             $slug = $old_slug ?? 'Not Updated';
             $final = $final . 'SLUG' . '. ';
-            $finalFull = $finalFull . 'SLUG: ' . $name . ' to ' . $data['slug'] . '. ';
+            $finalFull = $finalFull . 'SLUG: ' . $slug . ' to ' . $data['slug'] . '. ';
         }
+
 
         $user->historyProduct()->create(['data' => $final, 'fulldata' => $finalFull, 'action' => 'Updated', 'product_id' => $id]);
     }

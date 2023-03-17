@@ -44,20 +44,28 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($historyProduct as $key => $row)
+                            @foreach ($hisPro as $key => $row)
                                 <tr>
                                     <td>{{ $row->id }}</td>
                                     <td>{{ $row->user->name }}</td>
                                     <td>
-                                        <a href="{{ Route('product.details', $row->product->slug) }}">
+                                        <a href="{{ isset($row->product) ? Route('product.details', $row->product->slug):'' }}">
                                             <img src="{{ isset($row->product->oldestImage->url) ? asset('images/' . $row->product->oldestImage->url) : '' }}"
                                                 alt="" style='height:100px'>
                                         </a>
                                     </td>
                                     <td>
-                                        {{ $row->product->name }}
+                                        <a href="{{ isset($row->product) ? Route('product.details', $row->product->slug):'' }}" class="text-dark"
+                                            >
+                                            {{ isset($row->product) ? $row->product->name : '' }}
+                                        </a>
                                     </td>
-                                    <td>{{ $row->fulldata }}</td>
+                                    <td>{{
+                                      ($row->fulldata)
+                                            ??
+                                        ($row->data)
+                                        }}
+                                        </td>
                                     <td>{{$row->action}}</td>
                                     <td>{{ $row->timePro() }}</td>
 

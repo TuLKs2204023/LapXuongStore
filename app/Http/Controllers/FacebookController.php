@@ -46,6 +46,8 @@ class FacebookController extends Controller
                         'facebook_id'=> $user->id,
                         'password' => encrypt('123456dummy')
                     ]);
+                    $data=$newUser->name . ' has been registered by Facebook Authenticator.';
+                    $newUser->histories()->create(['data'=> $data ,'action'=>'registered']);
 
                 Auth::login($newUser);
 
