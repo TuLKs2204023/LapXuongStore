@@ -6,6 +6,14 @@
     <style>
         .fa-heart {
             color: var(--red-dark-tu);
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: var(--red-dark-tu);
+        }
+
+        .fa-heart-o {
+            color: #ffffff;
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: var(--red-dark-tu);
         }
     </style>
 @endsection
@@ -255,47 +263,67 @@
 @section('myJs')
     <!-- Start TuJs -->
     <script>
-        jQuery(document).ready(function($) {
-            const productItem = $(".product-item");
-            const headerHeart = $(".heart-icon");
-            productItem.each(function(index, element) {
-                const heart = $(element).find(".icon").get(0);
-                $(heart).on("click", function(e) {
-                    e.preventDefault();
-                    let url, type, token;
-                    const id = $(element).attr("data-index");
-                    const childElement = $(heart).children().children().first().get(0);
-                    const redHeart = $(childElement).hasClass("fas")
-                    if (redHeart) {
-                        $(childElement).removeClass("fas");
-                        $(childElement).addClass("far");
-                        url = "{{ Route('removeWishlist') }}";
-                        type = "DELETE";
-                    } else {
-                        $(childElement).addClass("fas");
-                        $(childElement).removeClass("far");
-                        url = "{{ Route('addWishlist') }}";
-                        type = "POST";
+        $ = document.querySelector.bind(document);
+
+        function wishListHandler({
+            productHearts = '.product-list-icon',
+            headerHeart = '.heart-icon',
+        }) {
+            function init(productList) {
+                const heartIcons = productList.querySelectorAll(productHearts);
+                Array.from(heartIcons).forEach(heart => {
+                    heart.onclick = (e) => {
+                        e.preventDefault();
+                        const pId = heart.closest('.product-item').dataset.index;
+
+                        // Process to call HttpRequest
+                        processUpdateWishList(pId, heart, renderWishList);
+                    };
+                });
+            }
+
+            // Function to update view
+            function renderWishList(res, heart) {
+                const headerHeartIcon = $(headerHeart);
+                const headerHeartText = headerHeartIcon.querySelector('.icon_heart_alt + span');
+                headerHeartText.innerHTML = res.totalWishlist;
+                const heartIcon = heart.querySelector('i');
+                if (res.action === 'add') {
+                    heartIcon.classList.replace('fa-heart-o', 'fa-heart');
+                } else {
+                    heartIcon.classList.replace('fa-heart', 'fa-heart-o');
+                }
+            }
+
+            // Process to call HttpRequest to update WishList
+            function processUpdateWishList(pId, heart, cb) {
+                const url = '{{ Route('updateWishlist') }}';
+                const params = {
+                    pId,
+                    _token: '{{ csrf_token() }}',
+                };
+
+                const ajaxReq = new XMLHttpRequest();
+
+                ajaxReq.onreadystatechange = () => {
+                    if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
+                        const res = JSON.parse(ajaxReq.responseText);
+
+                        cb(res, heart);
                     }
-                    $.ajax({
-                        url: url,
-                        type: type,
-                        headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                        },
-                        data: {
-                            id: id,
-                        },
-                        success: function(response) {
-                            $(headerHeart).find("span").html(response.totalWishlist);
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    });
-                })
-            })
-        })
+                };
+
+                ajaxReq.open("POST", url, true);
+                ajaxReq.setRequestHeader(
+                    "Content-type",
+                    "application/json;charset=UTF-8"
+                );
+                ajaxReq.send(JSON.stringify(params));
+            }
+            return {
+                init,
+            }
+        }
     </script><!-- End TuJs -->
 
     <script src="{{ asset('frontend/js/jquery-ui.min.js') }}"></script>
@@ -304,8 +332,8 @@
     <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
     <script>
         /*-------------------
-                                        	Range Slider
-                                        --------------------- */
+                                                                                                                                    Range Slider
+                                                                                                                                    --------------------- */
         jQuery(document).ready(function($) {
             const rangeSlider = $(".price-range"),
                 minamount = $("#minamount"),
@@ -313,6 +341,7 @@
                 minPrice = rangeSlider.data("min"),
                 maxPrice = rangeSlider.data("max");
 
+            const wishList = new wishListHandler({});
             const productSearch = new SearchHandler({
                 price: {
                     priceMin: minPrice,
@@ -320,7 +349,11 @@
                 },
                 paginateConfigs: {},
                 selectors: {},
+                wishList,
             });
+
+
+
             productSearch.initSearch();
 
             rangeSlider.slider({
