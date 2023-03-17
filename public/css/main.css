@@ -317,7 +317,13 @@
 .myTooltip.myTooltip-secondary .tooltiptext::after {
     border-color: var(--bs-secondary) transparent transparent transparent;
 }
-
+/* Top Tooltip for <Button> --Secondary */
+.myTooltip.myTooltip-info .tooltiptext {
+    background-color: var(--blue-dark);
+}
+.myTooltip.myTooltip-info .tooltiptext::after {
+    border-color: var(--blue-dark) transparent transparent transparent;
+}
 /* Top Tooltip for <Button> --Success */
 .myTooltip.myTooltip-success .tooltiptext {
     background-color: var(--bs-success);

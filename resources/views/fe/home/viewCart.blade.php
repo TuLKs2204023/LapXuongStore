@@ -88,13 +88,13 @@
                             <div class="cart-buttons">
                                 <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart"> Continue Shopping</a>
                             </div>
-                            <div class="discount-coupon">
+                            {{-- <div class="discount-coupon">
                                 <h6>Disscount Codes</h6>
                                 <form action="#" class="coupon-form">
                                     <input type="text" placeholder="Enter Your Codes">
                                     <button type="submit" class="site-btn coupon-btn">Apply</button>
                                 </form>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="col-lg-4 offset-lg-4">

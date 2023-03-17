@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -81,5 +82,20 @@ class Order extends Model
         $total = $this->total();
         $afterDis = $this->discountAmount();
         return $total - $afterDis;
+    }
+
+    //Estimate time arrival (ETA)
+    public function arrivalEstimate(){
+        $created_date = $this->created_at;
+        $eta = Carbon::parse($created_date)->addDays(7)->format('Y-m-d');
+        return $eta;
+    }
+
+    //Status by time
+    public function statusByTime(){
+        $currentStatus = 0;
+        $created_date = $this->created_at;
+        $currentStatus = Carbon::now()->day - $created_date->day;
+        return $currentStatus;
     }
 }

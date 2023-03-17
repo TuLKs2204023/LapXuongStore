@@ -4,6 +4,7 @@ export {
     getParent,
     processUpdateCartPage,
     updateCartHeader,
+    deleteItemsCartHeader,
     preventCheckout,
 };
 
@@ -20,7 +21,7 @@ function CartHandler({
         summaryContSelector = "",
         summariesSelector = "",
         headerCartSelector = ".minicart",
-        headerCartItemsSelector = ".select-items",
+        headerCartItemsSelector = ".cart-header-list",
         headerCartCheckoutSelector = ".checkout-btn",
         checkoutBtnSelector = ".proceed-checkout-btn",
     },
@@ -112,8 +113,14 @@ function CartHandler({
                 return false;
             }
 
-            // Update header cartItems
+            // Update header total items count
             updateCartHeader(res, selectors);
+
+            // Add items to headerCart
+            const headerCartItems = $(selectors["headerCartItemsSelector"]);
+            const cartItems =
+                headerCartItems.querySelectorAll("tr.cart-section");
+            addItemsToCartHeader(res, headerCartItems, cartItems);
 
             showSuccessToast({
                 message: "Card item(s) added successfully.",
@@ -161,8 +168,13 @@ function CartHandler({
 
 // Function to update Total Amount of items
 function processUpdateCartPage({ res, input, selectors }) {
-    // Update header cartItems
+    // Update header total items count
     updateCartHeader(res, selectors);
+
+    // Update items in header-cart
+    const headerCartItems = $(selectors["headerCartItemsSelector"]);
+    const cartItems = headerCartItems.querySelectorAll("tr.cart-section");
+    updateItemsCartHeader(res, cartItems);
 
     // Update current item Price
     if (input) {
@@ -212,25 +224,98 @@ function processUpdateCartPage({ res, input, selectors }) {
     if (checkoutBtn) disableButton(res.stockBalance, -1, checkoutBtn);
 }
 
-// Function to update Header Cart
+// Function to update Header-cart total items Count
 function updateCartHeader(res, selectors) {
     const checkoutBtn = $(selectors["checkoutBtnSelector"]);
     if (checkoutBtn) disableButton(res.stockBalance, -1, checkoutBtn);
-    
-    const headerContainer = $(selectors["headerCartSelector"]);
-    const headerCheckoutBtn = headerContainer.querySelector(
+
+    const headerCartCont = $(selectors["headerCartSelector"]);
+
+    const headerCheckoutBtn = headerCartCont.querySelector(
         selectors["headerCartCheckoutSelector"]
     );
     if (headerCheckoutBtn)
         disableButton(res.stockBalance, -1, headerCheckoutBtn);
 
-    if (headerContainer) {
-        const headerCartCount = headerContainer.querySelector(".index");
+    if (headerCartCont) {
+        const headerCartCount = headerCartCont.querySelector(".index");
         if (headerCartCount) {
             const totalQty = res.totalQty;
             headerCartCount.innerHTML = totalQty;
         }
     }
+}
+
+// Delete items in header-cart
+function deleteItemsCartHeader(res, headerCartItems, cartItems) {
+    if (cartItems.length > 0) {
+        selectedHeaderItemHandler(res, cartItems, deleteHeaderCartItem);
+    }
+    if (!res.totalQty) {
+        const html = `
+            <tr>
+                <td colspan="3" style="text-align: center;">CART IS EMPTY</td>
+            </tr>
+        `;
+        headerCartItems.innerHTML = html;
+    }
+}
+
+// Update items in header-cart
+function updateItemsCartHeader(res, cartItems) {
+    if (cartItems.length > 0) {
+        selectedHeaderItemHandler(res, cartItems, updateHeaderCartItem);
+    }
+}
+
+// Add items to headerCart
+function addItemsToCartHeader(res, headerCartItems, cartItems) {
+    const html = `
+        <tr data-index=${res.cartItem.product.id} class="cart-section">
+            <td class="si-pic"><img
+                    src="../images/${res.cartItem.product.imageUrl}"
+                    alt=""></td>
+            <td class="si-text">
+                <div class="product-selected">
+                    <p>${res.cartItem.product.salePrice}</p>
+                    <h6>${res.cartItem.product.shortName}</h6>
+                </div>
+            </td>
+            <td>
+                x <h6 class="product-selected-price">${res.cartItem.quantity}</h6>
+            </td>
+        </tr>
+    `;
+
+    if (cartItems.length > 0) {
+        if (!selectedHeaderItemHandler(res, cartItems, updateHeaderCartItem)) {
+            headerCartItems.insertAdjacentHTML("beforeend", html);
+        }
+    } else {
+        headerCartItems.innerHTML = html;
+    }
+}
+
+// Function to update quantity on existing item in header-cart
+function selectedHeaderItemHandler(res, cartItems, cb) {
+    const selectedItm = Array.from(cartItems).find((item) => {
+        return item.dataset.index == res.cartItem.product.id;
+    });
+    if (selectedItm) {
+        cb(selectedItm, res);
+        return true;
+    }
+    return false;
+}
+
+// Callback function to process update header-cart item
+function updateHeaderCartItem(selectedItm, res) {
+    const selectedPrice = selectedItm.querySelector(".product-selected-price");
+    selectedPrice.innerHTML = res.cartItem.quantity;
+}
+// Callback function to process delete header-cart item
+function deleteHeaderCartItem(selectedItm) {
+    selectedItm.remove();
 }
 
 // Get DIV's parent of current input

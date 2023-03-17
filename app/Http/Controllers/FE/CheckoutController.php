@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\FE;
 
 use App\Http\Controllers\FE\HomeController;
+use App\Http\Traits\ProcessMail;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
@@ -12,6 +13,7 @@ use App\Models\Promotion;
 class CheckoutController extends HomeController
 {
     use ProcessModelData;
+    use ProcessMail; 
 
     public function checkout()
     {

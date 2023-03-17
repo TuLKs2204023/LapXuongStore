@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Cates\Demand;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -22,7 +23,33 @@ class HomeController extends Controller
         $demands = Demand::all();
         $officeProducts = Product::where('demand_id', 1)->get();
         $gamingProducts = Product::where('demand_id', 2)->get();
-        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts'));
+        $productsHighRate = Product::selectRaw('products.*, COUNT(ratings.id) as ratings_count, ROUND(AVG(ratings.rate), 2) as avg_rating')
+            ->leftJoin('ratings', 'products.id', '=', 'ratings.product_id')
+            ->groupBy(
+                'products.id',
+                'products.name',
+                'products.slug',
+                'products.manufacture_id',
+                'products.cpu_id',
+                'products.ram_id',
+                'products.ssd_id',
+                'products.hdd_id',
+                'products.screen_id',
+                'products.resolution_id',
+                'products.series_id',
+                'products.demand_id',
+                'products.gpu_id',
+                'products.color_id',
+                'products.created_at',
+                'products.updated_at',
+            )
+            ->havingRaw('AVG(ratings.rate) > 4')
+            ->orderByDesc('avg_rating')
+            ->limit(10)
+            ->get();
+
+        // dd($productsHighRate);
+        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts', 'productsHighRate'));
     }
 
     public function product($slug)
@@ -65,10 +92,10 @@ class HomeController extends Controller
         }
 
         // Add Cart Item
-        $cartItem = new CartItem($product, $qty);
         if ($existedKey) {
             $cart[$existedKey]->quantity += $qty;
         } else {
+            $cartItem = new CartItem($product, $qty);
             $cart[$pid] = $cartItem;
             session()->put('cart', $cart);
         }
@@ -80,6 +107,7 @@ class HomeController extends Controller
         $res = array(
             'key' => $existedKey,
             'totalQty' => $total['qty'],
+            'cartItem' => $cart[$pid],
             'stockBalance' => $this->stockBalance($product, $cartQty),
         );
         return $res;
@@ -108,6 +136,7 @@ class HomeController extends Controller
             'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
             'totalQty' => $total['qty'],
+            'cartItem' => $cart[$key],
             'stockBalance' => $this->stockBalance($product, $qty),
         );
         return $res;
@@ -136,6 +165,7 @@ class HomeController extends Controller
     {
         $cart = session('cart');
         $key = $request->pid;
+        $cartItem = $cart[$key];
         if ($cart) {
             unset($cart[$key]);
             session()->put('cart', $cart);
@@ -145,7 +175,8 @@ class HomeController extends Controller
         $res = array(
             'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
-            'totalQty' => $total['qty']
+            'totalQty' => $total['qty'],
+            'cartItem' => $cartItem
         );
         return $res;
     }
@@ -184,8 +215,8 @@ class HomeController extends Controller
     public function userProfile()
     {
         $user = auth()->user();
-        $rating =HistoryRating::all();
-        return view('fe.home.profile', compact('user','rating'));
+        $rating = HistoryRating::all();
+        return view('fe.home.profile', compact('user', 'rating'));
     }
     public function aboutUs()
     {
