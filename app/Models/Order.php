@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -97,6 +98,20 @@ class Order extends Model
         } else {
             return '<span class="badge rounded-pill bg-danger">Canceled</span>';
         }
+    }
+    //Estimate time arrival (ETA)
+    public function arrivalEstimate(){
+        $created_date = $this->created_at;
+        $eta = Carbon::parse($created_date)->addDays(7)->format('Y-m-d');
+        return $eta;
+    }
+
+    //Status by time
+    public function statusByTime(){
+        $currentStatus = 0;
+        $created_date = $this->created_at;
+        $currentStatus = Carbon::now()->day - $created_date->day;
+        return $currentStatus;
     }
 
 }
