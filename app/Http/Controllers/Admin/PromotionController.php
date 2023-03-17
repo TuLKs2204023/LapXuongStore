@@ -15,7 +15,7 @@ class PromotionController extends Controller
      */
     public function index()
     {
-        $promotions = Promotion::all();
+        $promotions = Promotion::all()->sortByDesc('id');
         return view('admin.promotion.index', compact('promotions'));
     }
 
@@ -40,7 +40,7 @@ class PromotionController extends Controller
         $n = $request->codeLength;
         $inputDiscount = 0;
         $inputDiscount = $request->discount;
-        if ($inputDiscount > 0) {
+        if ($inputDiscount > 0 && $inputDiscount <= 100) {
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $charactersLength = strlen($characters);
             $code = '';
