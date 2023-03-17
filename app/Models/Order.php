@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -45,7 +46,7 @@ class Order extends Model
         }
     }
 
-    //Get promotion discount 
+    //Get promotion discount
     public function discount()
     {
         $isPromoted = $this->isPromoted();
@@ -64,28 +65,31 @@ class Order extends Model
         $total = 0;
         $oId = $this->id;
         $items = OrderDetail::where('order_id', $oId)->get();
-        foreach($items as $item){
+        foreach ($items as $item) {
             $total += $item->product->fakePrice() * $item->quantity;
         }
         return $total;
     }
 
     //Discount amount
-    public function discountAmount(){
+    public function discountAmount()
+    {
         $total = $this->total();
         $discount = $this->discount();
         return $total * $discount;
     }
 
     //Total after discount
-    public function totalAfterDiscount(){
+    public function totalAfterDiscount()
+    {
         $total = $this->total();
         $afterDis = $this->discountAmount();
         return $total - $afterDis;
     }
-
+    
     //Estimate time arrival (ETA)
-    public function arrivalEstimate(){
+    public function arrivalEstimate()
+    {
         $created_date = $this->created_at;
         $eta = Carbon::parse($created_date)->addDays(7)->format('Y-m-d');
         return $eta;
@@ -97,5 +101,23 @@ class Order extends Model
         $created_date = $this->created_at;
         $currentStatus = Carbon::now()->day - $created_date->day;
         return $currentStatus;
+    }
+    
+    //Process name
+    public function statusProcessing()
+    {
+        if ($this->status == 1) {
+            if ($this->statusByTime() >= 0 && $this->statusByTime() < 1) {
+                return '<span class="badge rounded-pill bg-primary">Order confirmed</span>';
+            } elseif ($this->statusByTime() >= 1 && $this->statusByTime() < 3) {
+                return '<span class="badge rounded-pill bg-info">Picked by courier</span>';
+            } elseif ($this->statusByTime() >= 3 && $this->statusByTime() < 7) {
+                return '<span class="badge rounded-pill bg-warning">On the way</span>';
+            } else {
+                return '<span class="badge rounded-pill bg-success">Ready for pickup</span>';
+            }
+        } else {
+            return '<span class="badge rounded-pill bg-danger">Canceled</span>';
+        }
     }
 }

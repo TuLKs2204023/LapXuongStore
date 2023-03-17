@@ -8,6 +8,7 @@ use App\Models\HistoryProduct;
 use App\Models\HistoryUser;
 use App\Models\Cates\Manufacture;
 use App\Models\Order;
+use App\Models\Rating;
 use App\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
