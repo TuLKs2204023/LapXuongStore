@@ -44,7 +44,7 @@ class Order extends Model
         }
     }
 
-    //Get promotion discount 
+    //Get promotion discount
     public function discount()
     {
         $isPromoted = $this->isPromoted();
@@ -82,4 +82,21 @@ class Order extends Model
         $afterDis = $this->discountAmount();
         return $total - $afterDis;
     }
+    public function statusProcessing()
+    {
+        if ($this->status == 1) {
+            if ($this->statusByTime() >= 0 && $this->statusByTime() < 1) {
+                return '<span class="badge rounded-pill bg-primary">Order confirmed</span>';
+            } elseif ($this->statusByTime() >= 1 && $this->statusByTime() < 3) {
+                return '<span class="badge rounded-pill bg-info">Picked by courier</span>';
+            } elseif ($this->statusByTime() >= 3 && $this->statusByTime() < 7) {
+                return '<span class="badge rounded-pill bg-warning">On the way</span>';
+            } else {
+                return '<span class="badge rounded-pill bg-success">Ready for pickup</span>';
+            }
+        } else {
+            return '<span class="badge rounded-pill bg-danger">Canceled</span>';
+        }
+    }
+
 }

@@ -39,8 +39,8 @@
                                             </div>
                                             <div class="ps-3">
                                                 <h6>{{ $totalItem }}</h6>
-                                                <span class="text-success small pt-1 fw-bold">12%</span> <span
-                                                    class="text-muted small pt-2 ps-1">increase</span>
+                                                {{-- <span class="text-success small pt-1 fw-bold">12%</span> --}}
+                                                <span class="text-muted small pt-2 ps-1">Orders</span>
 
                                             </div>
                                         </div>
@@ -62,8 +62,8 @@
                                             </div>
                                             <div class="ps-3">
                                                 <h6>{{ $totalProduct }}</h6>
-                                                <span class="text-success small pt-1 fw-bold">8%</span>
-                                                <span class="text-muted small pt-2 ps-1">increase</span>
+                                                {{-- <span class="text-success small pt-1 fw-bold">8%</span> --}}
+                                                <span class="text-muted small pt-2 ps-1">Items</span>
 
                                             </div>
                                         </div>
@@ -86,8 +86,8 @@
                                             </div>
                                             <div class="ps-3">
                                                 <h6>{{ $totalUser }}</h6>
-                                                <span class="text-danger small pt-1 fw-bold">12%</span> <span
-                                                    class="text-muted small pt-2 ps-1">decrease</span>
+                                                {{-- <span class="text-danger small pt-1 fw-bold">12%</span> --}}
+                                                <span class="text-muted small pt-2 ps-1">Customer</span>
 
                                             </div>
                                         </div>
@@ -97,11 +97,11 @@
 
                             </div><!-- End Customers Card -->
 
-                        <!-- Reports -->
-                        <div class="col-12">
-                            <div class="card">
+                            <!-- Reports -->
+                            <div class="col-12">
+                                <div class="card">
 
-                                {{-- <div class="filter">
+                                    {{-- <div class="filter">
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                             class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -115,77 +115,76 @@
                                     </ul>
                                 </div> --}}
 
-                                <div class="card-body">
-                                    <h5 class="card-title">Reports of 10 Days </h5>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Reports of 10 Days </h5>
 
-                                    <!-- Line Chart -->
-                                    <div id="reportsChart"></div>
+                                        <!-- Line Chart -->
+                                        <div id="reportsChart"></div>
 
-                                    <script>
+                                        <script>
+                                            let day = @php echo json_encode($dayData); @endphp;
+                                            let revenue = @php echo json_encode($revenue); @endphp;
+                                            let product = @php echo json_encode($productData); @endphp;
+                                            let interaction = @php echo json_encode($interaction); @endphp;
 
-                                        let day = @php echo json_encode($dayData); @endphp;
-                                        let revenue = @php echo json_encode($revenue); @endphp;
-                                        let product = @php echo json_encode($productData); @endphp;
-                                        let interaction = @php echo json_encode($interaction); @endphp;
+                                            document.addEventListener("DOMContentLoaded", () => {
+                                                new ApexCharts(document.querySelector("#reportsChart"), {
+                                                    series: [{
+                                                        name: 'Qty laptop saled',
+                                                        data: product,
+                                                    }, {
+                                                        name: 'Revenue',
+                                                        data: revenue
 
-                                        document.addEventListener("DOMContentLoaded", () => {
-                                            new ApexCharts(document.querySelector("#reportsChart"), {
-                                                series: [{
-                                                    name: 'Qty laptop saled',
-                                                    data: product,
-                                                }, {
-                                                    name: 'Revenue',
-                                                    data: revenue
-
-                                                }, {
-                                                    name: 'Qty Customer Interaction',
-                                                    data: interaction
-                                                }],
-                                                chart: {
-                                                    height: 350,
-                                                    type: 'area',
-                                                    toolbar: {
-                                                        show: false
+                                                    }, {
+                                                        name: 'Qty Customer Interaction',
+                                                        data: interaction
+                                                    }],
+                                                    chart: {
+                                                        height: 350,
+                                                        type: 'area',
+                                                        toolbar: {
+                                                            show: false
+                                                        },
                                                     },
-                                                },
-                                                markers: {
-                                                    size: 4
-                                                },
-                                                colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                                                fill: {
-                                                    type: "gradient",
-                                                    gradient: {
-                                                        shadeIntensity: 1,
-                                                        opacityFrom: 0.3,
-                                                        opacityTo: 0.4,
-                                                        stops: [0, 90, 100]
+                                                    markers: {
+                                                        size: 4
+                                                    },
+                                                    colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                                                    fill: {
+                                                        type: "gradient",
+                                                        gradient: {
+                                                            shadeIntensity: 1,
+                                                            opacityFrom: 0.3,
+                                                            opacityTo: 0.4,
+                                                            stops: [0, 90, 100]
+                                                        }
+                                                    },
+                                                    dataLabels: {
+                                                        enabled: false
+                                                    },
+                                                    stroke: {
+                                                        curve: 'smooth',
+                                                        width: 2
+                                                    },
+                                                    xaxis: {
+                                                        type: 'datetime',
+                                                        categories: day
+                                                    },
+                                                    tooltip: {
+                                                        x: {
+                                                            format: 'dd/MM/yy HH:mm'
+                                                        },
                                                     }
-                                                },
-                                                dataLabels: {
-                                                    enabled: false
-                                                },
-                                                stroke: {
-                                                    curve: 'smooth',
-                                                    width: 2
-                                                },
-                                                xaxis: {
-                                                    type: 'datetime',
-                                                    categories: day
-                                                },
-                                                tooltip: {
-                                                    x: {
-                                                        format: 'dd/MM/yy HH:mm'
-                                                    },
-                                                }
-                                            }).render();
-                                        });
-                                    </script>
-                                    <!-- End Line Chart -->
+                                                }).render();
+                                            });
+                                        </script>
+                                        <!-- End Line Chart -->
+
+                                    </div>
 
                                 </div>
-
-                            </div>
-                        </div><!-- End Reports -->
+                            </div><!-- End Reports -->
                         @endif
                         <!-- Recent Sales -->
                         <div class="col-12">
@@ -229,7 +228,10 @@
                                                         </td>
                                                         <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
                                                         </td>
-                                                        <td><span class="badge bg-success">Approved</span></td>
+                                                        <td>@php
+                                                            echo $item->statusProcessing();
+                                                        @endphp
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @endforeach
@@ -348,12 +350,16 @@
                                                 <p class="fw-bold text-dark" style="margin-block-end:0.5em;">
                                                     <span class="fw-light">{{ $pro->user->name }}</span>
                                                     {{ $pro->action }}
-                                                    <span class="fw-light">{{ isset($pro->product) ? $pro->product->name : '' }}</span>
+                                                    <a href="{{ isset($pro->product) ? Route('product.details', $pro->product->slug) : '' }}"
+                                                        class="fw-light text-dark">
+                                                        <span
+                                                            class="fw-light">{{ isset($pro->product) ? $pro->product->name : '' }}</span>
+                                                    </a>
                                                     {{ $pro->by }}
                                                 </p>
 
                                                 <a class="fw-light text-dark"
-                                                href="{{ isset($pro->product) ? Route('product.details', $pro->product->slug ) : '' }}">{{ $pro->data }}</a>
+                                                    href="{{ isset($pro->product) ? Route('product.details', $pro->product->slug) : '' }}">{{ $pro->data }}</a>
                                             </div>
                                         </div><!-- End activity item-->
                                     @endforeach

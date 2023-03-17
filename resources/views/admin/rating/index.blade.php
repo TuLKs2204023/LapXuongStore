@@ -65,11 +65,18 @@
                                             </i>
                                             View
                                         </a>
-                                        <a href="{{ URL::to('admin/rating/destroy/' . $rating->id) }}"
-                                            class="btn btn-sm btn-danger" id="delete">
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </a>
+
+                                        <form action="{{ Route('admin.rating.adminDelete') }}" method="post"
+                                            style="display:inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="hidden" name="id" value="{{ $rating->product->id }}">
+                                            <button type="submit"
+                                                class="btn btn-outline-danger btn-sm mb-2 button-control">
+                                               Delete
+
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

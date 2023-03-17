@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ProcessModelData;
+use App\Models\HistoryProduct;
 use App\Models\Product;
 use App\Models\Rating;
 use App\Models\User;
@@ -47,7 +48,7 @@ class RatingController extends Controller
         } else {
             $user = User::find(auth()->user()->id);
             $user = $this->processRating($user, $proData);
-            
+
             //history thầy Dự
             $this->adminRating($user,$proData);
             $this->userRating($user,$proData);
@@ -112,5 +113,15 @@ class RatingController extends Controller
             'message' => 'Rating saved successfully',
             'totalRate' => $product->countRates(),
         ]);
+    }
+    public function adminDelete(Request $request){
+        $ratings = Rating::all()->sortByDesc('id');
+
+        $rId = $request->id;
+        // dd($rId);
+        $review = Rating::where('product_id',$rId)->get()->first();
+
+        $review->delete();
+        return view('admin.rating.index', compact('ratings'));
     }
 }

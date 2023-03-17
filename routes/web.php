@@ -332,6 +332,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/{id}/edit', [RatingController::class, 'edit'])->name('edit');
             Route::put('/update', [RatingController::class, 'update'])->name('update');
             Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
+            Route::delete('/adminDelete', [RatingController::class, 'adminDelete'])->name('adminDelete');
+
         });
 
         //Order management
