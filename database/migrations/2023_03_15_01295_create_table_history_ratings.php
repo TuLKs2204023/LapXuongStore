@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('history_ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrain()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->longText('review')->nullable();
             $table->longText('rating')->nullable();
             $table->String('action')->nullable();

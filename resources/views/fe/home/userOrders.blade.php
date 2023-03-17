@@ -172,8 +172,18 @@
             color: var(--violet-main);
         }
 
-        .cancelBtn {
-            text-align: right !important;
+        h5 .badge.bg-danger.cancelBtn {
+            color: white;
+            cursor: pointer;
+        }
+
+        .status {
+            color: white;
+        }
+
+        h5 .badge.bg-success,
+        h5 .badge.bg-warning {
+            color: white;
         }
     </style>
 @endsection
@@ -212,19 +222,7 @@
                             </div>
                             <div class="col"> <strong>Status:</strong> <br>
                                 <div class="status">
-                                    @if ($order->status == 1)
-                                        @if ($order->statusByTime() >= 0 && $order->statusByTime() < 1)
-                                            Order confirmed
-                                        @elseif($order->statusByTime() >= 1 && $order->statusByTime() < 3)
-                                            Picked by courier
-                                        @elseif($order->statusByTime() >= 3 && $order->statusByTime() < 7)
-                                            On the way
-                                        @else
-                                            Ready for pickup
-                                        @endif
-                                    @else
-                                        Canceled
-                                    @endif
+                                    @php echo $order->statusProcessing() @endphp
                                 </div>
                             </div>
                             <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>
@@ -269,13 +267,13 @@
                         @endforeach
                     </ul>
                     @if ($order->statusByTime() >= 7)
-                        <button class="btn btn-sm btn-success">Deliver successfully</button>
+                        <h5><span class="badge bg-success">Deliver successfully</span></h5>
                     @else
                         @if ($order->status == 1)
-                            <button class="btn btn-sm btn-danger cancelBtn">Cancel Order
-                                LXS-{{ $order->id }}</button>
+                            <h5><span class="badge bg-danger cancelBtn">Cancel Order
+                                    LXS-{{ $order->id }}</span></h5>
                         @elseif($order->status == 0)
-                            <button class="btn btn-sm btn-warning">Your order has been canceled</button>
+                            <h5><span class="badge bg-warning">Your order has been canceled</span></h5>
                         @endif
                     @endif
                 </fieldset>
@@ -324,18 +322,28 @@
                             $.ajax({
                                 type: "GET",
                                 url: "{{ Route('cancelOrder') }}",
+                                headers: {
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                },
                                 data: {
                                     oId: oId,
                                 },
                                 success: function(response) {
                                     const orderStt = $(element).find(".status")
                                         .get(0);
-                                    $(deleteBtn).removeClass("btn-danger");
-                                    $(deleteBtn).addClass("btn-warning");
+                                    const tracking = $(".track");
+                                    $(deleteBtn).removeClass("bg-danger");
+                                    $(deleteBtn).addClass("bg-warning");
                                     $(deleteBtn).html(
                                         "Your order has been canceled");
                                     $(deleteBtn).removeClass("cancelBtn");
-                                    $(orderStt).html("Canceled");
+                                    $(orderStt).html(
+                                        '<span class="badge rounded-pill bg-danger">Canceled</span>'
+                                    );
+                                    $(tracking).empty();
+                                    $(tracking).html(
+                                        '<div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Canceled</span></div>'
+                                    )
                                 }
                             })
                             Swal.fire(

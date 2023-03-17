@@ -9,13 +9,13 @@ use App\Models\Order;
 
 trait ProcessMail 
 {
-    function completeOrder(Order $order)
+    function completeOrderEmail(Order $order)
     {
         $message = new OrderConfirmation($order);
         Mail::to($order->email)->send($message);
     }
 
-    function cancelOrder(Order $order){
+    function cancelOrderEmail(Order $order){
         $message = new OrderCancel($order);
         Mail::to($order->email)->send($message);
     }

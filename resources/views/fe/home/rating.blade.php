@@ -1,4 +1,4 @@
-<div class="co-item">
+<div class="co-item" data-index="{{ $rating->id }}">
     <div class="avatar-pic">
         <img src="{{ isset($rating->user->image) ? asset('images/' . $rating->user->image) : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png' }}"
             alt="">
@@ -27,8 +27,7 @@
         @if (auth()->user())
             @if (auth()->user()->role == 'Admin')
                 <a href="#" id="deletecomment"
-                    class="btn btn-outline-danger btn-sm"
-                    data-index="{{ $rating->id }}">
+                    class="btn btn-outline-danger btn-sm">
                     <i class="fas fa-trash"></i>
                     Delete
                 </a>

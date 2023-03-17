@@ -46,7 +46,7 @@ class RatingController extends Controller
             return response()->json(['msg' => 'Stars and review cannot be left blank.']);
         } else {
             $user = User::find(auth()->user()->id);
-            $user = $this->processRating($user, $proData);
+            $msg = $this->processRating($user, $proData);
             //get all ratings of this product
             $product = Product::find($proData['product_id']);
             $rateAmount = $product->countRates();
@@ -60,6 +60,7 @@ class RatingController extends Controller
                 'success' => true,
                 'view' => $view,
                 'totalRate' => $rateAmount,
+                'msg' => $msg,
             ]);
         }
     }
