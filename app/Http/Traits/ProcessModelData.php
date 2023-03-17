@@ -7,7 +7,6 @@ use App\Models\Cates\Hdd;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\User;
-use App\Models\Cates\Hdd;
 use App\Models\Cates\Ram;
 use App\Models\Cates\Screen;
 use App\Models\Cates\Ssd;
