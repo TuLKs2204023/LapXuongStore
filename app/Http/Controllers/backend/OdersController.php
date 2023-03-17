@@ -17,7 +17,8 @@ class OdersController extends Controller
     //get all orders for admin 
     public function Allorders()
     {
-        $all = DB::table('orders')->get();
+        $all = Order::all()->sortByDesc('id');
+
         return view('admin.oders.allorders', compact('all'));
     }
 
@@ -57,10 +58,11 @@ class OdersController extends Controller
         $order->status = 0;
         $order->push();
         //gởi mail nữa nha
-        // $this->cancelOrder($order);
+        $this->cancelOrderEmail($order);
         return response()->json([
             'msg' => 'Your order is canceled successfully.',
             'status' => 'success',
+            'order' => $order,
         ]);
     }
 }

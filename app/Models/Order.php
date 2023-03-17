@@ -46,7 +46,9 @@ class Order extends Model
         }
     }
 
-    //Get promotion discount
+    // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
+    
+    //Get promotion discount 
     public function discount()
     {
         $isPromoted = $this->isPromoted();
@@ -96,13 +98,14 @@ class Order extends Model
     }
 
     //Status by time
-    public function statusByTime(){
+    public function statusByTime()
+    {
         $currentStatus = 0;
         $created_date = $this->created_at;
         $currentStatus = Carbon::now()->day - $created_date->day;
         return $currentStatus;
     }
-    
+
     //Process name
     public function statusProcessing()
     {
@@ -120,4 +123,6 @@ class Order extends Model
             return '<span class="badge rounded-pill bg-danger">Canceled</span>';
         }
     }
+
+    // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
 }

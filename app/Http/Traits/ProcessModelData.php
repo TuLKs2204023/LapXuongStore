@@ -127,18 +127,49 @@ trait ProcessModelData
         return $order;
     }
 
-    function processRating(User $user, array $proData)
+    //Convert Vietnamese to abc
+    function convert_name($str)
     {
+        $str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);
+        $str = preg_replace("/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/", 'e', $str);
+        $str = preg_replace("/(ì|í|ị|ỉ|ĩ)/", 'i', $str);
+        $str = preg_replace("/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/", 'o', $str);
+        $str = preg_replace("/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/", 'u', $str);
+        $str = preg_replace("/(ỳ|ý|ỵ|ỷ|ỹ)/", 'y', $str);
+        $str = preg_replace("/(đ)/", 'd', $str);
+        $str = preg_replace("/(À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ)/", 'A', $str);
+        $str = preg_replace("/(È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ)/", 'E', $str);
+        $str = preg_replace("/(Ì|Í|Ị|Ỉ|Ĩ)/", 'I', $str);
+        $str = preg_replace("/(Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ)/", 'O', $str);
+        $str = preg_replace("/(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)/", 'U', $str);
+        $str = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", 'Y', $str);
+        $str = preg_replace("/(Đ)/", 'D', $str);
+        $str = preg_replace("/(\“|\”|\‘|\’|\,|\!|\&|\;|\@|\#|\%|\~|\`|\=|\_|\'|\]|\[|\}|\{|\)|\(|\+|\^)/", ' ', $str);
+        $str = preg_replace("/( )/", '-', $str);
+        return $str;
+    }
+
+    function processRating(User $user, array $proData)
+    { 
         // From 'TU Lele' with ❤❤❤
         $product = DB::table('products')
             ->where('id', $proData['product_id'])
             ->first();
-
         $productId = $product->id;
-
-        $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
-        $user->refresh();
-        return $user;
+        //check text contains bad words
+        $msg = true;
+        $convertText = Strtolower ($this->convert_name($proData['review']));
+        $badWords = ['dm', 'fuck', 'shit', 'ma', 'dkm', 'dit', 'me', 'djt me', 'du', 'chich', 'cu', 'lon', 'lol', 'bede', 'cc', 'cac', 'di', 'bo may', 'bo m'];
+        for($i = 0; $i < count($badWords); $i++){
+            if( strpos( $convertText, $badWords[$i] ) !== false ){
+                return $msg = 'Comment contains bad words, please stay calm and be polite!';
+            }
+        }
+        if($msg == true){
+            $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
+            $user->refresh();
+            return $msg = 'Comment add successfully';
+        }
     }
 
     function processDiscount(Product $product, array $proData)
@@ -149,12 +180,12 @@ trait ProcessModelData
         $product->refresh();
 
         $latestSalePrice = DB::table('prices')
-        ->where([
-            ['product_id', $product->id],
-            ['sale', '>', 0],
-        ])
-        ->get()
-        ->last();
+            ->where([
+                ['product_id', $product->id],
+                ['sale', '>', 0],
+            ])
+            ->get()
+            ->last();
         $discountedSale = $latestSalePrice->sale * (1 - $proData['amount']);
 
         $product->prices()->create(['sale' => $latestSalePrice->sale, 'sale_discounted' => $discountedSale]);
@@ -449,14 +480,12 @@ trait ProcessModelData
             $address = $old_address ?? 'Not Updated';
             $final = $final . 'Address: ' . $address . ' to ' . $data['address'] . '. ';
         }
-            if($final==''){
-                $user->histories()->create(['data' => 'Nothing change.', 'action' => 'Updated profile']);
-            }
-            else{
-                $user->histories()->create(['data' =>  $final, 'action' => 'Updated profile']);
-
-            }
+        if ($final == '') {
+            $user->histories()->create(['data' => 'Nothing change.', 'action' => 'Updated profile']);
+        } else {
+            $user->histories()->create(['data' =>  $final, 'action' => 'Updated profile']);
         }
+    }
 
     public function adminData($user, array $data)
     {
@@ -541,14 +570,12 @@ trait ProcessModelData
             $name = $old_name ?? 'Not Updated';
             $final = $final . 'NAME' . ', ';
             $finalFull = $finalFull . 'NAME: ' . $name . ' to ' . $data['name'] . ', ';
-
         }
         if ($data['manufacture_id'] != $old_manufacture) {
             $manufacture = Manufacture::find($old_manufacture)->name ?? 'Not Updated';
             $nManu =  Manufacture::find($data['manufacture_id'])->name;
             $final = $final . 'MANUFACTURE' . ', ';
             $finalFull = $finalFull . 'MANUFACTURE: ' . $manufacture  . ' to ' . $nManu . ', ';
-
         }
 
         if ($data['cpu_id'] != $old_cpu) {
@@ -556,7 +583,6 @@ trait ProcessModelData
             $nCpu = Cpu::find($data['cpu_id'])->name;
             $final = $final . 'CPU' . ', ';
             $finalFull = $finalFull . 'CPU: ' . $cpu . ' to ' . $nCpu . ', ';
-
         }
 
         if ($data['ram_id'] != $old_ram) {
@@ -564,14 +590,12 @@ trait ProcessModelData
             $nRam = Ram::find($data['ram_id'])->amount;
             $final = $final . 'RAM' . ', ';
             $finalFull = $finalFull . 'RAM: ' . $ram . ' to ' . $nRam . ', ';
-
         }
         if ($data['ssd_id'] != $old_ssd) {
             $ssd = Ssd::find($old_ssd)->amount ?? 'Not Updated';
             $nSsd = Ssd::find($data['ssd_id'])->amount;
             $final = $final . 'SSD' . ', ';
             $finalFull = $finalFull . 'SSD: ' . $ssd . ' to ' . $nSsd . ', ';
-
         }
         if ($data['hdd_id'] != $old_hdd) {
             $hdd = Hdd::find($old_hdd)->amount ?? 'Not Updated';

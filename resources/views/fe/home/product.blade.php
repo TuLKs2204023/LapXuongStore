@@ -419,9 +419,7 @@
                                             @auth
                                                 <div class="leave-comment">
                                                     <h4>Leave A Comment</h4>
-                                                    <!-- Message Section -->
-                                                    @include('components.message')
-                                                    <!-- / Message Section -->
+                                                    <div class="tu-send-review-message"></div>
                                                     <form class="comment-form">
                                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                         <div class="personal-rating">
@@ -635,38 +633,56 @@
                     },
                     data: formArray,
                     success: function(response) {
-                        $(cmtArea).val("");
-                        $(".selected-rating").html(0);
-                        $(starWrap).each(function(index, element) {
-                            const hasFilled = $(element).hasClass("btn-warning");
-                            $([document.documentElement, document.body]).animate({
-                                scrollTop: $("#review-tab").offset().top
-                            }, 100);
-                            if (hasFilled) {
-                                $(element).removeClass("btn-warning");
-                                $(element).addClass("btn-default");
+                        if (response.msg == "Comment add successfully") {
+                            $(cmtArea).val("");
+                            $(".selected-rating").html(0);
+                            $(starWrap).each(function(index, element) {
+                                const hasFilled = $(element).hasClass("btn-warning");
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $("#review-tab").offset().top
+                                }, 100);
+                                if (hasFilled) {
+                                    $(element).removeClass("btn-warning");
+                                    $(element).addClass("btn-default");
+                                }
+                            })
+                            if (response.totalRate == 1) {
+                                const test = $(".comment-option.overflow-auto").get(0);
+                                $(test).html(response.view);
+                            } else {
+                                $(".comment-option.overflow-auto").children().first().before(
+                                    response
+                                    .view);
                             }
-                        })
-                        if (response.totalRate == 1) {
-                            const test = $(".comment-option.overflow-auto").get(0);
-                            $(test).html(response.view);
+                            const reviewItm = $(".comment-option.overflow-auto").children()
+                                .first().get(0);
+                            const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
+                            reviewDelBtn.onclick =
+                                function(e) {
+                                    e.preventDefault();
+                                    tuDeleteComment(reviewItm);
+                                };
+                            $("#review-tab").html("Customer Review " +
+                                "(" + response.totalRate + ")");
+                            $(".customer-review-option .tu-comment")
+                                .html(response.totalRate + " Comments");
+                            if($(".tu-send-review-message").hasClass("alert alert-danger")){
+                                $(".tu-send-review-message").removeClass("alert alert-danger");
+                                $(".tu-send-review-message").addClass("alert alert-success main-success");
+                            }
+                            else{
+                                $(".tu-send-review-message").addClass("alert alert-success main-success");
+                            }
+                            $(".tu-send-review-message").html(response.msg);
                         } else {
-                            $(".comment-option.overflow-auto").children().first().before(
-                                response
-                                .view);
+                            $(starWrap).each(function(index, element) {
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $("#review-tab").offset().top
+                                }, 100);
+                            })
+                            $(".tu-send-review-message").addClass("alert alert-danger");
+                            $(".tu-send-review-message").html(response.msg);
                         }
-                        const reviewItm = $(".comment-option.overflow-auto").children()
-                            .first().get(0);
-                        const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
-                        reviewDelBtn.onclick =
-                            function(e) {
-                                e.preventDefault();
-                                tuDeleteComment(reviewItm);
-                            };
-                        $("#review-tab").html("Customer Review " +
-                            "(" + response.totalRate + ")");
-                        $(".customer-review-option .tu-comment")
-                            .html(response.totalRate + " Comments");
                     }
                 });
             })
@@ -675,7 +691,8 @@
             //Thầy Dự xóa Rating (Tú có fix lại)
             //hàm delete của tú
             function tuDeleteComment(element) {
-                const rId = $("#deletecomment").attr("data-index");
+                const rId = $(element).attr("data-index");
+                console.log(rId)
                 const pId = $(heart).attr("data-index");
                 Swal.fire({
                     title: 'Are you sure?',
@@ -718,6 +735,7 @@
             ratingItem.each(function(index, element) {
                 const deleteBtn = $(element).find("#deletecomment").get(0);
                 $(deleteBtn).on("click", function(e) {
+                    console.log(deleteBtn)
                     e.preventDefault();
                     tuDeleteComment(element);
                 });
