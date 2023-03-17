@@ -75,7 +75,7 @@
                             @foreach ($cateGroups->find(10)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="demand-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="demand-{{ $cate->cateable->id }}"
                                             data-value="demand-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -92,7 +92,7 @@
                             @foreach ($cateGroups->find(1)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="manufacture-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="manufacture-{{ $cate->cateable->id }}"
                                             data-value="manufacture-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -109,7 +109,7 @@
                             @foreach ($cateGroups->find(2)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="series-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="series-{{ $cate->cateable->id }}"
                                             data-value="series-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -126,7 +126,7 @@
                             @foreach ($cateGroups->find(3)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
                                 <div class="bc-item">
                                     <label for="cpu-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="cpu-{{ $cate->cateable->id }}"
                                             data-value="cpu-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -146,7 +146,7 @@
                                 @endif
                                 <div class="bc-item">
                                     <label for="ram-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="ram-{{ $cate->cateable->id }}"
                                             data-value="ram-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
