@@ -228,9 +228,9 @@
                                                         </td>
                                                         <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
                                                         </td>
-                                                        <td>@php
-                                                            echo $item->statusProcessing();
-                                                        @endphp
+                                                        <td><td>
+                                                            <span class="badge bg-success">Approved</span>
+                                                        </td>
                                                         </td>
                                                     </tr>
                                                 @endforeach
