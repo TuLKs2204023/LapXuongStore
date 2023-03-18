@@ -34,99 +34,104 @@
         @include('components.message')
         <!-- / Message section -->
 
-    <!-- Check-out SECTION BEGIN-->
-    <div class="checkout-section spad">
-        <div class="container">
-            <form action="{{ Route('processCheckout') }}" class="checkout-form myForm" method="post" id="createCheckout">
-                @csrf
-                <div class="row">
-                    <div class="col-lg-5">
-                        {{-- <div class="checkout-content">
+        <!-- Check-out SECTION BEGIN-->
+        <div class="checkout-section spad">
+            <div class="container">
+                <form action="{{ Route('processCheckout') }}" class="checkout-form myForm" method="post"
+                    id="createCheckout">
+                    @csrf
+                    <div class="row">
+                        <div class="col-lg-5">
+                            {{-- <div class="checkout-content">
                             <a href="{{ Route('login') }}" class="content-btn">Click Here To Login</a>
                         </div> --}}
-                        <h4>Biling Details</h4>
-                        <div class="row">
-                            <div class="col-lg-12 form-group">
-                                <label for="name" class="form-label">
-                                    <div>Name<span class="form-required">&nbsp;*</span></div>
-                                    <span class="form-message heighter"></span>
-                                </label>
-                                <input type="text" id="name" name="name" class="form-control"
-                                    rules="required" placeholder="Your name" value="{{ auth()->user()->name ?? '' }}">
-                            </div>
-                            <div class="col-lg-6 form-group">
-                                <label for="email" class="form-label">
-                                    <div>Email<span class="form-required">&nbsp;*</span></div>
-                                    <span class="form-message heighter"></span>
-                                </label>
-                                <input type="text" id="email" name="email" class="form-control"
-                                    rules="required|email" placeholder="Your email address" value="{{ auth()->user()->email ?? '' }}">
-                            </div>
-                            <div class="col-lg-6 form-group">
-                                <label for="phone" class="form-label">
-                                    <div>Phone<span class="form-required">&nbsp;*</span></div>
-                                    <span class="form-message heighter"></span>
-                                </label>
-                                <input type="text" id="phone" name="phone" class="form-control"
-                                    rules="required" placeholder="Your phone number" value="{{ auth()->user()->phone ?? '' }}">
-                            </div>
-                            <div class="col-lg-12 form-group">
-                                <label for="city" class="form-label">
-                                    <div>City<span class="form-required">&nbsp;*</span></div>
-                                    <span class="form-message heighter"></span>
-                                </label>
-                                <select rules="required" id="City-dropdown" class="form-control" name="city">
-                                    <option value="{{ auth()->user()->city->name ?? '' }}">
-                                        {{ isset(auth()->user()->city->name) ? auth()->user()->city->name : 'Select your city' }}
-                                    </option>
-                                    @foreach ($res['cities'] as $data)
-                                        <option value="{{ $data->id }}">
-                                            {{ $data->name }}
+                            <h4>Biling Details</h4>
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    <label for="name" class="form-label">
+                                        <div>Name<span class="form-required">&nbsp;*</span></div>
+                                        <span class="form-message heighter"></span>
+                                    </label>
+                                    <input type="text" id="name" name="name" class="form-control"
+                                        rules="required" placeholder="Your name" value="{{ auth()->user()->name ?? '' }}">
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <label for="email" class="form-label">
+                                        <div>Email<span class="form-required">&nbsp;*</span></div>
+                                        <span class="form-message heighter"></span>
+                                    </label>
+                                    <input type="text" id="email" name="email" class="form-control"
+                                        rules="required|email" placeholder="Your email address"
+                                        value="{{ auth()->user()->email ?? '' }}">
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <label for="phone" class="form-label">
+                                        <div>Phone<span class="form-required">&nbsp;*</span></div>
+                                        <span class="form-message heighter"></span>
+                                    </label>
+                                    <input type="text" id="phone" name="phone" class="form-control"
+                                        rules="required" placeholder="Your phone number"
+                                        value="{{ auth()->user()->phone ?? '' }}">
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label for="city" class="form-label">
+                                        <div>City<span class="form-required">&nbsp;*</span></div>
+                                        <span class="form-message heighter"></span>
+                                    </label>
+                                    <select rules="required" id="City-dropdown" class="form-control" name="city">
+                                        <option value="{{ auth()->user()->city->name ?? '' }}">
+                                            {{ isset(auth()->user()->city->name) ? auth()->user()->city->name : 'Select your city' }}
                                         </option>
-                                    @endforeach
-                                </select>
-                                {{-- <input type="text" id="city" name="city" class="form-control"
+                                        @foreach ($res['cities'] as $data)
+                                            <option value="{{ $data->id }}">
+                                                {{ $data->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    {{-- <input type="text" id="city" name="city" class="form-control"
                                     rules="required" placeholder="Shipping city name" value="{{ auth()->user()->city->name ?? '' }}"> --}}
-                            </div>
-                            <div class="col-lg-12 form-group">
-                                <label for="district" class="form-label">
-                                    <div>District<span class="form-required">&nbsp;*</span></div>
-                                    <span class="form-message heighter"></span>
-                                </label>
-                                <select rules="required" id="district-dropdown" class="form-control" name="district">
-                                    <option value="{{ auth()->user()->district->name ?? '' }}">
-                                        {{ isset(auth()->user()->district->name) ? auth()->user()->district->name : 'Select your district' }}
-                                    </option>
-                                </select>
-                                {{-- <input type="text" id="district" name="district" class="form-control"
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label for="district" class="form-label">
+                                        <div>District<span class="form-required">&nbsp;*</span></div>
+                                        <span class="form-message heighter"></span>
+                                    </label>
+                                    <select rules="required" id="district-dropdown" class="form-control" name="district">
+                                        <option value="{{ auth()->user()->district->name ?? '' }}">
+                                            {{ isset(auth()->user()->district->name) ? auth()->user()->district->name : 'Select your district' }}
+                                        </option>
+                                    </select>
+                                    {{-- <input type="text" id="district" name="district" class="form-control"
                                     rules="required" placeholder="Shipping district name" value="{{ auth()->user()->district->name ?? '' }}"> --}}
-                            </div>
-                            <div class="col-lg-12 form-group">
-                                <label for="ward" class="form-label">
-                                    <div>Ward<span class="form-required">&nbsp;*</span></div>
-                                    <span class="form-message heighter"></span>
-                                </label>
-                                <select rules="required" id="ward-dropdown" class="form-control" name="ward" value="">
-                                    <option value="{{ auth()->user()->ward->name ?? '' }}">
-                                        {{ isset(auth()->user()->ward->name) ? auth()->user()->ward->name : 'Select your ward' }}
-                                    </option>
-                                </select>
-                                {{-- <input type="text" id="ward" name="ward" class="form-control"
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label for="ward" class="form-label">
+                                        <div>Ward<span class="form-required">&nbsp;*</span></div>
+                                        <span class="form-message heighter"></span>
+                                    </label>
+                                    <select rules="required" id="ward-dropdown" class="form-control" name="ward"
+                                        value="">
+                                        <option value="{{ auth()->user()->ward->name ?? '' }}">
+                                            {{ isset(auth()->user()->ward->name) ? auth()->user()->ward->name : 'Select your ward' }}
+                                        </option>
+                                    </select>
+                                    {{-- <input type="text" id="ward" name="ward" class="form-control"
                                     rules="required" placeholder="Shipping ward name" value="{{ auth()->user()->ward->name ?? '' }}"> --}}
-                            </div>
-                            <div class="col-lg-12 form-group">
-                                <label for="address" class="form-label">
-                                    <div>Address<span class="form-required">&nbsp;*</span></div>
-                                    <span class="form-message heighter"></span>
-                                </label>
-                                <input type="text" id="address" name="address" class="form-control"
-                                    rules="required" placeholder="Shipping address" value="{{ auth()->user()->address ?? '' }}">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="notes">Notes<span></span></label>
-                                <textarea type="text" id="notes" name="notes" rows="3"></textarea>
-                            </div>
-                            {{-- <div class="col-lg-12">
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label for="address" class="form-label">
+                                        <div>Address<span class="form-required">&nbsp;*</span></div>
+                                        <span class="form-message heighter"></span>
+                                    </label>
+                                    <input type="text" id="address" name="address" class="form-control"
+                                        rules="required" placeholder="Shipping address"
+                                        value="{{ auth()->user()->address ?? '' }}">
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="notes">Notes<span></span></label>
+                                    <textarea type="text" id="notes" name="notes" rows="3"></textarea>
+                                </div>
+                                {{-- <div class="col-lg-12">
                                 <div class="create-item">
                                     <label for="acc-create">
                                         Create an Account?
@@ -154,7 +159,7 @@
                                                     @foreach (session('cart') as $item)
                                                         <li class="order-product" data-index="{{ $item->product->id }}">
                                                             <div class="order-product-image">
-                                                                <img src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                                <img src="{{ isset($item->product->oldestImage->url) ? asset('images/' . $item->product->oldestImage->url) : '' }}"
                                                                     alt="{{ $item->product->name }}">
                                                             </div>
                                                             <div class="order-product-name">{{ $item->product->name }}

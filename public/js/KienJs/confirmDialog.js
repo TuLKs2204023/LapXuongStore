@@ -257,7 +257,7 @@ function DeleteDialog({
 
         // Update quantities of items in header-cart
         const headerCartItems = $(selectors["headerCartItemsSelector"]);
-        const cartItems = headerCartItems.querySelectorAll("tr.cart-section");
+        const cartItems = headerCartItems.querySelectorAll(".cart-section");
         deleteItemsCartHeader(res, headerCartItems, cartItems);
 
         // Check empty Cart

@@ -65,7 +65,7 @@
                                             <tr class="pr-cart-item" data-index="{{ $item->product->id }}">
                                                 <td class="cart-pic first-row"><a
                                                         href="{{ Route('product.details', $item->product->slug) }}"><img
-                                                            src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                            src="{{ isset($item->product->oldestImage->url) ? asset('images/' . $item->product->oldestImage->url) : '' }}"
                                                             alt="{{ $item->product->name }}"></a></td>
                                                 <td class="cart-title first-row">
                                                     <h5>{{ $item->product->name }}</h5>
@@ -77,7 +77,7 @@
                                                         <div class="pro-qty">
                                                             <input type="text" value="{{ $item->quantity }}"
                                                                 data-stock="{{ $item->product->inStock() - $item->product->outStock() - $item->quantity }}"
-                                                                name="product-quantity">
+                                                                name="product-quantity" min="1">
                                                         </div>
                                                     </div>
                                                 </td>
