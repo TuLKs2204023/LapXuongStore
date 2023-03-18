@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -395,5 +396,11 @@ class Product extends Model
     public function historyRating()
     {
         return $this->HasMany(HistoryRating::class);
+    }
+    public function time()
+    {
+        $now = Carbon::now();
+        $durationPro = $this->duration($now, $this->created_at);
+        return $durationPro;
     }
 }

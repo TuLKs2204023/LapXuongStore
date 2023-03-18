@@ -219,7 +219,7 @@
                                         <table class="table table-borderless datatable">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">ID Order</th>
+                                                    <th scope="col">Time</th>
                                                     <th scope="col">Customer</th>
                                                     <th scope="col">Product</th>
                                                     <th scope="col">Price</th>
@@ -230,7 +230,7 @@
                                                 @foreach ($order as $key => $item)
                                                     @foreach ($item->details as $ip)
                                                         <tr>
-                                                            <th scope="row"><a href="#">{{ $item->id }}</a>
+                                                            <th scope="row"><a href="#">{{ $item->timeOrder() }}</a>
                                                             </th>
                                                             <td>{{ $item->name }}</td>
                                                             <td><a href="{{ Route('product.details', $ip->product->slug) }}"
