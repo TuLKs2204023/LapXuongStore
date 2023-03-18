@@ -14,6 +14,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use Illuminate\Cache\NullStore;
+
+use function PHPUnit\Framework\isNull;
 
 class AdminHomeController extends Controller
 {
@@ -41,6 +44,7 @@ class AdminHomeController extends Controller
             $order = Order::all()->sortByDesc('created_at');
             $allproduct = Product::all();
             $history = HistoryUser::all()->sortByDesc('id');
+            
             $historyProduct = HistoryProduct::all()->sortByDesc('id');
             $dataManu = [];
             $manufactures = Manufacture::all();
@@ -49,15 +53,18 @@ class AdminHomeController extends Controller
                 $value = $manu->products->count();
                 $dataManu[] = (object) ['name' => $name, 'value' => $value];
             }
-
+            // Data daytime for the chart
             $dayData = [];
-            $dayData[0] = Carbon::now();
-            for ($i = 1; $i <= 6; $i++) {
-                $day = Carbon::now()->subDays($i);
+            $dayData[0] = Carbon::today()->addDays();
+            $dayData[1] = Carbon::today();
+            for ($i = 2; $i <= 6; $i++) {
+                $day = Carbon::today()->subDays($i);
                 $dayData[$i] = $day;
             }
+            // dd($dayData);
+            //  End Data daytime for the chart
 
-
+            // Data amount sale of products for the chart
             $productData = [];
             $proToday = DB::table('stocks')
                 ->where('created_at', '>', Carbon::today())
@@ -79,11 +86,13 @@ class AdminHomeController extends Controller
                     ->sum('out_qty');
                 $productData[$i + 1] = $data;
             }
+            // dd($productData);
+            // End Data product for the chart
 
 
-
+            //  Data revenue for the chart
             $revenue = [];
-            $today = Stock::where('created_at', '>', Carbon::today()->subDays(1))->where('out_qty', '>', 0)->get();
+            $today = Stock::where('created_at', '>', Carbon::today())->where('out_qty', '>', 0)->get();
 
             $revToday = 0;
             foreach ($today as $key => $item) {
@@ -92,94 +101,66 @@ class AdminHomeController extends Controller
             }
 
             $revenue[0] = $revToday;
-            $yesDay = Stock::where('created_at', '>', Carbon::today()->subDays(2))
-                ->where('created_at', '>', Carbon::today()->subDays(1))
-                ->where('out_qty', '>', 0)->get();
+            $yesDay = Stock::where('created_at', '>', Carbon::yesterday())
+                ->where('created_at', '<', Carbon::today())
+                ->where('out_qty', '>', 0)
+                ->get();
 
             $revYesDay = 0;
             foreach ($yesDay as $key => $item) {
                 $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
                 $revYesDay += $rev;
             }
+            $revenue[1] = $revYesDay;
+            for ($i = 1; $i <= 6; $i++) {
+                $out = Stock::where('created_at', '>', Carbon::yesterday()->subDays($i))
+                    ->where('created_at', '<', Carbon::today()->subDays($i))
+                    ->where('out_qty', '>', 0)
+                    ->get();
+                if (!$out) {
+                    $revenue[$i] = '0';
+                } else {
 
-            $revenue[1] = $revYesDay - $revToday;
-
-            for ($i = 3; $i <= 7; $i++) {
-
-                $out = Stock::where('created_at', '>', Carbon::today()->subDays($i + 1))
-                    ->where('created_at', '>', Carbon::today()->subDays($i))
-                    ->where('out_qty', '>', 0)->get();
-                $revP = 0;
-
-                foreach ($out as $key => $item) {
-                    $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
-                    $revP += $rev;
-                    $a[$i] = $revP;
+                    $revP = 0;
+                    foreach ($out as $key => $item) {
+                        $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
+                        $revP += $rev;
+                    }
                 }
+                $revenue[$i] = $revP;
             }
-            for ($i = 4; $i <= 8; $i++) {
+            // dd($revenue);
+            // End data revenue for the chart
 
-                $out = Stock::where('created_at', '>', Carbon::today()->subDays($i + 1))
-                    ->where('created_at', '>', Carbon::today()->subDays($i))
-                    ->where('out_qty', '>', 0)->get();
-                $revQ = 0;
-
-                foreach ($out as $key => $item) {
-                    $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
-                    $revQ += $rev;
-                    $b[$i] = $revQ;
-                }
-            }
-            for ($i = 2; $i <= 6; $i++) {
-                $revenue[$i] = $b[$i + 2] - $a[$i + 1];
-            }
-
+            // Data interaction for the chart
             $interaction = [];
             $inteToday = DB::table('ratings')
                 ->where('created_at', '>', Carbon::today())
                 ->sum('count');
+
             $inteYes = DB::table('ratings')
                 ->where('created_at', '>', Carbon::yesterday())
                 ->where('created_at', '<', Carbon::today())
                 ->sum('count');
-
             $interaction[0] = $inteToday;
             $interaction[1] = $inteYes;
 
-            // $data = DB::table('ratings')
-            //     ->where('created_at', '>', Carbon::yesterday()->subDays(2))
-            //     ->where('created_at', '<', Carbon::today()->subDays(2))->get('count');
-            // if (!$data) {
-            //     $data = '0';
-            // } else {
-            //     $data = DB::table('ratings')
-            //         ->where('created_at', '>', Carbon::yesterday()->subDays(2))
-            //         ->where('created_at', '<', Carbon::today()->subDays(2))->sum('count');
-            // }
-
-            // dd($data);
-
-            //
-
-            for ($i = 2; $i <= 6; $i++) {
+            for ($i = 1; $i <= 5; $i++) {
                 $data = DB::table('ratings')
                     ->where('created_at', '>', Carbon::yesterday()->subDays($i))
-                    ->where('created_at', '<', Carbon::today()->subDays($i))
-                    ->get('created_at');
+                    ->where('created_at', '<', Carbon::today()->subDays($i))->get();
                 if (!$data) {
-                    $data = 0;
-                    break;
+                    $data == '0';
                 } else {
                     $data = DB::table('ratings')
-                        ->where('created_at', '>', Carbon::yesterday()->subDays(1))
-                        ->where('created_at', '<', Carbon::today()->subDays(1))->sum('count');
+                        ->where('created_at', '>', Carbon::yesterday()->subDays($i))
+                        ->where('created_at', '<', Carbon::today()->subDays($i))->sum('count');
                 }
 
-                $interaction[$i] = $data;
+                $interaction[$i + 1] = $data;
             }
-
-
-            
+            // dd($interaction,$productData);
+            // end interaction
 
             $totalUser = DB::table('users')
                 ->where('role', 'Customer')
@@ -190,7 +171,20 @@ class AdminHomeController extends Controller
                 ->where('created_at', '>', $now->subDays(30))
                 ->count();
 
-            return view('admin.dashboard', compact('totalUser', 'totalProduct', 'totalItem', 'allproduct', 'order', 'history', 'historyProduct', 'dataManu', 'dayData', 'productData', 'revenue', 'interaction'));
+            return view('admin.dashboard', compact(
+                'totalUser',
+                'totalProduct',
+                'totalItem',
+                'allproduct',
+                'order',
+                'history',
+                'historyProduct',
+                'dataManu',
+                'dayData',
+                'productData',
+                'revenue',
+                'interaction'
+            ));
         } else {
             return redirect()->route('fe.home');
         }

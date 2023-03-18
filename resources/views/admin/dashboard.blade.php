@@ -128,7 +128,7 @@
                                             let revenue = @php echo json_encode($revenue); @endphp;
                                             let product = @php echo json_encode($productData); @endphp;
                                             let interaction = @php echo json_encode($interaction); @endphp;
-                                            console.log(interaction);
+                                            console.log(day);
                                             document.addEventListener("DOMContentLoaded", () => {
                                                 new ApexCharts(document.querySelector("#reportsChart"), {
                                                     series: [{
@@ -171,11 +171,18 @@
                                                     },
                                                     xaxis: {
                                                         type: 'datetime',
+                                                        // categories: ["2018-09-19T00:00:00.000Z",
+                                                        //             "2018-09-19T01:30:00.000Z",
+                                                        //             "2018-09-19T02:30:00.000Z",
+                                                        //             "2018-09-19T03:30:00.000Z",
+                                                        //             "2018-09-19T04:30:00.000Z",
+                                                        //             "2018-09-19T05:30:00.000Z",
+                                                        //             "2018-09-19T06:30:00.000Z"]
                                                         categories: day,
                                                     },
                                                     tooltip: {
                                                         x: {
-                                                            format: 'dd/MM/yy HH:mm'
+                                                            format:'dd/MM/yy HH:mm'
                                                         },
                                                     }
                                                 }).render();
@@ -326,6 +333,7 @@
                                                     <span class="fw-light">{{ $val->user->name }}</span>
                                                     {{ $val->action }}
                                                     {{ $val->by }}
+                                                    {{isset($var->created_at)? '' :''}}
                                                 </p>
                                                 {{ $val->data }}
                                             </div>
@@ -426,29 +434,30 @@
             </div>
         </section>
         <section class="section dashboard">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            
+            @if (auth()->user()->role == 'Manager')
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            @endif
         </section>
     @endif
 @endsection
