@@ -20,11 +20,11 @@
                                 <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
                             @endif
-                            <div class="icon">
+                            <div class="icon product-list-icon">
                                 @if ($item->findWishlist())
-                                    <a href="#"><i class="fas fa-heart"></i></a>
+                                    <i class="fas fa-heart"></i>
                                 @else
-                                    <a href="#"><i class="far fa-heart"></i></a>
+                                    <i class="fas fa-heart-o"></i>
                                 @endif
                             </div>
                             {{-- <ul>

@@ -41,13 +41,13 @@ class AdminHomeController extends Controller
     {
         if (auth()->user()->role !== 'Customer') {
             $now = Carbon::now();
+
             $order = Order::all()->sortByDesc('created_at');
             $allproduct = Product::all();
             $history = HistoryUser::all()->sortByDesc('id');
-            
             $historyProduct = HistoryProduct::all()->sortByDesc('id');
             $dataManu = [];
-            $manufactures = Manufacture::all();
+            $manufactures = Manufacture::orderBy('id', 'DESC')->limit(10)->get();
             foreach ($manufactures as $key => $manu) {
                 $name = $manu->name;
                 $value = $manu->products->count();

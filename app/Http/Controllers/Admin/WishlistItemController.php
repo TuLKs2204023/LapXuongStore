@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Product;
 use App\Models\WishlistItem;
 use Illuminate\Http\Request;
 
@@ -89,13 +90,35 @@ class WishlistItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\WishlistItem  $wishlistItem
+     * @param  \Illuminate\Http\Request  $request 
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WishlistItem $wishlistItem)
+    public function update(Request $request)
     {
-        //
+        $pId = $request->pId;
+        $product = Product::find($pId);
+        $isExisted = $product->findWishlist();
+        $loggedUser = auth()->user();
+        if ($loggedUser !== null) {
+            $user = User::find($loggedUser->id);
+            if (!$isExisted) {
+                $user->wishlistItems()->create(['product_id' => $pId]);
+                $action = 'add';
+            } else {
+                $wishlistItem = WishlistItem::where('user_id', $user->id)->where('product_id', $pId)->first();
+                $wishlistItem->delete();
+                $action = 'remove';
+            }
+            $totalWishlist = count(auth()->user()->wishlistItems);
+
+            return [
+                'status' => 'success',
+                'action' => $action,
+                'totalWishlist' => $totalWishlist
+            ];
+        } else {
+            return ['status' => 'aborted'];
+        }
     }
 
     /**
@@ -121,6 +144,4 @@ class WishlistItemController extends Controller
         $wishlistItem->delete();
         return back();
     }
-
-
 }

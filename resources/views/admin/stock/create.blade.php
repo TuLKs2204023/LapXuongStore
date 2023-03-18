@@ -37,15 +37,17 @@
                     <!-- / Message Section -->
 
                     <!-- Horizontal Form -->
-                    <form action="{{ Route('admin.stock.store') }}" method="post" class="card-body"
-                        enctype="multipart/form-data">
+                    <form action="{{ Route('admin.stock.store') }}" method="post" class="card-body myForm"
+                        enctype="multipart/form-data"  id="createStock">
                         @csrf
 
                         <div class="form-group row mb-3">
-                            <label for="product_id" class="col-sm-2 col-form-label">Product Name</label>
+                            <label for="value" class="col-sm-2 col-form-label">
+                                <div>Product Name<span class="form-required">&nbsp;*</span></div>
+                            </label>
 
                             <div class="col-sm-10">
-                                <input class="form-control" list="datalistOptions" id="product_name"
+                                <input class="form-control" list="datalistOptions" id="product_name" rules="required"
                                     placeholder="Type to search..." name="product_name">
                                 <datalist id="datalistOptions">
                                     @foreach ($products as $item)
@@ -57,17 +59,23 @@
                         </div>
 
                         <div class="form-group row mb-3">
-                            <label for="price" class="col-sm-2 col-form-label">Unit Price</label>
+                            <label for="price" class="col-sm-2 col-form-label">
+                                <div>Unit Price<span class="form-required">&nbsp;*</span></div>
+                            </label>
                             <div class="col-sm-10">
-                                <input type="text" id="price" name="price" class="form-control" placeholder="In Unit Price (VND)" required
-                                    value="{{ $isUpdate ? $product->price : '' }}">
+                                <input type="text" id="exact-value" name="price" class="form-control"
+                                    rules="required|min:0,exclude" >
+                                <span class="form-message heighter"></span>
                             </div>
                         </div>
                         <div class="form-group row mb-3">
-                            <label for="in_qty" class="col-sm-2 col-form-label">In Quantity</label>
+                            <label for="in_qty" class="col-sm-2 col-form-label">
+                                <div>In Quantity<span class="form-required">&nbsp;*</span></div>
+                            </label>
                             <div class="col-sm-10">
-                                <input type="text" id="in_qty" name="in_qty" class="form-control" placeholder="In Quantity" required
-                                    value="{{ $isUpdate ? $product->price : '' }}">
+                                <input type="text" id="exact-value" name="in_qty" class="form-control"
+                                    rules="required|min:0,exclude" >
+                                <span class="form-message heighter"></span>
                             </div>
                         </div>
 
@@ -85,13 +93,16 @@
 
 @section('myJs')
     <script type="module">
-    import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
-    document.addEventListener("readystatechange", (e) => {
-        if (e.target.readyState === "complete") {
-            const customSelect = new CustomSelect({
-                orginialInput: "my-custom-select",
-            });
-        }
-    });
+        import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
+        import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const customSelect = new CustomSelect({
+                    orginialInput: "my-custom-select",
+                });
+                 // Input validation
+                 const productForm = new Validator('#createStock');
+            }
+         });
 </script>
 @endsection

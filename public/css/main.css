@@ -341,7 +341,13 @@
 .myTooltip.myTooltip-bottom.myTooltip-danger .tooltiptext::after {
     border-color:  transparent transparent var(--bs-danger) transparent;
 }
-
+/* Top Tooltip for <Button> --warning */
+.myTooltip.myTooltip-warning .tooltiptext {
+    background-color: var(--bs-warning);
+}
+.myTooltip.myTooltip-warning .tooltiptext::after {
+    border-color: var(--bs-warning) transparent transparent transparent;
+}
 /* ------------------- End of My Tooltip -------------------- 
 *
 */

@@ -1,7 +1,7 @@
 $ = document.querySelector.bind(document);
 
 function SearchHandler({
-    paginateConfigs: { pageDefaultItems = 12, pageDefaultSort = 0 },
+    paginateConfigs: { pageDefaultItems = 16, pageDefaultSort = 0 },
     price: { priceMin = 1, priceMax = 500000000 },
     selectors: {
         sidebarSelector = ".produts-sidebar-filter",
@@ -11,6 +11,7 @@ function SearchHandler({
         paginateShowSelector = ".nice-select.p-show",
         paginateSortSelector = ".sorting.nice-select",
     },
+    wishList,
 }) {
     const selectors = {
         sidebarSelector,
@@ -124,7 +125,8 @@ function SearchHandler({
         const ajaxReq = new XMLHttpRequest();
         ajaxReq.onreadystatechange = () => {
             if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
-                renderSearch(ajaxReq.responseText);
+                const productList = renderSearch(ajaxReq.responseText);
+                wishList.init(productList);
             }
         };
         ajaxReq.open("GET", url, true);
@@ -139,6 +141,7 @@ function SearchHandler({
 
         // Add ajaxRequest to pagination buttons
         renderPaginateBtns(selectors, queries);
+        return productList;
     }
 
     // Function to add ajaxRequest to pagination buttons
@@ -171,10 +174,11 @@ function SearchHandler({
         const ajaxReq = new XMLHttpRequest();
         ajaxReq.onreadystatechange = () => {
             if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
-                renderSearch(ajaxReq.responseText, page);
+                const productList = renderSearch(ajaxReq.responseText);
                 if (scrollToTop) {
                     window.scrollTo({ top: 60, behavior: "smooth" });
                 }
+                wishList.init(productList);
             }
         };
         ajaxReq.open("GET", page, true);

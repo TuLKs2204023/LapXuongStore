@@ -60,7 +60,7 @@ class PromotionController extends Controller
                 }
             }
             $success = $i . ' codes were created successfully.
-                             If you found missing amount, it means there were duplicated codes';
+                             If you found missing amount, it means codes were deleted by duplicating';
         } else {
             $errors = ['msg' => 'Discount must be greater than 0.'];
             return back()->withErrors($errors);

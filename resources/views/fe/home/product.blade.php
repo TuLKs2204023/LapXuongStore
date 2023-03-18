@@ -90,99 +90,42 @@
     <section class="product-shop spad page-details">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 ">
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Categories</h4>
-                        <ul class="filter-catagories">
-                            <li><a href="#">Office</a></li>
-                            <li><a href="#">Gaming</a></li>
-                            <li><a href="#">Build</a></li>
-                        </ul>
-                    </div>
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Brand</h4>
-                        <div class="fw-brand-check">
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    MSI
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
+                {{-- <div class="col-lg-3">
+                    <div class="col-lg-4">
+                        <div class="single-benefit">
+                            <div class="sb-icon">
+                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
                             </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    ASUS
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    APPLE
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    DELL
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    ANOTHER
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
+                            <div class="sb-text">
+                                <h6>FREE SHIP</h6>
+                                <p>For all orders online bought</p>
                             </div>
                         </div>
                     </div>
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Price</h4>
-                        <div class="filter-range-wrap">
-                            <div class="range-slider">
-                                <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
-                                </div>
+                    <div class="col-lg-4">
+                        <div class="single-benefit">
+                            <div class="sb-icon">
+                                <img src="{{ asset('frontend/img/icon-2.png') }}" alt="">
                             </div>
-                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="98">
-                                <div class="ui-slider ui-corner-all ui-widget-header">
-                                    <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
-                                    <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="filter-btn">Filter</a>
-
-                    </div>
-
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Size</h4>
-                        <div class="fw-size-choose">
-                            <div class="sc-item">
-                                <input type="radio" id="s-size">
-                                <label for="s-size">15.6"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="m-size">
-                                <label for="m-size">16"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="l-size">
-                                <label for="l-size">21"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="xs-size">
-                                <label for="xs-size">24"</label>
+                            <div class="sb-text">
+                                <h6>DELIVERY ON TIME</h6>
+                                <p>If goods have problem</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-9">
+                    <div class="col-lg-4">
+                        <div class="single-benefit">
+                            <div class="sb-icon">
+                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
+                            </div>
+                            <div class="sb-text">
+                                <h6>SECURE PAYMENT</h6>
+                                <p>100% secure payment</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
@@ -446,9 +389,7 @@
                                             @if((auth()->user()->role == 'Customer'))
                                                 <div class="leave-comment">
                                                     <h4>Leave A Comment</h4>
-                                                    <!-- Message Section -->
-                                                    @include('components.message')
-                                                    <!-- / Message Section -->
+                                                    <div class="tu-send-review-message"></div>
                                                     <form class="comment-form">
                                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                         <div class="personal-rating">
@@ -525,15 +466,15 @@
                                         @endif
 
                                         {{-- ---------------------------------------------------end Review Form--------------------------------------------------------------------------------- --}}
-
                                     </div>
                                 </div>
-
+                                {{-- ==============================end of Comment View============================================================ --}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 @endsection
@@ -652,6 +593,7 @@
             const starWrap = $("#rating-ability-wrapper .btnrating");
             const cmtArea = $("#review").get(0);
             const sendReview = $(".site-btn.review-lapxuong-btn").get(0);
+            const pdRating = $(".pd-rating");
             $(sendReview).on("click", function(e) {
                 e.preventDefault();
                 const formArray = $(".comment-form").serializeArray();
@@ -663,38 +605,78 @@
                     },
                     data: formArray,
                     success: function(response) {
-                        $(cmtArea).val("");
-                        $(".selected-rating").html(0);
-                        $(starWrap).each(function(index, element) {
-                            const hasFilled = $(element).hasClass("btn-warning");
+                        if (response.msg == "Comment add successfully") {
+                            $(cmtArea).val("");
+                            $(".selected-rating").html(0);
+                             //set selected to be 0
+                             $("#selected_rating").val(0);
+                            // Move up to comment area
                             $([document.documentElement, document.body]).animate({
                                 scrollTop: $("#review-tab").offset().top
                             }, 100);
-                            if (hasFilled) {
-                                $(element).removeClass("btn-warning");
-                                $(element).addClass("btn-default");
+                            //remove filled stars
+                            for (i = 1; i <= 5; i++) {
+                                const hasFilled = $("#rating-star-" + i).hasClass(
+                                    "btn-warning");
+                                if (hasFilled) {
+                                    $("#rating-star-" + i).removeClass("btn-warning");
+                                    $("#rating-star-" + i).addClass("btn-default");
+                                }
                             }
-                        })
-                        if (response.totalRate == 1) {
-                            const test = $(".comment-option.overflow-auto").get(0);
-                            $(test).html(response.view);
+                            //add new comment to view area
+                            if (response.totalRate == 1) {
+                                const test = $(".comment-option.overflow-auto").get(0);
+                                $(test).html(response.view);
+                            } else {
+                                $(".comment-option.overflow-auto").children().first().before(
+                                    response
+                                    .view);
+                            }
+                            // const reviewItm = $(".comment-option.overflow-auto").children()
+                            //     .first().get(0);
+                            // const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
+                            // reviewDelBtn.onclick =
+                            //     function(e) {
+                            //         e.preventDefault();
+                            //         tuDeleteComment(reviewItm);
+                            //     };
+                            $("#review-tab").html("Customer Review " +
+                                "(" + response.totalRate + ")");
+                            $(".customer-review-option .tu-comment")
+                                .html(response.totalRate + " Comments");
+                            if ($(".tu-send-review-message").hasClass("alert-danger")) {
+                                $(".tu-send-review-message").removeClass("alert-danger");
+                                $(".tu-send-review-message").addClass(
+                                    "alert alert-success main-success");
+                            } else {
+                                $(".tu-send-review-message").addClass(
+                                    "alert alert-success main-success");
+                            }
+                            $(".tu-send-review-message").html(response.msg);
+
+                            //add avg stars
+                            pdRating.each(function(index, element) {
+                                let filled = '',
+                                    empty = '';
+                                const starFil = '<i class="fa fa-star"></i> ';
+                                const starEmp = '<i class="fa fa-star-o"></i> ';
+                                for (i = 0; i < response.avgRates; i++) {
+                                    filled += starFil;
+                                }
+                                for (i = 0; i < 5 - response.avgRates; i++) {
+                                    empty += starEmp;
+                                }
+                                $(element).html(filled + empty);
+                            })
                         } else {
-                            $(".comment-option.overflow-auto").children().first().before(
-                                response
-                                .view);
+                            $(starWrap).each(function(index, element) {
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $("#review-tab").offset().top
+                                }, 100);
+                            })
+                            $(".tu-send-review-message").addClass("alert alert-danger");
+                            $(".tu-send-review-message").html(response.msg);
                         }
-                        const reviewItm = $(".comment-option.overflow-auto").children()
-                            .first().get(0);
-                        const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
-                        reviewDelBtn.onclick =
-                            function(e) {
-                                e.preventDefault();
-                                tuDeleteComment(reviewItm);
-                            };
-                        $("#review-tab").html("Customer Review " +
-                            "(" + response.totalRate + ")");
-                        $(".customer-review-option .tu-comment")
-                            .html(response.totalRate + " Comments");
                     }
                 });
             })
@@ -703,7 +685,8 @@
             //Thầy Dự xóa Rating (Tú có fix lại)
             //hàm delete của tú
             function tuDeleteComment(element) {
-                const rId = $("#deletecomment").attr("data-index");
+                const rId = $(element).attr("data-index");
+                console.log(rId)
                 const pId = $(heart).attr("data-index");
                 Swal.fire({
                     title: 'Are you sure?',
@@ -746,6 +729,7 @@
             ratingItem.each(function(index, element) {
                 const deleteBtn = $(element).find("#deletecomment").get(0);
                 $(deleteBtn).on("click", function(e) {
+                    console.log(deleteBtn)
                     e.preventDefault();
                     tuDeleteComment(element);
                 });
@@ -755,9 +739,8 @@
             //Rating Star
             $(".btnrating").on('click', (function(e) {
 
-                var previous_value = $("#selected_rating").val();
-
-                var selected_value = $(this).attr("data-attr");
+                const previous_value = $("#selected_rating").val();
+                const selected_value = $(this).attr("data-attr");
                 $("#selected_rating").val(selected_value);
 
                 $(".selected-rating").empty();

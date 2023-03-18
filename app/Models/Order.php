@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,7 +44,9 @@ class Order extends Model
         }
     }
 
-    //Get promotion discount
+    // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
+    
+    //Get promotion discount 
     public function discount()
     {
         $isPromoted = $this->isPromoted();
@@ -95,7 +96,8 @@ class Order extends Model
     }
 
     //Status by time
-    public function statusByTime(){
+    public function statusByTime()
+    {
         $currentStatus = 0;
         $created_date = $this->created_at;
         $currentStatus = Carbon::now()->day - $created_date->day;
@@ -119,4 +121,6 @@ class Order extends Model
             return '<span class="badge rounded-pill bg-danger">Canceled</span>';
         }
     }
+
+    // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
 }

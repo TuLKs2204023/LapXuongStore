@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('history_ratings', function (Blueprint $table) {
+        Schema::create('history_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrain()->onDelete('cascade');
-            $table->longText('review')->nullable();
-            $table->longText('rating')->nullable();
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->longText('data')->nullable();
             $table->String('action')->nullable();
-            
+
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('history_ratings');
+        Schema::dropIfExists('table_history_product');
     }
 };

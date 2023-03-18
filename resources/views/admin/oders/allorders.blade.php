@@ -40,6 +40,7 @@
                             <th>Shipping Phone</th>
                             <th>Shipping Address</th>
                             <th>Payment</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -57,9 +58,10 @@
                                     @if ($row->payment == 1)
                                         Cash
                                     @elseif($row->payment == 2)
-                                        Bank
+                                        Banking
                                     @endif
                                 </td>
+                                <td>@php echo $row->statusProcessing() @endphp</td>
                                 <td>
                                     <a href="{{ Route('admin.order.details', $row->id) }}"
                                         class="btn btn-sm btn-outline-info">Details</a>
@@ -85,6 +87,7 @@
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
+                "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#allOrdersMgmt_wrapper .col-md-6:eq(0)');
         });

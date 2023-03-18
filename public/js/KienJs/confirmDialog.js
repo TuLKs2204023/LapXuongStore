@@ -11,15 +11,35 @@ export { ConfirmDialog, DeleteDialog };
 
 $ = document.querySelector.bind(document);
 
-function ConfirmDialog(request) {
+function ConfirmDialog({
+    request = "",
+    route = "",
+    message = "",
+    btnLabel = "Proceed",
+}) {
     const configs = {
         scrollY: "",
         offset_top: "",
         offset_left: 0,
     };
 
-    const dialog_container = $(".dialog-container");
+    const dialog_container = $("#myDialog");
     if (!dialog_container) return false;
+
+    dialog_container.innerHTML = `
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <div><span class="close-btn cancel-btn"><i class="fa-solid fa-xmark"></i></span></div>
+            </div>
+            <div class="dialog-body">
+                <h6 class="dialog-title">${message}</h6>
+            </div>
+            <div class="dialog-footer">
+                <button class="form-submit standard warning proceed-btn">${btnLabel}</button>
+                <button class="form-submit standard cancel-btn">Cancel</button>
+            </div>
+        </div>
+    `;
 
     const dialog_content = dialog_container.querySelector(".dialog-content");
     if (!dialog_content) return false;
@@ -30,6 +50,8 @@ function ConfirmDialog(request) {
             e.preventDefault();
             if (request instanceof ajaxRequest) {
                 request.processAjaxReq(closeDialog);
+            } else {
+                window.location.href = route;
             }
         };
     }
@@ -211,7 +233,10 @@ function DeleteDialog({
                     deleteSuccess
                 );
                 // Call confirm Dialog
-                const confirmDialog = new ConfirmDialog(ajaxReq);
+                const confirmDialog = new ConfirmDialog({
+                    request: ajaxReq,
+                    message: "Are you sure to DELETE this item?",
+                });
 
                 setTimeout(() => {
                     confirmDialog.showDialog();

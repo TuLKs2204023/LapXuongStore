@@ -109,6 +109,8 @@ Route::get('/view-cart', [FE_HomeController::class, 'viewCart'])->name('viewCart
 Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearCart');
 Route::post('/empty-cart', [FE_HomeController::class, 'emptyCart'])->name('emptyCart');
 
+Route::post('/update-wishlist', [WishlistItemController::class, 'update'])->name('updateWishlist');
+
 // For Login purpose
 Route::group(['middleware' => 'auth'], function () {
     //User Orders

@@ -55,7 +55,6 @@
                                 <th>In U.Price</th>
                                 <th>Out Qty</th>
                                 <th>Out U.Price</th>
-                                <th>Discount</th>
                                 <th>Timestamp</th>
                             </tr>
                         </thead>
@@ -70,7 +69,6 @@
                                     <td>{{ number_format($stock->price->origin ?? 0, 0, ',', '.') }}</td>
                                     <td>{{ $stock->out_qty }}</td>
                                     <td>{{ number_format($stock->price->sale ?? 0, 0, ',', '.') }}</td>
-                                    <td>{{ number_format(($stock->price->discount ?? 0) * 100, 0, ',', '.') }}%</td>
                                     <td>{{ $stock->created_at }}</td>
                                 </tr>
                             @endforeach
