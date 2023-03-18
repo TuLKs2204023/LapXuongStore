@@ -605,7 +605,7 @@
                     },
                     data: formArray,
                     success: function(response) {
-                        if (response.msg == "Comment add successfully") {
+                        // if (response.msg == "Comment add successfully") {
                             $(cmtArea).val("");
                             $(".selected-rating").html(0);
                              //set selected to be 0
@@ -668,15 +668,15 @@
                                 }
                                 $(element).html(filled + empty);
                             })
-                        } else {
-                            $(starWrap).each(function(index, element) {
-                                $([document.documentElement, document.body]).animate({
-                                    scrollTop: $("#review-tab").offset().top
-                                }, 100);
-                            })
-                            $(".tu-send-review-message").addClass("alert alert-danger");
-                            $(".tu-send-review-message").html(response.msg);
-                        }
+                        // } else {
+                        //     $(starWrap).each(function(index, element) {
+                        //         $([document.documentElement, document.body]).animate({
+                        //             scrollTop: $("#review-tab").offset().top
+                        //         }, 100);
+                        //     })
+                        //     $(".tu-send-review-message").addClass("alert alert-danger");
+                        //     $(".tu-send-review-message").html(response.msg);
+                        // }
                     }
                 });
             })
