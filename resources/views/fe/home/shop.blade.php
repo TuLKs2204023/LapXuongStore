@@ -272,13 +272,13 @@
             function init(productList) {
                 const heartIcons = productList.querySelectorAll(productHearts);
                 Array.from(heartIcons).forEach(heart => {
-                    heart.onclick = (e) => {
+                    heart.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const pId = heart.closest('.product-item').dataset.index;
 
+                        const pId = heart.closest('.product-item').dataset.index;
                         // Process to call HttpRequest
                         processUpdateWishList(pId, heart, renderWishList);
-                    };
+                    });
                 });
             }
 
@@ -308,8 +308,27 @@
                 ajaxReq.onreadystatechange = () => {
                     if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
                         const res = JSON.parse(ajaxReq.responseText);
-
-                        cb(res, heart);
+                        if (res.status === 'aborted') {
+                            import('{{ asset('/js/KienJs/ConfirmDialog.js') }}').then((mDialog) => {
+                                const confirmWishlist = mDialog.ConfirmDialog({
+                                    route: '{{ Route('login') }}',
+                                    message: 'Before adding or removing items in the Wishlist, please try to login first. Thank you.',
+                                    btnLabel: 'Login'
+                                });
+                                confirmWishlist.showDialog();
+                            });
+                        } else {
+                            import('{{ asset('/js/KienJs/toast.js') }}').then((mToast) => {
+                                const type = {
+                                    'add': 'Item has been ADDED to your Wishlist successfully.',
+                                    'remove': 'Item has been REMOVED from your Wishlist successfully.',
+                                }
+                                cb(res, heart);
+                                mToast.showSuccessToast({
+                                    message: type[res.action]
+                                })
+                            });
+                        }
                     }
                 };
 
@@ -332,8 +351,8 @@
     <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
     <script>
         /*-------------------
-                                                                                                                                    Range Slider
-                                                                                                                                    --------------------- */
+                                                                                                                                                                                                                                                                        Range Slider
+                                                                                                                                                                                                                                                                        --------------------- */
         jQuery(document).ready(function($) {
             const rangeSlider = $(".price-range"),
                 minamount = $("#minamount"),

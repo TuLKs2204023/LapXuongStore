@@ -4,7 +4,6 @@ namespace App\Http\Controllers\FE;
 
 use App\Http\Controllers\FE\HomeController;
 use Illuminate\Http\Request;
-use App\Models\Product;
 use App\Models\Order;
 use App\Http\Traits\ProcessModelData;
 use App\Models\Promotion;

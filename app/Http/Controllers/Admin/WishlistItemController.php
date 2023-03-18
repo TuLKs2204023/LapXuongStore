@@ -111,13 +111,13 @@ class WishlistItemController extends Controller
             }
             $totalWishlist = count(auth()->user()->wishlistItems);
 
-            return array(
-                'success' => true,
+            return [
+                'status' => 'success',
                 'action' => $action,
                 'totalWishlist' => $totalWishlist
-            );
+            ];
         } else {
-            return array('success' => false);
+            return ['status' => 'aborted'];
         }
     }
 
