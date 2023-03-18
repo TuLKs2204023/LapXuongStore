@@ -49,46 +49,137 @@ class AdminHomeController extends Controller
                 $value = $manu->products->count();
                 $dataManu[] = (object) ['name' => $name, 'value' => $value];
             }
+
             $dayData = [];
-            for ($i = 0; $i <= 9; $i++) {
-                $day = 0;
-                // $day=$now->subDays($i);
-                $day = Carbon::today()->subDays($i);
-                if (!in_array($day, $dayData)) {
-                    array_push($dayData, $day);
-                }
+            $dayData[0] = Carbon::now();
+            for ($i = 1; $i <= 6; $i++) {
+                $day = Carbon::now()->subDays($i);
+                $dayData[$i] = $day;
             }
+
+
             $productData = [];
-            for ($i = 0; $i <= 9; $i++) {
+            $proToday = DB::table('stocks')
+                ->where('created_at', '>', Carbon::today())
+                ->sum('out_qty');
+            $productData[0] = $proToday;
+
+            $proYes = DB::table('stocks')
+                ->where('created_at', '>', Carbon::yesterday())
+                ->where('created_at', '<', Carbon::today())
+                ->sum('out_qty');
+
+            $productData[1] = $proYes;
+
+            for ($i = 1; $i < 6; $i++) {
                 $data = 0;
-                $data = DB::table('order_details')
+                $data = DB::table('stocks')
+                    ->where('created_at', '>', Carbon::yesterday()->subDays($i))
+                    ->where('created_at', '<', Carbon::today()->subDays($i))
+                    ->sum('out_qty');
+                $productData[$i + 1] = $data;
+            }
+
+
+
+            $revenue = [];
+            $today = Stock::where('created_at', '>', Carbon::today()->subDays(1))->where('out_qty', '>', 0)->get();
+
+            $revToday = 0;
+            foreach ($today as $key => $item) {
+                $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
+                $revToday += $rev;
+            }
+
+            $revenue[0] = $revToday;
+            $yesDay = Stock::where('created_at', '>', Carbon::today()->subDays(2))
+                ->where('created_at', '>', Carbon::today()->subDays(1))
+                ->where('out_qty', '>', 0)->get();
+
+            $revYesDay = 0;
+            foreach ($yesDay as $key => $item) {
+                $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
+                $revYesDay += $rev;
+            }
+
+            $revenue[1] = $revYesDay - $revToday;
+
+            for ($i = 3; $i <= 7; $i++) {
+
+                $out = Stock::where('created_at', '>', Carbon::today()->subDays($i + 1))
                     ->where('created_at', '>', Carbon::today()->subDays($i))
-                    ->count();
-                if (!in_array($data, $productData)) {
-                    array_push($productData, $data);
+                    ->where('out_qty', '>', 0)->get();
+                $revP = 0;
+
+                foreach ($out as $key => $item) {
+                    $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
+                    $revP += $rev;
+                    $a[$i] = $revP;
                 }
             }
-            $revenue = [];
-            $out = Stock::where('created_at', '>', Carbon::today()->subDays(9))->get();
+            for ($i = 4; $i <= 8; $i++) {
 
-            foreach ($out as $key => $item) {
-                $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
+                $out = Stock::where('created_at', '>', Carbon::today()->subDays($i + 1))
+                    ->where('created_at', '>', Carbon::today()->subDays($i))
+                    ->where('out_qty', '>', 0)->get();
+                $revQ = 0;
 
-                if (!in_array($rev, $revenue)) {
-                    array_push($revenue, $rev);
+                foreach ($out as $key => $item) {
+                    $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
+                    $revQ += $rev;
+                    $b[$i] = $revQ;
                 }
+            }
+            for ($i = 2; $i <= 6; $i++) {
+                $revenue[$i] = $b[$i + 2] - $a[$i + 1];
             }
 
             $interaction = [];
-            for ($i = 0; $i <= 9; $i++) {
-                $data = 0;
+            $inteToday = DB::table('ratings')
+                ->where('created_at', '>', Carbon::today())
+                ->sum('count');
+            $inteYes = DB::table('ratings')
+                ->where('created_at', '>', Carbon::yesterday())
+                ->where('created_at', '<', Carbon::today())
+                ->sum('count');
+
+            $interaction[0] = $inteToday;
+            $interaction[1] = $inteYes;
+
+            // $data = DB::table('ratings')
+            //     ->where('created_at', '>', Carbon::yesterday()->subDays(2))
+            //     ->where('created_at', '<', Carbon::today()->subDays(2))->get('count');
+            // if (!$data) {
+            //     $data = '0';
+            // } else {
+            //     $data = DB::table('ratings')
+            //         ->where('created_at', '>', Carbon::yesterday()->subDays(2))
+            //         ->where('created_at', '<', Carbon::today()->subDays(2))->sum('count');
+            // }
+
+            // dd($data);
+
+            //
+
+            for ($i = 2; $i <= 6; $i++) {
                 $data = DB::table('ratings')
-                    ->where('created_at', '>', Carbon::today()->subDays($i))
-                    ->count();
-                if (!in_array($data, $interaction)) {
-                    array_push($interaction, $data);
+                    ->where('created_at', '>', Carbon::yesterday()->subDays($i))
+                    ->where('created_at', '<', Carbon::today()->subDays($i))
+                    ->get('created_at');
+                if (!$data) {
+                    $data = 0;
+                    break;
+                } else {
+                    $data = DB::table('ratings')
+                        ->where('created_at', '>', Carbon::yesterday()->subDays(1))
+                        ->where('created_at', '<', Carbon::today()->subDays(1))->sum('count');
                 }
+
+                $interaction[$i] = $data;
             }
+
+
+            
 
             $totalUser = DB::table('users')
                 ->where('role', 'Customer')

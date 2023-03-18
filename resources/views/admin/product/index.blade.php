@@ -106,7 +106,7 @@
                                                 <span class="tooltiptext">Stock of item</span>
                                             </div>
                                         </a>
-                                        <form action="{{ Route('admin.product.adminDelete') }}" method="post"
+                                        <form action="{{ Route('admin.product.destroy') }}" method="post"
                                             style="display:inline-block">
                                             @csrf
                                             @method('delete')

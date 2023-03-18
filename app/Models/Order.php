@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -86,7 +85,7 @@ class Order extends Model
         $afterDis = $this->discountAmount();
         return $total - $afterDis;
     }
-    
+
     //Estimate time arrival (ETA)
     public function arrivalEstimate()
     {
@@ -102,7 +101,7 @@ class Order extends Model
         $currentStatus = Carbon::now()->day - $created_date->day;
         return $currentStatus;
     }
-    
+
     //Process name
     public function statusProcessing()
     {

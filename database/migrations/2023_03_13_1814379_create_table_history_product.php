@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('history_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrain()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->longText('data')->nullable();
             $table->String('action')->nullable();
+            $table->string('fulldata')->nullable();
 
             $table->timestamps();
         });
@@ -32,5 +33,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('table_history_product');
+        
     }
 };

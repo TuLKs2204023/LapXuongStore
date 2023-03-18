@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FE;
 use App\Http\Controllers\Controller;
 use App\Models\HistoryRating;
 use App\Models\HistoryUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
@@ -20,6 +21,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $demands = Demand::all();
         $officeProducts = Product::where('demand_id', 1)->get();
         $gamingProducts = Product::where('demand_id', 2)->get();
@@ -49,14 +51,14 @@ class HomeController extends Controller
             ->get();
 
         // dd($productsHighRate);
-        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts', 'productsHighRate'));
+        return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts', 'productsHighRate','user'));
     }
 
     public function product($slug)
-    {
+    {   $user=User::all();
         $product = Product::where('slug', $slug)->first();
         $ratings = $product->ratings->sortByDesc('id');
-        return view('fe.home.product', compact('product', 'ratings'));
+        return view('fe.home.product', compact('product', 'ratings','user'));
     }
 
     public function addCart(Request $request)
