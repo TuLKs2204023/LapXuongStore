@@ -38,12 +38,12 @@ class AdminHomeController extends Controller
     {
         if (auth()->user()->role !== 'Customer') {
             $now = Carbon::now();
-            $order = Order::all()->sortByDesc('created_at');
-            $allproduct = Product::all();
-            $history = HistoryUser::all()->sortByDesc('id');
-            $historyProduct = HistoryProduct::all()->sortByDesc('id');
+            $order = Order::orderBy('created_at', 'DESC')->limit(10)->get();
+            $allproduct = Product::orderBy('id', 'DESC')->limit(10)->get();
+            $history = HistoryUser::orderBy('id', 'DESC')->limit(10)->get();
+            $historyProduct = HistoryProduct::orderBy('id', 'DESC')->limit(10)->get();
             $dataManu = [];
-            $manufactures = Manufacture::all();
+            $manufactures = Manufacture::orderBy('id', 'DESC')->limit(10)->get();
             foreach ($manufactures as $key => $manu) {
                 $name = $manu->name;
                 $value = $manu->products->count();

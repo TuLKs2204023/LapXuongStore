@@ -27,8 +27,8 @@
                 <!-- / Message Section -->
 
                 <!-- Horizontal Form -->
-                <form action="{{ Route('admin.stock.store') }}" method="post" class="card-body"
-                    enctype="multipart/form-data">
+                <form action="{{ Route('admin.stock.store') }}" method="post" class="card-body myForm"
+                    enctype="multipart/form-data" id="createStockDetails">
                     @csrf
                     <div class="form-group row mb-3">
                         <label for="product_name" class="col-sm-2 col-form-label">Product Name</label>
@@ -39,15 +39,23 @@
                         </div>
                     </div>
                     <div class="form-group row mb-3">
-                        <label for="price" class="col-sm-2 col-form-label">Unit Price</label>
+                        <label for="price" class="col-sm-2 col-form-label">
+                            <div>Unit Price<span class="form-required">&nbsp;*</span></div>
+                        </label>
                         <div class="col-sm-10">
-                            <input type="text" id="price" name="price" class="form-control" placeholder="In Unit Price (VND)" required> 
+                            <input type="text" id="exact-value" name="price" class="form-control"
+                                rules="required|min:0,exclude" >
+                            <span class="form-message heighter"></span>
                         </div>
                     </div>
                     <div class="form-group row mb-3">
-                        <label for="in_qty" class="col-sm-2 col-form-label">In Quantity</label>
+                        <label for="in_qty" class="col-sm-2 col-form-label">
+                            <div>In Quantity<span class="form-required">&nbsp;*</span></div>
+                        </label>
                         <div class="col-sm-10">
-                            <input type="text" id="in_qty" name="in_qty" class="form-control" placeholder="In Quantity" required>
+                            <input type="text" id="exact-value" name="in_qty" class="form-control"
+                                rules="required|min:0,exclude" >
+                            <span class="form-message heighter"></span>
                         </div>
                     </div>
 
@@ -64,12 +72,15 @@
 
 @section('myJs')
     <script type="module">
+    import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
     import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
     document.addEventListener("readystatechange", (e) => {
         if (e.target.readyState === "complete") {
             const customSelect = new CustomSelect({
                 orginialInput: "my-custom-select",
             });
+            // Input validation
+            const productForm = new Validator('#createStockDetails');
         }
     });
 </script>

@@ -27,8 +27,8 @@
                 <!-- / Message Section -->
 
                 <!-- Horizontal Form -->
-                <form action="{{ Route('admin.discount.store') }}" method="post" class="card-body"
-                    enctype="multipart/form-data">
+                <form action="{{ Route('admin.discount.store') }}" method="post" class="card-body myForm"
+                    enctype="multipart/form-data" id="createDiscountDetails">
                     @csrf
                     <div class="form-group row mb-3">
                         <label for="product_name" class="col-sm-2 col-form-label">Product Name</label>
@@ -39,9 +39,13 @@
                         </div>
                     </div>
                     <div class="form-group row mb-3">
-                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                        <label for="amount" class="col-sm-2 col-form-label">
+                            <div>Amount<span class="form-required">&nbsp;*</span></div>
+                        </label>
                         <div class="col-sm-10">
-                            <input type="text" id="amount" name="amount" class="form-control" placeholder="(in %)">
+                            <input type="text" id="exact-value" name="amount" class="form-control"
+                                rules="required|range:1,99">
+                            <span class="form-message heighter"></span>
                         </div>
                     </div>
                     <div class="text-center">
@@ -57,12 +61,15 @@
 
 @section('myJs')
     <script type="module">
+    import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
     import {CustomSelect} from '{{ asset('/js/KienJs/customSelect.js') }}';
     document.addEventListener("readystatechange", (e) => {
         if (e.target.readyState === "complete") {
             const customSelect = new CustomSelect({
                 orginialInput: "my-custom-select",
             });
+            // Input validation
+            const productForm = new Validator('#createDiscountDetails');
         }
     });
 </script>

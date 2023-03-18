@@ -49,50 +49,64 @@
 
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                             data-bs-parent="#accordionExample">
-                            <form action="{{ Route('admin.promotion.store') }}" method="POST">
+                            <form action="{{ Route('admin.promotion.store') }}" method="POST" id="createPromotions"
+                                class="myForm">
                                 @csrf
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-1">
-                                        <label for="inputPassword6" class="col-form-label">Amount</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="number" id="amount" class="form-control" name="amount"
-                                            aria-describedby="amountHelpInLine" placeholder="Amount of promotion" required>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span id="amountHelpInline" class="form-text">
-                                            Must be 1-10 characters long.
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-1">
-                                        <label for="inputPassword6" class="col-form-label">Length</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="number" id="codeLength" class="form-control" name="codeLength"
-                                            aria-describedby="codeLengthHelpInline" placeholder="Length of promotion"
-                                            required min="5" max="15">
-                                    </div>
-                                    <div class="col-auto">
-                                        <span id="codeLengthHelpInline" class="form-text">
-                                            Must be 5-15 characters long.
-                                        </span>
+                                    <div class="form-group row mb-3">
+                                        <div class="col-1">
+                                            <label for="amount" class="col-form-label">
+                                                <div>Amount<span class="form-required">&nbsp;*</span></div>
+                                            </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="text" id="amount" name="amount" class="form-control"
+                                                rules="required|range:1,100" placeholder="Amount of promotions">
+                                            <span class="form-message heighter"></span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <span id="discountHelpInline" class="form-text">
+                                                Must be written from 1 to 100.
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-1">
-                                        <label for="from" class="col-form-label">Discount</label>
+                                    <div class="form-group row mb-3">
+                                        <div class="col-1">
+                                            <label for="length" class="col-form-label">
+                                                <div>Length<span class="form-required">&nbsp;*</span></div>
+                                            </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="text" id="length" name="codeLength" class="form-control"
+                                                rules="required|range:5,15" placeholder="Length of a code">
+                                            <span class="form-message heighter"></span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <span id="discountHelpInline" class="form-text">
+                                                Must be written from 5 to 15 characters.
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <input type="number" id="discount" class="form-control" name="discount"
-                                            aria-describedby="discountHelpInline" min="1" max="100"
-                                            placeholder="Discount (no need %)" required>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span id="discountHelpInline" class="form-text">
-                                            Must be 1-3 characters long.
-                                        </span>
+                                </div>
+                                <div class="row g-3 align-items-center">
+                                    <div class="form-group row mb-3">
+                                        <div class="col-1">
+                                            <label for="discount" class="col-form-label">
+                                                <div>Discount<span class="form-required">&nbsp;*</span></div>
+                                            </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="text" id="discount" name="discount" class="form-control"
+                                                rules="required|range:1,99" placeholder="Discount (%)">
+                                            <span class="form-message heighter"></span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <span id="discountHelpInline" class="form-text">
+                                                Must be written from 1 to 99.
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -151,6 +165,15 @@
 @endsection
 
 @section('myJs')
+    <script type="module">
+        import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                // Input validation
+                const productForm = new Validator('#createPromotions');
+            }
+        });
+    </script>
     <script>
         $(function() {
             $("#promotionManagement").DataTable({

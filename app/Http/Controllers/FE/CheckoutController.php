@@ -8,6 +8,9 @@ use App\Models\Order;
 use App\Http\Traits\ProcessModelData;
 use App\Models\Promotion;
 use App\Http\Traits\ProcessMail;
+use App\Models\Address\City;
+use App\Models\Address\District;
+use App\Models\Address\Ward;
 
 class CheckoutController extends HomeController
 {
@@ -17,10 +20,12 @@ class CheckoutController extends HomeController
     public function checkout()
     {
         $total = HomeController::totalCart();
+        $cities = City::all();
         $res = array(
             'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),
-            'totalQty' => $total['qty']
+            'totalQty' => $total['qty'],
+            'cities' => $cities,
         );
         return view('fe.home.checkOut', compact('res'));
     }
@@ -59,6 +64,14 @@ class CheckoutController extends HomeController
 
             // Save Order
             $orderInfo = $request->all();
+            //Tú sửa nè nhe
+            $city = City::where('id', $orderInfo['city'])->first();
+            $district = District::where('id', $orderInfo['district'])->first();
+            $ward = Ward::where('id', $orderInfo['ward'])->first();
+            $orderInfo['city'] = $city->name;
+            $orderInfo['district'] = $district->name;
+            $orderInfo['ward'] = $ward->name;
+            //Tú hết  sửa rồi đó nha
             $orderInfo['order_date'] = date('Y-m-d H:i:s', time());
             $orderInfo['user_id'] = auth()->user()->id;
             $order = Order::create($orderInfo);
