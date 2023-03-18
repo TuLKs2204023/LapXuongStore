@@ -1,7 +1,7 @@
 $ = document.querySelector.bind(document);
 
 function SearchHandler({
-    paginateConfigs: { pageDefaultItems = 12, pageDefaultSort = 0 },
+    paginateConfigs: { pageDefaultItems = 16, pageDefaultSort = 0 },
     price: { priceMin = 1, priceMax = 500000000 },
     selectors: {
         sidebarSelector = ".produts-sidebar-filter",

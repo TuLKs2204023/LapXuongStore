@@ -11,6 +11,31 @@
     transform: scale(1.8);
 }
 
+.filter-widget {
+    margin-bottom: 15px;
+}
+.filter-widget .fw-check {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 2px;
+    column-gap: 5px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.filter-widget .fw-check .bc-item {
+    flex: 0 0 48%;
+}
+.filter-widget .fw-check .bc-item label {
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    vertical-align: top;
+}
+
+.filter-widget .fw-check .bc-item label .checkmark {
+    top: 2px;
+}
+
 .product-search .displaying-products {
     text-align: right;
     margin-top: -64px;
@@ -56,6 +81,12 @@
 @media only screen and (max-width: 767px) {
     .product-search .displaying-products {
         margin: 0;
+    }
+}
+@media only screen and (max-width: 991px) {
+    .filter-widget .fw-check .bc-item {
+        flex: 1;
+        column-gap: 15px;
     }
 }
 
