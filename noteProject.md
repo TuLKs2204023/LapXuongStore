@@ -65,3 +65,6 @@ FACEBOOK_CLIENT_SECRET=1231743f6954579fe4aada8b38c98089ab5
 'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
 'redirect' => 'http://localhost/LapXuongStore/public/auth/facebook/callback',
 ],
+11. Thêm onDelete('cascade') vào 
+        product_id bảng discounts, 
+        stock_id bảng order_details,

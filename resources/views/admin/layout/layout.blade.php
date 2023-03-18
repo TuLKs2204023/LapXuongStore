@@ -193,7 +193,7 @@
 
     <!-- Loading effect -->
 
-    <div class="loader">
+    {{-- <div class="loader">
         <div class="side"></div>
         <div class="side"></div>
         <div class="side"></div>
@@ -217,7 +217,7 @@
             }, 500)
         }
         );
-    </script>
+    </script> --}}
     <!-- End Loading effect -->
 </body>
 

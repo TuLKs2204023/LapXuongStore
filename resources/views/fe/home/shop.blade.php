@@ -53,7 +53,8 @@
     <section class="product-shop spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-sm-8 col-md-6 order-2 order-lg-1 produts-sidebar-filter">
+                {{-- <div class="col-lg-3 col-sm-8 col-md-6 order-2 order-lg-1 produts-sidebar-filter"> --}}
+                <div class="col-lg-3 order-2 order-lg-1 produts-sidebar-filter">
                     <!-- Price Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">Price</h4>
@@ -80,7 +81,7 @@
                     <div class="filter-widget">
                         <h4 class="fw-title">Usage</h4>
                         <div class="fw-check filter-demand">
-                            @foreach ($cateGroups->find(10)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
+                            @foreach ($cateGroups->find(10)->cates()->where('showOnSearch', '>', 0)->get()->sortBy('name') as $cate)
                                 <div class="bc-item">
                                     <label for="demand-{{ $cate->cateable->id }}">
                                         {{ $cate->name }}
@@ -97,7 +98,7 @@
                     <div class="filter-widget">
                         <h4 class="fw-title">Manufacture</h4>
                         <div class="fw-check filter-manufacture">
-                            @foreach ($cateGroups->find(1)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
+                            @foreach ($cateGroups->find(1)->cates()->where('showOnSearch', '>', 0)->get()->sortBy('name') as $cate)
                                 <div class="bc-item">
                                     <label for="manufacture-{{ $cate->cateable->id }}">
                                         {{ $cate->name }}
@@ -114,7 +115,7 @@
                     <div class="filter-widget">
                         <h4 class="fw-title">Series</h4>
                         <div class="fw-check filter-series">
-                            @foreach ($cateGroups->find(2)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
+                            @foreach ($cateGroups->find(2)->cates()->where('showOnSearch', '>', 0)->get()->sortBy('name') as $cate)
                                 <div class="bc-item">
                                     <label for="series-{{ $cate->cateable->id }}">
                                         {{ $cate->name }}
@@ -131,7 +132,7 @@
                     <div class="filter-widget">
                         <h4 class="fw-title">CPU</h4>
                         <div class="fw-check filter-cpu">
-                            @foreach ($cateGroups->find(3)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
+                            @foreach ($cateGroups->find(3)->cates()->where('showOnSearch', '>', 0)->get()->sortBy('name') as $cate)
                                 <div class="bc-item">
                                     <label for="cpu-{{ $cate->cateable->id }}">
                                         {{ $cate->name }}
@@ -144,17 +145,53 @@
                         </div>
                     </div> <!-- // CPU Filter -->
 
+                    <!-- GPU Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">GPU</h4>
+                        <div class="fw-check filter-gpu">
+                            @foreach ($cateGroups->find(4)->cates()->where('showOnSearch', '>', 0)->get()->sortBy('name') as $cate)
+                                <div class="bc-item">
+                                    <label for="gpu-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}
+                                        <input type="checkbox" id="gpu-{{ $cate->cateable->id }}"
+                                            data-value="gpu-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // GPU Filter -->
+
+                    <!-- Color Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Color</h4>
+                        <div class="fw-check filter-color">
+                            @foreach ($cateGroups->find(9)->cates()->where('showOnSearch', '>', 0)->get()->sortBy('name') as $cate)
+                                <div class="bc-item">
+                                    <label for="color-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}
+                                        <input type="checkbox" id="color-{{ $cate->cateable->id }}"
+                                            data-value="color-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // Color Filter -->
+
                     <!-- RAM Filter -->
                     <div class="filter-widget">
                         <h4 class="fw-title">RAM</h4>
                         <div class="fw-check filter-ram">
-                            @foreach ($cateGroups->find(5)->cates()->where('showOnSearch', '>', 0)->get() as $cate)
+                            @foreach ($cateGroups->find(5)->cates()->where('showOnSearch', '>', 0)->get()->sortBy(function ($query) {
+                return $query->cateable->value;
+            }) as $cate)
                                 @if ($cate->cateable->value === null)
                                     @continue
                                 @endif
                                 <div class="bc-item">
                                     <label for="ram-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
                                         <input type="checkbox" id="ram-{{ $cate->cateable->id }}"
                                             data-value="ram-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -164,60 +201,90 @@
                         </div>
                     </div> <!-- // RAM Filter -->
 
-                    <!-- Screen Size Filter -->
+                    <!-- RAM Filter -->
                     <div class="filter-widget">
-                        <h4 class="fw-title">Size</h4>
-
-                        {{-- <div class="fw-size-choose">
-                            <div class="sc-item">
-                                <input type="radio" id="s-size">
-                                <label for="s-size">15.6"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="m-size">
-                                <label for="m-size">16"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="l-size">
-                                <label for="l-size">21"</label>
-                            </div>
-                            <div class="sc-item">
-                                <input type="radio" id="xs-size">
-                                <label for="xs-size">24"</label>
-                            </div>
-                        </div> --}}
-                    </div> <!-- // Screen Size Filter -->
-
-                    <!-- Accessories Filter -->
-                    <div class="filter-widget">
-                        <h4 class="fw-title">LINH KIỆN</h4>
-                        <div class="fw-color-choose">
-                            <div class="cs-item">
-                                <input type="radio" id="cs-black">
-                                <label for="cs-black" class="cs-black">BÀN PHÍM</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-violet">
-                                <label for="cs-violet" class="cs-violet">CHUỘT</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-yellow">
-                                <label for="cs-yellow" class="cs-yellow">LOA</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-blue">
-                                <label for="cs-blue" class="cs-blue">WEBCAM</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-red">
-                                <label for="cs-red" class="cs-red">TAY CẦM</label>
-                            </div>
-                            <div class="cs-item">
-                                <input type="radio" id="cs-green">
-                                <label for="cs-green" class="cs-green">APPLE</label>
-                            </div>
+                        <h4 class="fw-title">Screen Size</h4>
+                        <div class="fw-check filter-screen">
+                            @foreach ($cateGroups->find(6)->cates()->where('showOnSearch', '>', 0)->get()->sortBy(function ($query) {
+                return $query->cateable->value;
+            }) as $cate)
+                                @if ($cate->cateable->value === null)
+                                    @continue
+                                @endif
+                                <div class="bc-item">
+                                    <label for="screen-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}
+                                        <input type="checkbox" id="screen-{{ $cate->cateable->id }}"
+                                            data-value="screen-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
-                    </div> <!-- // Accessories Filter -->
+                    </div> <!-- // RAM Filter -->
+
+                    <!-- Resolution Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Resolution</h4>
+                        <div class="fw-check filter-resolution">
+                            @foreach ($cateGroups->find(11)->cates()->where('showOnSearch', '>', 0)->get()->sortBy(function ($query) {
+                return $query->cateable->value;
+            }) as $cate)
+                                <div class="bc-item">
+                                    <label for="resolution-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}
+                                        <input type="checkbox" id="resolution-{{ $cate->cateable->id }}"
+                                            data-value="resolution-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // Resolution Filter -->
+
+                    <!-- HDD Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">HDD</h4>
+                        <div class="fw-check filter-hdd">
+                            @foreach ($cateGroups->find(7)->cates()->where('showOnSearch', '>', 0)->get()->sortBy(function ($query) {
+                return $query->cateable->value;
+            }) as $cate)
+                                @if ($cate->cateable->value === null)
+                                    @continue
+                                @endif
+                                <div class="bc-item">
+                                    <label for="hdd-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        <input type="checkbox" id="hdd-{{ $cate->cateable->id }}"
+                                            data-value="hdd-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // HDD Filter -->
+
+                    <!-- SSD Filter -->
+                    <div class="filter-widget">
+                        <h4 class="fw-title">SSD</h4>
+                        <div class="fw-check filter-ssd">
+                            @foreach ($cateGroups->find(8)->cates()->where('showOnSearch', '>', 0)->get()->sortBy(function ($query) {
+                return $query->cateable->value;
+            }) as $cate)
+                                @if ($cate->cateable->value === null)
+                                    @continue
+                                @endif
+                                <div class="bc-item">
+                                    <label for="ssd-{{ $cate->cateable->id }}">
+                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        <input type="checkbox" id="ssd-{{ $cate->cateable->id }}"
+                                            data-value="ssd-{{ $cate->cateable->id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> <!-- // SSD Filter -->
 
                 </div>
 
@@ -272,13 +339,13 @@
             function init(productList) {
                 const heartIcons = productList.querySelectorAll(productHearts);
                 Array.from(heartIcons).forEach(heart => {
-                    heart.onclick = (e) => {
+                    heart.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const pId = heart.closest('.product-item').dataset.index;
 
+                        const pId = heart.closest('.product-item').dataset.index;
                         // Process to call HttpRequest
                         processUpdateWishList(pId, heart, renderWishList);
-                    };
+                    });
                 });
             }
 
@@ -308,8 +375,27 @@
                 ajaxReq.onreadystatechange = () => {
                     if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
                         const res = JSON.parse(ajaxReq.responseText);
-
-                        cb(res, heart);
+                        if (res.status === 'aborted') {
+                            import('{{ asset('/js/KienJs/ConfirmDialog.js') }}').then((mDialog) => {
+                                const confirmWishlist = mDialog.ConfirmDialog({
+                                    route: '{{ Route('login') }}',
+                                    message: 'Before adding or removing items in the Wishlist, please try to login first. Thank you.',
+                                    btnLabel: 'Login'
+                                });
+                                confirmWishlist.showDialog();
+                            });
+                        } else {
+                            import('{{ asset('/js/KienJs/toast.js') }}').then((mToast) => {
+                                const type = {
+                                    'add': 'Item has been ADDED to your Wishlist successfully.',
+                                    'remove': 'Item has been REMOVED from your Wishlist successfully.',
+                                }
+                                cb(res, heart);
+                                mToast.showSuccessToast({
+                                    message: type[res.action]
+                                })
+                            });
+                        }
                     }
                 };
 
@@ -332,8 +418,8 @@
     <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
     <script>
         /*-------------------
-                                                                                                                                    Range Slider
-                                                                                                                                    --------------------- */
+                                                                                                                                                                                                                                                                                                                                Range Slider
+                                                                                                                                                                                                                                                                                                                                --------------------- */
         jQuery(document).ready(function($) {
             const rangeSlider = $(".price-range"),
                 minamount = $("#minamount"),

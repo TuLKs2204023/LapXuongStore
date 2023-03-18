@@ -294,7 +294,12 @@ class Product extends Model
     public function avgRates()
     {
         $avg = 0;
-        $avg = $this->sumRates() / $this->countRates();
+        if($this->sumRates() == 0 && $this->countRates() == 0){
+            return $avg;
+        }
+        else{
+            $avg = $this->sumRates() / $this->countRates();
+        }
         return number_format($avg, 0, '.');
     }
 

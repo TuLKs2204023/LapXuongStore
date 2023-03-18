@@ -60,21 +60,7 @@
     @yield('content')
 
     <div id="myToast"></div>
-
-    <div class="dialog-container">
-        <div class="dialog-content">
-            <div class="dialog-header">
-                <div><span class="close-btn cancel-btn"><i class="fa-solid fa-xmark"></i></span></div>
-            </div>
-            <div class="dialog-body">
-                <h6 class="dialog-title">Are you sure to DELETE this item?</h6>
-            </div>
-            <div class="dialog-footer">
-                <button class="form-submit standard warning proceed-btn">Proceed</button>
-                <button class="form-submit standard cancel-btn">Cancel</button>
-            </div>
-        </div>
-    </div>
+    <div id="myDialog" class="dialog-container"></div>
     <!-- -------------------------------------CONTENT BODY------------------------------------------------------- -->
 
     <!-- Footer SECTION BEGIN-->

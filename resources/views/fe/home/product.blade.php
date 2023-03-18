@@ -622,6 +622,7 @@
             const starWrap = $("#rating-ability-wrapper .btnrating");
             const cmtArea = $("#review").get(0);
             const sendReview = $(".site-btn.review-lapxuong-btn").get(0);
+            const pdRating = $(".pd-rating");
             $(sendReview).on("click", function(e) {
                 e.preventDefault();
                 const formArray = $(".comment-form").serializeArray();
@@ -636,6 +637,8 @@
                         if (response.msg == "Comment add successfully") {
                             $(cmtArea).val("");
                             $(".selected-rating").html(0);
+                            
+                            //Move up to comment area and remove filled stars
                             $(starWrap).each(function(index, element) {
                                 const hasFilled = $(element).hasClass("btn-warning");
                                 $([document.documentElement, document.body]).animate({
@@ -646,6 +649,7 @@
                                     $(element).addClass("btn-default");
                                 }
                             })
+                            //add new comment to view area
                             if (response.totalRate == 1) {
                                 const test = $(".comment-option.overflow-auto").get(0);
                                 $(test).html(response.view);
@@ -654,14 +658,14 @@
                                     response
                                     .view);
                             }
-                            const reviewItm = $(".comment-option.overflow-auto").children()
-                                .first().get(0);
-                            const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
-                            reviewDelBtn.onclick =
-                                function(e) {
-                                    e.preventDefault();
-                                    tuDeleteComment(reviewItm);
-                                };
+                            // const reviewItm = $(".comment-option.overflow-auto").children()
+                            //     .first().get(0);
+                            // const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
+                            // reviewDelBtn.onclick =
+                            //     function(e) {
+                            //         e.preventDefault();
+                            //         tuDeleteComment(reviewItm);
+                            //     };
                             $("#review-tab").html("Customer Review " +
                                 "(" + response.totalRate + ")");
                             $(".customer-review-option .tu-comment")
@@ -674,6 +678,20 @@
                                 $(".tu-send-review-message").addClass("alert alert-success main-success");
                             }
                             $(".tu-send-review-message").html(response.msg);
+                            
+                            //add avg stars
+                            pdRating.each(function(index, element){
+                                let filled = '', empty = '';
+                                const starFil = '<i class="fa fa-star"></i> ';
+                                const starEmp = '<i class="fa fa-star-o"></i> ';
+                                for(i = 0; i < response.avgRates; i++){
+                                        filled += starFil;
+                                }
+                                for(i = 0; i < 5 - response.avgRates; i++){
+                                        empty += starEmp;
+                                }
+                                $(element).html(filled + empty);
+                            })
                         } else {
                             $(starWrap).each(function(index, element) {
                                 $([document.documentElement, document.body]).animate({

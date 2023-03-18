@@ -26,7 +26,7 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::orderBy('id', 'DESC')->paginate(12);
+        $products = Product::orderBy('id', 'DESC')->paginate(16);
         $cateGroups = CateGroup::all()->load('cates');
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
@@ -58,7 +58,23 @@ class ShopController extends Controller
 
     public function test()
     {
-        $product= Product::find(30);
+        $products = Product::query();
+        $subModel = 'App\Models\Cates\\' . ucfirst('ssd') . 'Group';
+        $value = "4,2,3";
+        $cateIdRange = array_reduce(explode(",", $value), function ($acc, $cur) use ($subModel) {
+            $cateItems = $subModel::find($cur);
+            $cateItemsId = $cateItems->cateItems()->pluck('id');
+            if (count($cateItemsId) > 0) {
+                $acc[] = $cateItems->cateItems()->pluck('id');
+            }
+            return $acc;
+        }, []);
+        $products->whereIn('ssd_id', $cateIdRange);
+        dd($products->get());
+
+
+
+        $product = Product::find(30);
         dd($product->salePrice);
         $value = "5000000,20000000";
         $products = Product::addSelect(['price' => Price::select('sale_discounted')
@@ -89,7 +105,7 @@ class ShopController extends Controller
         $cateGroups = CateGroup::all()->load('cates');
         $cate = Cate::where('slug', $slug)->get()->first();
         $cateItems = $cate->cateable;
-        $products = $this->getProductsByCate($cate)->orderBy('id', 'DESC')->paginate(12);
+        $products = $this->getProductsByCate($cate)->orderBy('id', 'DESC')->paginate(16);
 
         return view('fe.home.shop')->with([
             'cateGroups' => $cateGroups,
@@ -148,9 +164,9 @@ class ShopController extends Controller
     {
         $queries = $request->query();
 
-        // If default pagination items does not exists, create one by 12
+        // If default pagination items does not exists, create one by 16
         if (!isset($queries['show'])) {
-            $queries['show'] = 12;
+            $queries['show'] = 16;
         }
         // If default pagination sorting does not exists, create one by ID desc.
         if (!isset($queries['sort'])) {
@@ -216,6 +232,21 @@ class ShopController extends Controller
                         $query->whereHas('prices', function (Builder $query) use ($value) {
                             $query->whereBetween('sale_discounted', explode(",", $value))->orderBy('id', 'desc');
                         });
+                        break;
+                    case 'ram':
+                    case 'hdd':
+                    case 'ssd':
+                    case 'screen':
+                        $subModel = 'App\Models\Cates\\' . ucfirst($key) . 'Group';
+                        $cateIdRange = array_reduce(explode(",", $value), function ($acc, $cur) use ($subModel) {
+                            $cateItems = $subModel::find($cur);
+                            $cateItemsId = $cateItems->cateItems()->pluck('id');
+                            if (count($cateItemsId) > 0) {
+                                $acc[] = $cateItemsId;
+                            }
+                            return $acc;
+                        }, []);
+                        $query->whereIn($key . '_id', $cateIdRange);
                         break;
                     default:
                         $query->whereIn($key . '_id', explode(",", $value));

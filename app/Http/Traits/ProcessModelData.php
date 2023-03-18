@@ -150,7 +150,7 @@ trait ProcessModelData
     }
 
     function processRating(User $user, array $proData)
-    { 
+    {
         // From 'TU Lele' with ❤❤❤
         $product = DB::table('products')
             ->where('id', $proData['product_id'])
@@ -158,14 +158,14 @@ trait ProcessModelData
         $productId = $product->id;
         //check text contains bad words
         $msg = true;
-        $convertText = Strtolower ($this->convert_name($proData['review']));
-        $badWords = ['dm', 'fuck', 'shit', 'ma', 'dkm', 'dit', 'me', 'djt me', 'du', 'chich', 'cu', 'lon', 'lol', 'bede', 'cc', 'cac', 'di', 'bo may', 'bo m'];
-        for($i = 0; $i < count($badWords); $i++){
-            if( strpos( $convertText, $badWords[$i] ) !== false ){
-                return $msg = 'Comment contains bad words, please stay calm and be polite!';
+        $convertText = Strtolower($this->convert_name($proData['review']));
+        $badWords = ['dm', 'fuck', 'shit', 'ma', 'dkm', 'dit', 'me', 'djt', 'du', 'chich', 'cu', 'lon', 'lol', 'bede', 'cc', 'cac', 'di', 'bo may', 'bo m'];
+        for ($i = 0; $i < count($badWords); $i++) {
+            if (strpos($convertText, $badWords[$i]) !== false) {
+                return $msg = 'Comment contains bad words, \'' . $badWords[$i] . '\' is constrained to be a bad word, please stay calm and be polite!';
             }
         }
-        if($msg == true){
+        if ($msg == true) {
             $user->ratings()->create(['rate' => $proData['selected_rating'], 'review' => $proData['review'], 'product_id' => $productId]);
             $user->refresh();
             return $msg = 'Comment add successfully';
@@ -367,16 +367,19 @@ trait ProcessModelData
      * Supporting function for processCate()
      *
      */
+    private function isProperVal($val)
+    {
+        return $val != 0 && !empty($val) ? true : false;
+    }
+
+    /**
+     * Supporting function for processCate()
+     *
+     */
     private function isExactVal(array $proData): bool
     {
-        if (!isset($proData['value'])) {
-            return false;
-        }
-        if ($proData['value'] != 0 && !empty($proData['value'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return !isset($proData['value']) ?
+            false : $this->isProperVal($proData['value']);
     }
     /**
      * Supporting function for processCate()
@@ -384,14 +387,8 @@ trait ProcessModelData
      */
     private function isMinVal(array $proData): bool
     {
-        if (!isset($proData['min'])) {
-            return false;
-        }
-        if ($proData['min'] != 0 && !empty($proData['min'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return !isset($proData['min']) ?
+            false : $this->isProperVal($proData['min']);
     }
     /**
      * Supporting function for processCate()
@@ -399,14 +396,8 @@ trait ProcessModelData
      */
     private function isMaxVal(array $proData): bool
     {
-        if (!isset($proData['max'])) {
-            return false;
-        }
-        if ($proData['max'] != 0 && !empty($proData['max'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return !isset($proData['max']) ?
+            false : $this->isProperVal($proData['max']);
     }
     /**
      * Supporting function for processCate()
@@ -414,14 +405,9 @@ trait ProcessModelData
      */
     private function isRangeVal(array $proData): bool
     {
-        if (!isset($proData['min']) or !isset($proData['max'])) {
-            return false;
-        }
-        if ($proData['min'] != 0 && !empty($proData['min']) && $proData['max'] != 0 && !empty($proData['max'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return !isset($proData['min']) || !isset($proData['max']) ?
+            false :
+            $this->isMinVal($proData) && $this->isMaxVal($proData);;
     }
 
     /* A function to update history user's table. */

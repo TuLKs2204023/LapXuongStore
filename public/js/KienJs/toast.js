@@ -42,8 +42,6 @@ function toast({
                 <div id="toast__line" class="toast__line"></div>
             </div>
           </div>
-          
-          
       `;
         main.appendChild(toast);
 
