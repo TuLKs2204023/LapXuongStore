@@ -159,9 +159,9 @@ trait ProcessModelData
         //check text contains bad words
         $msg = true;
         $convertText = Strtolower($this->convert_name($proData['review']));
-        $badWords = ['dm', 'fuck', 'shit', 'ma', 'dkm', 'dit', 'me', 'djt', 'du', 'chich', 'cu', 'lon', 'lol', 'bede', 'cc', 'cac', 'di', 'bo may', 'bo m'];
+        $badWords = ['dmit', 'fuck', 'shit', 'ma', 'dkm', 'dit', 'me', 'djt', 'du', 'chich', 'cu', 'lon', 'lol', 'bede', 'cc', 'cac', 'di', 'bo may', 'bo m'];
         for ($i = 0; $i < count($badWords); $i++) {
-            if (strpos($convertText, $badWords[$i]) !== false) {
+            if (preg_match( '/\b' . $badWords[$i] . '\b/', $convertText)) {
                 return $msg = 'Comment contains bad words, \'' . $badWords[$i] . '\' is constrained to be a bad word, please stay calm and be polite!';
             }
         }
