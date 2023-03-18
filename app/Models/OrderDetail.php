@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,5 +41,11 @@ class OrderDetail extends Model
     public function stock()
     {
         return $this->belongsTo(Stock::class);
+    }
+    public function time()
+    {
+        $now = Carbon::now();
+        $durationPro = $this->duration($now, $this->created_at);
+        return $durationPro;
     }
 }

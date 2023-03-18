@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Traits\ProcessModelData;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
+    use ProcessModelData;
     use HasFactory;
     protected $fillable = ['user_id', 'order_date', 'name', 'phone', 'email', 'address', 'notes', 'payment', 'city', 'district', 'ward'];
 
@@ -45,8 +48,8 @@ class Order extends Model
     }
 
     // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
-    
-    //Get promotion discount 
+
+    //Get promotion discount
     public function discount()
     {
         $isPromoted = $this->isPromoted();
@@ -120,6 +123,12 @@ class Order extends Model
         } else {
             return '<span class="badge rounded-pill bg-danger">Canceled</span>';
         }
+    }
+    public function timeOrder()
+    {
+        $now = Carbon::now();
+        $durationPro = $this->duration($now, $this->created_at);
+        return $durationPro;
     }
 
     // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
