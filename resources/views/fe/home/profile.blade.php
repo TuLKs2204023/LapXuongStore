@@ -67,6 +67,7 @@
     </style>
 @endsection
 @section('content')
+    @auth
     <div class="container">
         <div class="main-body">
             <!-- Breadcrumb -->
@@ -175,7 +176,7 @@
                             </div>
                         </div>
                     </div>
-
+                    @if(auth()->user()->role == 'Customer')
                     <div class="row gutters-sm">
 
                         <div class="col-sm-12 mb-3">
@@ -212,9 +213,12 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 
         </div>
     </div>
+
+    @endauth
 @endsection

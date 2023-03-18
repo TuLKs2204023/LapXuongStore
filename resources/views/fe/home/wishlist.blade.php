@@ -10,72 +10,85 @@
 @endsection
 
 @section('content')
-    <!-- BREADCUMB SECTION BEGIN-->
-    <div class="breadcrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text">
-                        <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i> Home</a>
-                        <a href="{{ Route('fe.shop.index') }}">Shop</a>
-                        <span>{{ auth()->user()->name }} Wishlist</span>
+    @if (auth()->user()->role !== 'Customer')
+        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <br>
+            <br>
+            <h3>Sorry ! The page you are looking only availabled for Customer !</h3>
+
+            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+
+        </section>
+    @endif
+
+    @if (auth()->user()->role == 'Customer')
+        <!-- BREADCUMB SECTION BEGIN-->
+        <div class="breadcrumb-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-text">
+                            <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i> Home</a>
+                            <a href="{{ Route('fe.shop.index') }}">Shop</a>
+                            <span>{{ auth()->user()->name }} Wishlist</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- BREADCUMB SECTION END-->
+        <!-- BREADCUMB SECTION END-->
 
-    <!-- Shoping-cart SECTION BEGIN-->
-    <div class="shopping-cart spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="cart-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Images</th>
-                                    <th class="p-name">Product Name</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody class="products-cart">
-                                @if ($wishlistItems)
-                                    @foreach ($wishlistItems as $item)
-                                        <tr class="pr-cart-item" data-index="{{ $item->product->id }}">
-                                            <td class="cart-pic first-row"><a
-                                                    href="{{ Route('product.details', $item->product->slug) }}"><img
-                                                        src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                        alt="{{ $item->product->name }}"></a></td>
-                                            <td class="cart-title first-row">
-                                                <h5>{{ $item->product->name }}</h5>
-                                            </td>
-                                            <td class="close-td first-row">
-                                                <i class="ti-close"></i>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
+        <!-- Shoping-cart SECTION BEGIN-->
+        <div class="shopping-cart spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="cart-table">
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td colspan="6"> {{ $errors }} </td>
+                                        <th>Images</th>
+                                        <th class="p-name">Product Name</th>
+                                        <th></th>
                                     </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row order-summary">
-                        <div class="col-lg-4">
-                            <div class="cart-buttons">
-                                <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart">Click me to shop</a>
+                                </thead>
+                                <tbody class="products-cart">
+                                    @if ($wishlistItems)
+                                        @foreach ($wishlistItems as $item)
+                                            <tr class="pr-cart-item" data-index="{{ $item->product->id }}">
+                                                <td class="cart-pic first-row"><a
+                                                        href="{{ Route('product.details', $item->product->slug) }}"><img
+                                                            src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                            alt="{{ $item->product->name }}"></a></td>
+                                                <td class="cart-title first-row">
+                                                    <h5>{{ $item->product->name }}</h5>
+                                                </td>
+                                                <td class="close-td first-row">
+                                                    <i class="ti-close"></i>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="6"> {{ $errors }} </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row order-summary">
+                            <div class="col-lg-4">
+                                <div class="cart-buttons">
+                                    <a href="{{ Route('fe.shop.index') }}" class="primary-btn up-cart">Click me to shop</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Shoping-cart SECTION END-->
+        <!-- Shoping-cart SECTION END-->
+    @endif
 @endsection
 
 @section('myJs')

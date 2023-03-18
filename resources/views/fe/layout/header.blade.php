@@ -101,6 +101,7 @@
                     </form>
                 </div>
                 <div class="col-lg-4 col-md-4 text-right">
+                    @if (!Auth::check())
                     <ul class="nav-right">
                         <li class="heart-icon">
                             <a href="{{ Route('wishlist') }}">
@@ -114,7 +115,6 @@
 
                             </a>
                         </li>
-
                         <!-- Header Cart -->
                         <li class="cart-icon">
                             <a href="{{ Route('viewCart') }}">
@@ -164,7 +164,77 @@
                                 </div>
                             </div>
                         </li><!-- // Header Cart -->
+
                     </ul>
+                    @endif
+                    @auth
+                    @if(auth()->user()->role == 'Customer')
+                    <ul class="nav-right">
+                        <li class="heart-icon">
+                            <a href="{{ Route('wishlist') }}">
+                                <div>Wish List</div>
+                                <i class="icon_heart_alt"></i>
+                                @if (auth()->user())
+                                    <span>{{ count(auth()->user()->wishlistItems) }}</span>
+                                @else
+                                    <span>0</span>
+                                @endif
+
+                            </a>
+                        </li>
+                        <!-- Header Cart -->
+                        <li class="cart-icon">
+                            <a href="{{ Route('viewCart') }}">
+                                <div>Your Cart</div>
+                                <i class="icon_bag_alt"></i>
+                                <span class="index">{{ $headerCart['qty'] }}</span>
+                            </a>
+                            <div class="cart-hover shadowed">
+                                <div class="select-items">
+                                    <table>
+                                        <tbody class="cart-header-list">
+                                            @if (session('cart'))
+                                                @foreach (session('cart') as $item)
+                                                    <tr data-index={{ $item->product->id }} class="cart-section">
+                                                        <td class="si-pic"><img
+                                                                src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                                alt=""></td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>{{ number_format($item->product->fakePrice(), 0, ',', '.') }}
+                                                                </p>
+                                                                <h6>{{ $item->product->shortName }}</h6>
+                                                            </div>
+                                                        </td>
+                                                        {{-- <td class="si-close"> --}}
+                                                        <td>
+                                                            {{-- <i class="ti-close"></i> --}}
+                                                            x <h6 class="product-selected-price">{{ $item->quantity }}
+                                                            </h6>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="3" style="text-align: center;">CART IS EMPTY</td>
+                                                </tr>
+                                            @endif
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="select-button">
+                                    <a href="{{ Route('viewCart') }}" class="site-btn-alt view-card">VIEW CART</a>
+                                    <a href="{{ Route('checkout') }}" class="site-btn-main checkout-btn">CHECK
+                                        OUT</a>
+                                </div>
+                            </div>
+                        </li><!-- // Header Cart -->
+
+                    </ul>
+                    @endif
+                    @endauth
                 </div>
             </div>
         </div>

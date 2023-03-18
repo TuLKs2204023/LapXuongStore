@@ -75,19 +75,8 @@ Route::get('/datatable', function () {
     return view('backend.datatable');
 });
 
-//User management
-Route::get('/all-user', [UserController::class, 'AllUser'])->name('alluser');
-Route::get('/add-user-index', [UserController::class, 'AddUserIndex'])->name('adduserindex');
-Route::post('/insert-user', [UserController::class, 'InsertUser'])->name('insertuser');
-Route::get('/edit-user/{id}', [UserController::class, 'EditUser'])->name('edituser');
-Route::post('/update-user/{id}', [UserController::class, 'UpdatetUser'])->name('updateuser');
-Route::get('/delete-user/{id}', [UserController::class, 'DeleteUser'])->name('deleteuser');
-Route::get('/info-user', [UserController::class, 'InfoUser'])->name('infouser');
-Route::get('/edit-byuser/{id}', [UserController::class, 'EditByUser'])->name('editbyuser');
-Route::post('/update-byuser/{id}', [UserController::class, 'UpdateByUser'])->name('updatebyuser');
-Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userProfile');
-Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name('passwordUser');
-Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
+
+
 
 //report users
 Route::get('admin/lastweek', [DashboardController::class, 'lastweek'])->name('lastweek');
@@ -142,6 +131,21 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Coupon
     Route::post('/coupon-check', [CheckoutController::class, 'couponCheck'])->name('couponCheck');
+
+    // User
+    Route::get('/info-user', [UserController::class, 'InfoUser'])->name('infouser');
+    Route::get('/edit-byuser/{id}', [UserController::class, 'EditByUser'])->name('editbyuser');
+    Route::post('/update-byuser/{id}', [UserController::class, 'UpdateByUser'])->name('updatebyuser');
+    Route::get('/profile', [FE_HomeController::class, 'userProfile'])->name('userProfile');
+    Route::get('/passwordUser/{id}', [UserController::class, 'passwordUser'])->name('passwordUser');
+    Route::post('/password-user/{id}', [UserController::class, 'EditpasswordUser'])->name('EditpasswordUser');
+    //User management
+    Route::get('/all-user', [UserController::class, 'AllUser'])->name('alluser');
+    Route::get('/add-user-index', [UserController::class, 'AddUserIndex'])->name('adduserindex');
+    Route::post('/insert-user', [UserController::class, 'InsertUser'])->name('insertuser');
+    Route::get('/edit-user/{id}', [UserController::class, 'EditUser'])->name('edituser');
+    Route::post('/update-user/{id}', [UserController::class, 'UpdatetUser'])->name('updateuser');
+    Route::get('/delete-user/{id}', [UserController::class, 'DeleteUser'])->name('deleteuser');
 
     // For Admin purpose
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
@@ -337,7 +341,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::put('/update', [RatingController::class, 'update'])->name('update');
             Route::delete('/destroy', [RatingController::class, 'destroy'])->name('destroy');
             Route::delete('/adminDelete', [RatingController::class, 'adminDelete'])->name('adminDelete');
-
         });
 
         //Order management

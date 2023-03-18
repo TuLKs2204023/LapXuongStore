@@ -22,10 +22,11 @@
 
         <section class="section dashboard">
             <div class="row">
-                <!-- Left side columns -->
-                <div class="col-lg-8">
-                    <div class="row">
-                        @if (auth()->user()->role == 'Admin')
+                @if (auth()->user()->role == 'Admin')
+                    <!-- Left side columns -->
+                    <div class="col-lg-8">
+                        <div class="row">
+
                             <!-- Sales Card -->
                             <div class="col-xxl-4 col-md-6">
                                 <div class="card info-card sales-card">
@@ -123,10 +124,11 @@
 
                                         <script>
                                             let day = @php echo json_encode($dayData); @endphp;
+
                                             let revenue = @php echo json_encode($revenue); @endphp;
                                             let product = @php echo json_encode($productData); @endphp;
                                             let interaction = @php echo json_encode($interaction); @endphp;
-
+                                            console.log(day);
                                             document.addEventListener("DOMContentLoaded", () => {
                                                 new ApexCharts(document.querySelector("#reportsChart"), {
                                                     series: [{
@@ -134,11 +136,11 @@
                                                         data: product,
                                                     }, {
                                                         name: 'Revenue',
-                                                        data: revenue
+                                                        data: revenue,
 
                                                     }, {
                                                         name: 'Qty Customer Interaction',
-                                                        data: interaction
+                                                        data: interaction,
                                                     }],
                                                     chart: {
                                                         height: 350,
@@ -169,11 +171,18 @@
                                                     },
                                                     xaxis: {
                                                         type: 'datetime',
-                                                        categories: day
+                                                        // categories: ["2018-09-19T00:00:00.000Z",
+                                                        //             "2018-09-19T01:30:00.000Z",
+                                                        //             "2018-09-19T02:30:00.000Z",
+                                                        //             "2018-09-19T03:30:00.000Z",
+                                                        //             "2018-09-19T04:30:00.000Z",
+                                                        //             "2018-09-19T05:30:00.000Z",
+                                                        //             "2018-09-19T06:30:00.000Z"]
+                                                        categories: day,
                                                     },
                                                     tooltip: {
                                                         x: {
-                                                            format: 'dd/MM/yy HH:mm'
+                                                            format:'dd/MM/yy HH:mm'
                                                         },
                                                     }
                                                 }).render();
@@ -185,12 +194,12 @@
 
                                 </div>
                             </div><!-- End Reports -->
-                        @endif
-                        <!-- Recent Sales -->
-                        <div class="col-12">
-                            <div class="card recent-sales overflow-auto">
 
-                                {{-- <div class="filter">
+                            <!-- Recent Sales -->
+                            <div class="col-12">
+                                <div class="card recent-sales overflow-auto">
+
+                                    {{-- <div class="filter">
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                             class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -204,104 +213,109 @@
                                     </ul>
                                 </div> --}}
 
-                                <div class="card-body">
-                                    <h5 class="card-title">Recent Sales </h5>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recent Sales </h5>
 
-                                    <table class="table table-borderless datatable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">ID Order</th>
-                                                <th scope="col">Customer</th>
-                                                <th scope="col">Product</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($order as $key => $item)
-                                                @foreach ($item->details as $ip)
+                                        <table class="table table-borderless datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID Order</th>
+                                                    <th scope="col">Customer</th>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($order as $key => $item)
+                                                    @foreach ($item->details as $ip)
+                                                        <tr>
+                                                            <th scope="row"><a href="#">{{ $item->id }}</a>
+                                                            </th>
+                                                            <td>{{ $item->name }}</td>
+                                                            <td><a href="{{ Route('product.details', $ip->product->slug) }}"
+                                                                    class="text-primary fw-bold">{{ $ip->product->name }}</a>
+                                                            </td>
+                                                            <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
+                                                            </td>
+                                                            <td>
+                                                                <span>
+                                                                    @php
+                                                                        echo $item->statusProcessing();
+                                                                    @endphp
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                            </div><!-- End Recent Sales -->
+
+                            <!-- Top Selling -->
+                            <div class="col-12">
+                                <div class="card top-selling overflow-auto">
+
+                                    {{-- <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                            class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Filter</h6>
+                                        </li>
+
+                                        <li><a class="dropdown-item" href="#">Today</a></li>
+                                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                    </ul>
+                                </div> --}}
+
+                                    <div class="card-body pb-0">
+                                        <h5 class="card-title">Top Selling </h5>
+
+                                        <table class="table table-borderless datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Preview</th>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Sold</th>
+                                                    <th scope="col">Revenue</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($allproduct as $key => $row)
                                                     <tr>
-                                                        <th scope="row"><a href="#">{{ $item->id }}</a></th>
-                                                        <td>{{ $item->name }}</td>
-                                                        <td><a href="{{ Route('product.details', $ip->product->slug) }}"
-                                                                class="text-primary fw-bold">{{ $ip->product->name }}</a>
-                                                        </td>
-                                                        <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
-                                                        </td>
-                                                        <td>
-                                                            <span class="badge bg-success">Approved</span>
-                                                        </td>
+                                                        <th scope="row"><a
+                                                                href="{{ Route('product.details', $row->slug) }}"><img
+                                                                    src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
+                                                                    alt=""></a></th>
+                                                        <td><a href="{{ Route('product.details', $row->slug) }}"
+                                                                class="text-primary fw-bold">{{ $row->name }}</a></td>
+                                                        <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
+                                                        <td class="fw-bold">{{ $row->topSale() }}</td>
+                                                        <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
                                                     </tr>
                                                 @endforeach
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
 
                                 </div>
+                            </div><!-- End Top Selling -->
 
-                            </div>
-                        </div><!-- End Recent Sales -->
+                        </div>
+                    </div><!-- End Left side columns -->
 
-                        <!-- Top Selling -->
-                        <div class="col-12">
-                            <div class="card top-selling overflow-auto">
+                    <!-- Right side columns -->
+                    <div class="col-lg-4">
+                        <!-- Recent Users Activity -->
 
-                                {{-- <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                            class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div> --}}
-
-                                <div class="card-body pb-0">
-                                    <h5 class="card-title">Top Selling </h5>
-
-                                    <table class="table table-borderless datatable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Preview</th>
-                                                <th scope="col">Product</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Sold</th>
-                                                <th scope="col">Revenue</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($allproduct as $key => $row)
-                                                <tr>
-                                                    <th scope="row"><a
-                                                            href="{{ Route('product.details', $row->slug) }}"><img
-                                                                src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
-                                                                alt=""></a></th>
-                                                    <td><a href="{{ Route('product.details', $row->slug) }}"
-                                                            class="text-primary fw-bold">{{ $row->name }}</a></td>
-                                                    <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
-                                                    <td class="fw-bold">{{ $row->topSale() }}</td>
-                                                    <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-
-                                </div>
-
-                            </div>
-                        </div><!-- End Top Selling -->
-
-                    </div>
-                </div><!-- End Left side columns -->
-
-                <!-- Right side columns -->
-                <div class="col-lg-4">
-                    <!-- Recent Users Activity -->
-                    @if (auth()->user()->role == 'Admin')
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Recent Users Activity </h5>
@@ -319,6 +333,7 @@
                                                     <span class="fw-light">{{ $val->user->name }}</span>
                                                     {{ $val->action }}
                                                     {{ $val->by }}
+                                                    {{isset($var->created_at)? '' :''}}
                                                 </p>
                                                 {{ $val->data }}
                                             </div>
@@ -327,11 +342,11 @@
                                 </div>
                             </div>
                         </div><!-- End Recent Users Activity -->
-                    @endif
-                    <!-- End Recent Users Activity -->
 
-                    <!-- Recent Manager Activity -->
-                    @if (auth()->user()->role == 'Admin')
+                        <!-- End Recent Users Activity -->
+
+                        <!-- Recent Manager Activity -->
+
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Recent Products Changes </h5>
@@ -367,56 +382,82 @@
 
                             </div>
                         </div>
-                    @endif
-                    <!-- End Recent Manager Activity -->
 
-                    <!-- Product Manufacture -->
-                    <div class="card">
-                        <div class="card-body pb-0">
-                            <h5 class="card-title">Manufacture of Products</h5>
-                            <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-                            <script>
-                                let data = @php echo json_encode($dataManu); @endphp;
-                                document.addEventListener("DOMContentLoaded", () => {
-                                    echarts.init(document.querySelector("#trafficChart")).setOption({
-                                        tooltip: {
-                                            trigger: 'item'
-                                        },
-                                        legend: {
-                                            top: '5%',
-                                            left: 'center'
-                                        },
-                                        series: [{
-                                            name: 'Quantity of products',
-                                            type: 'pie',
-                                            radius: ['40%', '70%'],
-                                            avoidLabelOverlap: false,
-                                            label: {
-                                                show: false,
-                                                position: 'center'
+                        <!-- End Recent Manager Activity -->
+
+                        <!-- Product Manufacture -->
+                        <div class="card">
+                            <div class="card-body pb-0">
+                                <h5 class="card-title">Manufacture of Products</h5>
+                                <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+                                <script>
+                                    let data = @php echo json_encode($dataManu); @endphp;
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        echarts.init(document.querySelector("#trafficChart")).setOption({
+                                            tooltip: {
+                                                trigger: 'item'
                                             },
-                                            emphasis: {
+                                            legend: {
+                                                top: '5%',
+                                                left: 'center'
+                                            },
+                                            series: [{
+                                                name: 'Quantity of products',
+                                                type: 'pie',
+                                                radius: ['40%', '70%'],
+                                                avoidLabelOverlap: false,
                                                 label: {
-                                                    show: true,
-                                                    fontSize: '18',
-                                                    fontWeight: 'bold'
-                                                }
-                                            },
-                                            labelLine: {
-                                                show: false
-                                            },
-                                            data: data
-                                        }]
+                                                    show: false,
+                                                    position: 'center'
+                                                },
+                                                emphasis: {
+                                                    label: {
+                                                        show: true,
+                                                        fontSize: '18',
+                                                        fontWeight: 'bold'
+                                                    }
+                                                },
+                                                labelLine: {
+                                                    show: false
+                                                },
+                                                data: data
+                                            }]
+                                        });
                                     });
-                                });
-                            </script>
+                                </script>
 
-                        </div> <!-- End Product Manufacture -->
-                    </div><!-- End Website Traffic -->
+                            </div> <!-- End Product Manufacture -->
+                        </div><!-- End Website Traffic -->
 
-                </div><!-- End Right side columns -->
-
+                    </div><!-- End Right side columns -->
+                @endif
             </div>
+        </section>
+        <section class="section dashboard">
+            @if (auth()->user()->role == 'Manager')
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            @endif
         </section>
     @endif
 @endsection

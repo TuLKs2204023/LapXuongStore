@@ -186,6 +186,12 @@
                                         @endif
                                     </h4>
                                 </div>
+
+
+
+
+                                // Đã fix điều kiện nút check out , chỉ available for guest and customer - Dự
+                                @if (!Auth::check())
                                 <div class="quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
@@ -196,6 +202,25 @@
                                             To Cart</a>
                                     </div>
                                 </div>
+                                @endif
+
+                                @auth
+                                @if(auth()->user()->role == 'Customer')
+                                <div class="quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input name="product-quantity" type="text" value="1">
+                                        </div>
+                                        <a href="#" class="primary-btn site-btn-main pd-cart"
+                                            data-id="{{ $product->id }}">Add
+                                            To Cart</a>
+                                    </div>
+                                </div>
+                                @endif
+                                @endauth
+                                //End check
+
+
                                 <ul class="pd-tags">
                                     <li><span>Categories</span>: Gaming, ASUS</li>
                                 </ul>
@@ -358,8 +383,10 @@
                                         {{-- ---------------------------------end Comment View------------------------------------------------ --}}
 
                                         {{-- ---------------------------------------------------Review Form--------------------------------------------------------------------------------- --}}
-                                        @if (auth()->user())
-                                            @auth
+                                        {{-- fix điều kiện hiện khung review and rating : Dự --}}
+                                        @if (Auth::check())
+                                        @auth
+                                            @if((auth()->user()->role == 'Customer'))
                                                 <div class="leave-comment">
                                                     <h4>Leave A Comment</h4>
                                                     <div class="tu-send-review-message"></div>
@@ -426,6 +453,7 @@
                                                         </div>
                                                     </form>
                                                 </div>
+                                                @endif
                                             @endauth
                                         @else
                                             <div class="leave-comment">

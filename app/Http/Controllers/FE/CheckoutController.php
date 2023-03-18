@@ -15,7 +15,7 @@ use App\Models\Address\Ward;
 class CheckoutController extends HomeController
 {
     use ProcessModelData;
-    use ProcessMail; 
+    use ProcessMail;
 
     public function checkout()
     {

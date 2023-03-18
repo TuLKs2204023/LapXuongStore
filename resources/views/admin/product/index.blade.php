@@ -106,6 +106,7 @@
                                                 <span class="tooltiptext">Stock of item</span>
                                             </div>
                                         </a>
+
                                         <a class="btn btn-outline-warning btn-sm mb-2 button-control"
                                             href="{{ Route('admin.discount.details', $item->id) }}">
                                             <i class="bi bi-piggy-bank"></i>
@@ -113,6 +114,7 @@
                                                 <span class="tooltiptext">Discount of item</span>
                                             </div>
                                         </a>
+
                                         <form action="{{ Route('admin.product.destroy') }}" method="post"
                                             style="display:inline-block">
                                             @csrf

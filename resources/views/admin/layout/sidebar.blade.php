@@ -98,7 +98,13 @@
                     <i class="bi bi-suit-heart"></i>
                     <span>Wishlist</span>
                 </a>
-            </li><!-- End Wishlist Nav -->
+            </li><!-- End Rating Nav -->
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.rating.index') }}">
+                    <i class="bi bi-bookmark-heart"></i>
+                    <span>Rating</span>
+                </a>
+            </li><!-- End Rating Nav -->
 
             <li class="nav-item">
                 <a class="nav-link" data-bs-target="#specs-nav" data-bs-toggle="collapse" aria-expanded="true"
