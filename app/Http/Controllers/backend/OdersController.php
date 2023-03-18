@@ -58,7 +58,7 @@ class OdersController extends Controller
         $order->status = 0;
         $order->push();
         //gởi mail nữa nha
-        $this->cancelOrderEmail($order);
+        // $this->cancelOrderEmail($order);
         return response()->json([
             'msg' => 'Your order is canceled successfully.',
             'status' => 'success',
