@@ -18,8 +18,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('product_id')->nullable();
             $table->longText('data')->nullable();
-            $table->String('action')->nullable();
-
+            $table->string('action')->nullable();
+            $table->string('url')->nullable();
+            $table->longText('name')->nullable();
+            $table->longText('slug')->nullable();
             $table->timestamps();
         });
     }
