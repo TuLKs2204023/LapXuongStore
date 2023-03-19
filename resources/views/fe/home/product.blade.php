@@ -64,6 +64,13 @@
         .product-item .pi-pic .sale {
             background-color: var(--violet);
         }
+
+        .product-details a {
+            color: var(--violet);
+        }
+        .product-details a:hover {
+            color: var(--violet-tu);
+        }
     </style>
 @endsection
 
@@ -223,11 +230,21 @@
                                         </div>
                                     @endif
                                 @endauth
-                                {{-- End check -- Dự}}
+                                {{-- {{-- End check -- Dự}} --}}
 
 
                                 <ul class="pd-tags">
-                                    <li><span>Categories</span>: Gaming, ASUS</li>
+                                    <li>
+                                        <span>Categories</span>:
+                                        <a
+                                            href="{{ Route('fe.shop.cate', $product->demand->slug) }}">{{ $product->demand->name }}</a>,
+                                        <a
+                                            href="{{ Route('fe.shop.cate', $product->manufacture->slug) }}">{{ $product->manufacture->name }}</a>,
+                                        <a
+                                            href="{{ Route('fe.shop.cate', $product->series->slug) }}">{{ $product->series->name }}</a>,
+                                        <a
+                                            href="{{ Route('fe.shop.cate', $product->resolution->slug) }}">{{ $product->resolution->name }}</a>
+                                    </li>
                                 </ul>
                                 <div class="pd-share">
                                     <div class="p-code">CODE: {{ $product->id }}</div>
@@ -241,259 +258,256 @@
                         </div>
                         {{-- -------------------------------------------------------------------------------end Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
 
-                            </div>
-                            <div class="product-tab">
-                                <div class="tab-item">
-                                    <ul class="nav" role="tablist">
-                                        <li><a class="active" href="#tab-1" data-toggle="tab"
-                                                role="tab">DESCRIPTION</a>
-                                        </li>
-                                        <li><a href="#tab-2" data-toggle="tab" role="tab">SPECIFICATIONS</a></li>
-                                        <li><a id="review-tab" href="#tab-3" data-toggle="tab" role="tab">Customer
-                                                Review
-                                                ({{ $product->countRates() }})</a></li>
-                                    </ul>
-                                </div>
-                                <div class="tab-item-content">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
-                                            <div class="product-content">
-                                                <div class="row">
-                                                    <div class="col-lg-10 b">
-                                                        @if (isset($product->description->instruction))
-                                                            <h5>Introduction</h5>
-                                                            <p>{!! $product->description->instruction !!}</p>
-                                                            <br>
-                                                        @endif
-                                                        @if (isset($product->description->feature))
-                                                            <h5>Features</h5>
-                                                            {!! $product->description->feature !!}
-                                                            {{-- @foreach (preg_split('/\\n/', str_replace('\r', '', $product->description->feature)) as $subItm)
+                    </div>
+                    <div class="product-tab">
+                        <div class="tab-item">
+                            <ul class="nav" role="tablist">
+                                <li><a class="active" href="#tab-1" data-toggle="tab" role="tab">DESCRIPTION</a>
+                                </li>
+                                <li><a href="#tab-2" data-toggle="tab" role="tab">SPECIFICATIONS</a></li>
+                                <li><a id="review-tab" href="#tab-3" data-toggle="tab" role="tab">Customer
+                                        Review
+                                        ({{ $product->countRates() }})</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-item-content">
+                            <div class="tab-content">
+                                <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
+                                    <div class="product-content">
+                                        <div class="row">
+                                            <div class="col-lg-10 b">
+                                                @if (isset($product->description->instruction))
+                                                    <h5>Introduction</h5>
+                                                    <p>{!! $product->description->instruction !!}</p>
+                                                    <br>
+                                                @endif
+                                                @if (isset($product->description->feature))
+                                                    <h5>Features</h5>
+                                                    {!! $product->description->feature !!}
+                                                    {{-- @foreach (preg_split('/\\n/', str_replace('\r', '', $product->description->feature)) as $subItm)
                                                         <p>{ !! $subItm !!}</p>
                                                     @endforeach --}}
-                                                        @endif
-                                                        <br>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="tab-2" role="tabpanel">
-                                            <div class="specification-table">
-                                                <table>
-                                                    <tr>
-                                                        <td class="p-catagory">Customer Rating</td>
-                                                        <td>
-                                                            <div class="pd-rating">
-                                                                @if ($product->countRates() > 0)
-                                                                    @for ($i = 0; $i < $product->avgRates(); $i++)
-                                                                        <i class="fa fa-star"></i>
-                                                                    @endfor
-                                                                    @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
-                                                                        <i class="fa fa-star-o"></i>
-                                                                    @endfor
-                                                                @endif
-                                                            </div>
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="p-catagory">Price</td>
-                                                        <td>
-                                                            <div class="p-price">
-                                                                {{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="p-catagory">Availability</td>
-                                                        @if ($product->inStock() - $product->outStock() > 0)
-                                                            <td>
-                                                                <div class="p-stock" style="color: green">
-                                                                    {{ $product->inStock() - $product->outStock() }} in
-                                                                    Stock</div>
-                                                            </td>
-                                                        @else
-                                                            <td>
-                                                                <div class="p-stock" style="color: red">Out of Stock</div>
-                                                            </td>
-                                                        @endif
-                                                    </tr>
-                                                    @if (isset($product->description->weight))
-                                                        <tr>
-                                                            <td class="p-catagory">Weight</td>
-                                                            <td>
-                                                                <div class="p-weight">{{ $product->description->weight }}
-                                                                    kg</div>
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-                                                    <tr>
-                                                        <td class="p-catagory">Display</td>
-                                                        <td>
-                                                            <div class="p-weight">{{ $product->screen->amount }} inch
-                                                                ({{ $product->resolution->name }})
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @if (isset($product->description->webcam))
-                                                        <tr>
-                                                            <td class="p-catagory">Webcam</td>
-                                                            <td>
-                                                                <div class="p-weight">{{ $product->description->webcam }}
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-
-                                                    <tr>
-                                                        <td class="p-catagory">Graphics</td>
-                                                        <td>
-                                                            <div class="p-weight">{{ $product->gpu->name }}</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="p-catagory">Processor</td>
-                                                        <td>
-                                                            <div class="p-weight">{{ $product->cpu->name }}</div>
-                                                        </td>
-                                                    </tr>
-
-                                                    @if (isset($product->description->dimension))
-                                                        <tr>
-                                                            <td class="p-catagory">Dimensions</td>
-                                                            <td>
-                                                                <div class="p-weight">
-                                                                    {{ $product->description->dimension }} cm
-                                                                </div>
-                                                                <div>(Height x Width x Depth)</div>
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-
-                                                    <tr>
-                                                        <td class="p-catagory">Color</td>
-                                                        <td>
-                                                            <div class="p-weight">{{ $product->color->name }}</div>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        {{-- ---------------------------------Comment View------------------------------------------------ --}}
-                                        <div class="tab-pane fade" id="tab-3" role="tabpanel">
-                                            <div class="customer-review-option">
-                                                <h4 class="tu-comment">{{ $product->countRates() }} Comments</h4>
-                                                <div class="comment-option overflow-auto">
-                                                    @foreach ($ratings as $rating)
-                                                        {{-- Ratings --}}
-                                                        @include('fe.home.rating')
-                                                        {{-- end Ratings --}}
-                                                    @endforeach
-                                                </div>
-                                                {{-- ---------------------------------end Comment View------------------------------------------------ --}}
-
-                                                {{-- ---------------------------------------------------Review Form--------------------------------------------------------------------------------- --}}
-                                                {{-- fix điều kiện hiện khung review and rating : Dự --}}
-                                                @if (Auth::check())
-                                                    @auth
-                                                        @if (auth()->user()->role == 'Customer')
-                                                            <div class="leave-comment">
-                                                                <h4>Leave A Comment</h4>
-                                                                <div class="tu-send-review-message"></div>
-                                                                <form class="comment-form">
-                                                                    <input type="hidden" name="product_id"
-                                                                        value="{{ $product->id }}">
-                                                                    <div class="personal-rating">
-                                                                        <div class="form-group" id="rating-ability-wrapper">
-                                                                            <label class="control-label" for="rating">
-                                                                                <span class="field-label-header">How do you
-                                                                                    feel about
-                                                                                    our
-                                                                                    services and products?</span><br>
-                                                                                <span class="field-label-info"></span>
-                                                                                <input type="hidden" id="selected_rating"
-                                                                                    name="selected_rating" value=""
-                                                                                    required="required">
-                                                                            </label>
-                                                                            <h2 class="bold rating-header" style="">
-                                                                                <span class="selected-rating">0</span><small> /
-                                                                                    5</small>
-                                                                            </h2>
-                                                                            <button type="button"
-                                                                                class="btnrating btn btn-default btn-lg"
-                                                                                data-attr="1" id="rating-star-1">
-                                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                class="btnrating btn btn-default btn-lg"
-                                                                                data-attr="2" id="rating-star-2">
-                                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                class="btnrating btn btn-default btn-lg"
-                                                                                data-attr="3" id="rating-star-3">
-                                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                class="btnrating btn btn-default btn-lg"
-                                                                                data-attr="4" id="rating-star-4">
-                                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                class="btnrating btn btn-default btn-lg"
-                                                                                data-attr="5" id="rating-star-5">
-                                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-lg-6">
-                                                                            <input disabled placeholder="Name"
-                                                                                value="{{ auth()->user()->name }}">
-                                                                            <input type="hidden" type="text"
-                                                                                name="name"
-                                                                                value="{{ auth()->user()->name }}">
-                                                                        </div>
-                                                                        <div class="col-lg-6">
-                                                                            <input disabled type="text"
-                                                                                value="{{ auth()->user()->email }}">
-                                                                            <input type="hidden" placeholder="Email"
-                                                                                name="email"
-                                                                                value="{{ auth()->user()->email }}">
-                                                                        </div>
-                                                                        <div class="col-lg-12">
-                                                                            <textarea id="review" placeholder="Review" name="review" rows="8"></textarea>
-                                                                            <a href="#"
-                                                                                class="site-btn review-lapxuong-btn">Send
-                                                                                Review</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        @endif
-                                                    @endauth
-                                                @else
-                                                    <div class="leave-comment">
-                                                        <h4>Please log-in to comment</h4>
-                                                        <a href="{{ Route('login') }}"><button type="button"
-                                                                style="background-color: var(--grey-dark);"
-                                                                class="btn btn-secondary">Click
-                                                                me to log-in</button></a>
-                                                    </div>
                                                 @endif
-
-                                                {{-- ---------------------------------------------------end Review Form--------------------------------------------------------------------------------- --}}
+                                                <br>
                                             </div>
                                         </div>
-                                        {{-- ==============================end of Comment View============================================================ --}}
                                     </div>
                                 </div>
+                                <div class="tab-pane fade" id="tab-2" role="tabpanel">
+                                    <div class="specification-table">
+                                        <table>
+                                            <tr>
+                                                <td class="p-catagory">Customer Rating</td>
+                                                <td>
+                                                    <div class="pd-rating">
+                                                        @if ($product->countRates() > 0)
+                                                            @for ($i = 0; $i < $product->avgRates(); $i++)
+                                                                <i class="fa fa-star"></i>
+                                                            @endfor
+                                                            @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endfor
+                                                        @endif
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">Price</td>
+                                                <td>
+                                                    <div class="p-price">
+                                                        {{ number_format($product->salePrice(), 0, ',', '.') . ' VND' }}
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="p-catagory">Availability</td>
+                                                @if ($product->inStock() - $product->outStock() > 0)
+                                                    <td>
+                                                        <div class="p-stock" style="color: green">
+                                                            {{ $product->inStock() - $product->outStock() }} in
+                                                            Stock</div>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <div class="p-stock" style="color: red">Out of Stock</div>
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                            @if (isset($product->description->weight))
+                                                <tr>
+                                                    <td class="p-catagory">Weight</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->description->weight }}
+                                                            kg</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            <tr>
+                                                <td class="p-catagory">Display</td>
+                                                <td>
+                                                    <div class="p-weight">{{ $product->screen->amount }} inch
+                                                        ({{ $product->resolution->name }})
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @if (isset($product->description->webcam))
+                                                <tr>
+                                                    <td class="p-catagory">Webcam</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->description->webcam }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
+                                            <tr>
+                                                <td class="p-catagory">Graphics</td>
+                                                <td>
+                                                    <div class="p-weight">{{ $product->gpu->name }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">Processor</td>
+                                                <td>
+                                                    <div class="p-weight">{{ $product->cpu->name }}</div>
+                                                </td>
+                                            </tr>
+
+                                            @if (isset($product->description->dimension))
+                                                <tr>
+                                                    <td class="p-catagory">Dimensions</td>
+                                                    <td>
+                                                        <div class="p-weight">
+                                                            {{ $product->description->dimension }} cm
+                                                        </div>
+                                                        <div>(Height x Width x Depth)</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
+                                            <tr>
+                                                <td class="p-catagory">Color</td>
+                                                <td>
+                                                    <div class="p-weight">{{ $product->color->name }}</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                {{-- ---------------------------------Comment View------------------------------------------------ --}}
+                                <div class="tab-pane fade" id="tab-3" role="tabpanel">
+                                    <div class="customer-review-option">
+                                        <h4 class="tu-comment">{{ $product->countRates() }} Comments</h4>
+                                        <div class="comment-option overflow-auto">
+                                            @foreach ($ratings as $rating)
+                                                {{-- Ratings --}}
+                                                @include('fe.home.rating')
+                                                {{-- end Ratings --}}
+                                            @endforeach
+                                        </div>
+                                        {{-- ---------------------------------end Comment View------------------------------------------------ --}}
+
+                                        {{-- ---------------------------------------------------Review Form--------------------------------------------------------------------------------- --}}
+                                        {{-- fix điều kiện hiện khung review and rating : Dự --}}
+                                        @if (Auth::check())
+                                            @auth
+                                                @if (auth()->user()->role == 'Customer')
+                                                    <div class="leave-comment">
+                                                        <h4>Leave A Comment</h4>
+                                                        <div class="tu-send-review-message"></div>
+                                                        <form class="comment-form">
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $product->id }}">
+                                                            <div class="personal-rating">
+                                                                <div class="form-group" id="rating-ability-wrapper">
+                                                                    <label class="control-label" for="rating">
+                                                                        <span class="field-label-header">How do you
+                                                                            feel about
+                                                                            our
+                                                                            services and products?</span><br>
+                                                                        <span class="field-label-info"></span>
+                                                                        <input type="hidden" id="selected_rating"
+                                                                            name="selected_rating" value=""
+                                                                            required="required">
+                                                                    </label>
+                                                                    <h2 class="bold rating-header" style="">
+                                                                        <span class="selected-rating">0</span><small> /
+                                                                            5</small>
+                                                                    </h2>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="1" id="rating-star-1">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="2" id="rating-star-2">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="3" id="rating-star-3">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="4" id="rating-star-4">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="5" id="rating-star-5">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <input disabled placeholder="Name"
+                                                                        value="{{ auth()->user()->name }}">
+                                                                    <input type="hidden" type="text" name="name"
+                                                                        value="{{ auth()->user()->name }}">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <input disabled type="text"
+                                                                        value="{{ auth()->user()->email }}">
+                                                                    <input type="hidden" placeholder="Email" name="email"
+                                                                        value="{{ auth()->user()->email }}">
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <textarea id="review" placeholder="Review" name="review" rows="8"></textarea>
+                                                                    <a href="#"
+                                                                        class="site-btn review-lapxuong-btn">Send
+                                                                        Review</a>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                @endif
+                                            @endauth
+                                        @else
+                                            <div class="leave-comment">
+                                                <h4>Please log-in to comment</h4>
+                                                <a href="{{ Route('login') }}"><button type="button"
+                                                        style="background-color: var(--grey-dark);"
+                                                        class="btn btn-secondary">Click
+                                                        me to log-in</button></a>
+                                            </div>
+                                        @endif
+
+                                        {{-- ---------------------------------------------------end Review Form--------------------------------------------------------------------------------- --}}
+                                    </div>
+                                </div>
+                                {{-- ==============================end of Comment View============================================================ --}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        </div>
     </section>
 @endsection
 
