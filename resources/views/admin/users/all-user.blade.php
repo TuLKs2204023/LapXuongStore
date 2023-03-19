@@ -1,4 +1,4 @@
-@section('title','- Users')
+@section('title', '- Users')
 @extends('admin.layout.layout')
 @section('contents')
     <div class="pagetitle">

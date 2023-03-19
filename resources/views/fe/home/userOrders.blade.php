@@ -217,135 +217,153 @@
             color: var(--danger);
         }
 
-        button{
+        button {
             text-align: center;
         }
 
-        #back{
+        #back {
             margin-left: 90px;
         }
 
-        #view{
+        #view {
             background-color: var(--violet);
         }
     </style>
 @endsection
 
 @section('content')
-    <!-- Breadcrumb -->
-    <div class="breadcrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text">
-                        <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
-                        <a href="{{ Route('userProfile') }}">{{ auth()->user()->name }}</a>
-                        <span>Orders</span>
+
+    @if (auth()->user()->role !== 'Customer')
+        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <br>
+            <br>
+            <h3>Sorry ! The page you are looking only availabled for Customer !</h3>
+
+            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+
+        </section>
+    @endif
+    @if (auth()->user()->role == 'Customer')
+        <!-- Breadcrumb -->
+        <div class="breadcrumb-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-text">
+                            <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
+                            <a href="{{ Route('userProfile') }}">{{ auth()->user()->name }}</a>
+                            <span>Orders</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- /Breadcrumb -->
-    <div class="container">
-        @if (count($orders) > 0)
-            <article class="card">
-                @foreach ($orders as $order)
-                    <fieldset class="card-body" data-index="{{ $order->id }}">
-                        <legend class="order-head-name">
-                            Order ID: LXS-{{ $order->id }}
-                        </legend>
-                        <article class="card">
-                            <div class="card-body row">
-                                <div class="col"> <strong>Estimated Delivery time:</strong>
-                                    <br>{{ $order->arrivalEstimate() }}
-                                </div>
-                                <div class="col"> <strong>Shipping BY:</strong> <br> LapXuongStore's Shipper<br>
-                                    <i class="fa fa-phone"></i>
-                                    +8413456789
-                                </div>
-                                <div class="col"> <strong>Status:</strong> <br>
-                                    <div class="status">
-                                        @php echo $order->statusProcessing() @endphp
+        <!-- /Breadcrumb -->
+        <div class="container">
+            @if (count($orders) > 0)
+                <article class="card">
+                    @foreach ($orders as $order)
+                        <fieldset class="card-body" data-index="{{ $order->id }}">
+                            <legend class="order-head-name">
+                                Order ID: LXS-{{ $order->id }}
+                            </legend>
+                            <article class="card">
+                                <div class="card-body row">
+                                    <div class="col"> <strong>Estimated Delivery time:</strong>
+                                        <br>{{ $order->arrivalEstimate() }}
                                     </div>
-                                </div>
-                                <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>
-                            </div>
-                        </article>
-                        <div class="track">
-                            @if ($order->status == 1)
-                                <div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span>
-                                    <span class="text">Order confirmed</span>
-                                </div>
-                                <div class="step pick @if ($order->statusByTime() >= 1) active @endif"> <span
-                                        class="icon"> <i class="fa fa-user"></i> </span> <span class="text">
-                                        Picked by courier</span> </div>
-                                <div class="step on-way @if ($order->statusByTime() >= 3) active @endif">
-                                    <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
-                                        On
-                                        the way </span>
-                                </div>
-                                <div class="step arrived @if ($order->statusByTime() >= 7) active @endif"> <span
-                                        class="icon">
-                                        <i class="fa fa-box"></i> </span> <span class="text">Ready
-                                        for pickup</span> </div>
-                            @elseif($order->status == 0)
-                                <div class="step order active"> <span class="icon"> <i class="fa fa-frown-o"></i> </span>
-                                    <span class="text">Canceled</span>
-                                </div>
-                            @endif
-                        </div>
-                        <hr>
-                        <ul class="row">
-                            @foreach ($order->details as $item)
-                                <li class="col-md-4">
-                                    <figure class="itemside mb-3">
-                                        <div class="aside"><img
-                                                src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                class="img-sm border">
+                                    <div class="col"> <strong>Shipping BY:</strong> <br> LapXuongStore's Shipper<br>
+                                        <i class="fa fa-phone"></i>
+                                        +8413456789
+                                    </div>
+                                    <div class="col"> <strong>Status:</strong> <br>
+                                        <div class="status">
+                                            @php echo $order->statusProcessing() @endphp
                                         </div>
-                                        <figcaption class="info align-self-center">
-                                            <p class="title">{{ $item->product->name }} <br> x{{ $item->quantity }}</p>
-                                            <span
-                                                class="text-muted">{{ number_format($item->product->fakePrice(), 0, ',', '.') . ' VND' }}
-                                            </span>
-                                        </figcaption>
-                                    </figure>
-                                </li>
-                            @endforeach
-                        </ul>
-                        @if ($order->statusByTime() >= 7)
-                            <h5><span class="badge bg-success">Deliver successfully</span></h5>
-                        @else
-                            @if ($order->status == 1)
-                                <h5><span class="badge bg-danger cancelBtn">Cancel Order
-                                        LXS-{{ $order->id }}</span></h5>
-                            @elseif($order->status == 0)
-                                <h5><span class="badge bg-warning">Your order has been canceled</span></h5>
+                                    </div>
+                                    <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>
+                                </div>
+                            </article>
+                            <div class="track">
+                                @if ($order->status == 1)
+                                    <div class="step order active"> <span class="icon"> <i class="fa fa-check"></i>
+                                        </span>
+                                        <span class="text">Order confirmed</span>
+                                    </div>
+                                    <div class="step pick @if ($order->statusByTime() >= 1) active @endif"> <span
+                                            class="icon"> <i class="fa fa-user"></i> </span> <span class="text">
+                                            Picked by courier</span> </div>
+                                    <div class="step on-way @if ($order->statusByTime() >= 3) active @endif">
+                                        <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
+                                            On
+                                            the way </span>
+                                    </div>
+                                    <div class="step arrived @if ($order->statusByTime() >= 7) active @endif"> <span
+                                            class="icon">
+                                            <i class="fa fa-box"></i> </span> <span class="text">Ready
+                                            for pickup</span> </div>
+                                @elseif($order->status == 0)
+                                    <div class="step order active"> <span class="icon"> <i class="fa fa-frown-o"></i>
+                                        </span>
+                                        <span class="text">Canceled</span>
+                                    </div>
+                                @endif
+                            </div>
+                            <hr>
+                            <ul class="row">
+                                @foreach ($order->details as $item)
+                                    <li class="col-md-4">
+                                        <figure class="itemside mb-3">
+                                            <div class="aside"><img
+                                                    src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                    class="img-sm border">
+                                            </div>
+                                            <figcaption class="info align-self-center">
+                                                <p class="title">{{ $item->product->name }} <br> x{{ $item->quantity }}
+                                                </p>
+                                                <span
+                                                    class="text-muted">{{ number_format($item->product->fakePrice(), 0, ',', '.') . ' VND' }}
+                                                </span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            @if ($order->statusByTime() >= 7)
+                                <h5><span class="badge bg-success">Deliver successfully</span></h5>
+                            @else
+                                @if ($order->status == 1)
+                                    <h5><span class="badge bg-danger cancelBtn">Cancel Order
+                                            LXS-{{ $order->id }}</span></h5>
+                                @elseif($order->status == 0)
+                                    <h5><span class="badge bg-warning">Your order has been canceled</span></h5>
+                                @endif
                             @endif
-                        @endif
-                    </fieldset>
-                @endforeach
-                <div>
-                    {{ $orders->withQueryString()->links('vendor.pagination.footer') }}
-                </div>
-                <legend><a href="{{ Route('userProfile') }}" class="tu-back-btn"> <i class="fa fa-chevron-left"></i>
-                        Back to
-                        profile</a></legend>
-            </article>
-        @else
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="success-text"><a href="{{ Route('fe.shop.index') }}"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a>
-                        <h2>No Order</h2>
-                        <p>You still not have any orders yet</p>
-                        <p>Would you prefer to take a trip to our shop?</p>
-                        <p><i class="fa fa-hand-o-up" aria-hidden="true"></i> CLICK THE CART <i class="fa fa-hand-o-up" aria-hidden="true"></i></p>
+                        </fieldset>
+                    @endforeach
+                    <div>
+                        {{ $orders->withQueryString()->links('vendor.pagination.footer') }}
+                    </div>
+                    <legend><a href="{{ Route('userProfile') }}" class="tu-back-btn"> <i class="fa fa-chevron-left"></i>
+                            Back to
+                            profile</a></legend>
+                </article>
+            @else
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="success-text"><a href="{{ Route('fe.shop.index') }}"><i class="fa fa-shopping-basket"
+                                    aria-hidden="true"></i></a>
+                            <h2>No Order</h2>
+                            <p>You still not have any orders yet</p>
+                            <p>Would you prefer to take a trip to our shop?</p>
+                            <p><i class="fa fa-hand-o-up" aria-hidden="true"></i> CLICK THE CART <i class="fa fa-hand-o-up"
+                                    aria-hidden="true"></i></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endif
-    </div>
+            @endif
+        </div>
+    @endif
 @endsection
 
 @section('myJs')

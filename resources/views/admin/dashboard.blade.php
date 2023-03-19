@@ -54,8 +54,7 @@
                             <div class="col-xxl-4 col-md-6">
                                 <div class="card info-card revenue-card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Product <span>| This Month</span></h5>
-
+                                        <h5 class="card-title">All Product</h5>
                                         <div class="d-flex align-items-center">
                                             <div
                                                 class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -64,7 +63,7 @@
                                             <div class="ps-3">
                                                 <h6>{{ $totalProduct }}</h6>
                                                 {{-- <span class="text-success small pt-1 fw-bold">8%</span> --}}
-                                                <span class="text-muted small pt-2 ps-1">Items</span>
+                                                <span class="text-muted small pt-2 ps-1">Products</span>
 
                                             </div>
                                         </div>
@@ -117,14 +116,11 @@
                                 </div> --}}
 
                                     <div class="card-body">
-                                        <h5 class="card-title">Reports of 10 Days </h5>
-
+                                        <h5 class="card-title">Reports of 7 Days </h5>
                                         <!-- Line Chart -->
                                         <div id="reportsChart"></div>
-
                                         <script>
                                             let day = @php echo json_encode($dayData); @endphp;
-
                                             let revenue = @php echo json_encode($revenue); @endphp;
                                             let product = @php echo json_encode($productData); @endphp;
                                             let interaction = @php echo json_encode($interaction); @endphp;
@@ -137,7 +133,6 @@
                                                     }, {
                                                         name: 'Revenue',
                                                         data: revenue,
-
                                                     }, {
                                                         name: 'Qty Customer Interaction',
                                                         data: interaction,
@@ -182,23 +177,19 @@
                                                     },
                                                     tooltip: {
                                                         x: {
-                                                            format:'dd/MM/yy HH:mm'
+                                                            format: 'dd/MM/yy HH:mm'
                                                         },
                                                     }
                                                 }).render();
                                             });
                                         </script>
                                         <!-- End Line Chart -->
-
                                     </div>
-
                                 </div>
                             </div><!-- End Reports -->
-
                             <!-- Recent Sales -->
                             <div class="col-12">
                                 <div class="card recent-sales overflow-auto">
-
                                     {{-- <div class="filter">
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                             class="bi bi-three-dots"></i></a>
@@ -212,14 +203,16 @@
                                         <li><a class="dropdown-item" href="#">This Year</a></li>
                                     </ul>
                                 </div> --}}
-
                                     <div class="card-body">
-                                        <h5 class="card-title">Recent Sales </h5>
-
+                                        <h5 class="card-title">Recent Sales
+                                            <span>
+                                                {{ count($orderWarning) > 0 ? '' : '|Yesterday ,we dont have any orders to process.' }}
+                                            </span>
+                                        </h5>
                                         <table class="table table-borderless datatable">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Time</th>
+                                                    <th scope="col">Day</th>
                                                     <th scope="col">Customer</th>
                                                     <th scope="col">Product</th>
                                                     <th scope="col">Price</th>
@@ -227,10 +220,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+
                                                 @foreach ($order as $key => $item)
                                                     @foreach ($item->details as $ip)
                                                         <tr>
-                                                            <th scope="row"><a href="#">{{ $item->timeOrder() }}</a>
+                                                            <th scope="row"> {{ $item->created_at->format('d/m/Y') }}
                                                             </th>
                                                             <td>{{ $item->name }}</td>
                                                             <td><a href="{{ Route('product.details', $ip->product->slug) }}"
@@ -250,9 +244,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-
                                     </div>
-
                                 </div>
                             </div><!-- End Recent Sales -->
 
@@ -315,10 +307,12 @@
                     <!-- Right side columns -->
                     <div class="col-lg-4">
                         <!-- Recent Users Activity -->
-
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Recent Users Activity </h5>
+                                <h5 class="card-title">Users Activity
+                                    <span> {{ count($userWarning) > 0 ? '' : 'Yesterday, we dont have any history.' }}
+                                    </span>
+                                </h5>
                                 <div class="activity"
                                     style="
                                         height: 300px;
@@ -333,7 +327,7 @@
                                                     <span class="fw-light">{{ $val->user->name }}</span>
                                                     {{ $val->action }}
                                                     {{ $val->by }}
-                                                    {{isset($var->created_at)? '' :''}}
+                                                    {{ isset($var->created_at) ? '' : '' }}
                                                 </p>
                                                 {{ $val->data }}
                                             </div>
@@ -341,15 +335,16 @@
                                     @endforeach
                                 </div>
                             </div>
-                        </div><!-- End Recent Users Activity -->
-
+                        </div>
                         <!-- End Recent Users Activity -->
 
                         <!-- Recent Manager Activity -->
-
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Recent Products Changes </h5>
+                                <h5 class="card-title">Products Change
+                                    <span> {{ count($productWarning) > 0 ? '' : 'Yesterday, we dont have any history.' }}
+                                    </span>
+                                </h5>
                                 <div class="activity"
                                     style="
                                     height: 300px;

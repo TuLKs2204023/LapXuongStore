@@ -5,7 +5,9 @@ namespace App\Http\Controllers\FE;
 use App\Http\Controllers\Controller;
 use App\Models\HistoryRating;
 use App\Models\HistoryUser;
+use App\Models\Rating;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
@@ -218,7 +220,14 @@ class HomeController extends Controller
     {
         $user = auth()->user();
         $rating = HistoryRating::all();
-        return view('fe.home.profile', compact('user', 'rating'));
+
+        //warning if yesterday no order
+
+        $ratingWarning = Rating::where('created_at', '>', Carbon::now())
+      
+        ->where('user_id', $user->id)
+        ->get();
+        return view('fe.home.profile', compact('user', 'rating','ratingWarning'));
     }
     public function aboutUs()
     {

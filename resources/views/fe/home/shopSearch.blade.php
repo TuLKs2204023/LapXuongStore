@@ -20,13 +20,18 @@
                                 <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
                             @endif
-                            <div class="icon product-list-icon">
-                                @if ($item->findWishlist())
-                                    <i class="fas fa-heart"></i>
-                                @else
-                                    <i class="fas fa-heart-o"></i>
+                            @auth
+                                @if (auth()->user()->role == 'Customer')
+                                <div class="icon product-list-icon">
+                                    @if ($item->findWishlist())
+                                        <i class="fas fa-heart"></i>
+                                    @else
+                                        <i class="fas fa-heart-o"></i>
+                                    @endif
+                                </div>
                                 @endif
-                            </div>
+                            @endauth
+
                             {{-- <ul>
                                 <li class="quick-view">
                                     <a href="{{ Route('product.details', $item->slug) }}">+ Quick

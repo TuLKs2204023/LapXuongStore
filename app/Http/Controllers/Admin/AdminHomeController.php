@@ -41,25 +41,48 @@ class AdminHomeController extends Controller
     {
         if (auth()->user()->role !== 'Customer') {
             $now = Carbon::now();
-
+            // reccent orders of LapXuongStore
             $order = Order::all()->sortByDesc('created_at');
+            //warning if yesterday no order
+            $orderWarning = Order::where('created_at', '>', Carbon::yesterday())
+                                    ->where('created_at', '<', Carbon::today())
+                                    ->get();
+            // dd($orderWarning);
+
+            //
             $allproduct = Product::all();
+
+            // user activity
             $history = HistoryUser::all()->sortByDesc('id');
+            //warning if yesterday no history
+            $userWarning = HistoryUser::where('created_at', '>', Carbon::yesterday())
+                                        ->where('created_at', '<', Carbon::today())
+                                        ->get();
+            // dd($userWarning);
+
+            //product changes
             $historyProduct = HistoryProduct::all()->sortByDesc('id');
+            $productWarning = Product::where('created_at', '>', Carbon::yesterday())
+            ->where('created_at', '<', Carbon::today())
+            ->get();
+            //dd($productWarning);
+
+            //dataManu for pie
             $dataManu = [];
-            $manufactures = Manufacture::orderBy('id', 'DESC')->limit(10)->get();
+            $manufactures = Manufacture::orderBy('id', 'DESC')->get();
             foreach ($manufactures as $key => $manu) {
                 $name = $manu->name;
                 $value = $manu->products->count();
                 $dataManu[] = (object) ['name' => $name, 'value' => $value];
             }
+
             // Data daytime for the chart
             $dayData = [];
             $dayData[0] = Carbon::today()->addDays();
             $dayData[1] = Carbon::today();
-            for ($i = 2; $i <= 6; $i++) {
+            for ($i = 1; $i <= 5; $i++) {
                 $day = Carbon::today()->subDays($i);
-                $dayData[$i] = $day;
+                $dayData[$i+1] = $day;
             }
             // dd($dayData);
             //  End Data daytime for the chart
@@ -78,7 +101,7 @@ class AdminHomeController extends Controller
 
             $productData[1] = $proYes;
 
-            for ($i = 1; $i < 6; $i++) {
+            for ($i = 1; $i <= 5; $i++) {
                 $data = 0;
                 $data = DB::table('stocks')
                     ->where('created_at', '>', Carbon::yesterday()->subDays($i))
@@ -112,7 +135,7 @@ class AdminHomeController extends Controller
                 $revYesDay += $rev;
             }
             $revenue[1] = $revYesDay;
-            for ($i = 1; $i <= 6; $i++) {
+            for ($i = 1; $i <= 5; $i++) {
                 $out = Stock::where('created_at', '>', Carbon::yesterday()->subDays($i))
                     ->where('created_at', '<', Carbon::today()->subDays($i))
                     ->where('out_qty', '>', 0)
@@ -127,7 +150,7 @@ class AdminHomeController extends Controller
                         $revP += $rev;
                     }
                 }
-                $revenue[$i] = $revP;
+                $revenue[$i+1] = $revP;
             }
             // dd($revenue);
             // End data revenue for the chart
@@ -162,11 +185,16 @@ class AdminHomeController extends Controller
             // dd($interaction,$productData);
             // end interaction
 
+            // count user for 1 month
             $totalUser = DB::table('users')
                 ->where('role', 'Customer')
                 ->where('created_at', '>', $now->subDays(30))
                 ->count();
+
+            //count all product
             $totalProduct = DB::table('products')->count();
+
+            //count order for 1 month
             $totalItem = DB::table('order_details')
                 ->where('created_at', '>', $now->subDays(30))
                 ->count();
@@ -183,7 +211,10 @@ class AdminHomeController extends Controller
                 'dayData',
                 'productData',
                 'revenue',
-                'interaction'
+                'interaction',
+                'orderWarning',
+                'userWarning',
+                'productWarning',
             ));
         } else {
             return redirect()->route('fe.home');

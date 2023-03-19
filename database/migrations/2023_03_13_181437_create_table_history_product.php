@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('history_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->string('product_id')->nullable();
             $table->longText('data')->nullable();
             $table->String('action')->nullable();
 
