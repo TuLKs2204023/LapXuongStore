@@ -18,9 +18,7 @@
     <section class="section">
         @if (auth()->user()->role == 'Customer')
             <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-
                 <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
-
                 <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
 
             </section>
@@ -61,7 +59,7 @@
 
                         <tbody>
                             @foreach ($products as $item)
-                                <tr>
+                                <tr data-id={{ $item->id }}>
                                     <td>{{ $item->id }}</td>
                                     <td>
                                         @if (count($item->images) > 0)
@@ -111,7 +109,7 @@
                                             href="{{ Route('admin.discount.details', $item->id) }}">
                                             <i class="bi bi-piggy-bank"></i>
                                             <div class="myTooltip myTooltip-top myTooltip-warning">
-                                                <span class="tooltiptext">Discount of item</span>
+                                                <span class="tooltiptext">Discount</span>
                                             </div>
                                         </a>
 
@@ -120,8 +118,8 @@
                                             @csrf
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <button type="submit"
-                                                class="btn btn-outline-danger btn-sm mb-2 button-control">
+                                            <button type="submit" id="item-delete-btn-{{ $item->id }}"
+                                                class="btn btn-outline-danger btn-sm mb-2 button-control item-delete-btn">
                                                 <i class="bi bi-trash"></i>
                                                 <div class="myTooltip myTooltip-top myTooltip-danger">
                                                     <span class="tooltiptext">Delete item</span>
@@ -145,15 +143,28 @@
 @endsection
 
 @section('myJs')
+    <!-- Start KienJs -->
     <script>
-        $(function() {
-            $("#productsMgmt").DataTable({
+        document.addEventListener("DOMContentLoaded", (e) => {
+            const cateTable = $("#productsMgmt").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
-                "aaSorting": [],
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
+            });
+            cateTable.buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
+
+            // Controll delete items on index page
+            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
+                const catesDelete = mCatesDelete.ItemsDeleteHandler({
+                    url: '{{ Route('admin.product.destroy') }}',
+                    token: '{{ csrf_token() }}',
+                    cateTable,
+                    selectors: {
+                        tableSelector: "#productsMgmt tbody",
+                    },
+                });
+            });
         });
-    </script>
+    </script><!-- End KienJs -->
 @endsection

@@ -118,7 +118,8 @@
                                             @csrf
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                            <button type="submit" id="item-delete-btn-{{ $item->id }}"
+                                                class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control item-delete-btn">
                                                 <i class="bi bi-trash"></i>
                                                 <div class="myTooltip myTooltip-top myTooltip-danger">
                                                     <span class="tooltiptext">Delete item</span>
@@ -143,9 +144,7 @@
 
 @section('myJs')
     <!-- Start KienJs -->
-    <script type="module">
-        import {CateGroupsHandler} from '{{ asset('/js/KienJs/createGroup.js') }}';
-
+    <script>
         document.addEventListener("DOMContentLoaded", (e) => {
             const cateTable = $("#catesMgmt").DataTable({
                 "responsive": true,
@@ -154,14 +153,28 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             });
             cateTable.buttons().container().appendTo('#catesMgmt_wrapper .col-md-6:eq(0)');
-            
+
             // Controll items displayed on nav-bar & search-page
-            const catesGroups = new CateGroupsHandler({
-                url: '{{ Route('admin.cate.toggleDisplay') }}',
-                token: '{{ csrf_token() }}',
-                cateTable,
-                selectors: {},
+            import('{{ asset('/js/KienJs/createGroup.js') }}').then((mCatesGrps) => {
+                const catesGroups = mCatesGrps.CateGroupsHandler({
+                    url: '{{ Route('admin.cate.toggleDisplay') }}',
+                    token: '{{ csrf_token() }}',
+                    cateTable,
+                    selectors: {},
+                });
             });
-        }); 
+
+            // Controll delete items on index page
+            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
+                const catesDelete = mCatesDelete.ItemsDeleteHandler({
+                    url: '{{ Route('admin.cate.destroy') }}',
+                    token: '{{ csrf_token() }}',
+                    cateTable,
+                    selectors: {
+                        tableSelector: "#catesMgmt tbody",
+                    },
+                });
+            });
+        });
     </script><!-- End KienJs -->
 @endsection

@@ -112,8 +112,11 @@ class ResolutionController extends Controller
     public function destroy(Request $request)
     {
         $resolution = Resolution::find($request->id);
+        if (count($resolution->products) > 0) {
+            return ['status' => 'aborted'];
+        }
         $resolution->cate()->delete();
         $resolution->delete();
-        return redirect()->route('admin.resolution.index');
+        return ['status' => 'success'];
     }
 }

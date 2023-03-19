@@ -114,6 +114,6 @@ class ScreenGroupController extends Controller
         $screenGroup = ScreenGroup::find($request->id);
         $screenGroup->cate()->delete();
         $screenGroup->delete();
-        return redirect()->route('admin.screenGroup.index');
+        return ['status' => 'success'];
     }
 }

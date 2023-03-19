@@ -109,11 +109,11 @@ function HeaderCartHandler({
         headerCartCheckoutSelector,
     };
 
-    const headerCart = $(selectors["headerCartSelector"]);
+    const headerCart = $(selectors.headerCartSelector);
     if (!headerCart) return false;
 
     const checkoutBtn = headerCart.querySelector(
-        selectors["headerCartCheckoutSelector"]
+        selectors.headerCartCheckoutSelector
     );
     if (!checkoutBtn) return false;
 

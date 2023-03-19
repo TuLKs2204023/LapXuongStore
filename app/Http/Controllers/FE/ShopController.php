@@ -58,6 +58,19 @@ class ShopController extends Controller
 
     public function test()
     {
+        $product = Product::find(78);
+        dd($product->currentSalePrice);
+
+        // Checking errors before process delete
+        $errors = [
+            'orderExisted' => count($product->order_details),
+            'stockExisted' => count($product->stocks),
+            'priceExisted' => count($product->prices),
+        ];
+        foreach($errors as $key => $val) {
+            if ($val > 0) dd(['status' => $key]);
+        }
+
         $products = Product::query();
         $subModel = 'App\Models\Cates\\' . ucfirst('ssd') . 'Group';
         $value = "4,2,3";

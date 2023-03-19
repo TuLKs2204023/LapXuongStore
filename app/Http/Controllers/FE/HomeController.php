@@ -166,7 +166,7 @@ class HomeController extends Controller
     public function removeCart(Request $request)
     {
         $cart = session('cart');
-        $key = $request->pid;
+        $key = $request->id;
         $cartItem = $cart[$key];
         if ($cart) {
             unset($cart[$key]);

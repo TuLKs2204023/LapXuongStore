@@ -21,7 +21,7 @@ function SearchHandler({
         paginateShowSelector,
         paginateSortSelector,
     };
-    const pageConfigCont = $(selectors["paginateConfigSelector"]);
+    const pageConfigCont = $(selectors.paginateConfigSelector);
     const currentUrl = getCurrentUrlInfo();
     const queries = {
         show: pageDefaultItems,
@@ -32,7 +32,7 @@ function SearchHandler({
 
     // Add event for filtering Checboxes & Pagination
     function initSearch() {
-        const sidebar = $(selectors["sidebarSelector"]);
+        const sidebar = $(selectors.sidebarSelector);
         const cateInputs = sidebar.querySelectorAll(
             "input[type='checkbox']:not([disabled])"
         );
@@ -72,14 +72,14 @@ function SearchHandler({
         // Configuring number of items Displayed per Pagination page
         processPaginateConfig(
             "show",
-            selectors["paginateShowSelector"],
+            selectors.paginateShowSelector,
             pageDefaultItems
         );
 
         // Configuring Sorting of items on Pagination page
         processPaginateConfig(
             "sort",
-            selectors["paginateSortSelector"],
+            selectors.paginateSortSelector,
             pageDefaultSort
         );
 
@@ -136,7 +136,7 @@ function SearchHandler({
 
     // Function to render search view
     function renderSearch(res) {
-        const productList = $(selectors["productListSelector"]);
+        const productList = $(selectors.productListSelector);
         productList.innerHTML = res;
 
         // Add ajaxRequest to pagination buttons
@@ -146,7 +146,7 @@ function SearchHandler({
 
     // Function to add ajaxRequest to pagination buttons
     function renderPaginateBtns(selectors, queries) {
-        const paginate = $(selectors["paginateSelector"]);
+        const paginate = $(selectors.paginateSelector);
         const paginateLinks = paginate.querySelectorAll(".pagination li a");
 
         paginateLinks.forEach((link) => {

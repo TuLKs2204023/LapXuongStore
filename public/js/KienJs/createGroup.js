@@ -55,13 +55,13 @@ function CateGroupsHandler({
     },
 }) {
     const selectors = { tableSelector, navSelector, searchSelector };
-    const tableElement = $(selectors["tableSelector"]);
+    const tableElement = $(selectors.tableSelector);
 
     tableElement.addEventListener("click", (e) => {
         const cateData = cateTable.row(e.target.closest("tr")).data();
         const cateId = e.target.closest("tr").dataset.id;
-        const navId = `${selectors["navSelector"]}-${cateId}`;
-        const searchId = `${selectors["searchSelector"]}-${cateId}`;
+        const navId = `${selectors.navSelector}-${cateId}`;
+        const searchId = `${selectors.searchSelector}-${cateId}`;
         const isDisplay = e.target.matches(":checked");
         if (e.target.id == navId) {
             processToggleSwitch("nav", cateId, isDisplay);

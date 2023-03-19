@@ -107,7 +107,7 @@ class CateController extends Controller
     {
         $cate = Cate::find($request->id);
         $cate->delete();
-        return redirect()->route('admin.cate.index');
+        return ['status' => 'success'];
     }
 
     /**

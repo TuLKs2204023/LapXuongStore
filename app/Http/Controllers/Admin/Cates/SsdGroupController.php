@@ -114,6 +114,6 @@ class SsdGroupController extends Controller
         $ssdGroup = SsdGroup::find($request->id);
         $ssdGroup->cate()->delete();
         $ssdGroup->delete();
-        return redirect()->route('admin.ssdGroup.index');
+        return ['status' => 'success'];
     }
 }
