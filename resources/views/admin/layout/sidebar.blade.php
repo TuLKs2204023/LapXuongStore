@@ -30,7 +30,7 @@
                             <i class="bi bi-circle"></i><span>User List</span>
                         </a>
                         <!--End UserList -->
-                        
+
                         <!-- User Ratings -->
                         <a href="{{ Route('historyProduct') }}">
                             <i class="bi bi-circle"></i><span>Product History</span>
@@ -97,12 +97,6 @@
                 <a class="nav-link " href="{{ Route('admin.wishlist.index') }}">
                     <i class="bi bi-suit-heart"></i>
                     <span>Wishlist</span>
-                </a>
-            </li><!-- End Rating Nav -->
-            <li class="nav-item">
-                <a class="nav-link " href="{{ Route('admin.rating.index') }}">
-                    <i class="bi bi-bookmark-heart"></i>
-                    <span>Rating</span>
                 </a>
             </li><!-- End Rating Nav -->
 

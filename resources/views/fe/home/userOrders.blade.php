@@ -232,6 +232,15 @@
 @endsection
 
 @section('content')
+    @if (auth()->user()->role !== 'Customer')
+        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <br>
+            <br>
+            <h3>Sorry ! The page you are looking only availabled for Customer !</h3>
+            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+        </section>
+    @endif
+    @if(auth()->user()->role == 'Customer')
     <!-- Breadcrumb -->
     <div class="breadcrumb-section">
         <div class="container">
@@ -349,6 +358,7 @@
             </div>
         @endif
     </div>
+    @endif
 @endsection
 
 @section('myJs')

@@ -196,6 +196,7 @@ class ProductController extends Controller
         $proData = $this->processSsd($proData);
 
         // Save Histories of products
+
         $this->dataProduct($proData, $product);
         // Save Product
         $product->update($proData);
@@ -267,12 +268,10 @@ class ProductController extends Controller
 
         // Save Histories of products
         $data = $product->name . ' has been deleted.';
-        $product->historyProduct()->create([
-            'data' => $data,
-            'action' => 'Deleted',
-            'user_id' => auth()->user()->id,
-            'product_id' => $product->id
-        ]);
+        $product->historyProduct()->create(['data' => $data,
+                                            'action' => 'Deleted',
+                                            'user_id' => auth()->user()->id,
+                                            'product_id' => $product->id]);
         $product->delete();
         return ['status' => 'success'];
     }

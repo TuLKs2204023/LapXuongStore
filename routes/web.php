@@ -51,10 +51,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
-Route::get('/customer', [FE_HomeController::class, 'userProfile'])->name('userProfile');
 Route::get('/back-from-error', [AdminHomeController::class, 'backFromError'])->name('admin.backFromError');
-Route::get('/product-history', [AdminHomeController::class, 'historyProduct'])->name('historyProduct');
 
 
 
@@ -146,6 +143,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/edit-user/{id}', [UserController::class, 'EditUser'])->name('edituser');
     Route::post('/update-user/{id}', [UserController::class, 'UpdatetUser'])->name('updateuser');
     Route::get('/delete-user/{id}', [UserController::class, 'DeleteUser'])->name('deleteuser');
+    //Role management
+    Route::get('/admin', [AdminHomeController::class, 'index'])->name('admin.dashboard');
+    Route::get('/customer', [FE_HomeController::class, 'userProfile'])->name('userProfile');
+
+    Route::get('/product-history', [AdminHomeController::class, 'historyProduct'])->name('historyProduct');
 
     // For Admin purpose
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {

@@ -16,7 +16,7 @@
 
     <!-- Start Main Section -->
     <section class="section">
-        @if (auth()->user()->role !== 'Admin')
+        @if (auth()->user()->role == 'Customer')
             <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
                 <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
@@ -25,7 +25,7 @@
 
             </section>
         @endif
-        @if (auth()->user()->role == 'Admin')
+
             <!-- card -->
             <div class="card">
                 <div class="card-header">
@@ -87,7 +87,7 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
-        @endif
+
     </section><!-- End Main Section -->
 @endsection
 
