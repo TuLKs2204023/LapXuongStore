@@ -111,8 +111,11 @@ class DemandController extends Controller
     public function destroy(Request $request)
     {
         $demand = Demand::find($request->id);
+        if (count($demand->products) > 0) {
+            return ['status' => 'aborted'];
+        }
         $demand->cate()->delete();
         $demand->delete();
-        return redirect()->route('admin.demand.index');
+        return ['status' => 'success'];
     }
 }

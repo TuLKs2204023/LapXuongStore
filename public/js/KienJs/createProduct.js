@@ -2,7 +2,6 @@ import { CustomSelect } from "./customSelect.js";
 export { seriesHandler };
 
 const $ = document.querySelector.bind(document);
-const $id = document.getElementById.bind(document);
 
 function seriesHandler({
     url = "",
@@ -14,10 +13,10 @@ function seriesHandler({
     },
 }) {
     const selectors = { formSelector, brandSelector, seriesSelector };
-    const formElement = $(selectors["formSelector"]);
+    const formElement = $(selectors.formSelector);
     if (!formElement) return false;
 
-    const brandInput = $(selectors["brandSelector"]);
+    const brandInput = $(selectors.brandSelector);
     if (!brandInput) return false;
 
     const brandCustomSelect = brandInput.querySelector(
@@ -37,7 +36,7 @@ function seriesHandler({
 
     // Function to update content of Series button
     function updateSeries(res, selectors) {
-        const originInput = $(selectors["seriesSelector"]);
+        const originInput = $(selectors.seriesSelector);
         const newOpts = populateNewOpts(clearOldOpts(originInput), res);
         originInput.selectedIndex = 0;
 

@@ -111,8 +111,11 @@ class GpuController extends Controller
     public function destroy(Request $request)
     {
         $gpu = Gpu::find($request->id);
+        if (count($gpu->products) > 0) {
+            return ['status' => 'aborted'];
+        }
         $gpu->cate()->delete();
         $gpu->delete();
-        return redirect()->route('admin.gpu.index');
+        return ['status' => 'success'];
     }
 }

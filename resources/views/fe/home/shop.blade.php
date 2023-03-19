@@ -191,7 +191,7 @@
                                 @endif
                                 <div class="bc-item">
                                     <label for="ram-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="ram-{{ $cate->cateable->id }}"
                                             data-value="ram-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -254,7 +254,7 @@
                                 @endif
                                 <div class="bc-item">
                                     <label for="hdd-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="hdd-{{ $cate->cateable->id }}"
                                             data-value="hdd-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -276,7 +276,7 @@
                                 @endif
                                 <div class="bc-item">
                                     <label for="ssd-{{ $cate->cateable->id }}">
-                                        {{ $cate->name }}, {{ $cate->cateable->id }}
+                                        {{ $cate->name }}
                                         <input type="checkbox" id="ssd-{{ $cate->cateable->id }}"
                                             data-value="ssd-{{ $cate->cateable->id }}">
                                         <span class="checkmark"></span>
@@ -418,8 +418,8 @@
     <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
     <script>
         /*-------------------
-                                                                                                                                                                                                                                                                                                                                Range Slider
-                                                                                                                                                                                                                                                                                                                                --------------------- */
+                                                                                                                                                                                                                                                                                                                                    Range Slider
+                                                                                                                                                                                                                                                                                                                                    --------------------- */
         jQuery(document).ready(function($) {
             const rangeSlider = $(".price-range"),
                 minamount = $("#minamount"),

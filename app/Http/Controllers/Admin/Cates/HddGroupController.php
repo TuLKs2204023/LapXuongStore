@@ -114,6 +114,6 @@ class HddGroupController extends Controller
         $hddGroup = HddGroup::find($request->id);
         $hddGroup->cate()->delete();
         $hddGroup->delete();
-        return redirect()->route('admin.hddGroup.index');
+        return ['status' => 'success'];
     }
 }

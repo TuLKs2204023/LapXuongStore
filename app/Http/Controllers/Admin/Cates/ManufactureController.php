@@ -136,14 +136,20 @@ class ManufactureController extends Controller
     public function destroy(Request $request)
     {
         $manufacture = Manufacture::find($request->id);
+
+        if (count($manufacture->products) > 0) {
+            return ['status' => 'aborted'];
+        }
+
         $image = $manufacture->image;
         if (isset($image->url)) {
             File::delete(public_path("images/" . $image->url));
             $image->delete();
         }
         $manufacture->cate()->delete();
+        $manufacture->series()->delete();
         $manufacture->delete();
-        return redirect()->route('admin.manufacture.index');
+        return ['status' => 'success'];
     }
 
     /**
