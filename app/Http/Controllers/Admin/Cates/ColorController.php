@@ -111,8 +111,11 @@ class ColorController extends Controller
     public function destroy(Request $request)
     {
         $color = Color::find($request->id);
+        if (count($color->products) > 0) {
+            return ['status' => 'aborted'];
+        }
         $color->cate()->delete();
         $color->delete();
-        return redirect()->route('admin.color.index');
+        return ['status' => 'success'];
     }
 }

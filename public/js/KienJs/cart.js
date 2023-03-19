@@ -37,7 +37,7 @@ function CartHandler({
         checkoutBtnSelector,
     };
 
-    const cartContainer = $(selectors["cartOrBtnSelector"]);
+    const cartContainer = $(selectors.cartOrBtnSelector);
     if (!cartContainer) return false;
 
     if (isUpdate) {
@@ -46,7 +46,7 @@ function CartHandler({
             `input[name="${inputName}"]`
         );
         if (inputs) {
-            const checkoutBtn = $(selectors["checkoutBtnSelector"]);
+            const checkoutBtn = $(selectors.checkoutBtnSelector);
 
             // Disable check-out Button if cart is empty
             preventCheckout(checkoutBtn, !inputs.length);
@@ -69,7 +69,7 @@ function CartHandler({
                 // Update ViewCart page whenever quantity is changed
                 const selectedRow = getParent(
                     input,
-                    selectors["cartItemSelector"]
+                    selectors.cartItemSelector
                 );
                 const pid = selectedRow.dataset.index;
                 const btns = input.parentNode.querySelectorAll(".qtybtn");
@@ -119,7 +119,7 @@ function CartHandler({
             updateCartHeader(res, selectors);
 
             // Add items to headerCart
-            const headerCartItems = $(selectors["headerCartItemsSelector"]);
+            const headerCartItems = $(selectors.headerCartItemsSelector);
             const cartItems = headerCartItems.querySelectorAll(".cart-section");
             addItemsToCartHeader(res, headerCartItems, cartItems);
 
@@ -173,7 +173,7 @@ function processUpdateCartPage({ res, input, selectors }) {
     updateCartHeader(res, selectors);
 
     // Update items in header-cart
-    const headerCartItems = $(selectors["headerCartItemsSelector"]);
+    const headerCartItems = $(selectors.headerCartItemsSelector);
     const cartItems = headerCartItems.querySelectorAll(".cart-section");
     updateItemsCartHeader(res, cartItems);
 
@@ -189,11 +189,9 @@ function processUpdateCartPage({ res, input, selectors }) {
     }
 
     // Update Summary section
-    const sumContainer = $(selectors["summaryContSelector"]);
+    const sumContainer = $(selectors.summaryContSelector);
     if (sumContainer) {
-        const sums = sumContainer.querySelectorAll(
-            selectors["summariesSelector"]
-        );
+        const sums = sumContainer.querySelectorAll(selectors.summariesSelector);
         if (sums) {
             for (let sum of sums) {
                 sum.innerHTML = res.totalVal + " VND";
@@ -203,7 +201,7 @@ function processUpdateCartPage({ res, input, selectors }) {
 
     // Update cart content when it becomes empty
     if (!res.totalQty) {
-        const cartContainer = $(selectors["cartOrBtnSelector"]);
+        const cartContainer = $(selectors.cartOrBtnSelector);
         cartContainer.innerHTML = `
             <tr class="pr-cart-item">
                 <td colspan="6">
@@ -224,23 +222,23 @@ function processUpdateCartPage({ res, input, selectors }) {
     }
 
     // Disable Checkout button whenever arbittrary item comes out-of-stock
-    const checkoutBtn = $(selectors["checkoutBtnSelector"]);
-    if (checkoutBtn){
+    const checkoutBtn = $(selectors.checkoutBtnSelector);
+    if (checkoutBtn) {
         disableButton(res.stockBalance, -1, checkoutBtn, disableIncrease);
-        disableButton(input.value, 0, checkoutBtn, disableDecrease);
+        if (input) disableButton(input?.value, 0, checkoutBtn, disableDecrease);
     }
 }
 
 // Function to update Header-cart total items Count
 function updateCartHeader(res, selectors) {
-    const checkoutBtn = $(selectors["checkoutBtnSelector"]);
+    const checkoutBtn = $(selectors.checkoutBtnSelector);
     if (checkoutBtn)
         disableButton(res.stockBalance, -1, checkoutBtn, disableIncrease);
 
-    const headerCartCont = $(selectors["headerCartSelector"]);
+    const headerCartCont = $(selectors.headerCartSelector);
 
     const headerCheckoutBtn = headerCartCont.querySelector(
-        selectors["headerCartCheckoutSelector"]
+        selectors.headerCartCheckoutSelector
     );
     if (headerCheckoutBtn)
         disableButton(res.stockBalance, -1, headerCheckoutBtn, disableIncrease);

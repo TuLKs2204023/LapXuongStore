@@ -106,6 +106,6 @@ class RamGroupController extends Controller
         $ramGroup = RamGroup::find($request->id);
         $ramGroup->cate()->delete();
         $ramGroup->delete();
-        return redirect()->route('admin.ramGroup.index');
+        return ['status' => 'success'];
     }
 }

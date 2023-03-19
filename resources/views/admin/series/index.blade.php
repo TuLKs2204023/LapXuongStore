@@ -55,7 +55,7 @@
 
                         <tbody>
                             @foreach ($series as $item)
-                                <tr>
+                                <tr data-id={{ $item->id }}>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->manufacture->name }}</td>
@@ -85,7 +85,8 @@
                                             @csrf
                                             @method('delete')
                                             <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control">
+                                            <button type="submit" id="item-delete-btn-{{ $item->id }}"
+                                                class="btn btn-outline-danger btn-sm mx-1 mb-2 button-control item-delete-btn">
                                                 <i class="bi bi-trash"></i>
                                                 <div class="myTooltip myTooltip-top myTooltip-danger">
                                                     <span class="tooltiptext">Delete item</span>
@@ -110,14 +111,28 @@
 @endsection
 
 @section('myJs')
+    <!-- Start KienJs -->
     <script>
-        $(function() {
-            $("#seriesMgmt").DataTable({
+        document.addEventListener("DOMContentLoaded", (e) => {
+            const cateTable = $("#seriesMgmt").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#seriesMgmt_wrapper .col-md-6:eq(0)');
+            });
+            cateTable.buttons().container().appendTo('#seriesMgmt_wrapper .col-md-6:eq(0)');
+
+            // Controll delete items on index page
+            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
+                const catesDelete = mCatesDelete.ItemsDeleteHandler({
+                    url: '{{ Route('admin.series.destroy') }}',
+                    token: '{{ csrf_token() }}',
+                    cateTable,
+                    selectors: {
+                        tableSelector: "#seriesMgmt tbody",
+                    },
+                });
+            });
         });
-    </script>
+    </script><!-- End KienJs -->
 @endsection

@@ -68,7 +68,9 @@
                                                             src="{{ isset($item->product->oldestImage->url) ? asset('images/' . $item->product->oldestImage->url) : '' }}"
                                                             alt="{{ $item->product->name }}"></a></td>
                                                 <td class="cart-title first-row">
-                                                    <h5>{{ $item->product->name }}</h5>
+                                                    <a href="{{ Route('product.details', $item->product->slug) }}">
+                                                        <h5>{{ $item->product->name }}</h5>
+                                                    </a>
                                                 </td>
                                                 <td class="p-price first-row">
                                                     {{ number_format($item->product->fakePrice(), 0, ',', '.') }}</td>
@@ -77,7 +79,7 @@
                                                         <div class="pro-qty">
                                                             <input type="text" value="{{ $item->quantity }}"
                                                                 data-stock="{{ $item->product->inStock() - $item->product->outStock() - $item->quantity }}"
-                                                                name="product-quantity" min="1">
+                                                                name="product-quantity">
                                                         </div>
                                                     </div>
                                                 </td>

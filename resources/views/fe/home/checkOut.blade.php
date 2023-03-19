@@ -192,13 +192,15 @@
                                         </li>
                                         <li class="total-price">Total <span>{{ $res['totalVal'] }} VND</span></li>
                                     </ul>
-                                    <div class="order-payment">
+                                    <div class="order-payment form-group">
                                         <div class="select-option">
-                                            <select class="sorting" id="payment" name="payment" class="form-control">
+                                            <select class="sorting" id="payment" name="payment" class="form-control"
+                                                rules="required">
                                                 <option value="">--- Payment ---</option>
                                                 <option value="1">Cash on Delivery</option>
                                                 <option value="2">Bank Transfer</option>
                                             </select>
+                                            <span class="form-message heighter text-left"></span>
                                         </div>
                                     </div>
                                     <div class="order-btn">
