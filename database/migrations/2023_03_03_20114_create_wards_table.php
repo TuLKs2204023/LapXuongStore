@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('wards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('district_id')->constrained();
+            $table->foreignId('district_id')->constrained()->onDelete('cascade');
             $table->string('name')->nullable();
             $table->timestamps();
         });

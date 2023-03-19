@@ -30,7 +30,7 @@ class OrderCancel extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Cancel Order',
+            subject: 'Order Cancellation',
         );
     }
 

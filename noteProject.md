@@ -68,3 +68,10 @@ FACEBOOK_CLIENT_SECRET=1231743f6954579fe4aada8b38c98089ab5
 11. Thêm onDelete('cascade') vào 
         product_id bảng discounts, 
         stock_id bảng order_details,
+        city_id bảng districts,
+        district_id bảng wards,
+        bỏ onDelete cascade của product_id trên bảng order_details,
+        bỏ onDelete cascade của product_id trên bảng prices,
+        bỏ onDelete cascade của product_id trên bảng stocks,
+        bỏ product_id trên bảng history_product (nếu còn),
+        

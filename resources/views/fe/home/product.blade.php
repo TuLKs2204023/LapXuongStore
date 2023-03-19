@@ -4,26 +4,6 @@
 
 @section('myCss')
     <style>
-        /* width */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
         .fa-heart {
             color: red;
         }
@@ -192,31 +172,31 @@
 
                                 // Đã fix điều kiện nút check out , chỉ available for guest and customer - Dự
                                 @if (!Auth::check())
-                                <div class="quantity">
                                     <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input name="product-quantity" type="text" value="1">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input name="product-quantity" type="text" value="1">
+                                            </div>
+                                            <a href="#" class="primary-btn site-btn-main pd-cart"
+                                                data-id="{{ $product->id }}">Add
+                                                To Cart</a>
                                         </div>
-                                        <a href="#" class="primary-btn site-btn-main pd-cart"
-                                            data-id="{{ $product->id }}">Add
-                                            To Cart</a>
                                     </div>
-                                </div>
                                 @endif
 
                                 @auth
-                                @if(auth()->user()->role == 'Customer')
-                                <div class="quantity">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input name="product-quantity" type="text" value="1">
+                                    @if (auth()->user()->role == 'Customer')
+                                        <div class="quantity">
+                                            <div class="quantity">
+                                                <div class="pro-qty">
+                                                    <input name="product-quantity" type="text" value="1">
+                                                </div>
+                                                <a href="#" class="primary-btn site-btn-main pd-cart"
+                                                    data-id="{{ $product->id }}">Add
+                                                    To Cart</a>
+                                            </div>
                                         </div>
-                                        <a href="#" class="primary-btn site-btn-main pd-cart"
-                                            data-id="{{ $product->id }}">Add
-                                            To Cart</a>
-                                    </div>
-                                </div>
-                                @endif
+                                    @endif
                                 @endauth
                                 //End check
 
@@ -385,74 +365,78 @@
                                         {{-- ---------------------------------------------------Review Form--------------------------------------------------------------------------------- --}}
                                         {{-- fix điều kiện hiện khung review and rating : Dự --}}
                                         @if (Auth::check())
-                                        @auth
-                                            @if((auth()->user()->role == 'Customer'))
-                                                <div class="leave-comment">
-                                                    <h4>Leave A Comment</h4>
-                                                    <div class="tu-send-review-message"></div>
-                                                    <form class="comment-form">
-                                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                        <div class="personal-rating">
-                                                            <div class="form-group" id="rating-ability-wrapper">
-                                                                <label class="control-label" for="rating">
-                                                                    <span class="field-label-header">How do you feel about our
-                                                                        services and products?</span><br>
-                                                                    <span class="field-label-info"></span>
-                                                                    <input type="hidden" id="selected_rating"
-                                                                        name="selected_rating" value=""
-                                                                        required="required">
-                                                                </label>
-                                                                <h2 class="bold rating-header" style="">
-                                                                    <span class="selected-rating">0</span><small> / 5</small>
-                                                                </h2>
-                                                                <button type="button"
-                                                                    class="btnrating btn btn-default btn-lg" data-attr="1"
-                                                                    id="rating-star-1">
-                                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btnrating btn btn-default btn-lg" data-attr="2"
-                                                                    id="rating-star-2">
-                                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btnrating btn btn-default btn-lg" data-attr="3"
-                                                                    id="rating-star-3">
-                                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btnrating btn btn-default btn-lg" data-attr="4"
-                                                                    id="rating-star-4">
-                                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btnrating btn btn-default btn-lg" data-attr="5"
-                                                                    id="rating-star-5">
-                                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                                </button>
+                                            @auth
+                                                @if (auth()->user()->role == 'Customer')
+                                                    <div class="leave-comment">
+                                                        <h4>Leave A Comment</h4>
+                                                        <div class="tu-send-review-message"></div>
+                                                        <form class="comment-form">
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $product->id }}">
+                                                            <div class="personal-rating">
+                                                                <div class="form-group" id="rating-ability-wrapper">
+                                                                    <label class="control-label" for="rating">
+                                                                        <span class="field-label-header">How do you feel about
+                                                                            our
+                                                                            services and products?</span><br>
+                                                                        <span class="field-label-info"></span>
+                                                                        <input type="hidden" id="selected_rating"
+                                                                            name="selected_rating" value=""
+                                                                            required="required">
+                                                                    </label>
+                                                                    <h2 class="bold rating-header" style="">
+                                                                        <span class="selected-rating">0</span><small> /
+                                                                            5</small>
+                                                                    </h2>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="1" id="rating-star-1">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="2" id="rating-star-2">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="3" id="rating-star-3">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="4" id="rating-star-4">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btnrating btn btn-default btn-lg"
+                                                                        data-attr="5" id="rating-star-5">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <input disabled placeholder="Name"
-                                                                    value="{{ auth()->user()->name }}">
-                                                                <input type="hidden" type="text" name="name"
-                                                                    value="{{ auth()->user()->name }}">
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <input disabled placeholder="Name"
+                                                                        value="{{ auth()->user()->name }}">
+                                                                    <input type="hidden" type="text" name="name"
+                                                                        value="{{ auth()->user()->name }}">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <input disabled type="text"
+                                                                        value="{{ auth()->user()->email }}">
+                                                                    <input type="hidden" placeholder="Email" name="email"
+                                                                        value="{{ auth()->user()->email }}">
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <textarea id="review" placeholder="Review" name="review" rows="8"></textarea>
+                                                                    <a href="#"
+                                                                        class="site-btn review-lapxuong-btn">Send
+                                                                        Review</a>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-lg-6">
-                                                                <input disabled type="text"
-                                                                    value="{{ auth()->user()->email }}">
-                                                                <input type="hidden" placeholder="Email" name="email"
-                                                                    value="{{ auth()->user()->email }}">
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <textarea id="review" placeholder="Review" name="review" rows="8"></textarea>
-                                                                <a href="#" class="site-btn review-lapxuong-btn">Send
-                                                                    Review</a>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                                        </form>
+                                                    </div>
                                                 @endif
                                             @endauth
                                         @else
@@ -605,11 +589,11 @@
                     },
                     data: formArray,
                     success: function(response) {
-                        // if (response.msg == "Comment add successfully") {
+                        if (response.msg == "Comment add successfully") {
                             $(cmtArea).val("");
                             $(".selected-rating").html(0);
-                             //set selected to be 0
-                             $("#selected_rating").val(0);
+                            //set selected to be 0
+                            $("#selected_rating").val(0);
                             // Move up to comment area
                             $([document.documentElement, document.body]).animate({
                                 scrollTop: $("#review-tab").offset().top
@@ -649,6 +633,13 @@
                                 $(".tu-send-review-message").addClass(
                                     "alert alert-success main-success");
                             } else {
+                                if ($(".tu-send-review-message").hasClass("alert-success") && $(
+                                        ".tu-send-review-message").hasClass("main-success")) {
+                                    $(".tu-send-review-message").removeClass("alert-success");
+                                    $(".tu-send-review-message").removeClass("main-success");
+                                    $(".tu-send-review-message").addClass(
+                                        "alert alert-success main-success");
+                                }
                                 $(".tu-send-review-message").addClass(
                                     "alert alert-success main-success");
                             }
@@ -668,15 +659,15 @@
                                 }
                                 $(element).html(filled + empty);
                             })
-                        // } else {
-                        //     $(starWrap).each(function(index, element) {
-                        //         $([document.documentElement, document.body]).animate({
-                        //             scrollTop: $("#review-tab").offset().top
-                        //         }, 100);
-                        //     })
-                        //     $(".tu-send-review-message").addClass("alert alert-danger");
-                        //     $(".tu-send-review-message").html(response.msg);
-                        // }
+                        } else {
+                            $(starWrap).each(function(index, element) {
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $("#review-tab").offset().top
+                                }, 100);
+                            })
+                            $(".tu-send-review-message").addClass("alert alert-danger");
+                            $(".tu-send-review-message").html(response.msg);
+                        }
                     }
                 });
             })

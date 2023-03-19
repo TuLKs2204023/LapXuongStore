@@ -76,7 +76,7 @@
                                     <span class="form-message heighter"></span>
                                 </label>
                                 <select rules="required" id="City-dropdown" class="form-control" name="city">
-                                    <option value="{{ auth()->user()->city->name ?? '' }}">
+                                    <option value="{{ auth()->user()->city_id ?? '' }}">
                                         {{ isset(auth()->user()->city->name) ? auth()->user()->city->name : 'Select your city' }}
                                     </option>
                                     @foreach ($res['cities'] as $data)
@@ -94,7 +94,7 @@
                                     <span class="form-message heighter"></span>
                                 </label>
                                 <select rules="required" id="district-dropdown" class="form-control" name="district">
-                                    <option value="{{ auth()->user()->district->name ?? '' }}">
+                                    <option value="{{ auth()->user()->district_id ?? '' }}">
                                         {{ isset(auth()->user()->district->name) ? auth()->user()->district->name : 'Select your district' }}
                                     </option>
                                 </select>
@@ -107,7 +107,7 @@
                                     <span class="form-message heighter"></span>
                                 </label>
                                 <select rules="required" id="ward-dropdown" class="form-control" name="ward" value="">
-                                    <option value="{{ auth()->user()->ward->name ?? '' }}">
+                                    <option value="{{ auth()->user()->ward_id ?? '' }}">
                                         {{ isset(auth()->user()->ward->name) ? auth()->user()->ward->name : 'Select your ward' }}
                                     </option>
                                 </select>

@@ -25,7 +25,7 @@
         </h5>
         <div class="at-reply">{{ $rating->review }}</div>
         @if (auth()->user())
-            @if (auth()->user()->role == 'Admin')
+            @if (auth()->user()->role == 'Admin' && auth()->user()->role == 'Manager')
                 <a href="#" id="deletecomment"
                     class="btn btn-outline-danger btn-sm">
                     <i class="fas fa-trash"></i>

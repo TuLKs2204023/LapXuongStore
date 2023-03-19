@@ -8,7 +8,6 @@ use App\Http\Traits\ProcessModelData;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class OdersController extends Controller
 {
@@ -18,7 +17,6 @@ class OdersController extends Controller
     public function Allorders()
     {
         $all = Order::all()->sortByDesc('id');
-
         return view('admin.oders.allorders', compact('all'));
     }
 
@@ -50,19 +48,27 @@ class OdersController extends Controller
         $proData = [];
         $oId = $request->oId;
         $order = Order::find($oId);
-        foreach ($order->details as $item) {
-            $product = $item->product;
-            $proData['in_qty'] = $item->quantity;
-            $this->processInStock($product, $proData);
+        try {
+            foreach ($order->details as $item) {
+                $product = $item->product;
+                $proData['in_qty'] = $item->quantity;
+                $this->processInStock($product, $proData);
+            }
+            $order->status = 0;
+            $order->push();
+            //gởi mail nữa nha
+            $this->cancelOrderEmail($order);
+            return response()->json([
+                'orderMsg' => 'Your order has been cancelled successfully.',
+                'emailMsg' => 'An email has just been sent to you.',
+                'status' => true,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'orderMsg' => 'Your order cancellation has been dinied.',
+                'emailMsg' => 'Failed to send email: ' . $e->getMessage(),
+                'status' => false,
+            ]);
         }
-        $order->status = 0;
-        $order->push();
-        //gởi mail nữa nha
-        // $this->cancelOrderEmail($order);
-        return response()->json([
-            'msg' => 'Your order is canceled successfully.',
-            'status' => 'success',
-            'order' => $order,
-        ]);
     }
 }
