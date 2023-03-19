@@ -20,8 +20,7 @@
                                 <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
                             @endif
-                            @auth
-                                @if (auth()->user()->role == 'Customer')
+                            @if (!Auth::check())
                                 <div class="icon product-list-icon">
                                     @if ($item->findWishlist())
                                         <i class="fas fa-heart"></i>
@@ -29,6 +28,16 @@
                                         <i class="fas fa-heart-o"></i>
                                     @endif
                                 </div>
+                            @endif
+                            @auth
+                                @if (auth()->user()->role == 'Customer')
+                                    <div class="icon product-list-icon">
+                                        @if ($item->findWishlist())
+                                            <i class="fas fa-heart"></i>
+                                        @else
+                                            <i class="fas fa-heart-o"></i>
+                                        @endif
+                                    </div>
                                 @endif
                             @endauth
 
