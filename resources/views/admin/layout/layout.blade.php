@@ -194,6 +194,28 @@
         });
     </script><!-- End KienJs -->
 
+    <script>
+        jQuery(document).ready(function($) {
+            const logOut = $(".du-log-out").get(0);
+            $(logOut).on("click", function() {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'You are logging out',
+                    text: "Please confirm again!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#4154f1',
+                    cancelButtonColor: 'crimson',
+                    confirmButtonText: 'Yes, bye bye !',
+                    cancelButtonText: 'No, I\'m still with you !'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('logout-form').submit();
+                    }
+                })
+            })
+        })
+    </script>
     @yield('myJs')
 
     <!-- Loading effect -->

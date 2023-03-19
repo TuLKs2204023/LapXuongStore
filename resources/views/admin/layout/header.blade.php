@@ -218,9 +218,7 @@
 
 
                     <li class="dropdown-item d-flex align-items-center">
-                        <a class="nav-link" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
+                        <a class="nav-link du-log-out" href="{{ route('logout') }}">
                             <i class="bi bi-box-arrow-in-left"></i>
                             {{ __('Logout') }}
                         </a>
