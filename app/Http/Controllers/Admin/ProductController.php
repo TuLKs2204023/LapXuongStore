@@ -89,13 +89,17 @@ class ProductController extends Controller
 
         // Save Product
         $product = Product::create($proData);
+
         // Save Histories of products
         $data = $product->name . ' has been created.';
         $product->historyProduct()->create(
-            ['data' => $data,
-            'action' => 'Created',
-            'user_id' => auth()->user()->id,
-            'product_id' => $product->id]);
+            [
+                'data' => $data,
+                'action' => 'Created',
+                'user_id' => auth()->user()->id,
+                'product_id' => $product->id
+            ]
+        );
         $product->refresh();
 
         // Save Price
@@ -104,12 +108,15 @@ class ProductController extends Controller
         //Save Description
         $product = $this->processDescription($product, $proData);
 
-        $datadescription= $product->name.' has been created with description.';
+        $datadescription = $product->name . ' has been created with description.';
         $product->historyProduct()->create(
-            ['data'=>$datadescription,
-            'action'=>'Created',
-            'user_id' => auth()->user()->id,
-            'product_id'=>$product->id]);
+            [
+                'data' => $datadescription,
+                'action' => 'Created',
+                'user_id' => auth()->user()->id,
+                'product_id' => $product->id
+            ]
+        );
 
         // Save Images
         $files = $this->processImage($request);
@@ -204,12 +211,15 @@ class ProductController extends Controller
         //Save Description
         $product = $this->processDescription($product, $proData);
 
-        $datadescription= $product->name.' has been updated description.';
+        $datadescription = $product->name . ' has been updated description.';
         $product->historyProduct()->create(
-            ['data'=>$datadescription,
-            'action'=>'Updated',
-            'user_id' => auth()->user()->id,
-            'product_id'=>$product->id]);
+            [
+                'data' => $datadescription,
+                'action' => 'Updated',
+                'user_id' => auth()->user()->id,
+                'product_id' => $product->id
+            ]
+        );
 
         // Save Images
         $files = $this->processImage($request);
@@ -236,8 +246,18 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         $product = Product::find($request->id);
-        // $product->prices()->delete();
-        // $product->order_details()->delete();
+
+        // Checking errors before process delete
+        $errors = [
+            'orderExisted' => count($product->order_details),
+            'stockExisted' => count($product->stocks),
+            'priceExisted' => count($product->prices),
+        ];
+        foreach ($errors as $errK => $errV) {
+            if ($errV > 0) return ['status' => $errK];;
+        }
+
+        // Process delete if there is errors free
         $images = $product->images;
         if (count($images) > 0) {
             foreach ($images as $image) {
@@ -253,7 +273,6 @@ class ProductController extends Controller
                                             'user_id' => auth()->user()->id,
                                             'product_id' => $product->id]);
         $product->delete();
-
-        return redirect()->route('admin.product.index');
+        return ['status' => 'success'];
     }
 }

@@ -623,78 +623,85 @@
                     },
                     data: formArray,
                     success: function(response) {
-                        // if (response.msg == "Comment add successfully") {
-                        $(cmtArea).val("");
-                        $(".selected-rating").html(0);
-                        //set selected to be 0
-                        $("#selected_rating").val(0);
-                        // Move up to comment area
-                        $([document.documentElement, document.body]).animate({
-                            scrollTop: $("#review-tab").offset().top
-                        }, 100);
-                        //remove filled stars
-                        for (i = 1; i <= 5; i++) {
-                            const hasFilled = $("#rating-star-" + i).hasClass(
-                                "btn-warning");
-                            if (hasFilled) {
-                                $("#rating-star-" + i).removeClass("btn-warning");
-                                $("#rating-star-" + i).addClass("btn-default");
+                        if (response.msg == "Comment add successfully") {
+                            $(cmtArea).val("");
+                            $(".selected-rating").html(0);
+                            //set selected to be 0
+                            $("#selected_rating").val(0);
+                            // Move up to comment area
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: $("#review-tab").offset().top
+                            }, 100);
+                            //remove filled stars
+                            for (i = 1; i <= 5; i++) {
+                                const hasFilled = $("#rating-star-" + i).hasClass(
+                                    "btn-warning");
+                                if (hasFilled) {
+                                    $("#rating-star-" + i).removeClass("btn-warning");
+                                    $("#rating-star-" + i).addClass("btn-default");
+                                }
                             }
-                        }
-                        //add new comment to view area
-                        if (response.totalRate == 1) {
-                            const test = $(".comment-option.overflow-auto").get(0);
-                            $(test).html(response.view);
-                        } else {
-                            $(".comment-option.overflow-auto").children().first().before(
-                                response
-                                .view);
-                        }
-                        // const reviewItm = $(".comment-option.overflow-auto").children()
-                        //     .first().get(0);
-                        // const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
-                        // reviewDelBtn.onclick =
-                        //     function(e) {
-                        //         e.preventDefault();
-                        //         tuDeleteComment(reviewItm);
-                        //     };
-                        $("#review-tab").html("Customer Review " +
-                            "(" + response.totalRate + ")");
-                        $(".customer-review-option .tu-comment")
-                            .html(response.totalRate + " Comments");
-                        if ($(".tu-send-review-message").hasClass("alert-danger")) {
-                            $(".tu-send-review-message").removeClass("alert-danger");
-                            $(".tu-send-review-message").addClass(
-                                "alert alert-success main-success");
-                        } else {
-                            $(".tu-send-review-message").addClass(
-                                "alert alert-success main-success");
-                        }
-                        $(".tu-send-review-message").html(response.msg);
+                            //add new comment to view area
+                            if (response.totalRate == 1) {
+                                const test = $(".comment-option.overflow-auto").get(0);
+                                $(test).html(response.view);
+                            } else {
+                                $(".comment-option.overflow-auto").children().first().before(
+                                    response
+                                    .view);
+                            }
+                            // const reviewItm = $(".comment-option.overflow-auto").children()
+                            //     .first().get(0);
+                            // const reviewDelBtn = $(reviewItm).find("#deletecomment").get(0);
+                            // reviewDelBtn.onclick =
+                            //     function(e) {
+                            //         e.preventDefault();
+                            //         tuDeleteComment(reviewItm);
+                            //     };
+                            $("#review-tab").html("Customer Review " +
+                                "(" + response.totalRate + ")");
+                            $(".customer-review-option .tu-comment")
+                                .html(response.totalRate + " Comments");
+                            if ($(".tu-send-review-message").hasClass("alert-danger")) {
+                                $(".tu-send-review-message").removeClass("alert-danger");
+                                $(".tu-send-review-message").addClass(
+                                    "alert alert-success main-success");
+                            } else {
+                                if ($(".tu-send-review-message").hasClass("alert-success") && $(
+                                        ".tu-send-review-message").hasClass("main-success")) {
+                                    $(".tu-send-review-message").removeClass("alert-success");
+                                    $(".tu-send-review-message").removeClass("main-success");
+                                    $(".tu-send-review-message").addClass(
+                                        "alert alert-success main-success");
+                                }
+                                $(".tu-send-review-message").addClass(
+                                    "alert alert-success main-success");
+                            }
+                            $(".tu-send-review-message").html(response.msg);
 
-                        //add avg stars
-                        pdRating.each(function(index, element) {
-                            let filled = '',
-                                empty = '';
-                            const starFil = '<i class="fa fa-star"></i> ';
-                            const starEmp = '<i class="fa fa-star-o"></i> ';
-                            for (i = 0; i < response.avgRates; i++) {
-                                filled += starFil;
-                            }
-                            for (i = 0; i < 5 - response.avgRates; i++) {
-                                empty += starEmp;
-                            }
-                            $(element).html(filled + empty);
-                        })
-                        // } else {
-                        //     $(starWrap).each(function(index, element) {
-                        //         $([document.documentElement, document.body]).animate({
-                        //             scrollTop: $("#review-tab").offset().top
-                        //         }, 100);
-                        //     })
-                        //     $(".tu-send-review-message").addClass("alert alert-danger");
-                        //     $(".tu-send-review-message").html(response.msg);
-                        // }
+                            //add avg stars
+                            pdRating.each(function(index, element) {
+                                let filled = '',
+                                    empty = '';
+                                const starFil = '<i class="fa fa-star"></i> ';
+                                const starEmp = '<i class="fa fa-star-o"></i> ';
+                                for (i = 0; i < response.avgRates; i++) {
+                                    filled += starFil;
+                                }
+                                for (i = 0; i < 5 - response.avgRates; i++) {
+                                    empty += starEmp;
+                                }
+                                $(element).html(filled + empty);
+                            })
+                        } else {
+                            $(starWrap).each(function(index, element) {
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $("#review-tab").offset().top
+                                }, 100);
+                            })
+                            $(".tu-send-review-message").addClass("alert alert-danger");
+                            $(".tu-send-review-message").html(response.msg);
+                        }
                     }
                 });
             })

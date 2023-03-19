@@ -101,7 +101,7 @@ Route::get('/product/{slug}', [FE_HomeController::class, 'product'])->name('prod
 // Cart Controller
 Route::post('/add-cart', [FE_HomeController::class, 'addCart'])->name('addCart');
 Route::post('/update-cart', [FE_HomeController::class, 'updateCart'])->name('updateCart');
-Route::post('/remove-cart', [FE_HomeController::class, 'removeCart'])->name('removeCart');
+Route::delete('/remove-cart', [FE_HomeController::class, 'removeCart'])->name('removeCart');
 Route::get('/view-cart', [FE_HomeController::class, 'viewCart'])->name('viewCart');
 Route::get('/clear-cart', [FE_HomeController::class, 'clearCart'])->name('clearCart');
 Route::post('/empty-cart', [FE_HomeController::class, 'emptyCart'])->name('emptyCart');

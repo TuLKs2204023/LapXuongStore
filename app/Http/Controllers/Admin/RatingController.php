@@ -43,7 +43,7 @@ class RatingController extends Controller
     public function store(Request $request)
     {
         $proData = $this->processDataWithOutSlug($request);
-        if ($proData['selected_rating'] == null || $proData['review'] == null) {
+        if ($proData['selected_rating'] == null || $proData['review'] == null || $proData['selected_rating'] == 0) {
             return response()->json(['msg' => 'Stars and review cannot be left blank.']);
         } else {
             $user = User::find(auth()->user()->id);

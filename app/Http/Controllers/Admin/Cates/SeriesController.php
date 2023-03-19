@@ -119,8 +119,11 @@ class SeriesController extends Controller
     public function destroy(Request $request)
     {
         $series = Series::find($request->id);
+        if (count($series->products) > 0) {
+            return ['status' => 'aborted'];
+        }
         $series->cate()->delete();
         $series->delete();
-        return redirect()->route('admin.series.index');
+        return ['status' => 'success'];
     }
 }

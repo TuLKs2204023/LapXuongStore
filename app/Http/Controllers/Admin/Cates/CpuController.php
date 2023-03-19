@@ -101,8 +101,11 @@ class CpuController extends Controller
     public function destroy(Request $request)
     {
         $cpu = Cpu::find($request->id);
+        if (count($cpu->products) > 0) {
+            return ['status' => 'aborted'];
+        }
         $cpu->cate()->delete();
         $cpu->delete();
-        return redirect()->route('admin.cpu.index');
+        return ['status' => 'success'];
     }
 }

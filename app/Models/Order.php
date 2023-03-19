@@ -121,7 +121,7 @@ class Order extends Model
                 return '<span class="badge rounded-pill bg-success">Ready for pickup</span>';
             }
         } else {
-            return '<span class="badge rounded-pill bg-danger">Canceled</span>';
+            return '<span class="badge rounded-pill bg-danger">Cancelled</span>';
         }
     }
     public function timeOrder()

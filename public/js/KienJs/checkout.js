@@ -3,22 +3,6 @@ export { CheckoutHandler, CouponHandler };
 
 $ = document.querySelector.bind(document);
 
-function CheckoutHandler({
-    url = "",
-    token = "",
-    selectors: {
-        checkoutBtnSelector = ".place-btn",
-        checkoutSummarySelector = ".order-summaries",
-    },
-}) {
-    const selectors = { checkoutBtnSelector, checkoutSummarySelector };
-    const checkoutSummary = $(selectors["checkoutSummarySelector"]);
-    if (!checkoutSummary) return false;
-
-    const checkoutBtn = $(selectors["checkoutBtnSelector"]);
-    if (!checkoutBtn) return false;
-}
-
 function CouponHandler({
     url = "",
     token = "",
@@ -202,4 +186,20 @@ function CouponHandler({
             ajaxReq.send(JSON.stringify(params));
         }, 1);
     }
+}
+
+function CheckoutHandler({
+    url = "",
+    token = "",
+    selectors: {
+        checkoutBtnSelector = ".place-btn",
+        checkoutSummarySelector = ".order-summaries",
+    },
+}) {
+    const selectors = { checkoutBtnSelector, checkoutSummarySelector };
+    const checkoutSummary = $(selectors.checkoutSummarySelector);
+    if (!checkoutSummary) return false;
+
+    const checkoutBtn = $(selectors.checkoutBtnSelector);
+    if (!checkoutBtn) return false;
 }

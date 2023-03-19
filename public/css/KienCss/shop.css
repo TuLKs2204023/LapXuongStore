@@ -1,3 +1,6 @@
+.product-shop {
+    padding-top: 50px;
+}
 .filter-widget
     .filter-range-wrap
     .price-range.ui-widget-content
@@ -13,6 +16,9 @@
 
 .filter-widget {
     margin-bottom: 15px;
+}
+.filter-widget .fw-title {
+    font-size: 0.9rem;
 }
 .filter-widget .fw-check {
     display: flex;

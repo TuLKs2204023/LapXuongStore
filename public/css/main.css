@@ -344,6 +344,7 @@
 /* Top Tooltip for <Button> --warning */
 .myTooltip.myTooltip-warning .tooltiptext {
     background-color: var(--bs-warning);
+    color: black;
 }
 .myTooltip.myTooltip-warning .tooltiptext::after {
     border-color: var(--bs-warning) transparent transparent transparent;

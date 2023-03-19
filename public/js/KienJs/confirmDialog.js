@@ -7,9 +7,9 @@ import {
     preventCheckout,
 } from "./cart.js";
 
-export { ConfirmDialog, DeleteDialog };
+export { ConfirmDialog, DeleteDialog, AjaxDeleteRequest };
 
-$ = document.querySelector.bind(document);
+const $ = document.querySelector.bind(document);
 
 function ConfirmDialog({
     request = "",
@@ -48,11 +48,9 @@ function ConfirmDialog({
     if (proceedBtn) {
         proceedBtn.onclick = (e) => {
             e.preventDefault();
-            if (request instanceof ajaxRequest) {
-                request.processAjaxReq(closeDialog);
-            } else {
-                window.location.href = route;
-            }
+            request instanceof AjaxDeleteRequest
+                ? request.processAjaxReq(closeDialog)
+                : (window.location.href = route);
         };
     }
     const cancelBtns = dialog_container.querySelectorAll(".cancel-btn");
@@ -213,20 +211,20 @@ function DeleteDialog({
     };
 
     // Add Event-Listener for buttons
-    const rows = $(selectors["rowsContainer"]);
+    const rows = $(selectors.rowsContainer);
     if (!rows) return false;
 
-    const confirmBtn = rows.querySelectorAll(selectors["deleteBtn"]);
+    const confirmBtn = rows.querySelectorAll(selectors.deleteBtn);
     if (confirmBtn) {
         for (let btn of confirmBtn) {
             btn.onclick = (e) => {
                 e.preventDefault();
                 selectedItm.row = getParent(
                     e.target,
-                    selectors["selectedContainer"]
+                    selectors.selectedContainer
                 );
                 selectedItm.code = selectedItm.row.dataset.index;
-                const ajaxReq = new ajaxRequest(
+                const ajaxReq = new AjaxDeleteRequest(
                     selectedItm,
                     processUrl,
                     processToken,
@@ -245,26 +243,29 @@ function DeleteDialog({
         }
     }
 
-    function deleteSuccess(ajaxReq, closeDialog) {
+    function deleteSuccess(ajaxReq, selectedItm, closeDialog) {
         const res = JSON.parse(ajaxReq.responseText);
         processUpdateCartPage({
             res,
             selectors,
         });
 
+        // Remove selected-item in items List
+        selectedItm.row.remove();
+
         // Update header-cart total items count
         updateCartHeader(res, selectors);
 
         // Update quantities of items in header-cart
-        const headerCartItems = $(selectors["headerCartItemsSelector"]);
-        const cartItems = headerCartItems.querySelectorAll("tr.cart-section");
+        const headerCartItems = $(selectors.headerCartItemsSelector);
+        const cartItems = headerCartItems.querySelectorAll(".cart-section");
         deleteItemsCartHeader(res, headerCartItems, cartItems);
 
         // Check empty Cart
-        const checkoutBtn = $(selectors["checkoutBtnSelector"]);
+        const checkoutBtn = $(selectors.checkoutBtnSelector);
         if (checkoutBtn) {
             const productCart = document.getElementsByClassName(
-                selectors["rowsContainer"].substring(1)
+                selectors.rowsContainer.substring(1)
             )[0];
             if (productCart) {
                 const productItms = productCart.getElementsByTagName("input");
@@ -287,7 +288,7 @@ function DeleteDialog({
 }
 
 // Define object for calling ajax-request
-class ajaxRequest {
+class AjaxDeleteRequest {
     constructor(selector, processUrl, token, callback) {
         this.selector = selector;
         this.processUrl = processUrl;
@@ -296,9 +297,8 @@ class ajaxRequest {
     }
     // Defining function to proceed Delete confirmation
     processAjaxReq(closeDialog) {
-        const iRow = this.selector["row"];
         const params = {
-            pid: iRow.dataset.index,
+            id: this.selector.code,
             _token: this.token,
         };
 
@@ -306,12 +306,11 @@ class ajaxRequest {
 
         ajaxReq.onreadystatechange = () => {
             if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
-                iRow.remove();
-                this.callback(ajaxReq, closeDialog);
+                this.callback(ajaxReq, this.selector, closeDialog);
             }
         };
 
-        ajaxReq.open("POST", this.processUrl, true);
+        ajaxReq.open("DELETE", this.processUrl, true);
         ajaxReq.setRequestHeader(
             "Content-type",
             "application/json;charset=UTF-8"
