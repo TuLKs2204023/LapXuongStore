@@ -217,15 +217,15 @@
             color: var(--danger);
         }
 
-        button{
+        button {
             text-align: center;
         }
 
-        #back{
+        #back {
             margin-left: 90px;
         }
 
-        #view{
+        #view {
             background-color: var(--violet);
         }
     </style>
@@ -291,7 +291,7 @@
                                         for pickup</span> </div>
                             @elseif($order->status == 0)
                                 <div class="step order active"> <span class="icon"> <i class="fa fa-frown-o"></i> </span>
-                                    <span class="text">Canceled</span>
+                                    <span class="text">Cancelled</span>
                                 </div>
                             @endif
                         </div>
@@ -321,9 +321,10 @@
                                 <h5><span class="badge bg-danger cancelBtn">Cancel Order
                                         LXS-{{ $order->id }}</span></h5>
                             @elseif($order->status == 0)
-                                <h5><span class="badge bg-warning">Your order has been canceled</span></h5>
+                                <h5><span class="badge bg-warning">Your order has been cancelled</span></h5>
                             @endif
                         @endif
+                        <div class="tu-send-mail-message"></div>
                     </fieldset>
                 @endforeach
                 <div>
@@ -336,11 +337,13 @@
         @else
             <div class="row">
                 <div class="col-md-12">
-                    <div class="success-text"><a href="{{ Route('fe.shop.index') }}"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a>
+                    <div class="success-text"><a href="{{ Route('fe.shop.index') }}"><i class="fa fa-shopping-basket"
+                                aria-hidden="true"></i></a>
                         <h2>No Order</h2>
                         <p>You still not have any orders yet</p>
                         <p>Would you prefer to take a trip to our shop?</p>
-                        <p><i class="fa fa-hand-o-up" aria-hidden="true"></i> CLICK THE CART <i class="fa fa-hand-o-up" aria-hidden="true"></i></p>
+                        <p><i class="fa fa-hand-o-up" aria-hidden="true"></i> CLICK THE CART <i class="fa fa-hand-o-up"
+                                aria-hidden="true"></i></p>
                     </div>
                 </div>
             </div>
@@ -357,7 +360,7 @@
             cardBody.each((index, element) => {
                 const head = $(element).find("legend").get(0);
                 $(head).on("click", function() {
-                    let id = $(cardBody).attr('data-index');
+                    let id = $(element).attr('data-index');
                     let url = `{{ url('/user/${id}/order-details') }}`;
                     window.location.href = url;
                 });
@@ -368,6 +371,9 @@
                 const deleteBtn = $(element).find(".cancelBtn").get(0);
                 $(deleteBtn).on("click", function(e) {
                     e.preventDefault();
+                    const orderStt = $(element).find(".status").get(0);
+                    const tracking = $(element).find(".track").get(0);
+                    const message = $(element).find(".tu-send-mail-message").get(0);
                     const oId = $(element).attr('data-index');
                     Swal.fire({
                         title: 'Are you sure?',
@@ -389,27 +395,32 @@
                                     oId: oId,
                                 },
                                 success: function(response) {
-                                    const orderStt = $(element).find(".status")
-                                        .get(0);
-                                    const tracking = $(".track");
-                                    $(deleteBtn).removeClass("bg-danger");
-                                    $(deleteBtn).addClass("bg-warning");
-                                    $(deleteBtn).html(
-                                        "Your order has been canceled");
-                                    $(deleteBtn).removeClass("cancelBtn");
-                                    $(orderStt).html(
-                                        '<span class="badge rounded-pill bg-danger">Canceled</span>'
-                                    );
-                                    $(tracking).empty();
-                                    $(tracking).html(
-                                        '<div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Canceled</span></div>'
-                                    )
+                                    if (response.status) {
+                                        $(deleteBtn).removeClass("bg-danger");
+                                        $(deleteBtn).addClass("bg-warning");
+                                        $(deleteBtn).html(response.orderMsg);
+                                        $(deleteBtn).removeClass("cancelBtn");
+                                        $(orderStt).html(
+                                            '<span class="badge rounded-pill bg-danger">Cancelled</span>'
+                                        );
+                                        $(tracking).empty();
+                                        $(tracking).html(
+                                            '<div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Cancelled</span></div>'
+                                        )
+                                        $(message).addClass("alert alert-success main-success");
+                                        $(message).html(response.emailMsg);
+                                    } else {
+                                        $(deleteBtn).html(response.orderMsg);
+                                        $(deleteBtn).removeClass("cancelBtn");
+                                        $(message).addClass("alert alert-danger");
+                                        $(message).html(response.emailMsg);
+                                    }
                                 }
                             })
                             Swal.fire(
-                                'Canceled!',
-                                'Your order is canceled successfully.',
-                                'success',
+                                'Cancelling!',
+                                'Your cancellation is processing, thanks for shopping with us.',
+                                'info',
                             )
                         }
                     })
