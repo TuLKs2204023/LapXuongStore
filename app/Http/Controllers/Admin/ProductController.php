@@ -93,13 +93,14 @@ class ProductController extends Controller
         // Save Histories of products
         $data = $product->name . ' has been created.';
         $product->historyProduct()->create(
-            [
-                'data' => $data,
-                'action' => 'Created',
-                'user_id' => auth()->user()->id,
-                'product_id' => $product->id
-            ]
-        );
+            ['data' => $data,
+            'action' => 'Created',
+            'user_id' => auth()->user()->id,
+            'product_id' => $product->id,
+            'name'=>$product->name,
+            'url'=>$product->url,
+            'slug'=>$product,
+        ]);
         $product->refresh();
 
         // Save Price

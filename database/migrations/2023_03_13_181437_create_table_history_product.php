@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('product_id')->nullable();
             $table->longText('data')->nullable();
             $table->String('action')->nullable();
+            $table->string('url')->nullable();
+            $table->longText('name')->nullable();
+            $table->longText('slug')->nullable();
+
 
             $table->timestamps();
         });
