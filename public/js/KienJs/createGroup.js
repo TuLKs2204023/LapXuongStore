@@ -56,7 +56,9 @@ function CateGroupsHandler({
 }) {
     const selectors = { tableSelector, navSelector, searchSelector };
     const tableElement = $(selectors.tableSelector);
-
+    
+    if (!tableElement) return false;
+    
     tableElement.addEventListener("click", (e) => {
         const cateData = cateTable.row(e.target.closest("tr")).data();
         const cateId = e.target.closest("tr").dataset.id;

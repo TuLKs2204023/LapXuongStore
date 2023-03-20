@@ -132,24 +132,13 @@
     <!-- Start KienJs -->
     <script>
         document.addEventListener("DOMContentLoaded", (e) => {
-            const cateTable = $("#ramGroupsMgmt").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            });
-            cateTable.buttons().container().appendTo('#ramGroupsMgmt_wrapper .col-md-6:eq(0)');
-
-            // Controll delete items on index page
-            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
-                const catesDelete = mCatesDelete.ItemsDeleteHandler({
+            import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
+                const delParams = {
+                    sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
                     url: '{{ Route('admin.ramGroup.destroy') }}',
                     token: '{{ csrf_token() }}',
-                    cateTable,
-                    selectors: {
-                        tableSelector: "#ramGroupsMgmt tbody",
-                    },
-                });
+                }
+                module.initTable("#ramGroupsMgmt", '', delParams);
             });
         });
     </script><!-- End KienJs -->

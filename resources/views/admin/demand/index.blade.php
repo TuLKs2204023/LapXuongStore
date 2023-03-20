@@ -112,24 +112,13 @@
     <!-- Start KienJs -->
     <script>
         document.addEventListener("DOMContentLoaded", (e) => {
-            const cateTable = $("#demandsMgmt").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            });
-            cateTable.buttons().container().appendTo('#demandsMgmt_wrapper .col-md-6:eq(0)');
-
-            // Controll delete items on index page
-            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
-                const catesDelete = mCatesDelete.ItemsDeleteHandler({
+            import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
+                const delParams = {
+                    sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
                     url: '{{ Route('admin.demand.destroy') }}',
                     token: '{{ csrf_token() }}',
-                    cateTable,
-                    selectors: {
-                        tableSelector: "#demandsMgmt tbody",
-                    },
-                });
+                }
+                module.initTable("#demandsMgmt", '', delParams);
             });
         });
     </script><!-- End KienJs -->
