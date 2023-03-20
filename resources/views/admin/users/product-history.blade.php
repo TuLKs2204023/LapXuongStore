@@ -51,14 +51,14 @@
                                     <td>{{ $row->user->name }}</td>
                                     <td>
                                         <a
-                                            href="{{ Route('product.details', $row->slug)}}">
+                                            href="{{ isset($row->slug) ? Route('product.details', $row->slug) : ''}}">
                                             <img src="{{ isset($row->url) ?
                                                         asset('images/' . $row->url) : ''}}"
                                                 alt="" style='height:100px'>
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{Route('product.details', $row->slug)}}"
+                                        <a href="{{isset($row->slug) ? Route('product.details', $row->slug) : ''}}"
                                             class="text-dark">
                                             {{ $row->name }}
                                         </a>
