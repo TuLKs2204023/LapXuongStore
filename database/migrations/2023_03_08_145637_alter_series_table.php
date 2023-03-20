@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::table('series', function (Blueprint $table) {
             $table->foreignId('manufacture_id')
-                ->default(1)
-                ->after('slug')
-                ->constrained()
-                ->onDelete('cascade');
+            ->after('slug')
+            ->constrained()
+            ->onDelete('cascade');
+            // ->default(1)
         });
     }
 

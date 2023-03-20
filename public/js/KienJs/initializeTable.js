@@ -14,6 +14,7 @@ function initTable(tableSelector, showParams, delParams) {
 
     // Controll items displayed on nav-bar & search-page
     if (showParams) {
+        showParams.tableBodySelector = tableSelector + " tbody";
         initButton(cateTable, showParams, "CateGroupsHandler");
     }
 

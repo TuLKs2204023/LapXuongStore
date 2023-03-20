@@ -219,11 +219,11 @@ class HomeController extends Controller
     public function userProfile()
     {
         $user = auth()->user();
-        $rating = HistoryRating::all();
+        $rating = HistoryRating::all()->sortByDesc('id');
 
         //warning if yesterday no order
 
-        $ratingWarning = Rating::where('created_at', '>', Carbon::now())
+        $ratingWarning = Rating::where('created_at', '>', Carbon::today())
       
         ->where('user_id', $user->id)
         ->get();

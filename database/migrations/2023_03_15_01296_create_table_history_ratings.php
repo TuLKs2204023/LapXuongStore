@@ -19,8 +19,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->longText('review')->nullable();
             $table->longText('rating')->nullable();
-            $table->String('action')->nullable();
-            
+            $table->string('action')->nullable();
             $table->timestamps();
         });
     }

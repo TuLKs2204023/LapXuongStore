@@ -186,7 +186,7 @@
                 <li>
                     <div class="category-list-header">{{ $cateGroup->name }}</div>
                     <ul>
-                        @foreach ($cateGroup->cates()->where('showOnNav', '>', 0)->get() as $cate)
+                        @foreach ($cateGroup->cates()->where('showOnNav', '>', 0)->get()->sortBy('name') as $cate)
                             <li><a href="{{ Route('fe.shop.cate', $cate->slug) }}">{{ $cate->name }}</a>
                             </li>
                         @endforeach
