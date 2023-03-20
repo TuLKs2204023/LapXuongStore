@@ -112,24 +112,13 @@
     <!-- Start KienJs -->
     <script>
         document.addEventListener("DOMContentLoaded", (e) => {
-            const cateTable = $("#colorsMgmt").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            });
-            cateTable.buttons().container().appendTo('#colorsMgmt_wrapper .col-md-6:eq(0)');
-
-            // Controll delete items on index page
-            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
-                const colorsDelete = mCatesDelete.ItemsDeleteHandler({
+            import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
+                const delParams = {
+                    sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
                     url: '{{ Route('admin.color.destroy') }}',
                     token: '{{ csrf_token() }}',
-                    cateTable,
-                    selectors: {
-                        tableSelector: "#colorsMgmt tbody",
-                    },
-                });
+                }
+                module.initTable("#colorsMgmt", '', delParams);
             });
         });
     </script><!-- End KienJs -->

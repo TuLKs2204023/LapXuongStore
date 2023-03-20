@@ -17,6 +17,8 @@ function ItemsDeleteHandler({
     const selectors = { tableSelector, deleteBtnSelector };
     const tableElement = $(selectors.tableSelector);
 
+    if (!tableElement) return false;
+
     tableElement.addEventListener("click", (e) => {
         const pRow = cateTable.row(e.target.closest("tr"));
         const pId = e.target.closest("tr").dataset.id;
