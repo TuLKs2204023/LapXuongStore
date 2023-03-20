@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('contents')
-    {{-------------------------------------------------Begin Warning-------------------------------------------}}
+    {{-- -----------------------------------------------Begin Warning----------------------------------------- --}}
     @if (auth()->user()->role == 'Customer')
         <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
@@ -10,8 +10,8 @@
             <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
         </section>
     @endif
-    {{--------------------------------------------------End Waring---------------------------------------------}}
-    
+    {{-- ------------------------------------------------End Waring------------------------------------------- --}}
+
     @if (auth()->user()->role !== 'Customer')
         <div class="pagetitle">
             <h1>Welcome to LapXuongShop , {{ auth()->user()->name }} </h1>
@@ -22,7 +22,7 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        {{------------------------------------------------Begin Admin view-------------------------------------}}
+        {{-- ----------------------------------------------Begin Admin view----------------------------------- --}}
         <section class="section dashboard">
             <div class="row">
                 @if (auth()->user()->role == 'Admin')
@@ -178,10 +178,18 @@
                                                         //             "2018-09-19T06:30:00.000Z"]
                                                         categories: day,
                                                     },
+                                                    yaxis: {
+                                                            labels: {
+                                                                formatter: function(value) {
+                                                                    return new Intl.NumberFormat("vi-VN").format(value);
+                                                                    // return value + " VND";
+                                                                }
+                                                            }
+                                                        },
                                                     tooltip: {
                                                         x: {
                                                             format: 'dd/MM/yy HH:mm'
-                                                        },
+                                                        }, 
                                                     }
                                                 }).render();
                                             });
@@ -430,8 +438,8 @@
                 @endif
             </div>
         </section>
-        {{------------------------------------------------End Admin view---------------------------------------}}
-        {{------------------------------------------------Begin Manager view-----------------------------------}}
+        {{-- ----------------------------------------------End Admin view------------------------------------- --}}
+        {{-- ----------------------------------------------Begin Manager view--------------------------------- --}}
         <section class="section dashboard">
             @if (auth()->user()->role == 'Manager')
                 <br>
@@ -458,6 +466,6 @@
                 <br>
             @endif
         </section>
-        {{------------------------------------------------End Manager view-------------------------------------}}
+        {{-- ----------------------------------------------End Manager view----------------------------------- --}}
     @endif
 @endsection

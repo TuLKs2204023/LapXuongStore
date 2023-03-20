@@ -49,14 +49,15 @@ function CateGroupsHandler({
     token = "",
     cateTable,
     selectors: {
-        tableSelector = "#catesMgmt tbody",
+        tableBodySelector = "#catesMgmt tbody",
         navSelector = "showOnNav",
         searchSelector = "showOnSearch",
     },
 }) {
-    const selectors = { tableSelector, navSelector, searchSelector };
-    const tableElement = $(selectors.tableSelector);
-
+    const selectors = { tableBodySelector, navSelector, searchSelector };
+    const tableElement = $(selectors.tableBodySelector);
+    if (!tableElement) return false;
+    
     tableElement.addEventListener("click", (e) => {
         const cateData = cateTable.row(e.target.closest("tr")).data();
         const cateId = e.target.closest("tr").dataset.id;

@@ -47,7 +47,7 @@
                                 <th>Cate Group</th>
                                 <th>Show on Nav-bar</th>
                                 <th>Show on Search-page</th>
-                                {{-- <th>Products</th> --}}
+                                <th>Products</th>
                                 {{-- <th>Description</th> --}}
                                 <th>Action</th>
                             </tr>
@@ -75,7 +75,7 @@
                                             <span class="switch-slider round"></span>
                                         </label>
                                     </td>
-                                    {{-- <td>
+                                    <td>
                                         <ol>
                                             @if (isset($item->cateable->products))
                                                 @foreach ($item->cateable->products as $product)
@@ -91,7 +91,7 @@
                                             @endif
 
                                         </ol>
-                                    </td> --}}
+                                    </td>
                                     {{-- <td>
                                         <ul>
                                             @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
@@ -146,34 +146,20 @@
     <!-- Start KienJs -->
     <script>
         document.addEventListener("DOMContentLoaded", (e) => {
-            const cateTable = $("#catesMgmt").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            });
-            cateTable.buttons().container().appendTo('#catesMgmt_wrapper .col-md-6:eq(0)');
-
-            // Controll items displayed on nav-bar & search-page
-            import('{{ asset('/js/KienJs/createGroup.js') }}').then((mCatesGrps) => {
-                const catesGroups = mCatesGrps.CateGroupsHandler({
+            import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
+                const showParams = {
+                    sourceJs: '{{ asset('/js/KienJs/createGroup.js') }}',
                     url: '{{ Route('admin.cate.toggleDisplay') }}',
-                    token: '{{ csrf_token() }}',
-                    cateTable,
-                    selectors: {},
-                });
-            });
+                    token: '{{ csrf_token() }}'
+                }
 
-            // Controll delete items on index page
-            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
-                const catesDelete = mCatesDelete.ItemsDeleteHandler({
+                const delParams = {
+                    sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
                     url: '{{ Route('admin.cate.destroy') }}',
                     token: '{{ csrf_token() }}',
-                    cateTable,
-                    selectors: {
-                        tableSelector: "#catesMgmt tbody",
-                    },
-                });
+                }
+                
+                module.initTable("#catesMgmt", showParams, delParams);
             });
         });
     </script><!-- End KienJs -->

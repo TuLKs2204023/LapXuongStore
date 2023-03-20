@@ -46,7 +46,7 @@
                                 <th>ID</th>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Manufacture</th>
+                                <th>Rate</th>
                                 <th>CPU</th>
                                 <th>RAM</th>
                                 <th>Screen</th>
@@ -68,7 +68,16 @@
                                         @endif
                                     </td>
                                     <td>{{ $item->subName() }}</td>
-                                    <td>{{ $item->manufacture->name }}</td>
+                                    <td>
+                                        @if ($item->countRates() > 0)
+                                            @for ($i = 0; $i< $item->avgRates(); $i++)
+                                                <i class="fa fa-star"></i>
+                                            @endfor
+                                            @for ($i = 0; $i < 5 - $item->avgRates(); $i++)
+                                                <i class="fa fa-star-o"></i>
+                                            @endfor
+                                        @endif
+                                    </td>
                                     <td>{{ $item->cpu->name }}</td>
                                     <td>{{ $item->ram->amount }}</td>
                                     <td>{{ $item->screen->amount }}</td>
@@ -146,24 +155,13 @@
     <!-- Start KienJs -->
     <script>
         document.addEventListener("DOMContentLoaded", (e) => {
-            const cateTable = $("#productsMgmt").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            });
-            cateTable.buttons().container().appendTo('#productsMgmt_wrapper .col-md-6:eq(0)');
-
-            // Controll delete items on index page
-            import('{{ asset('/js/KienJs/itemsDelete.js') }}').then((mCatesDelete) => {
-                const catesDelete = mCatesDelete.ItemsDeleteHandler({
+            import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
+                const delParams = {
+                    sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
                     url: '{{ Route('admin.product.destroy') }}',
                     token: '{{ csrf_token() }}',
-                    cateTable,
-                    selectors: {
-                        tableSelector: "#productsMgmt tbody",
-                    },
-                });
+                }
+                module.initTable("#productsMgmt", '', delParams);
             });
         });
     </script><!-- End KienJs -->

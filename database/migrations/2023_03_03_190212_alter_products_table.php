@@ -15,12 +15,12 @@ return new class extends Migration
     public function up()
     {
         // Insert new record for 'series' table for testing
-        DB::table('series')->insert(
-            array(
-                'name' => 'Macbook Pro',
-                'slug' => 'macbook-pro'
-            )
-        );
+        // DB::table('series')->insert(
+        //     array(
+        //         'name' => 'Macbook Pro',
+        //         'slug' => 'macbook-pro'
+        //     )
+        // );
         // Insert new record for 'cate_groups' table for testing
         // DB::table('cate_groups')->insert(
         //     array(

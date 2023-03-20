@@ -68,8 +68,21 @@
         .product-details a {
             color: var(--violet);
         }
+
         .product-details a:hover {
             color: var(--violet-tu);
+        }
+
+        .pd-desc-discount{
+            display: inline-block;
+            background-color: var(--violet);
+            color: #ffffff;
+            padding: 2px 6px;
+            margin-bottom: 10px;
+        }
+
+        .pd-desc-discount span{
+            font-size: 0.95rem;
         }
     </style>
 @endsection
@@ -186,6 +199,8 @@
                                         @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
                                             <i class="fa fa-star-o"></i>
                                         @endfor
+                                    @else
+                                        Not Rated Yet
                                     @endif
                                 </div>
                                 <div class="pd-desc">
@@ -194,6 +209,9 @@
                                     </p>
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
+                                    @endif
+                                    @if ($product->latestDiscount() > 0)
+                                    <div class="pd-desc-discount"><span>Sale {{ $product->latestDiscount() * 100 }}%</span></div>
                                     @endif
                                     <h4>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}
                                         @if ($product->latestDiscount() > 0)
@@ -296,6 +314,7 @@
                                 <div class="tab-pane fade" id="tab-2" role="tabpanel">
                                     <div class="specification-table">
                                         <table>
+
                                             <tr>
                                                 <td class="p-catagory">Customer Rating</td>
                                                 <td>
@@ -307,11 +326,13 @@
                                                             @for ($i = 0; $i < 5 - $product->avgRates(); $i++)
                                                                 <i class="fa fa-star-o"></i>
                                                             @endfor
+                                                        @else
+                                                            Not Rated Yet
                                                         @endif
                                                     </div>
                                                 </td>
-
                                             </tr>
+
                                             <tr>
                                                 <td class="p-catagory">Price</td>
                                                 <td>
@@ -335,15 +356,21 @@
                                                     </td>
                                                 @endif
                                             </tr>
-                                            @if (isset($product->description->weight))
-                                                <tr>
-                                                    <td class="p-catagory">Weight</td>
-                                                    <td>
-                                                        <div class="p-weight">{{ $product->description->weight }}
-                                                            kg</div>
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                            
+                                            <tr>
+                                                <td class="p-catagory">Processor</td>
+                                                <td>
+                                                    <div class="p-weight">{{ $product->cpu->name }}</div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="p-catagory">Graphics</td>
+                                                <td>
+                                                    <div class="p-weight">{{ $product->gpu->name }}</div>
+                                                </td>
+                                            </tr>
+
                                             <tr>
                                                 <td class="p-catagory">Display</td>
                                                 <td>
@@ -352,6 +379,34 @@
                                                     </div>
                                                 </td>
                                             </tr>
+
+                                            @if( $product->ram->amount > 0 )
+                                            <tr>
+                                                <td class="p-catagory">RAM</td>
+                                                <td>
+                                                    <div class="p-weight">{{ $product->ram->amount }} GB</div>
+                                                </td>
+                                            </tr>
+                                            @endif
+
+                                            @if ( $product->ssd->amount > 0)
+                                                <tr>
+                                                    <td class="p-catagory">SSD</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->ssd->amount }} GB</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
+                                            @if ( $product->hdd->amount > 0)
+                                                <tr>
+                                                    <td class="p-catagory">HDD</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->hdd->amount }} GB</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
                                             @if (isset($product->description->webcam))
                                                 <tr>
                                                     <td class="p-catagory">Webcam</td>
@@ -362,19 +417,16 @@
                                                 </tr>
                                             @endif
 
-                                            <tr>
-                                                <td class="p-catagory">Graphics</td>
-                                                <td>
-                                                    <div class="p-weight">{{ $product->gpu->name }}</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-catagory">Processor</td>
-                                                <td>
-                                                    <div class="p-weight">{{ $product->cpu->name }}</div>
-                                                </td>
-                                            </tr>
-
+                                            @if (isset($product->description->weight))
+                                                <tr>
+                                                    <td class="p-catagory">Weight</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->description->weight }}
+                                                            kg</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            
                                             @if (isset($product->description->dimension))
                                                 <tr>
                                                     <td class="p-catagory">Dimensions</td>
