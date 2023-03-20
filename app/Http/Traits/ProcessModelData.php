@@ -524,6 +524,7 @@ trait ProcessModelData
     {
         $proName = Product::find($data['product_id'])->name;
         $proId = Product::find($data['product_id'])->id;
+
         if ($data['selected_rating'] == 1) {
             $rating = 'Rated ' . $data['selected_rating'] . ' star';
         } else {
@@ -537,7 +538,10 @@ trait ProcessModelData
     {
         $user = User::find(auth()->user()->id);
         $id = $product->id;
-        $final = '';
+        $name = $product->name;
+        $slug = $product->slug;
+        isset($product->oldestImage->url) ? $url=$product->oldestImage->url : $url='';
+        $final='';
         $finalFull = '';
         $old_name = $product->name;
         $old_manufacture = $product->manufacture_id;
@@ -633,7 +637,16 @@ trait ProcessModelData
         }
 
 
-        $user->historyProduct()->create(['data' => $final, 'fulldata' => $finalFull, 'action' => 'Updated', 'product_id' => $id]);
+        $user->historyProduct()->create([
+            'data' => $final,
+            'fulldata' => $finalFull,
+            'action' => 'Updated',
+            'product_id' => $id,
+            'name' => $name,
+            'url' => $url,
+            'slug' => $slug,
+        ]);
+
     }
 
     /* End function to update history products's table. */

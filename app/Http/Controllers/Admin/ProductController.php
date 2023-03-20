@@ -98,8 +98,8 @@ class ProductController extends Controller
             'user_id' => auth()->user()->id,
             'product_id' => $product->id,
             'name'=>$product->name,
-            'url'=>$product->url,
-            'slug'=>$product,
+            'url'=>isset($product->oldestImage->url)? $product->oldestImage->url :null,
+            'slug'=>$product->slug,
         ]);
         $product->refresh();
 
@@ -115,7 +115,10 @@ class ProductController extends Controller
                 'data' => $datadescription,
                 'action' => 'Created',
                 'user_id' => auth()->user()->id,
-                'product_id' => $product->id
+                'product_id' => $product->id,
+                'name'=>$product->name,
+                'url'=>isset($product->oldestImage->url)? $product->oldestImage->url :null,
+                'slug'=>$product->slug,
             ]
         );
 
@@ -218,7 +221,10 @@ class ProductController extends Controller
                 'data' => $datadescription,
                 'action' => 'Updated',
                 'user_id' => auth()->user()->id,
-                'product_id' => $product->id
+                'product_id' => $product->id,
+                'name'=>$product->name,
+                'url'=>isset($product->oldestImage->url)? $product->oldestImage->url :null,
+                'slug'=>$product->slug,
             ]
         );
 
@@ -269,10 +275,17 @@ class ProductController extends Controller
 
         // Save Histories of products
         $data = $product->name . ' has been deleted.';
-        $product->historyProduct()->create(['data' => $data,
-                                            'action' => 'Deleted',
-                                            'user_id' => auth()->user()->id,
-                                            'product_id' => $product->id]);
+        $product->historyProduct()->create(
+                                            [
+                                                'data' => $data,
+                                                'action' => 'Deleted',
+                                                'user_id' => auth()->user()->id,
+                                                'product_id' => $product->id,
+                                                'name'=> $product->name,
+                                                'url'=>isset($product->oldestImage->url)? $product->oldestImage->url :null,
+                                                'slug'=> $product->slug,
+                                            ]
+                                        );
         $product->delete();
         return ['status' => 'success'];
     }

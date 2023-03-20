@@ -75,8 +75,7 @@ Route::get('/datatable', function () {
 
 
 
-//report users
-Route::get('admin/lastweek', [DashboardController::class, 'lastweek'])->name('lastweek');
+
 
 //Dropdown Address Controller
 Route::get('city', [DropdownController::class, 'fetchCity']);

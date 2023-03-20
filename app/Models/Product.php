@@ -363,7 +363,7 @@ class Product extends Model
     public function topSale()
     {
         $count = DB::table('products')->count('id');
-        DB::table('products')->get()->first()->id;
+        // DB::table('products')->get()->first()->id;
         $max = $this->outStock();
         for ($i = 1; $i < $count; $i++) {
             if ($max > $this->outStock()) {

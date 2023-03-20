@@ -1,6 +1,7 @@
 @extends('admin.layout.layout')
 
 @section('contents')
+    {{-------------------------------------------------Begin Warning-------------------------------------------}}
     @if (auth()->user()->role == 'Customer')
         <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
 
@@ -9,6 +10,8 @@
             <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
         </section>
     @endif
+    {{--------------------------------------------------End Waring---------------------------------------------}}
+    
     @if (auth()->user()->role !== 'Customer')
         <div class="pagetitle">
             <h1>Welcome to LapXuongShop , {{ auth()->user()->name }} </h1>
@@ -19,7 +22,7 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-
+        {{------------------------------------------------Begin Admin view-------------------------------------}}
         <section class="section dashboard">
             <div class="row">
                 @if (auth()->user()->role == 'Admin')
@@ -27,7 +30,7 @@
                     <div class="col-lg-8">
                         <div class="row">
 
-                            <!-- Sales Card -->
+                            <!-- Orders Card -->
                             <div class="col-xxl-4 col-md-6">
                                 <div class="card info-card sales-card">
                                     <div class="card-body">
@@ -48,7 +51,7 @@
                                     </div>
 
                                 </div>
-                            </div><!-- End item Card -->
+                            </div><!-- End Orders Card -->
 
                             <!-- Revenue Card -->
                             <div class="col-xxl-4 col-md-6">
@@ -97,7 +100,7 @@
 
                             </div><!-- End Customers Card -->
 
-                            <!-- Reports -->
+                            <!-- Chart 7 days-->
                             <div class="col-12">
                                 <div class="card">
 
@@ -186,7 +189,7 @@
                                         <!-- End Line Chart -->
                                     </div>
                                 </div>
-                            </div><!-- End Reports -->
+                            </div><!-- End Chart 7 days -->
                             <!-- Recent Sales -->
                             <div class="col-12">
                                 <div class="card recent-sales overflow-auto">
@@ -377,10 +380,9 @@
 
                             </div>
                         </div>
-
                         <!-- End Recent Manager Activity -->
 
-                        <!-- Product Manufacture -->
+                        <!-- Count Product with Manufacture -->
                         <div class="card">
                             <div class="card-body pb-0">
                                 <h5 class="card-title">Manufacture of Products</h5>
@@ -422,12 +424,14 @@
                                 </script>
 
                             </div> <!-- End Product Manufacture -->
-                        </div><!-- End Website Traffic -->
+                        </div><!-- End count Product with Manufature  -->
 
                     </div><!-- End Right side columns -->
                 @endif
             </div>
         </section>
+        {{------------------------------------------------End Admin view---------------------------------------}}
+        {{------------------------------------------------Begin Manager view-----------------------------------}}
         <section class="section dashboard">
             @if (auth()->user()->role == 'Manager')
                 <br>
@@ -454,5 +458,6 @@
                 <br>
             @endif
         </section>
+        {{------------------------------------------------End Manager view-------------------------------------}}
     @endif
 @endsection

@@ -40,31 +40,35 @@ class AdminHomeController extends Controller
     public function index()
     {
         if (auth()->user()->role !== 'Customer') {
-            $now = Carbon::now();
+
             // reccent orders of LapXuongStore
             $order = Order::all()->sortByDesc('created_at');
-            //warning if yesterday no order
+
+            //warning if yesterday no orders
             $orderWarning = Order::where('created_at', '>', Carbon::yesterday())
-                                    ->where('created_at', '<', Carbon::today())
-                                    ->get();
+                ->where('created_at', '<', Carbon::today())
+                ->get();
             // dd($orderWarning);
 
-            //
+            // create reports for top product sales
             $allproduct = Product::all();
 
             // user activity
             $history = HistoryUser::all()->sortByDesc('id');
-            //warning if yesterday no history
+
+            //warning if yesterday no history of user activity
             $userWarning = HistoryUser::where('created_at', '>', Carbon::yesterday())
-                                        ->where('created_at', '<', Carbon::today())
-                                        ->get();
+                ->where('created_at', '<', Carbon::today())
+                ->get();
             // dd($userWarning);
 
             //product changes
             $historyProduct = HistoryProduct::all()->sortByDesc('id');
-            $productWarning = Product::where('created_at', '>', Carbon::yesterday())
-            ->where('created_at', '<', Carbon::today())
-            ->get();
+
+            //warning if yesterday no history of product
+            $productWarning = HistoryProduct::where('created_at', '>', Carbon::yesterday())
+                ->where('created_at', '<', Carbon::today())
+                ->get();
             //dd($productWarning);
 
             //dataManu for pie
@@ -82,7 +86,7 @@ class AdminHomeController extends Controller
             $dayData[1] = Carbon::today();
             for ($i = 1; $i <= 5; $i++) {
                 $day = Carbon::today()->subDays($i);
-                $dayData[$i+1] = $day;
+                $dayData[$i + 1] = $day;
             }
             // dd($dayData);
             //  End Data daytime for the chart
@@ -150,7 +154,7 @@ class AdminHomeController extends Controller
                         $revP += $rev;
                     }
                 }
-                $revenue[$i+1] = $revP;
+                $revenue[$i + 1] = $revP;
             }
             // dd($revenue);
             // End data revenue for the chart
@@ -185,19 +189,22 @@ class AdminHomeController extends Controller
             // dd($interaction,$productData);
             // end interaction
 
-            // count user for 1 month
+            // count customer for 1 month
             $totalUser = DB::table('users')
                 ->where('role', 'Customer')
-                ->where('created_at', '>', $now->subDays(30))
+                ->where('created_at', '>', Carbon::today()->subDays(30))
                 ->count();
-
-            //count all product
-            $totalProduct = DB::table('products')->count();
+            //dd($totalUser);
 
             //count order for 1 month
             $totalItem = DB::table('order_details')
-                ->where('created_at', '>', $now->subDays(30))
+                ->where('created_at', '>', Carbon::today()->subDays(30))
                 ->count();
+            //dd($totalItem);
+            
+            //count all product
+            $totalProduct = DB::table('products')->count();
+            //dd($totalProduct);
 
             return view('admin.dashboard', compact(
                 'totalUser',

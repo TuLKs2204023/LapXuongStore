@@ -21,6 +21,7 @@
 
             </section>
         @endif
+
         @if (auth()->user()->role == 'Admin')
             <div class="card">
                 <div class="card-header">
@@ -72,7 +73,11 @@
                                         <a href="{{ URL::to('/edit-user/' . $row->id) }}"
                                             class="btn btn-sm btn-info">Edit</a>
                                         <a href="{{ URL::to('/delete-user/' . $row->id) }}" class=" btn btn-sm btn-danger"
-                                            id="delete">Delete</a>
+                                            id="delete"
+                                            style="
+                                                @if ($row->role == 'Admin') pointer-events: none;
+                                                cursor: default; @endif">
+                                            Delete</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -85,6 +90,7 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
+        @endif
     </section>
 @endsection
 
@@ -100,4 +106,3 @@
         });
     </script>
 @endsection
-@endif
