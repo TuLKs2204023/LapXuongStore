@@ -72,6 +72,18 @@
         .product-details a:hover {
             color: var(--violet-tu);
         }
+
+        .pd-desc-discount{
+            display: inline-block;
+            background-color: var(--violet);
+            color: #ffffff;
+            padding: 2px 6px;
+            margin-bottom: 10px;
+        }
+
+        .pd-desc-discount span{
+            font-size: 0.95rem;
+        }
     </style>
 @endsection
 
@@ -197,6 +209,9 @@
                                     </p>
                                     @if (isset($product->description->warranty))
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
+                                    @endif
+                                    @if ($product->latestDiscount() > 0)
+                                    <div class="pd-desc-discount"><span>Sale {{ $product->latestDiscount() * 100 }}%</span></div>
                                     @endif
                                     <h4>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}
                                         @if ($product->latestDiscount() > 0)

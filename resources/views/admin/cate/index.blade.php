@@ -47,7 +47,7 @@
                                 <th>Cate Group</th>
                                 <th>Show on Nav-bar</th>
                                 <th>Show on Search-page</th>
-                                {{-- <th>Products</th> --}}
+                                <th>Products</th>
                                 {{-- <th>Description</th> --}}
                                 <th>Action</th>
                             </tr>
@@ -75,7 +75,7 @@
                                             <span class="switch-slider round"></span>
                                         </label>
                                     </td>
-                                    {{-- <td>
+                                    <td>
                                         <ol>
                                             @if (isset($item->cateable->products))
                                                 @foreach ($item->cateable->products as $product)
@@ -91,7 +91,7 @@
                                             @endif
 
                                         </ol>
-                                    </td> --}}
+                                    </td>
                                     {{-- <td>
                                         <ul>
                                             @foreach (preg_split('/\\n/', str_replace('\r', '', $item->description)) as $subItm)
