@@ -51,15 +51,16 @@
                                     <td>{{ $row->user->name }}</td>
                                     <td>
                                         <a
-                                            href="{{ isset($row->product) ? Route('product.details', $row->product->slug) : '' }}">
-                                            <img src="{{ isset($row->product->oldestImage->url) ? asset('images/' . $row->product->oldestImage->url) : '' }}"
+                                            href="{{ Route('product.details', $row->slug)}}">
+                                            <img src="{{ isset($row->url) ?
+                                                        asset('images/' . $row->url) : ''}}"
                                                 alt="" style='height:100px'>
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ isset($row->product) ? Route('product.details', $row->product->slug) : '' }}"
+                                        <a href="{{Route('product.details', $row->slug)}}"
                                             class="text-dark">
-                                            {{ isset($row->product) ? $row->product->name : '' }}
+                                            {{ $row->name }}
                                         </a>
                                     </td>
                                     <td>{{ $row->fulldata ?? $row->data }}

@@ -18,6 +18,9 @@ class HistoryProduct extends Model
         'data',
         'fulldata',
         'action',
+        'url',
+        'name',
+        'slug',
 
     ];
     public function timePro()
@@ -32,5 +35,9 @@ class HistoryProduct extends Model
     }
     public function product(){
         return $this->belongsTo(Product::class);
+    }
+    public function oldestImage()
+    {
+        return $this->morphOne(Image::class, 'imageable')->oldestOfMany();
     }
 }

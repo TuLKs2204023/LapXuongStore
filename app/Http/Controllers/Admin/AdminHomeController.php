@@ -41,19 +41,22 @@ class AdminHomeController extends Controller
     {
         if (auth()->user()->role !== 'Customer') {
             $now = Carbon::now();
+
             // reccent orders of LapXuongStore
             $order = Order::all()->sortByDesc('created_at');
+
             //warning if yesterday no order
             $orderWarning = Order::where('created_at', '>', Carbon::yesterday())
                                     ->where('created_at', '<', Carbon::today())
                                     ->get();
             // dd($orderWarning);
 
-            //
+            // create reports for top product sales
             $allproduct = Product::all();
 
             // user activity
             $history = HistoryUser::all()->sortByDesc('id');
+
             //warning if yesterday no history
             $userWarning = HistoryUser::where('created_at', '>', Carbon::yesterday())
                                         ->where('created_at', '<', Carbon::today())
@@ -185,7 +188,7 @@ class AdminHomeController extends Controller
             // dd($interaction,$productData);
             // end interaction
 
-            // count user for 1 month
+            // count customer for 1 month
             $totalUser = DB::table('users')
                 ->where('role', 'Customer')
                 ->where('created_at', '>', $now->subDays(30))
