@@ -115,10 +115,11 @@
             import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
                 const delParams = {
                     sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
+                    handler: 'ItemsDeleteHandler',
                     url: '{{ Route('admin.resolution.destroy') }}',
                     token: '{{ csrf_token() }}',
                 }
-                module.initTable("#resolutionsMgmt", '', delParams);
+                module.initTable("#resolutionsMgmt", delParams);
             });
         });
     </script><!-- End KienJs -->

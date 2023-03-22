@@ -23,20 +23,20 @@ function Validator(form) {
             const regExMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
             return regExMail.test(value)
                 ? undefined
-                : ` This field must be in the format: 'abc@xx.xxx'`;
+                : ` Must be in the format: 'abc@xx.xx'`;
         },
         minLength(min) {
             return (value) => {
                 return value.length >= min
                     ? undefined
-                    : `This field must not be less than ${min} character(s)`;
+                    : `Must not be less than ${min} character(s)`;
             };
         },
         maxLength(max) {
             return (value) => {
                 return value.length <= max
                     ? undefined
-                    : `This field must not be greater than ${max} character(s)`;
+                    : `Must not be greater than ${max} character(s)`;
             };
         },
         min(min, include = "") {

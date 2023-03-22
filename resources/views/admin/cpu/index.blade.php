@@ -111,10 +111,11 @@
             import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
                 const delParams = {
                     sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
+                    handler: 'ItemsDeleteHandler',
                     url: '{{ Route('admin.cpu.destroy') }}',
                     token: '{{ csrf_token() }}',
                 }
-                module.initTable("#cpusMgmt", '', delParams);
+                module.initTable("#cpusMgmt", delParams);
             });
         });
     </script><!-- End KienJs -->

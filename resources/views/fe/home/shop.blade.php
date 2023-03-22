@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="500000" data-max="110000000">
+                                data-min="0" data-max="100000000">
                                 <div class="ui-slider ui-corner-all ui-widget-header">
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
