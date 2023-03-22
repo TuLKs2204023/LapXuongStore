@@ -9,7 +9,7 @@
         @if (count($products) > 0)
             @foreach ($products as $item)
                 <div class="col-lg-3 col-sm-6">
-                    <div class="product-item" data-index="{{ $item->id }}">
+                    <div class="product-item product-index" data-index="{{ $item->id }}">
                         <div class="pi-pic">
                             <a href="{{ Route('product.details', $item->slug) }}">
                                 <img src="{{ isset($item->oldestImage->url) ? asset('images/' . $item->oldestImage->url) : '' }}"

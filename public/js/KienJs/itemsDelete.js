@@ -62,9 +62,9 @@ function ItemsDeleteHandler({
         const msg = {
             success: "Item has been removed successfully.",
             aborted:
-                "Item cannot be removed. There was some products belong to this category.",
+                "Item cannot be removed. There were some products belong to this category.",
             orderExisted:
-                "Product cannot be removed. There was some orders belong to this product.",
+                "Product cannot be removed. There were some orders belong to this product.",
             stockExisted:
                 "This product has stock movement(s), please check again.",
             priceExisted:

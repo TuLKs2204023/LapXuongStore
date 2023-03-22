@@ -132,7 +132,7 @@ body {
     min-width: 400px;
     max-width: 450px;
     border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-bottom-right-radius: 14px;
 }
 
 #myToast .toast--success {

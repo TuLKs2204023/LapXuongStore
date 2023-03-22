@@ -126,7 +126,7 @@ function SearchHandler({
         ajaxReq.onreadystatechange = () => {
             if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
                 const productList = renderSearch(ajaxReq.responseText);
-                wishList.init(productList);
+                wishList.initList(productList);
             }
         };
         ajaxReq.open("GET", url, true);
@@ -178,7 +178,7 @@ function SearchHandler({
                 if (scrollToTop) {
                     window.scrollTo({ top: 60, behavior: "smooth" });
                 }
-                wishList.init(productList);
+                wishList.initList(productList);
             }
         };
         ajaxReq.open("GET", page, true);
