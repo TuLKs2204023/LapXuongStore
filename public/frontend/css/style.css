@@ -2963,11 +2963,12 @@ ol {
     color: #d85d5c;
 }
 
+.checkout-form select,
 .checkout-form input {
     width: 100%;
     height: 46px;
-    border: 2px solid #ebebeb;
-    margin-bottom: 25px;
+    border: 1px solid #ebebeb;
+    margin-bottom: 5px;
     padding-left: 15px;
 }
 

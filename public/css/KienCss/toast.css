@@ -62,7 +62,7 @@ body {
     right: 20px;
     z-index: 9999999999 !important;
 }
-#myToast .toast-container {
+#myToast .toast__container {
     display: grid;
     position: relative;
     grid-template-columns: repeat(1, 1fr);

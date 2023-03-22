@@ -231,10 +231,11 @@
 
         const navCateBtn = document.querySelector('.nav-item .cate-btn');
         const navFakeCateBtn = document.querySelector('.nav-fake-categories .cate-btn');
-        navCateBtn.addEventListener('click', (e) =>{
+        const toggleNav = (e) => {
             navFakeCateBtn.click();
             navCateBtn.classList.toggle('show');
-        });
+        };
+        navCateBtn.addEventListener('click', toggleNav, false);
     </script><!-- KIEN Js -->
 
     @yield('myJs')
