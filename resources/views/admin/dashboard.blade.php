@@ -233,25 +233,23 @@
                                             <tbody>
 
                                                 @foreach ($order as $key => $item)
-                                                    @foreach ($item->details as $ip)
                                                         <tr>
                                                             <th scope="row"> {{ $item->created_at->format('d/m/Y') }}
                                                             </th>
-                                                            <td>{{ $item->name }}</td>
-                                                            <td><a href="{{ Route('product.details', $ip->product->slug) }}"
-                                                                    class="text-primary fw-bold">{{ $ip->product->name }}</a>
+                                                            <td>{{ $item->order->name }}</td>
+                                                            <td><a href="{{ Route('product.details', $item->product->slug) }}"
+                                                                    class="text-primary fw-bold">{{ $item->product->name }}</a>
                                                             </td>
-                                                            <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
+                                                            <td>{{ number_format($item->printPrice(), 0, ',', '.') }}
                                                             </td>
                                                             <td>
                                                                 <span>
                                                                     @php
-                                                                        echo $item->statusProcessing();
+                                                                        echo $item->order->statusProcessing();
                                                                     @endphp
                                                                 </span>
                                                             </td>
                                                         </tr>
-                                                    @endforeach
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -292,17 +290,19 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($allproduct as $key => $row)
-                                                    <tr>
-                                                        <th scope="row"><a
-                                                                href="{{ Route('product.details', $row->slug) }}"><img
-                                                                    src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
-                                                                    alt=""></a></th>
-                                                        <td><a href="{{ Route('product.details', $row->slug) }}"
-                                                                class="text-primary fw-bold">{{ $row->name }}</a></td>
-                                                        <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
-                                                        <td class="fw-bold">{{ $row->topSale() }}</td>
-                                                        <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
-                                                    </tr>
+                                                    @if ($row->topSale() !== 0)
+                                                        <tr>
+                                                            <th scope="row"><a
+                                                                    href="{{ Route('product.details', $row->slug) }}"><img
+                                                                        src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
+                                                                        alt=""></a></th>
+                                                            <td><a href="{{ Route('product.details', $row->slug) }}"
+                                                                    class="text-primary fw-bold">{{ $row->name }}</a></td>
+                                                            <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
+                                                            <td class="fw-bold">{{ $row->topSale() }}</td>
+                                                            <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
