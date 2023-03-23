@@ -210,7 +210,7 @@
                         <p>Secs</p>
                     </div>
                 </div>
-                <a href="#" class="primary-btn">Shop Now</a>
+                <a href="{{ Route('fe.shop.index') }}" class="primary-btn">Shop Now</a>
             </div>
         </div>
     </section>

@@ -131,5 +131,20 @@ class Order extends Model
         return $durationPro;
     }
 
+    //send code to order greater than 100 millions vnd
+    public function giftForOrder(){
+        if($this->totalAfterDiscount() > 100000000){
+            $promotion = Promotion::where('status', '1')->inRandomOrder()->limit(1)->get()->first();
+            if($promotion){
+                return 'Your gift promotion code is: \'' .$promotion->code . '\''; 
+            }
+            else{
+                return "No Gift";
+            }
+        }
+        else{
+            return "No Gift";
+        }
+    }
     // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
 }

@@ -109,8 +109,10 @@ class PromotionController extends Controller
      * @param  \App\Models\Promotion  $promotion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Promotion $promotion)
+    public function destroy(Request $request)
     {
-        //
+        $promotion = Promotion::find($request->id);
+        $promotion->delete();
+        return back()->with('success', 'Promotion \'' . $promotion->code  . '\' is deleted.');
     }
 }

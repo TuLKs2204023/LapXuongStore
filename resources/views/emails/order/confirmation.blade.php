@@ -80,9 +80,12 @@
                                     </tr>
                                 </tbody>
                             </table>
-  
+                            
+                            @if ($order->giftForOrder() != 'No Gift')
+                            <p style="margin-bottom:25px">{{ $order->giftForOrder() }}, we would love to send you this promotion for the next time of shopping, be sure to use it quick because it could be used at anytime by any customers, the best discount up to 99% is waiting for you, good luck! </p>
+                            @endif
                             <p style="margin-bottom:25px">Thank you for shopping with us, have a nice day, wish you all the bests!</p>
-  
+
                             <p style="margin-bottom:12px">Best Regards,<br><strong>LapXuongStore</strong></p>
                             </td>
                           </tr>
