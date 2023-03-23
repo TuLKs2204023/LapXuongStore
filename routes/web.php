@@ -330,7 +330,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [PromotionController::class, 'store'])->name('store');
             // Route::get('/{id}/edit', [PromotionController::class, 'edit'])->name('edit');
             // Route::put('/update', [PromotionController::class, 'update'])->name('update');
-            // Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
         });
 
         // Rating
@@ -349,6 +349,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/all-orders', [OdersController::class, 'Allorders'])->name('allorders');
             //OrderDetails
             Route::get('/{id}/details', [OrderDetailsController::class, 'adminRights'])->name('details');
+            Route::post('/cancel', [OdersController::class, 'cancelOrderByAdmin'])->name('cancelOrderByAdmin');
         });
     });
 });

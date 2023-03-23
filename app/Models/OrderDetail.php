@@ -68,13 +68,13 @@ class OrderDetail extends Model
          if($check >0){
              $pro=DB::table('promotions')->where('id',$check)->sum('discount');
          }
-         else $pro =1;
+         else $pro =0;
          return $pro;
  
      }
      public function printPrice(){
          $product= DB::table('products')->where('id',$this->product_id)->sum('id');
-         $price=DB::table('prices')->where('product_id',$product)->sum('sale_discounted') *$this->checkPromotion();
+         $price=DB::table('prices')->where('product_id',$product)->sum('sale_discounted') - DB::table('prices')->where('product_id',$product)->sum('sale_discounted') *$this->checkPromotion();
          return $price;
      }
      private function printOutqty(){

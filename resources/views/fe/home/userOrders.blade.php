@@ -172,7 +172,7 @@
             color: var(--violet-main);
         }
 
-        h5 .badge.bg-danger.cancelBtn {
+        h5 .badge.bg-danger.cancelBtn, h5 .badge.bg-danger.cancelBtn-late {
             color: white;
             cursor: pointer;
         }
@@ -240,124 +240,132 @@
             <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
         </section>
     @endif
-    @if(auth()->user()->role == 'Customer')
-    <!-- Breadcrumb -->
-    <div class="breadcrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text">
-                        <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
-                        <a href="{{ Route('userProfile') }}">{{ auth()->user()->name }}</a>
-                        <span>Orders</span>
+    @if (auth()->user()->role == 'Customer')
+        <!-- Breadcrumb -->
+        <div class="breadcrumb-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-text">
+                            <a href="{{ Route('fe.home') }}"><i class="fa fa-home"></i>Home</a>
+                            <a href="{{ Route('userProfile') }}">{{ auth()->user()->name }}</a>
+                            <span>Orders</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- /Breadcrumb -->
-    <div class="container">
-        @if (count($orders) > 0)
-            <article class="card">
-                @foreach ($orders as $order)
-                    <fieldset class="card-body" data-index="{{ $order->id }}">
-                        <legend class="order-head-name">
-                            Order ID: LXS-{{ $order->id }}
-                        </legend>
-                        <article class="card">
-                            <div class="card-body row">
-                                <div class="col"> <strong>Estimated Delivery time:</strong>
-                                    <br>{{ $order->arrivalEstimate() }}
-                                </div>
-                                <div class="col"> <strong>Shipping BY:</strong> <br> LapXuongStore's Shipper<br>
-                                    <i class="fa fa-phone"></i>
-                                    +8413456789
-                                </div>
-                                <div class="col"> <strong>Status:</strong> <br>
-                                    <div class="status">
-                                        @php echo $order->statusProcessing() @endphp
+        <!-- /Breadcrumb -->
+        <div class="container">
+            @if (count($orders) > 0)
+                <article class="card">
+                    @foreach ($orders as $order)
+                        <fieldset class="card-body" data-index="{{ $order->id }}">
+                            <legend class="order-head-name">
+                                Order ID: LXS-{{ $order->id }}
+                            </legend>
+                            <article class="card">
+                                <div class="card-body row">
+                                    <div class="col"> <strong>Estimated Delivery time:</strong>
+                                        <br>{{ $order->arrivalEstimate() }}
                                     </div>
-                                </div>
-                                <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>
-                            </div>
-                        </article>
-                        <div class="track">
-                            @if ($order->status == 1)
-                                <div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span>
-                                    <span class="text">Order confirmed</span>
-                                </div>
-                                <div class="step pick @if ($order->statusByTime() >= 1) active @endif"> <span
-                                        class="icon"> <i class="fa fa-user"></i> </span> <span class="text">
-                                        Picked by courier</span> </div>
-                                <div class="step on-way @if ($order->statusByTime() >= 3) active @endif">
-                                    <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
-                                        On
-                                        the way </span>
-                                </div>
-                                <div class="step arrived @if ($order->statusByTime() >= 7) active @endif"> <span
-                                        class="icon">
-                                        <i class="fa fa-box"></i> </span> <span class="text">Ready
-                                        for pickup</span> </div>
-                            @elseif($order->status == 0)
-                                <div class="step order active"> <span class="icon"> <i class="fa fa-frown-o"></i> </span>
-                                    <span class="text">Cancelled</span>
-                                </div>
-                            @endif
-                        </div>
-                        <hr>
-                        <ul class="row">
-                            @foreach ($order->details as $item)
-                                <li class="col-md-4">
-                                    <figure class="itemside mb-3">
-                                        <div class="aside"><img
-                                                src="{{ asset('images/' . $item->product->oldestImage->url) }}"
-                                                class="img-sm border">
+                                    <div class="col"> <strong>Shipping BY:</strong> <br> LapXuongStore's Shipper<br>
+                                        <i class="fa fa-phone"></i>
+                                        +8413456789
+                                    </div>
+                                    <div class="col"> <strong>Status:</strong> <br>
+                                        <div class="status">
+                                            @php echo $order->statusProcessing() @endphp
                                         </div>
-                                        <figcaption class="info align-self-center">
-                                            <p class="title">{{ $item->product->name }} <br> x{{ $item->quantity }}</p>
-                                            <span
-                                                class="text-muted">{{ number_format($item->product->fakePrice(), 0, ',', '.') . ' VND' }}
-                                            </span>
-                                        </figcaption>
-                                    </figure>
-                                </li>
-                            @endforeach
-                        </ul>
-                        @if ($order->statusByTime() >= 7)
-                            <h5><span class="badge bg-success">Deliver successfully</span></h5>
-                        @else
-                            @if ($order->status == 1)
-                                <h5><span class="badge bg-danger cancelBtn">Cancel Order
-                                        LXS-{{ $order->id }}</span></h5>
-                            @elseif($order->status == 0)
-                                <h5><span class="badge bg-warning">Your order has been cancelled</span></h5>
+                                    </div>
+                                    <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>
+                                </div>
+                            </article>
+                            <div class="track">
+                                @if ($order->status == 1)
+                                    <div class="step order active"> <span class="icon"> <i class="fa fa-check"></i>
+                                        </span>
+                                        <span class="text">Order confirmed</span>
+                                    </div>
+                                    <div class="step pick @if ($order->statusByTime() >= 1) active @endif"> <span
+                                            class="icon"> <i class="fa fa-user"></i> </span> <span class="text">
+                                            Picked by courier</span> </div>
+                                    <div class="step on-way @if ($order->statusByTime() >= 3) active @endif">
+                                        <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">
+                                            On
+                                            the way </span>
+                                    </div>
+                                    <div class="step arrived @if ($order->statusByTime() >= 7) active @endif"> <span
+                                            class="icon">
+                                            <i class="fa fa-box"></i> </span> <span class="text">Ready
+                                            for pickup</span> </div>
+                                @elseif($order->status == 0)
+                                    <div class="step order active"> <span class="icon"> <i class="fa fa-frown-o"></i>
+                                        </span>
+                                        <span class="text">Cancelled</span>
+                                    </div>
+                                @endif
+                            </div>
+                            <hr>
+                            <ul class="row">
+                                @foreach ($order->details as $item)
+                                    <li class="col-md-4">
+                                        <figure class="itemside mb-3">
+                                            <div class="aside"><img
+                                                    src="{{ asset('images/' . $item->product->oldestImage->url) }}"
+                                                    class="img-sm border">
+                                            </div>
+                                            <figcaption class="info align-self-center">
+                                                <p class="title">{{ $item->product->name }} <br> x{{ $item->quantity }}
+                                                </p>
+                                                <span
+                                                    class="text-muted">{{ number_format($item->product->fakePrice(), 0, ',', '.') . ' VND' }}
+                                                </span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            @if ($order->statusByTime() >= 7)
+                                <h5><span class="badge bg-success">Deliver successfully</span></h5>
+                            @else
+                                @if ($order->status == 1)
+                                    @if ($order->statusByTime() > 1)
+                                        <h5><span class="badge bg-danger cancelBtn-late">
+                                                Cancel Order LXS-{{ $order->id }} </span></h5>
+                                    @else
+                                        <h5><span class="badge bg-danger cancelBtn">
+                                                Cancel Order LXS-{{ $order->id }} </span></h5>
+                                    @endif
+                                @elseif($order->status == 0)
+                                    <h5><span class="badge bg-warning">Your order has been cancelled</span></h5>
+                                @endif
                             @endif
-                        @endif
-                        <div class="tu-send-mail-message"></div>
-                    </fieldset>
-                @endforeach
-                <div>
-                    {{ $orders->withQueryString()->links('vendor.pagination.footer') }}
-                </div>
-                <legend><a href="{{ Route('userProfile') }}" class="tu-back-btn"> <i class="fa fa-chevron-left"></i>
-                        Back to
-                        profile</a></legend>
-            </article>
-        @else
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="success-text"><a href="{{ Route('fe.shop.index') }}"><i class="fa fa-shopping-basket"
-                                aria-hidden="true"></i></a>
-                        <h2>No Order</h2>
-                        <p>You still not have any orders yet</p>
-                        <p>Would you prefer to take a trip to our shop?</p>
-                        <p><i class="fa fa-hand-o-up" aria-hidden="true"></i> CLICK THE CART <i class="fa fa-hand-o-up"
-                                aria-hidden="true"></i></p>
+                            <div class="tu-send-mail-message"></div>
+                        </fieldset>
+                    @endforeach
+                    <div>
+                        {{ $orders->withQueryString()->links('vendor.pagination.footer') }}
+                    </div>
+                    <legend><a href="{{ Route('userProfile') }}" class="tu-back-btn"> <i class="fa fa-chevron-left"></i>
+                            Back to
+                            profile</a></legend>
+                </article>
+            @else
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="success-text"><a href="{{ Route('fe.shop.index') }}"><i class="fa fa-shopping-basket"
+                                    aria-hidden="true"></i></a>
+                            <h2>No Order</h2>
+                            <p>You still not have any orders yet</p>
+                            <p>Would you prefer to take a trip to our shop?</p>
+                            <p><i class="fa fa-hand-o-up" aria-hidden="true"></i> CLICK THE CART <i class="fa fa-hand-o-up"
+                                    aria-hidden="true"></i></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endif
-    </div>
+            @endif
+        </div>
     @endif
 @endsection
 
@@ -378,6 +386,7 @@
 
             //cancel order
             cardBody.each(function(index, element) {
+                //cancel at order-confirmed
                 const deleteBtn = $(element).find(".cancelBtn").get(0);
                 $(deleteBtn).on("click", function(e) {
                     e.preventDefault();
@@ -387,7 +396,7 @@
                     const oId = $(element).attr('data-index');
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "You won't be able to revert this, once cancled your promotion code won't be returned back anymore!",
+                        text: "You won't be able to revert this, once cancelled your promotion code won't be returned back anymore!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#4154f1',
@@ -395,6 +404,14 @@
                         confirmButtonText: 'Yes, cancel it!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            $(deleteBtn).html(
+                                '<div class="spinner-border spinner-border-sm"></div> Cancellation is processing!'
+                            );
+                            Swal.fire(
+                                'Cancelling!',
+                                'Your cancellation is processing, please wait for a few seconds.',
+                                'info',
+                            )
                             $.ajax({
                                 type: "GET",
                                 url: "{{ Route('cancelOrder') }}",
@@ -417,23 +434,33 @@
                                         $(tracking).html(
                                             '<div class="step order active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Cancelled</span></div>'
                                         )
-                                        $(message).addClass("alert alert-success main-success");
+                                        $(message).addClass(
+                                            "alert alert-success main-success"
+                                        );
                                         $(message).html(response.emailMsg);
                                     } else {
                                         $(deleteBtn).html(response.orderMsg);
                                         $(deleteBtn).removeClass("cancelBtn");
-                                        $(message).addClass("alert alert-danger");
+                                        $(message).addClass(
+                                            "alert alert-danger");
                                         $(message).html(response.emailMsg);
                                     }
                                 }
                             })
-                            Swal.fire(
-                                'Cancelling!',
-                                'Your cancellation is processing, thanks for shopping with us.',
-                                'info',
-                            )
                         }
                     })
+                })
+
+                //cancel late
+                const deleteBtnLate = $(element).find(".cancelBtn-late").get(0);
+                console.log(deleteBtnLate)
+                $(deleteBtnLate).on("click", function(e) {
+                    e.preventDefault();
+                    Swal.fire(
+                        'Announcement!',
+                        `Your cancellation is refused to be cancelled, only <b>Order Confirmed</b> stage is allowed to be cancelled by yourself. If you strongly need to cancel this order, please contact our support <b><i>LapXuongShop@support.com</i></b> to have the best support, thank you!` ,
+                        'info',
+                    )
                 })
             })
         })

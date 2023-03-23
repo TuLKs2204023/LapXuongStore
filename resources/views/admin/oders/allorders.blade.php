@@ -53,7 +53,8 @@
                                 <td>{{ $row->order_date }}</td>
                                 <td>{{ $row->name }}</td>
                                 <td>{{ $row->phone }}</td>
-                                <td>{{ $row->address }}, {{ $row->ward }}, {{ $row->district }}, {{ $row->city }}</td>
+                                <td>{{ $row->address }}, {{ $row->ward }}, {{ $row->district }}, {{ $row->city }}
+                                </td>
                                 <td>
                                     @if ($row->payment == 1)
                                         Cash
@@ -65,6 +66,15 @@
                                 <td>
                                     <a href="{{ Route('admin.order.details', $row->id) }}"
                                         class="btn btn-sm btn-outline-info">Details</a>
+                                    @if ($row->status == 1)
+                                        <form id="order-cancel" action="{{ Route('admin.order.cancelOrderByAdmin') }}" method="POST"
+                                            style="display:inline-block">
+                                            @csrf
+                                            <input type="hidden" name="oId" value="{{ $row->id }}">
+                                            <div class="btn btn-sm btn-outline-danger tu-button"
+                                                data-index="{{ $row->id }}">Cancel</div>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -91,5 +101,32 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#allOrdersMgmt_wrapper .col-md-6:eq(0)');
         });
+    </script>
+    <script>
+        jQuery(document).ready(function($) {
+            const tuBtn = $(".tu-button");
+            tuBtn.each(function(index, element){
+                $(element).on("click", function(e){
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this, once cancelled Customer's promotion code won't be returned back anymore!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#4154f1',
+                        cancelButtonColor: 'crimson',
+                        confirmButtonText: 'Yes, cancel it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $(element).html('<div class="spinner-border spinner-border-sm"></div> Processing');
+                            Swal.fire(
+                                'Cancelling!',
+                                'Your cancellation is processing, please wait for a few seconds.',
+                                'info',
+                            )
+                            $('#order-cancel').submit();
+                        }})
+                })
+            })
+        })
     </script>
 @endsection

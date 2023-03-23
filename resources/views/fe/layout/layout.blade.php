@@ -202,7 +202,7 @@
                     cancelButtonText: 'No, I\'m still with you!!!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('logout-form').submit();
+                        $('#logout-form').submit();
                     }
                 })
             })
