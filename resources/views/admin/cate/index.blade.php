@@ -149,12 +149,14 @@
             import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
                 const showParams = {
                     sourceJs: '{{ asset('/js/KienJs/createGroup.js') }}',
+                    handler: 'CateGroupsHandler',
                     url: '{{ Route('admin.cate.toggleDisplay') }}',
                     token: '{{ csrf_token() }}'
                 }
 
                 const delParams = {
                     sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
+                    handler: 'ItemsDeleteHandler',
                     url: '{{ Route('admin.cate.destroy') }}',
                     token: '{{ csrf_token() }}',
                 }

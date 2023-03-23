@@ -2,7 +2,7 @@ $ = document.querySelector.bind(document);
 
 function SearchHandler({
     paginateConfigs: { pageDefaultItems = 16, pageDefaultSort = 0 },
-    price: { priceMin = 1, priceMax = 500000000 },
+    price: { priceMin = 0, priceMax = 500000000 },
     selectors: {
         sidebarSelector = ".produts-sidebar-filter",
         productListSelector = ".product-search",
@@ -126,7 +126,7 @@ function SearchHandler({
         ajaxReq.onreadystatechange = () => {
             if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
                 const productList = renderSearch(ajaxReq.responseText);
-                wishList.init(productList);
+                wishList.initList(productList);
             }
         };
         ajaxReq.open("GET", url, true);
@@ -178,7 +178,7 @@ function SearchHandler({
                 if (scrollToTop) {
                     window.scrollTo({ top: 60, behavior: "smooth" });
                 }
-                wishList.init(productList);
+                wishList.initList(productList);
             }
         };
         ajaxReq.open("GET", page, true);

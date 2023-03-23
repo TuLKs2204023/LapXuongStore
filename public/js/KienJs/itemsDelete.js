@@ -19,7 +19,7 @@ function ItemsDeleteHandler({
 
     if (!tableElement) return false;
 
-    tableElement.addEventListener("click", (e) => {
+    const processTableEle = (e) => {
         const pRow = cateTable.row(e.target.closest("tr"));
         const pId = e.target.closest("tr").dataset.id;
         const deleteBtnId = `${selectors.deleteBtnSelector}-${pId}`;
@@ -54,39 +54,29 @@ function ItemsDeleteHandler({
                 confirmDialog.showDialog();
             }, 0);
         }
-    });
+    };
+    tableElement.addEventListener("click", processTableEle, false);
 
     function processDelete(ajaxReq, selectedItm, closeDialog) {
         const res = JSON.parse(ajaxReq.responseText);
         const msg = {
             success: "Item has been removed successfully.",
             aborted:
-                "Item cannot be removed. Please make sure that there was no any product's specification references to this item.",
+                "Item cannot be removed. There were some products belong to this category.",
             orderExisted:
-                "This product has been placed order(s), please check again.",
+                "Product cannot be removed. There were some orders belong to this product.",
             stockExisted:
                 "This product has stock movement(s), please check again.",
             priceExisted:
                 "This product has stock movement(s), please check again.",
         };
         switch (res.status) {
-            case "aborted":
-            case "orderExisted":
-            case "stockExisted":
-            case "priceExisted":
-                displayMessage(
-                    msg[res.status],
-                    showErrorToast,
-                    6500,
-                    closeDialog
-                );
-                return false;
-
             case "success":
                 // Remove selected-item in items List
                 selectedItm.pRow.remove();
                 selectedItm.row.remove();
                 displayMessage(
+                    "Success",
                     msg[res.status],
                     showSuccessToast,
                     3000,
@@ -95,15 +85,22 @@ function ItemsDeleteHandler({
                 break;
 
             default:
-                break;
+                displayMessage(
+                    "Error",
+                    msg[res.status],
+                    showErrorToast,
+                    6500,
+                    closeDialog
+                );
+                return false;
         }
     }
 
-    function displayMessage(msg, toast, duration, closeDialog) {
+    function displayMessage(title, msg, toast, duration, closeDialog) {
         closeDialog();
         setTimeout(() => {
             toast({
-                title: "Error",
+                title,
                 message: msg,
                 duration,
             });

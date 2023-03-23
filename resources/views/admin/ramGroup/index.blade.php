@@ -135,10 +135,11 @@
             import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
                 const delParams = {
                     sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
+                    handler: 'ItemsDeleteHandler',
                     url: '{{ Route('admin.ramGroup.destroy') }}',
                     token: '{{ csrf_token() }}',
                 }
-                module.initTable("#ramGroupsMgmt", '', delParams);
+                module.initTable("#ramGroupsMgmt", delParams);
             });
         });
     </script><!-- End KienJs -->

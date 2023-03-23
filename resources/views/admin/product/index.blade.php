@@ -70,12 +70,7 @@
                                     <td>{{ $item->subName() }}</td>
                                     <td>
                                         @if ($item->countRates() > 0)
-                                            @for ($i = 0; $i< $item->avgRates(); $i++)
-                                                <i class="fa fa-star"></i>
-                                            @endfor
-                                            @for ($i = 0; $i < 5 - $item->avgRates(); $i++)
-                                                <i class="fa fa-star-o"></i>
-                                            @endfor
+                                        {{$item->avgRates()}} <i style="color: #FAC451" class="fa fa-star"></i>
                                         @endif
                                     </td>
                                     <td>{{ $item->cpu->name }}</td>
@@ -158,10 +153,11 @@
             import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
                 const delParams = {
                     sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
+                    handler: 'ItemsDeleteHandler',
                     url: '{{ Route('admin.product.destroy') }}',
                     token: '{{ csrf_token() }}',
                 }
-                module.initTable("#productsMgmt", '', delParams);
+                module.initTable("#productsMgmt", delParams);
             });
         });
     </script><!-- End KienJs -->

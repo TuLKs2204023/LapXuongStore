@@ -92,7 +92,81 @@
 @endsection
 
 @section('myJs')
-    <script>
+    <script type="module">
+        import {
+            ConfirmDialog,
+            AjaxDeleteRequest
+        } from '{{ asset('/js/KienJs/confirmDialog.js') }}';
+        import { showSuccessToast } from '{{ asset('/js/KienJs/toast.js') }}';
+
+        const $ = document.querySelector.bind(document);
+        const selectors = {
+            list: ".products-cart",
+            deleteBtn: "td.close-td.first-row",
+            headerIcon: ".heart-icon"
+        };
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const selectedItm = {
+                    code: "",
+                    row: "",
+                };
+                const rows = $(selectors.list);
+                if (!rows) return false;
+                const confirmBtn = rows.querySelectorAll(selectors.deleteBtn);
+                if (confirmBtn) {
+                    for (let btn of confirmBtn) {
+                        btn.onclick = (e) => {
+                            e.preventDefault();
+                            selectedItm.row = e.target.closest(".pr-cart-item");
+                            selectedItm.code = selectedItm.row.dataset.index;
+                            const ajaxReq = new AjaxDeleteRequest(
+                                selectedItm,
+                                '{{ Route('removeWishlist') }}',
+                                '{{ csrf_token() }}',
+                                deleteSuccess
+                            );
+                            // Call confirm Dialog
+                            const confirmDialog = new ConfirmDialog({
+                                request: ajaxReq,
+                                message: "Are you sure to DELETE this item? You won't be able to revert this!",
+                            });
+                            setTimeout(() => {
+                                confirmDialog.showDialog();
+                            }, 0);
+                        };
+                    }
+                }
+
+                function updateHeader(res) {
+                    const headerCont = $(selectors.headerIcon);
+                    if (headerCont) {
+                        const headerCount = headerCont.querySelector(".icon_heart_alt+span");
+                        if (headerCount) headerCount.innerHTML = res.totalWishlist;
+                    }
+                }
+
+                function deleteSuccess(ajaxReq, selectedItm, closeDialog) {
+                    const res = JSON.parse(ajaxReq.responseText);
+                    // Remove selected-item in items List
+                    selectedItm.row.remove();
+                    // Update header Wishlist total-count
+                    updateHeader(res);
+                    // Close confirm-dialog
+                    closeDialog();
+                    setTimeout(() => {
+                        showSuccessToast({
+                            title: "Success",
+                            message: "Wishlist item removed successfully.",
+                            duration: 3000,
+                        });
+                    }, 100);
+                }
+            }
+        });
+    </script>
+    {{-- <script>
         jQuery(document).ready(function($) {
             const productCart = $(".pr-cart-item");
             const headerHeart = $(".heart-icon");
@@ -137,5 +211,5 @@
                 })
             })
         });
-    </script>
+    </script> --}}
 @endsection

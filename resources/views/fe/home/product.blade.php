@@ -73,16 +73,30 @@
             color: var(--violet-tu);
         }
 
-        .pd-desc-discount{
+        .pd-desc-discount {
             display: inline-block;
             background-color: var(--violet);
             color: #ffffff;
-            padding: 2px 6px;
+            padding: 7px 14px;
             margin-bottom: 10px;
+            display: inline-flex;
+            align-content: center;
         }
 
-        .pd-desc-discount span{
-            font-size: 0.95rem;
+        .pd-desc-discount span {
+            font-size: 0.7rem;
+        }
+
+        .product-details .fa-heart {
+            color: var(--red-dark-tu);
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: var(--red-dark-tu);
+        }
+
+        .product-details .fa-heart-o {
+            color: #ffffff;
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: var(--red-dark-tu);
         }
     </style>
 @endsection
@@ -173,7 +187,7 @@
 
                         {{-- -------------------------------------------------------------------------------Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
                         <div class="col-lg-6">
-                            <div class="product-details" data-index="{{ $product->id }}">
+                            <div class="product-details product-index" data-index="{{ $product->id }}">
                                 <div class="pd-title">
                                     <span>{{ $product->series->name }}</span>
                                     <h3>{{ $product->name }}</h3>
@@ -184,7 +198,7 @@
                                             @if ($product->findWishlist())
                                                 <a href="#" class="heart-icon"><i class="fas fa-heart"></i></a>
                                             @else
-                                                <a href="#" class="heart-icon"><i class="far fa-heart"></i></a>
+                                                <a href="#" class="heart-icon"><i class="fas fa-heart-o"></i></a>
                                             @endif
                                         @endif
                                     @endauth
@@ -211,7 +225,8 @@
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
                                     @if ($product->latestDiscount() > 0)
-                                    <div class="pd-desc-discount"><span>Sale {{ $product->latestDiscount() * 100 }}%</span></div>
+                                        <div class="pd-desc-discount hvr-buzz-out"><span>Sale
+                                                {{ $product->latestDiscount() * 100 }}%</span></div>
                                     @endif
                                     <h4>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}
                                         @if ($product->latestDiscount() > 0)
@@ -356,7 +371,7 @@
                                                     </td>
                                                 @endif
                                             </tr>
-                                            
+
                                             <tr>
                                                 <td class="p-catagory">Processor</td>
                                                 <td>
@@ -380,16 +395,16 @@
                                                 </td>
                                             </tr>
 
-                                            @if( $product->ram->amount > 0 )
-                                            <tr>
-                                                <td class="p-catagory">RAM</td>
-                                                <td>
-                                                    <div class="p-weight">{{ $product->ram->amount }} GB</div>
-                                                </td>
-                                            </tr>
+                                            @if ($product->ram->amount > 0)
+                                                <tr>
+                                                    <td class="p-catagory">RAM</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->ram->amount }} GB</div>
+                                                    </td>
+                                                </tr>
                                             @endif
 
-                                            @if ( $product->ssd->amount > 0)
+                                            @if ($product->ssd->amount > 0)
                                                 <tr>
                                                     <td class="p-catagory">SSD</td>
                                                     <td>
@@ -398,7 +413,7 @@
                                                 </tr>
                                             @endif
 
-                                            @if ( $product->hdd->amount > 0)
+                                            @if ($product->hdd->amount > 0)
                                                 <tr>
                                                     <td class="p-catagory">HDD</td>
                                                     <td>
@@ -426,7 +441,7 @@
                                                     </td>
                                                 </tr>
                                             @endif
-                                            
+
                                             @if (isset($product->description->dimension))
                                                 <tr>
                                                     <td class="p-catagory">Dimensions</td>
@@ -632,45 +647,53 @@
         });
     </script><!-- End KienJs -->
 
+    <!-- Start TuJs -->
+    <script src="{{ asset('/js/TuJs/wishList.js') }}"></script>
     <script>
         jQuery(document).ready(function($) {
+            const wishList = new WishListHandler({
+                url: '{{ Route('updateWishlist') }}',
+                token: '{{ csrf_token() }}',
+                loginUrl: '{{ Route('login') }}',
+            });
+            wishList.initItem();
             //Tú wishlist
-            const headerHeart = $(".heart-icon").get(0);
-            const heart = $(".product-details");
-            const childElement = $(heart).find(".fa-heart").first().get(0);
-            const pId = $(heart).attr("data-index");
-            $(childElement).on("click", function(e) {
-                e.preventDefault();
-                const redHeart = $(childElement).hasClass("fas");
+            // const headerHeart = $(".heart-icon").get(0);
+            // const heart = $(".product-details");
+            // const childElement = $(heart).find(".fa-heart").first().get(0);
+            // const pId = $(heart).attr("data-index");
+            // $(childElement).on("click", function(e) {
+            //     e.preventDefault();
+            //     const redHeart = $(childElement).hasClass("fas");
 
-                if (redHeart) {
-                    $(childElement).removeClass("fas");
-                    $(childElement).addClass("far");
-                    url = "{{ Route('removeWishlist') }}";
-                    type = "DELETE";
-                } else {
-                    $(childElement).addClass("fas");
-                    $(childElement).removeClass("far");
-                    url = "{{ Route('addWishlist') }}";
-                    type = "POST";
-                }
-                $.ajax({
-                    url: url,
-                    type: type,
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    },
-                    data: {
-                        id: pId,
-                    },
-                    success: function(response) {
-                        $(headerHeart).find("span").html(response.totalWishlist);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            })
+            //     if (redHeart) {
+            //         $(childElement).removeClass("fas");
+            //         $(childElement).addClass("far");
+            //         url = "{{ Route('removeWishlist') }}";
+            //         type = "DELETE";
+            //     } else {
+            //         $(childElement).addClass("fas");
+            //         $(childElement).removeClass("far");
+            //         url = "{{ Route('addWishlist') }}";
+            //         type = "POST";
+            //     }
+            //     $.ajax({
+            //         url: url,
+            //         type: type,
+            //         headers: {
+            //             "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            //         },
+            //         data: {
+            //             id: pId,
+            //         },
+            //         success: function(response) {
+            //             $(headerHeart).find("span").html(response.totalWishlist);
+            //         },
+            //         error: function(error) {
+            //             console.log(error);
+            //         }
+            //     });
+            // })
             //end Tú Wishlist
 
             //Send review
@@ -849,5 +872,5 @@
             }));
             //end Rating Star
         });
-    </script>
+    </script><!-- End TuJs -->
 @endsection

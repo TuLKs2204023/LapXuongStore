@@ -21,7 +21,7 @@ function toast({
     if (main) {
         const toast = document.createElement("div");
 
-        toast.classList.add("toast-container", `toast--${type}`);
+        toast.classList.add("toast__container", `toast--${type}`);
         toast.style.animation = `slideInLeft ease ${slideInDuration}s, fadeOut linear ${fadeOutDuration}s ${fadeOutDelay}s forwards`;
         toast.innerHTML = `
           <div class="myToast">
@@ -56,12 +56,13 @@ function toast({
             main.removeChild(toast);
         }, (slideInDuration + fadeOutDuration + fadeOutDelay) * 1000);
 
-        toast.onclick = function (e) {
+        const closeToast = (e) => {
             if (e.target.closest(".toast__close")) {
                 main.removeChild(toast);
                 clearTimeout(autoRemoveToast);
             }
         };
+        toast.addEventListener("click", closeToast, false);
     }
 }
 
