@@ -17,7 +17,7 @@
                             </a>
 
                             @if ($item->latestDiscount() > 0)
-                                <div class="sale pp-sale">Sale {{ $item->latestDiscount() * 100 }}%
+                                <div class="sale pp-sale hvr-buzz-out">Sale {{ $item->latestDiscount() * 100 }}%
                                 </div>
                             @endif
                             @if (!Auth::check())
