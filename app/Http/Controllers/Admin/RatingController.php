@@ -123,13 +123,11 @@ class RatingController extends Controller
         ]);
     }
     public function adminDelete(Request $request){
-        $ratings = Rating::all()->sortByDesc('id');
-
         $rId = $request->id;
         // dd($rId);
-        $review = Rating::where('product_id',$rId)->get()->first();
+        $review = Rating::find($rId);
 
         $review->delete();
-        return view('admin.rating.index', compact('ratings'));
+        return back()->with('success', 'Review is deleted successfully.');
     }
 }

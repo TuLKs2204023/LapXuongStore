@@ -64,16 +64,15 @@
                                             View
                                         </a>
 
-                                        <form action="{{ Route('admin.rating.adminDelete') }}" method="post"
+                                        <form id="rating-delete" action="{{ Route('admin.rating.adminDelete') }}" method="post"
                                             style="display:inline-block">
                                             @csrf
                                             @method('delete')
-                                            <input type="hidden" name="id" value="{{ $rating->product->id }}">
-                                            <button type="submit"
-                                                class="btn btn-outline-danger btn-sm mb-2 button-control">
+                                            <input type="hidden" name="id" value="{{ $rating->id }}">
+                                            <div
+                                                class="btn btn-outline-danger btn-sm button-control tu-button">
                                                Delete
-
-                                            </button>
+                                            </div>
                                         </form>
                                     </td>
                                 </tr>
@@ -102,5 +101,35 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#ratingsMgmt_wrapper .col-md-6:eq(0)');
         });
+    </script>
+    <script>
+        jQuery(document).ready(function($) {
+            const tuBtn = $(".tu-button");
+            tuBtn.each(function(index, element) {
+                $(element).on("click", function() {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this, once it's run, the review will be deleted!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#4154f1',
+                        cancelButtonColor: 'crimson',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $(element).html(
+                                '<div class="spinner-border spinner-border-sm"></div> Processing'
+                            );
+                            Swal.fire(
+                                'Deleting!',
+                                'Delete is processing, please wait for a few seconds.',
+                                'info',
+                            )
+                            $('#rating-delete').submit();
+                        }
+                    })
+                })
+            })
+        })
     </script>
 @endsection
