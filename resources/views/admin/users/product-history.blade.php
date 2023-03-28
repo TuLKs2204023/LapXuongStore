@@ -12,74 +12,59 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-        @if (auth()->user()->role !== 'Admin')
-            <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        <div class="card">
+            <!-- Message Section -->
+            @include('components.message')
+            <!-- / Message Section -->
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="manufacturesMgmt" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Preview</th>
+                            <th>Name Product</th>
+                            <th>Content Change</th>
+                            <th>Action</th>
+                            <th>Time</th>
 
-                <h2>Sorry ! The page you are looking only availabled for Admin !</h2>
+                        </tr>
+                    </thead>
 
-                <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-
-            </section>
-        @endif
-
-        @if (auth()->user()->role == 'Admin')
-            <div class="card">
-
-                <!-- Message Section -->
-                @include('components.message')
-                <!-- / Message Section -->
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="manufacturesMgmt" class="table table-bordered table-striped">
-                        <thead>
+                    <tbody>
+                        @foreach ($hisPro as $key => $row)
                             <tr>
-                                <th>ID</th>
-                                <th>User</th>
-                                <th>Preview</th>
-                                <th>Name Product</th>
-                                <th>Content Change</th>
-                                <th>Action</th>
-                                <th>Time</th>
+                                <td>{{ $row->id }}</td>
+                                <td>{{ $row->user->name }}</td>
+                                <td>
+                                    <a href="{{ isset($row->slug) ? Route('product.details', $row->slug) : '' }}">
+                                        <img src="{{ isset($row->url) ? asset('images/' . $row->url) : '' }}"
+                                            alt="" style='height:100px'>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ isset($row->slug) ? Route('product.details', $row->slug) : '' }}"
+                                        class="text-dark">
+                                        {{ $row->name }}
+                                    </a>
+                                </td>
+                                <td>{{ $row->fulldata ?? $row->data }}
+                                </td>
+                                <td>{{ $row->action }}</td>
+                                <td>{{ $row->timePro() }}</td>
 
                             </tr>
-                        </thead>
+                        @endforeach
+                    </tbody>
 
-                        <tbody>
-                            @foreach ($hisPro as $key => $row)
-                                <tr>
-                                    <td>{{ $row->id }}</td>
-                                    <td>{{ $row->user->name }}</td>
-                                    <td>
-                                        <a
-                                            href="{{ isset($row->slug) ? Route('product.details', $row->slug) : ''}}">
-                                            <img src="{{ isset($row->url) ?
-                                                        asset('images/' . $row->url) : ''}}"
-                                                alt="" style='height:100px'>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{isset($row->slug) ? Route('product.details', $row->slug) : ''}}"
-                                            class="text-dark">
-                                            {{ $row->name }}
-                                        </a>
-                                    </td>
-                                    <td>{{ $row->fulldata ?? $row->data }}
-                                    </td>
-                                    <td>{{ $row->action }}</td>
-                                    <td>{{ $row->timePro() }}</td>
-
-                                </tr>
-                            @endforeach
-                        </tbody>
-
-                        <tfoot>
-                        </tfoot>
-                    </table>
-                </div>
-                <!-- /.card-body -->
+                    <tfoot>
+                    </tfoot>
+                </table>
             </div>
-            <!-- /.card -->
-        @endif
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
     </section>
 @endsection
 

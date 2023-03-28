@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-Use App\Models\Address\Ward;
-Use App\Models\Address\City;
-Use App\Models\Address\District;
+use App\Models\Address\Ward;
+use App\Models\Address\City;
+use App\Models\Address\District;
 
 
 
@@ -28,7 +28,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-       'password',
+        'password',
         'role',
         'address',
         'phone',
@@ -60,34 +60,61 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function ratings():HasMany{
+    public function ratings(): HasMany
+    {
         return $this->hasMany(Rating::class);
     }
 
-    public function latestRate(){
+    public function latestRate()
+    {
         return Rating::where('user_id', $this->id)->get()->last();
     }
 
-    public function wishlistItems(){
+    public function wishlistItems()
+    {
         return $this->hasMany(WishlistItem::class);
     }
-    public function city(){
+    public function city()
+    {
         return $this->belongsTo(City::class);
     }
-    public function district(){
+    public function district()
+    {
         return $this->belongsTo(District::class);
     }
-    public function ward(){
+    public function ward()
+    {
         return $this->belongsTo(Ward::class);
     }
 
-    public function histories(){
+    public function histories()
+    {
         return $this->hasMany(HistoryUser::class);
     }
-    public function historyProduct(){
+    public function historyProduct()
+    {
         return $this->HasMany(HistoryProduct::class);
     }
-    public function historyRating(){
+    public function historyRating()
+    {
         return $this->HasMany(HistoryRating::class);
+    }
+
+    public function boughtProduct($productId)
+    {
+        $orderDetails = OrderDetail::where('product_id', $productId)->get();
+        if (count($orderDetails) > 0) {
+            foreach ($orderDetails as $item) {
+                $oId = $item->order_id;
+                $boughtProduct = Order::where('user_id', $this->id)->where('id', $oId)->get()->first();
+                if ($boughtProduct && $boughtProduct->statusProcessing() == 'Ready for pickup') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 }

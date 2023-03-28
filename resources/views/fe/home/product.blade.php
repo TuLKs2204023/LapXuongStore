@@ -124,41 +124,6 @@
     <section class="product-shop spad page-details">
         <div class="container">
             <div class="row">
-                {{-- <div class="col-lg-3">
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
-                            </div>
-                            <div class="sb-text">
-                                <h6>FREE SHIP</h6>
-                                <p>For all orders online bought</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-2.png') }}" alt="">
-                            </div>
-                            <div class="sb-text">
-                                <h6>DELIVERY ON TIME</h6>
-                                <p>If goods have problem</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
-                            </div>
-                            <div class="sb-text">
-                                <h6>SECURE PAYMENT</h6>
-                                <p>100% secure payment</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-6">
@@ -300,7 +265,7 @@
                                 <li><a href="#tab-2" data-toggle="tab" role="tab">SPECIFICATIONS</a></li>
                                 <li><a id="review-tab" href="#tab-3" data-toggle="tab" role="tab">Customer
                                         Review
-                                        ({{ $product->countRates() }})</a></li>
+                                        ({{ $product->totalRating() }})</a></li>
                             </ul>
                         </div>
                         <div class="tab-item-content">
@@ -466,7 +431,7 @@
                                 {{-- ---------------------------------Comment View------------------------------------------------ --}}
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     <div class="customer-review-option">
-                                        <h4 class="tu-comment">{{ $product->countRates() }} Comments</h4>
+                                        <h4 class="tu-comment">{{ ($product->totalRating()) > 1 ? $product->totalRating() . ' Comments' : $product->totalRating() . ' Comment'}} </h4>
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
                                                 {{-- Ratings --}}
@@ -495,39 +460,46 @@
                                                                             our
                                                                             services and products?</span><br>
                                                                         <span class="field-label-info"></span>
+                                                                    </label>
+                                                                    {{-- =========================Rating Star====================== --}}
+                                                                    @if (auth()->user()->boughtProduct($product->id))
                                                                         <input type="hidden" id="selected_rating"
                                                                             name="selected_rating" value=""
                                                                             required="required">
-                                                                    </label>
-                                                                    <h2 class="bold rating-header" style="">
-                                                                        <span class="selected-rating">0</span><small> /
-                                                                            5</small>
-                                                                    </h2>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="1" id="rating-star-1">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="2" id="rating-star-2">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="3" id="rating-star-3">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="4" id="rating-star-4">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="5" id="rating-star-5">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
+                                                                        <h2 class="bold rating-header" style="">
+                                                                            <span class="selected-rating">0</span><small> /
+                                                                                5</small>
+                                                                        </h2>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="1" id="rating-star-1">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="2" id="rating-star-2">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="3" id="rating-star-3">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="4" id="rating-star-4">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="5" id="rating-star-5">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                    @else
+                                                                        <input type="hidden" id="selected_rating"
+                                                                            name="selected_rating" value="0">
+                                                                    @endif
+                                                                    {{-- =========================Rating Star====================== --}}
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -712,6 +684,7 @@
                     },
                     data: formArray,
                     success: function(response) {
+                        console.log(response)
                         if (response.msg == "Comment add successfully") {
                             $(cmtArea).val("");
                             $(".selected-rating").html(0);
@@ -839,6 +812,7 @@
                 })
             }
             //end hàm delete rồi nha
+            const heart = $(".product-details");
             const ratingItem = $(".co-item");
             ratingItem.each(function(index, element) {
                 const deleteBtn = $(element).find("#deletecomment").get(0);

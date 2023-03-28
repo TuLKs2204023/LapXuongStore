@@ -275,7 +275,7 @@
                                     </div>
                                     <div class="col"> <strong>Status:</strong> <br>
                                         <div class="status">
-                                            @php echo $order->statusProcessing() @endphp
+                                            @php echo $order->statusProcessingWithBadge() @endphp
                                         </div>
                                     </div>
                                     <div class="col"> <strong>Address:</strong> <br> {{ $order->address }} </div>

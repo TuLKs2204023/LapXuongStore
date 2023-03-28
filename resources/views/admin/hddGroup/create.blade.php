@@ -17,16 +17,6 @@
 
     <!-- Start Main Section -->
     <section class="section">
-        @if (auth()->user()->role == 'Customer')
-            <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-
-                <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
-
-                <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-
-            </section>
-        @endif
-        @if (auth()->user()->role !== 'Customer')
             <!-- card -->
             <div class="card">
                 <div class="card-body">
@@ -107,7 +97,6 @@
                 </div>
             </div>
             <!-- /.card -->
-        @endif
     </section><!-- End Main Section -->
 @endsection
 

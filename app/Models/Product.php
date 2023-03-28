@@ -273,10 +273,21 @@ class Product extends Model
         return $this->hasMany(Rating::class);
     }
 
-    public function countRates()
-    {
+    public function totalRating(){
         $rates = 0;
         $rates = $this->loadCount('ratings');
+        $totalRating = $rates->ratings_count;
+
+        return $totalRating;
+    }
+
+    public function countRates()
+    {
+        //count number of rate records
+        $rates = 0;
+        $rates = $this->loadCount(['ratings' => function($query){
+            $query->where('rate', '>', 0);
+        }]);
         $countRates = $rates->ratings_count;
 
         // $total = $this->ratings;
@@ -285,8 +296,11 @@ class Product extends Model
 
     public function sumRates()
     {
+        //sum all the rate points
         $rates = 0;
-        $rates = $this->loadSum('ratings', 'rate');
+        $rates = $this->loadSum(['ratings' => function ($query) {
+            $query->where('rate', '>', 0);
+        }], 'rate');
         $sumRates = $rates->ratings_sum_rate;
 
         return $sumRates;
