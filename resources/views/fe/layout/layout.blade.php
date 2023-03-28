@@ -127,7 +127,7 @@
     </script>
     <!--Toastr -->
 
-    <!--Dropdown address -->
+    <!--Dropdown address + Log Out confirm : Dự -->
     <script>
         jQuery(document).ready(function($) {
 
@@ -208,7 +208,7 @@
             })
         });
     </script>
-    <!--End Dropdown address -->
+    <!--End Dropdown address + Log out confirm : Dự -->
     <!-- =========================== End DuJs =========================== -->
 
     <!-- KIEN Js -->

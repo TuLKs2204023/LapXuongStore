@@ -9,9 +9,12 @@ use App\Models\HistoryUser;
 use App\Models\Cates\Manufacture;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Rating;
+use App\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+
 
 class AdminHomeController extends Controller
 {
@@ -201,7 +204,7 @@ class AdminHomeController extends Controller
                 ->where('created_at', '>', Carbon::today()->subDays(30))
                 ->count();
             //dd($totalItem);
-            
+
             //count all product
             $totalProduct = DB::table('products')->count();
             //dd($totalProduct);

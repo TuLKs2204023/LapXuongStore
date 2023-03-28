@@ -58,7 +58,6 @@
                                 <td>{{ $row->phone }}</td>
                                 <td>{{ $row->address }}</td>
                                 <td>{{ $row->role }}</td>
-
                                 </td>
                                 <td>
                                     <a href="{{ URL::to('/edit-user/' . $row->id) }}" class="btn btn-sm btn-info">Edit</a>

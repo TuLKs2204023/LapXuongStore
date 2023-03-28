@@ -41,7 +41,7 @@
                                 </div>
                             </div><!-- End Orders Card -->
 
-                            <!-- Revenue Card -->
+                            <!-- All Product Card -->
                             <div class="col-xxl-4 col-md-6">
                                 <div class="card info-card revenue-card">
                                     <div class="card-body">
@@ -61,7 +61,7 @@
                                     </div>
 
                                 </div>
-                            </div><!-- Product Card -->
+                            </div><!-- All Product Card -->
 
                             <!-- Customers Card -->
                             <div class="col-xxl-4 col-xl-12">
@@ -167,17 +167,17 @@
                                                         categories: day,
                                                     },
                                                     yaxis: {
-                                                            labels: {
-                                                                formatter: function(value) {
-                                                                    return new Intl.NumberFormat("vi-VN").format(value);
-                                                                    // return value + " VND";
-                                                                }
+                                                        labels: {
+                                                            formatter: function(value) {
+                                                                return new Intl.NumberFormat("vi-VN").format(value);
+                                                                // return value + " VND";
                                                             }
-                                                        },
+                                                        }
+                                                    },
                                                     tooltip: {
                                                         x: {
                                                             format: 'dd/MM/yy HH:mm'
-                                                        }, 
+                                                        },
                                                     }
                                                 }).render();
                                             });
