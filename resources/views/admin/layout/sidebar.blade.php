@@ -1,23 +1,16 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
-
-        {{-- ---------------------------------------------------------start Dashboard section--------------------------------------------------------------------- --}}
-
-
-        <!-- Dashboard Nav -->
-        <li class="nav-item">
-            <a class="nav-link " href="{{ Route('admin.dashboard') }}">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
-            </a>
-        </li><!-- End Dashboard Nav -->
-
-        {{-- ---------------------------------------------------------end Dashboard section--------------------------------------------------------------------- --}}
-
-
         {{-- ---------------------------------------------------------start Manager and Admin section--------------------------------------------------------------------- --}}
         {{-- ---------------------------------------------------------start only Admin section--------------------------------------------------------------------- --}}
         @if (auth()->user()->role == 'Admin')
+            <!-- Dashboard Nav -->
+            <li class="nav-item">
+                <a class="nav-link " href="{{ Route('admin.dashboard') }}">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" aria-expanded="false"
                     href="#">
@@ -101,8 +94,8 @@
             </li><!-- End Rating Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#specs-nav" data-bs-toggle="collapse" aria-expanded="false"
-                    href="#">
+                <a class="nav-link collapsed" data-bs-target="#specs-nav" data-bs-toggle="collapse"
+                    aria-expanded="false" href="#">
                     <i class="bi bi-cpu"></i><span>Specifications</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="specs-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">

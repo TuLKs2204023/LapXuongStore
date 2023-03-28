@@ -1,18 +1,6 @@
 @extends('admin.layout.layout')
 
 @section('contents')
-    {{-- -----------------------------------------------Begin Warning----------------------------------------- --}}
-    @if (auth()->user()->role == 'Customer')
-        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-
-            <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
-
-            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-        </section>
-    @endif
-    {{-- ------------------------------------------------End Waring------------------------------------------- --}}
-
-    @if (auth()->user()->role !== 'Customer')
         <div class="pagetitle">
             <h1>Welcome to LapXuongShop , {{ auth()->user()->name }} </h1>
             <nav>
@@ -44,7 +32,7 @@
                                             <div class="ps-3">
                                                 <h6>{{ $totalItem }}</h6>
                                                 {{-- <span class="text-success small pt-1 fw-bold">12%</span> --}}
-                                                <span class="text-muted small pt-2 ps-1">Orders</span>
+                                                <span class="text-muted small pt-2 ps-1">Products</span>
 
                                             </div>
                                         </div>
@@ -245,7 +233,7 @@
                                                             <td>
                                                                 <span>
                                                                     @php
-                                                                        echo $item->order->statusProcessing();
+                                                                        echo $item->order->statusProcessingWithBadge();
                                                                     @endphp
                                                                 </span>
                                                             </td>
@@ -439,33 +427,4 @@
             </div>
         </section>
         {{-- ----------------------------------------------End Admin view------------------------------------- --}}
-        {{-- ----------------------------------------------Begin Manager view--------------------------------- --}}
-        <section class="section dashboard">
-            @if (auth()->user()->role == 'Manager')
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-            @endif
-        </section>
-        {{-- ----------------------------------------------End Manager view----------------------------------- --}}
-    @endif
 @endsection

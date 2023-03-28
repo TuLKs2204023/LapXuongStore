@@ -9,15 +9,9 @@ use App\Models\HistoryUser;
 use App\Models\Cates\Manufacture;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\Rating;
-use App\Models\Stock;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
-use Illuminate\Cache\NullStore;
-
-use function PHPUnit\Framework\isNull;
 
 class AdminHomeController extends Controller
 {
@@ -40,31 +34,28 @@ class AdminHomeController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role !== 'Customer') {
+        if (auth()->user()->role == 'Admin') {
 
             // reccent orders of LapXuongStore
-            $order = OrderDetail::all()->sortByDesc('created_at');
-
+            $order = OrderDetail::orderBy('id', 'desc')->limit(10)->get();
+            // create reports for top product sales
+            $allproduct = Product::orderBy('id', 'desc')->limit(10)->get();
+            // user activity
+            $history = HistoryUser::orderBy('id', 'desc')->limit(10)->get();
+            //product changes
+            $historyProduct = HistoryProduct::orderBy('id', 'desc')->limit(10)->get();
+            
             //warning if yesterday no orders
             $orderWarning = Order::where('created_at', '>', Carbon::yesterday())
                 ->where('created_at', '<', Carbon::today())
                 ->get();
             // dd($orderWarning);
 
-            // create reports for top product sales
-            $allproduct = Product::all();
-
-            // user activity
-            $history = HistoryUser::all()->sortByDesc('id');
-
             //warning if yesterday no history of user activity
             $userWarning = HistoryUser::where('created_at', '>', Carbon::yesterday())
                 ->where('created_at', '<', Carbon::today())
                 ->get();
             // dd($userWarning);
-
-            //product changes
-            $historyProduct = HistoryProduct::all()->sortByDesc('id');
 
             //warning if yesterday no history of product
             $productWarning = HistoryProduct::where('created_at', '>', Carbon::yesterday())
@@ -193,7 +184,6 @@ class AdminHomeController extends Controller
                         ->where('created_at', '>', Carbon::yesterday()->subDays($i))
                         ->where('created_at', '<', Carbon::today()->subDays($i))->sum('count');
                 }
-
                 $interaction[$i + 1] = $data;
             }
             // dd($interaction,$productData);
@@ -233,8 +223,13 @@ class AdminHomeController extends Controller
                 'userWarning',
                 'productWarning',
             ));
-        } else {
-            return redirect()->route('fe.home');
+        }
+        elseif(auth()->user()->role == 'Manager'){
+            $products = Product::all();
+            return view('admin.product.index', compact('products'));
+        }
+        else {
+            return redirect()->route('admin.backFromError');
         }
     }
 
@@ -249,6 +244,6 @@ class AdminHomeController extends Controller
     }
     public function backFromError()
     {
-        return redirect()->route('fe.home');
+        return view('wrongRole.wrongRole');
     }
 }

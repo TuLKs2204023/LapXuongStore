@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Cates\Demand;
+use App\Models\Discount;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -51,7 +52,6 @@ class HomeController extends Controller
             ->orderByDesc('avg_rating')
             ->limit(10)
             ->get();
-
         // dd($productsHighRate);
         return view('fe.home.index', compact('demands', 'officeProducts', 'gamingProducts', 'productsHighRate','user'));
     }

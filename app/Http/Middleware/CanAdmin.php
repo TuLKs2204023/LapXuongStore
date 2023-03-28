@@ -16,10 +16,10 @@ class CanAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = $request->session()->get('user');
-        if($user->role == "Admin") {
+        $user = auth()->user();
+        if($user->role == "Admin" || $user->role == "Manager") {
             return $next($request);
         }
-        return redirect()->route('login');
+        return redirect()->route('admin.backFromError');
     }
 }

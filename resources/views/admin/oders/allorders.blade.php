@@ -62,7 +62,7 @@
                                         Banking
                                     @endif
                                 </td>
-                                <td>@php echo $row->statusProcessing() @endphp</td>
+                                <td>@php echo $row->statusProcessingWithBadge() @endphp</td>
                                 <td>
                                     <a href="{{ Route('admin.order.details', $row->id) }}"
                                         class="btn btn-sm btn-outline-info">Details</a>

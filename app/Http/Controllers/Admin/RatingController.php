@@ -48,25 +48,31 @@ class RatingController extends Controller
         } else {
             $user = User::find(auth()->user()->id);
             $msg = $this->processRating($user, $proData);
-            //get all ratings of this product
-            $product = Product::find($proData['product_id']);
-            $rateAmount = $product->countRates();
-            //Get the avg stars
-            $avgRates = $product->avgRates();
-            //history thầy Dự
-            $this->adminRating($user,$proData);
-            $this->userRating($user,$proData);
-            // Render the view and include it in the JSON response
-            $rating = $user->latestRate();
-            $view = view('fe.home.rating', ['rating' => $rating])->render();
-            
-            return response()->json([
-                'success' => true,
-                'view' => $view,
-                'totalRate' => $rateAmount,
-                'msg' => $msg,
-                'avgRates' => $avgRates,
-            ]);
+            if ($msg == 'Comment add successfully') {
+                //get all ratings of this product
+                $product = Product::find($proData['product_id']);
+                $rateAmount = $product->totalRating();
+                //Get the avg stars
+                $avgRates = $product->avgRates();
+                //history thầy Dự
+                $this->adminRating($user, $proData);
+                $this->userRating($user, $proData);
+                // Render the view and include it in the JSON response
+                $rating = $user->latestRate();
+                $view = view('fe.home.rating', ['rating' => $rating])->render();
+                return response()->json([
+                    'success' => true,
+                    'view' => $view,
+                    'totalRate' => $rateAmount,
+                    'msg' => $msg,
+                    'avgRates' => $avgRates,
+                ]);
+            }
+            else{
+                return response()->json([
+                    'msg' => $msg,
+                ]);
+            }
         }
     }
 
@@ -122,7 +128,8 @@ class RatingController extends Controller
             'totalRate' => $product->countRates(),
         ]);
     }
-    public function adminDelete(Request $request){
+    public function adminDelete(Request $request)
+    {
         $rId = $request->id;
         // dd($rId);
         $review = Rating::find($rId);
