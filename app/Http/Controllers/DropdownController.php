@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Address\City;
 use App\Models\Address\District;
-Use App\Models\Address\Ward;
+use App\Models\Address\Ward;
 use Illuminate\Http\Request;
 
 class DropdownController extends Controller
 {
     public function fetchCity()
     {
-        $data['city'] = City::get(["name", "id"]);
+        $data['city'] = City::orderBy('name', 'ASC')->get(["name", "id"]);
         return view('dropdown', $data);
     }
     /**
@@ -20,9 +21,8 @@ class DropdownController extends Controller
      */
     public function fetchDistrict(Request $request)
     {
-        $data['districts'] = District::where("city_id", $request->id)
-                                ->get(["name", "id"]);
-
+        $data['districts'] = District::orderBy('name', 'ASC')->where("city_id", $request->id)
+            ->get(["name", "id"]);
         return response()->json($data);
     }
     /**
@@ -32,9 +32,8 @@ class DropdownController extends Controller
      */
     public function fetchWard(Request $request)
     {
-        $data['wards'] = Ward::where("district_id", $request->district_id)
-                                    ->get(["name", "id"]);
-
+        $data['wards'] = Ward::orderBy('name', 'ASC')->where("district_id", $request->district_id)
+            ->get(["name", "id"]);
         return response()->json($data);
     }
 }

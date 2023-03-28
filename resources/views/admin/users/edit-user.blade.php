@@ -14,11 +14,6 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-        @if (auth()->user()->role !== 'Admin')
-            <p style="text-align:center"> Sorry ! This permission availabled only for Manager and Admin ! </p>
-        @endif
-
-        @if (auth()->user()->role == 'Admin')
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Edit User Form</h5>
@@ -105,7 +100,6 @@
                 </div>
             </div>
             <!-- /.card -->
-        @endif
     </section>
 @endsection
 

@@ -73,16 +73,30 @@
             color: var(--violet-tu);
         }
 
-        .pd-desc-discount{
+        .pd-desc-discount {
             display: inline-block;
             background-color: var(--violet);
             color: #ffffff;
-            padding: 2px 6px;
+            padding: 7px 14px;
             margin-bottom: 10px;
+            display: inline-flex;
+            align-content: center;
         }
 
-        .pd-desc-discount span{
-            font-size: 0.95rem;
+        .pd-desc-discount span {
+            font-size: 0.7rem;
+        }
+
+        .product-details .fa-heart {
+            color: var(--red-dark-tu);
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: var(--red-dark-tu);
+        }
+
+        .product-details .fa-heart-o {
+            color: #ffffff;
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: var(--red-dark-tu);
         }
     </style>
 @endsection
@@ -110,41 +124,6 @@
     <section class="product-shop spad page-details">
         <div class="container">
             <div class="row">
-                {{-- <div class="col-lg-3">
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
-                            </div>
-                            <div class="sb-text">
-                                <h6>FREE SHIP</h6>
-                                <p>For all orders online bought</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-2.png') }}" alt="">
-                            </div>
-                            <div class="sb-text">
-                                <h6>DELIVERY ON TIME</h6>
-                                <p>If goods have problem</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="single-benefit">
-                            <div class="sb-icon">
-                                <img src="{{ asset('frontend/img/icon-1.png') }}" alt="">
-                            </div>
-                            <div class="sb-text">
-                                <h6>SECURE PAYMENT</h6>
-                                <p>100% secure payment</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-6">
@@ -173,7 +152,7 @@
 
                         {{-- -------------------------------------------------------------------------------Product Details---------------------------------------------------------------------------------------------------------------------------                         --}}
                         <div class="col-lg-6">
-                            <div class="product-details" data-index="{{ $product->id }}">
+                            <div class="product-details product-index" data-index="{{ $product->id }}">
                                 <div class="pd-title">
                                     <span>{{ $product->series->name }}</span>
                                     <h3>{{ $product->name }}</h3>
@@ -184,7 +163,7 @@
                                             @if ($product->findWishlist())
                                                 <a href="#" class="heart-icon"><i class="fas fa-heart"></i></a>
                                             @else
-                                                <a href="#" class="heart-icon"><i class="far fa-heart"></i></a>
+                                                <a href="#" class="heart-icon"><i class="fas fa-heart-o"></i></a>
                                             @endif
                                         @endif
                                     @endauth
@@ -211,7 +190,8 @@
                                         <p>Genuine warranty : {{ $product->description->warranty }} months</p>
                                     @endif
                                     @if ($product->latestDiscount() > 0)
-                                    <div class="pd-desc-discount"><span>Sale {{ $product->latestDiscount() * 100 }}%</span></div>
+                                        <div class="pd-desc-discount hvr-buzz-out"><span>Sale
+                                                {{ $product->latestDiscount() * 100 }}%</span></div>
                                     @endif
                                     <h4>{{ number_format($product->fakePrice(), 0, ',', '.') . ' VND' }}
                                         @if ($product->latestDiscount() > 0)
@@ -285,7 +265,7 @@
                                 <li><a href="#tab-2" data-toggle="tab" role="tab">SPECIFICATIONS</a></li>
                                 <li><a id="review-tab" href="#tab-3" data-toggle="tab" role="tab">Customer
                                         Review
-                                        ({{ $product->countRates() }})</a></li>
+                                        ({{ $product->totalRating() }})</a></li>
                             </ul>
                         </div>
                         <div class="tab-item-content">
@@ -356,7 +336,7 @@
                                                     </td>
                                                 @endif
                                             </tr>
-                                            
+
                                             <tr>
                                                 <td class="p-catagory">Processor</td>
                                                 <td>
@@ -380,16 +360,16 @@
                                                 </td>
                                             </tr>
 
-                                            @if( $product->ram->amount > 0 )
-                                            <tr>
-                                                <td class="p-catagory">RAM</td>
-                                                <td>
-                                                    <div class="p-weight">{{ $product->ram->amount }} GB</div>
-                                                </td>
-                                            </tr>
+                                            @if ($product->ram->amount > 0)
+                                                <tr>
+                                                    <td class="p-catagory">RAM</td>
+                                                    <td>
+                                                        <div class="p-weight">{{ $product->ram->amount }} GB</div>
+                                                    </td>
+                                                </tr>
                                             @endif
 
-                                            @if ( $product->ssd->amount > 0)
+                                            @if ($product->ssd->amount > 0)
                                                 <tr>
                                                     <td class="p-catagory">SSD</td>
                                                     <td>
@@ -398,7 +378,7 @@
                                                 </tr>
                                             @endif
 
-                                            @if ( $product->hdd->amount > 0)
+                                            @if ($product->hdd->amount > 0)
                                                 <tr>
                                                     <td class="p-catagory">HDD</td>
                                                     <td>
@@ -426,7 +406,7 @@
                                                     </td>
                                                 </tr>
                                             @endif
-                                            
+
                                             @if (isset($product->description->dimension))
                                                 <tr>
                                                     <td class="p-catagory">Dimensions</td>
@@ -451,7 +431,7 @@
                                 {{-- ---------------------------------Comment View------------------------------------------------ --}}
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     <div class="customer-review-option">
-                                        <h4 class="tu-comment">{{ $product->countRates() }} Comments</h4>
+                                        <h4 class="tu-comment">{{ ($product->totalRating()) > 1 ? $product->totalRating() . ' Comments' : $product->totalRating() . ' Comment'}} </h4>
                                         <div class="comment-option overflow-auto">
                                             @foreach ($ratings as $rating)
                                                 {{-- Ratings --}}
@@ -480,39 +460,46 @@
                                                                             our
                                                                             services and products?</span><br>
                                                                         <span class="field-label-info"></span>
+                                                                    </label>
+                                                                    {{-- =========================Rating Star====================== --}}
+                                                                    @if (auth()->user()->boughtProduct($product->id))
                                                                         <input type="hidden" id="selected_rating"
                                                                             name="selected_rating" value=""
                                                                             required="required">
-                                                                    </label>
-                                                                    <h2 class="bold rating-header" style="">
-                                                                        <span class="selected-rating">0</span><small> /
-                                                                            5</small>
-                                                                    </h2>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="1" id="rating-star-1">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="2" id="rating-star-2">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="3" id="rating-star-3">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="4" id="rating-star-4">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btnrating btn btn-default btn-lg"
-                                                                        data-attr="5" id="rating-star-5">
-                                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                                    </button>
+                                                                        <h2 class="bold rating-header" style="">
+                                                                            <span class="selected-rating">0</span><small> /
+                                                                                5</small>
+                                                                        </h2>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="1" id="rating-star-1">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="2" id="rating-star-2">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="3" id="rating-star-3">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="4" id="rating-star-4">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="btnrating btn btn-default btn-lg"
+                                                                            data-attr="5" id="rating-star-5">
+                                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                                        </button>
+                                                                    @else
+                                                                        <input type="hidden" id="selected_rating"
+                                                                            name="selected_rating" value="0">
+                                                                    @endif
+                                                                    {{-- =========================Rating Star====================== --}}
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -632,45 +619,53 @@
         });
     </script><!-- End KienJs -->
 
+    <!-- Start TuJs -->
+    <script src="{{ asset('/js/TuJs/wishList.js') }}"></script>
     <script>
         jQuery(document).ready(function($) {
+            const wishList = new WishListHandler({
+                url: '{{ Route('updateWishlist') }}',
+                token: '{{ csrf_token() }}',
+                loginUrl: '{{ Route('login') }}',
+            });
+            wishList.initItem();
             //Tú wishlist
-            const headerHeart = $(".heart-icon").get(0);
-            const heart = $(".product-details");
-            const childElement = $(heart).find(".fa-heart").first().get(0);
-            const pId = $(heart).attr("data-index");
-            $(childElement).on("click", function(e) {
-                e.preventDefault();
-                const redHeart = $(childElement).hasClass("fas");
+            // const headerHeart = $(".heart-icon").get(0);
+            // const heart = $(".product-details");
+            // const childElement = $(heart).find(".fa-heart").first().get(0);
+            // const pId = $(heart).attr("data-index");
+            // $(childElement).on("click", function(e) {
+            //     e.preventDefault();
+            //     const redHeart = $(childElement).hasClass("fas");
 
-                if (redHeart) {
-                    $(childElement).removeClass("fas");
-                    $(childElement).addClass("far");
-                    url = "{{ Route('removeWishlist') }}";
-                    type = "DELETE";
-                } else {
-                    $(childElement).addClass("fas");
-                    $(childElement).removeClass("far");
-                    url = "{{ Route('addWishlist') }}";
-                    type = "POST";
-                }
-                $.ajax({
-                    url: url,
-                    type: type,
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    },
-                    data: {
-                        id: pId,
-                    },
-                    success: function(response) {
-                        $(headerHeart).find("span").html(response.totalWishlist);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            })
+            //     if (redHeart) {
+            //         $(childElement).removeClass("fas");
+            //         $(childElement).addClass("far");
+            //         url = "{{ Route('removeWishlist') }}";
+            //         type = "DELETE";
+            //     } else {
+            //         $(childElement).addClass("fas");
+            //         $(childElement).removeClass("far");
+            //         url = "{{ Route('addWishlist') }}";
+            //         type = "POST";
+            //     }
+            //     $.ajax({
+            //         url: url,
+            //         type: type,
+            //         headers: {
+            //             "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            //         },
+            //         data: {
+            //             id: pId,
+            //         },
+            //         success: function(response) {
+            //             $(headerHeart).find("span").html(response.totalWishlist);
+            //         },
+            //         error: function(error) {
+            //             console.log(error);
+            //         }
+            //     });
+            // })
             //end Tú Wishlist
 
             //Send review
@@ -689,6 +684,7 @@
                     },
                     data: formArray,
                     success: function(response) {
+                        console.log(response)
                         if (response.msg == "Comment add successfully") {
                             $(cmtArea).val("");
                             $(".selected-rating").html(0);
@@ -816,6 +812,7 @@
                 })
             }
             //end hàm delete rồi nha
+            const heart = $(".product-details");
             const ratingItem = $(".co-item");
             ratingItem.each(function(index, element) {
                 const deleteBtn = $(element).find("#deletecomment").get(0);
@@ -849,5 +846,5 @@
             }));
             //end Rating Star
         });
-    </script>
+    </script><!-- End TuJs -->
 @endsection

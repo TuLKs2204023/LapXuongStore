@@ -55,7 +55,7 @@
                                     <input type="text" id="name" name="name" class="form-control"
                                         rules="required" placeholder="Your name" value="{{ auth()->user()->name ?? '' }}">
                                 </div>
-                                <div class="col-lg-6 form-group">
+                                <div class="col-lg-12 form-group">
                                     <label for="email" class="form-label">
                                         <div>Email<span class="form-required">&nbsp;*</span></div>
                                         <span class="form-message heighter"></span>
@@ -73,7 +73,7 @@
                                         rules="required" placeholder="Your phone number"
                                         value="{{ auth()->user()->phone ?? '' }}">
                                 </div>
-                                <div class="col-lg-12 form-group">
+                                <div class="col-lg-6 form-group">
                                     <label for="city" class="form-label">
                                         <div>City<span class="form-required">&nbsp;*</span></div>
                                         <span class="form-message heighter"></span>
@@ -91,7 +91,7 @@
                                     {{-- <input type="text" id="city" name="city" class="form-control"
                                     rules="required" placeholder="Shipping city name" value="{{ auth()->user()->city->name ?? '' }}"> --}}
                                 </div>
-                                <div class="col-lg-12 form-group">
+                                <div class="col-lg-6 form-group">
                                     <label for="district" class="form-label">
                                         <div>District<span class="form-required">&nbsp;*</span></div>
                                         <span class="form-message heighter"></span>
@@ -104,7 +104,7 @@
                                     {{-- <input type="text" id="district" name="district" class="form-control"
                                     rules="required" placeholder="Shipping district name" value="{{ auth()->user()->district->name ?? '' }}"> --}}
                                 </div>
-                                <div class="col-lg-12 form-group">
+                                <div class="col-lg-6 form-group">
                                     <label for="ward" class="form-label">
                                         <div>Ward<span class="form-required">&nbsp;*</span></div>
                                         <span class="form-message heighter"></span>
@@ -222,7 +222,6 @@
     <script type="module">
         import {Validator} from '{{ asset('/js/KienJs/validator.js') }}';
         import {CheckoutHandler, CouponHandler} from '{{ asset('/js/KienJs/checkout.js') }}';
-        // import {ConfirmDialog} from '{{ asset('/js/KienJs/confirmDialog.js') }}';
 
         document.addEventListener("readystatechange", (e) => {
             if (e.target.readyState === "complete") {
@@ -232,7 +231,7 @@
                     orderSummary: {},
                 });
                 // Input validation
-                const productForm = new Validator('#createCheckout');
+                const checkoutForm = new Validator('#createCheckout');
             }
         });
     </script><!-- End KienJs -->

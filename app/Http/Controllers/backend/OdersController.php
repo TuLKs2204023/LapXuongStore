@@ -71,4 +71,27 @@ class OdersController extends Controller
             ]);
         }
     }
+
+    //Admin cancel order
+    public function cancelOrderByAdmin(Request $request)
+    {
+        $proData = [];
+        $oId = $request->oId;
+        $order = Order::find($oId);
+        try {
+            foreach ($order->details as $item) {
+                $product = $item->product;
+                $proData['in_qty'] = $item->quantity;
+                $this->processInStock($product, $proData);
+            }
+            $order->status = 0;
+            $order->push();
+            //gởi mail nữa nha
+            $this->cancelOrderEmail($order);
+            return back()->with('success', 'Order cancelled successfully, email has been sent to Customer.');
+        } catch (\Exception $e) {
+            $errors = ['errors' => 'Failed: ' . $e->getMessage()];
+            return back()->withErrors($errors);
+        }
+    }
 }

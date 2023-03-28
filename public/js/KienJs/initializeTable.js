@@ -1,6 +1,6 @@
 export { initTable };
 
-function initTable(tableSelector, showParams, delParams) {
+function initTable(tableSelector, ...params) {
     const cateTable = $(tableSelector).DataTable({
         responsive: true,
         lengthChange: true,
@@ -12,26 +12,27 @@ function initTable(tableSelector, showParams, delParams) {
         .container()
         .appendTo(tableSelector + "_wrapper .col-md-6:eq(0)");
 
-    // Controll items displayed on nav-bar & search-page
-    if (showParams) {
-        showParams.tableBodySelector = tableSelector + " tbody";
-        initButton(cateTable, showParams, "CateGroupsHandler");
-    }
-
-    // Controll delete items on index page
-    if (delParams) {
-        delParams.tableBodySelector = tableSelector + " tbody";
-        initButton(cateTable, delParams, "ItemsDeleteHandler");
-    }
+    // Control event buttons of table-element
+    params.forEach((param) => {
+        if (param) {
+            param.tableBodySelector = tableSelector + " tbody";
+            initButton(cateTable, param);
+        }
+    });
 
     // Initialize funtion for buttons
     function initButton(
         cateTable,
-        { sourceJs = "", url = "", token = "", tableBodySelector = "" },
-        itemsHandler
+        {
+            sourceJs = "",
+            handler = "",
+            url = "",
+            token = "",
+            tableBodySelector = "",
+        }
     ) {
         import(sourceJs).then((moduleCates) => {
-            const mCates = moduleCates[itemsHandler]({
+            const mCates = moduleCates[handler]({
                 url,
                 token,
                 cateTable,

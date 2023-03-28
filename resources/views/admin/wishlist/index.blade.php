@@ -17,15 +17,6 @@
 
     <!-- Start Main Section -->
     <section class="section">
-        @if (auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Manager')
-            <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-
-                <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
-
-                <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-
-            </section>
-        @else
             <div class="card">
                 <div class="card-header">
                     <!-- Message Section -->
@@ -77,7 +68,6 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
-        @endif
     </section><!-- End Main Section -->
 
 @endsection

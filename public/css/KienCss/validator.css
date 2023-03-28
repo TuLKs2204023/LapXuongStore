@@ -5,11 +5,13 @@
 .myForm label.form-label {
     font-weight: 600;
     display: flex;
+    /* flex-wrap: wrap; */
     justify-content: space-between;
     align-items: baseline;
 }
 .myForm label.form-label span {
     display: inline-block;
+    text-align: right;
 }
 
 .myForm label span.form-required,

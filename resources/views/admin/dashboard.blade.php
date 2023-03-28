@@ -1,18 +1,6 @@
 @extends('admin.layout.layout')
 
 @section('contents')
-    {{-- -----------------------------------------------Begin Warning----------------------------------------- --}}
-    @if (auth()->user()->role == 'Customer')
-        <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-
-            <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
-
-            <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-        </section>
-    @endif
-    {{-- ------------------------------------------------End Waring------------------------------------------- --}}
-
-    @if (auth()->user()->role !== 'Customer')
         <div class="pagetitle">
             <h1>Welcome to LapXuongShop , {{ auth()->user()->name }} </h1>
             <nav>
@@ -44,7 +32,7 @@
                                             <div class="ps-3">
                                                 <h6>{{ $totalItem }}</h6>
                                                 {{-- <span class="text-success small pt-1 fw-bold">12%</span> --}}
-                                                <span class="text-muted small pt-2 ps-1">Orders</span>
+                                                <span class="text-muted small pt-2 ps-1">Products</span>
 
                                             </div>
                                         </div>
@@ -233,23 +221,23 @@
                                             <tbody>
 
                                                 @foreach ($order as $key => $item)
-                                                    <tr>
-                                                        <th scope="row"> {{ $item->created_at->format('d/m/Y') }}
-                                                        </th>
-                                                        <td>{{ $item->order->name }}</td>
-                                                        <td><a href="{{ Route('product.details', $item->product->slug) }}"
-                                                                class="text-primary fw-bold">{{ $item->product->name }}</a>
-                                                        </td>
-                                                        <td>{{ number_format($item->product->salePrice(), 0, ',', '.') }}
-                                                        </td>
-                                                        <td>
-                                                            <span>
-                                                                @php
-                                                                    echo $item->order->statusProcessing();
-                                                                @endphp
-                                                            </span>
-                                                        </td>
-                                                    </tr>
+                                                        <tr>
+                                                            <th scope="row"> {{ $item->created_at->format('d/m/Y') }}
+                                                            </th>
+                                                            <td>{{ $item->order->name }}</td>
+                                                            <td><a href="{{ Route('product.details', $item->product->slug) }}"
+                                                                    class="text-primary fw-bold">{{ $item->product->name }}</a>
+                                                            </td>
+                                                            <td>{{ number_format($item->printPrice(), 0, ',', '.') }}
+                                                            </td>
+                                                            <td>
+                                                                <span>
+                                                                    @php
+                                                                        echo $item->order->statusProcessingWithBadge();
+                                                                    @endphp
+                                                                </span>
+                                                            </td>
+                                                        </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -297,8 +285,7 @@
                                                                         src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
                                                                         alt=""></a></th>
                                                             <td><a href="{{ Route('product.details', $row->slug) }}"
-                                                                    class="text-primary fw-bold">{{ $row->name }}</a>
-                                                            </td>
+                                                                    class="text-primary fw-bold">{{ $row->name }}</a></td>
                                                             <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
                                                             <td class="fw-bold">{{ $row->topSale() }}</td>
                                                             <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
@@ -440,33 +427,4 @@
             </div>
         </section>
         {{-- ----------------------------------------------End Admin view------------------------------------- --}}
-        {{-- ----------------------------------------------Begin Manager view--------------------------------- --}}
-        <section class="section dashboard">
-            @if (auth()->user()->role == 'Manager')
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-            @endif
-        </section>
-        {{-- ----------------------------------------------End Manager view----------------------------------- --}}
-    @endif
 @endsection

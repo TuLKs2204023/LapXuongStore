@@ -55,12 +55,12 @@
 
         /* Track */
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: rgba(241, 241, 241, 0);
         }
 
         /* Handle */
         ::-webkit-scrollbar-thumb {
-            background: #888;
+            background: #888888;
         }
 
         /* Handle on hover */
@@ -202,7 +202,7 @@
                     cancelButtonText: 'No, I\'m still with you!!!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('logout-form').submit();
+                        $('#logout-form').submit();
                     }
                 })
             })
@@ -231,10 +231,11 @@
 
         const navCateBtn = document.querySelector('.nav-item .cate-btn');
         const navFakeCateBtn = document.querySelector('.nav-fake-categories .cate-btn');
-        navCateBtn.addEventListener('click', (e) =>{
+        const toggleNav = (e) => {
             navFakeCateBtn.click();
             navCateBtn.classList.toggle('show');
-        });
+        };
+        navCateBtn.addEventListener('click', toggleNav, false);
     </script><!-- KIEN Js -->
 
     @yield('myJs')

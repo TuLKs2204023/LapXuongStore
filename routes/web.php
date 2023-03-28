@@ -32,7 +32,6 @@ use App\Http\Controllers\backend\OdersController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\DropdownController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderDetailsController;
 
 use Illuminate\Support\Facades\Auth;
@@ -71,11 +70,6 @@ Route::get('/search', [HeaderController::class, 'header_products'])->name('fe.he
 Route::get('/datatable', function () {
     return view('backend.datatable');
 });
-
-
-
-
-
 
 //Dropdown Address Controller
 Route::get('city', [DropdownController::class, 'fetchCity']);
@@ -149,7 +143,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/product-history', [AdminHomeController::class, 'historyProduct'])->name('historyProduct');
 
     // For Admin purpose
-    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
         // wishlist
         Route::group(['prefix' => 'wishlist', 'as' => 'wishlist.'], function () {
             Route::get('/', [WishlistItemController::class, 'adminIndex'])->name('index');
@@ -330,7 +324,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/store', [PromotionController::class, 'store'])->name('store');
             // Route::get('/{id}/edit', [PromotionController::class, 'edit'])->name('edit');
             // Route::put('/update', [PromotionController::class, 'update'])->name('update');
-            // Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
+            Route::delete('/destroy', [PromotionController::class, 'destroy'])->name('destroy');
         });
 
         // Rating
@@ -349,6 +343,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/all-orders', [OdersController::class, 'Allorders'])->name('allorders');
             //OrderDetails
             Route::get('/{id}/details', [OrderDetailsController::class, 'adminRights'])->name('details');
+            Route::post('/cancel', [OdersController::class, 'cancelOrderByAdmin'])->name('cancelOrderByAdmin');
         });
     });
 });

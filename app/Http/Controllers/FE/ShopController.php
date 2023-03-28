@@ -58,38 +58,7 @@ class ShopController extends Controller
 
     public function test()
     {
-        $product = Product::find(78);
-        dd($product->currentSalePrice);
-
-        // Checking errors before process delete
-        $errors = [
-            'orderExisted' => count($product->order_details),
-            'stockExisted' => count($product->stocks),
-            'priceExisted' => count($product->prices),
-        ];
-        foreach($errors as $key => $val) {
-            if ($val > 0) dd(['status' => $key]);
-        }
-
-        $products = Product::query();
-        $subModel = 'App\Models\Cates\\' . ucfirst('ssd') . 'Group';
-        $value = "4,2,3";
-        $cateIdRange = array_reduce(explode(",", $value), function ($acc, $cur) use ($subModel) {
-            $cateItems = $subModel::find($cur);
-            $cateItemsId = $cateItems->cateItems()->pluck('id');
-            if (count($cateItemsId) > 0) {
-                $acc[] = $cateItems->cateItems()->pluck('id');
-            }
-            return $acc;
-        }, []);
-        $products->whereIn('ssd_id', $cateIdRange);
-        dd($products->get());
-
-
-
-        $product = Product::find(30);
-        dd($product->salePrice);
-        $value = "5000000,20000000";
+        $value = "500000,40000000";
         $products = Product::addSelect(['price' => Price::select('sale_discounted')
             ->whereColumn('product_id', 'products.id')
             ->orderByDesc('created_at')
@@ -99,8 +68,13 @@ class ShopController extends Controller
             $query->select('product_id')
                 ->from(with(new Price)->getTable())
                 ->orderByDesc('created_at')
+                ->distinct()
+                ->groupBy('product_id')
                 // ->limit(1)
                 ->whereBetween('sale_discounted', explode(",", $value));
+        });
+        $products->whereHas('prices', function (Builder $query) use ($value) {
+            $query->whereBetween('sale_discounted', explode(",", $value))->orderBy('id', 'desc');
         });
 
         dd($products->orderBy('price', 'DESC')->pluck('price'));
@@ -242,9 +216,15 @@ class ShopController extends Controller
                     case 'headerSearch':
                         break;
                     case 'price':
-                        $query->whereHas('prices', function (Builder $query) use ($value) {
-                            $query->whereBetween('sale_discounted', explode(",", $value))->orderBy('id', 'desc');
+                        $pricesRaw = Price::where('sale_discounted', '>', 0)->get()->groupBy('product_id');
+                        foreach ($pricesRaw as $price) {
+                            $prices[] = $price[count($price) - 1];
+                        }
+                        $prices = collect($prices)->filter(function ($price) use ($value) {
+                            $values = explode(",", $value);
+                            return $price->sale_discounted >= $values[0] && $price->sale_discounted <= $values[1];
                         });
+                        $query->whereIn('id', $prices->pluck('product_id'));
                         break;
                     case 'ram':
                     case 'hdd':

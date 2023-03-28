@@ -17,13 +17,8 @@ class OrderDetailsController extends Controller
 
     public function userRights(Request $request){
         $orderId = $request->id;
-        if($orderId){
             $order = Order::find($orderId);
             $orderItems = OrderDetail::where('order_id', $orderId)->get();
             return view('fe.home.orderDetails', compact('orderItems', 'order'));
-        }
-        else{
-            return 'Order giùm tao cái, không mua mà thích coi hả bưởi.';
-        }
     }
 }

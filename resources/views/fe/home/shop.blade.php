@@ -4,13 +4,13 @@
 
 @section('myCss')
     <style>
-        .fa-heart {
+        .product-item .fa-heart {
             color: var(--red-dark-tu);
             -webkit-text-stroke-width: 2px;
             -webkit-text-stroke-color: var(--red-dark-tu);
         }
 
-        .fa-heart-o {
+        .product-item .fa-heart-o {
             color: #ffffff;
             -webkit-text-stroke-width: 2px;
             -webkit-text-stroke-color: var(--red-dark-tu);
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="500000" data-max="110000000">
+                                data-min="0" data-max="100000000">
                                 <div class="ui-slider ui-corner-all ui-widget-header">
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
                                     <span tabindex="0" class="ui-corner-all ui-slider-handle ui-state-default"></span>
@@ -329,97 +329,15 @@
 
 @section('myJs')
     <!-- Start TuJs -->
-    <script>
-        $ = document.querySelector.bind(document);
-
-        function wishListHandler({
-            productHearts = '.product-list-icon',
-            headerHeart = '.heart-icon',
-        }) {
-            function init(productList) {
-                const heartIcons = productList.querySelectorAll(productHearts);
-                Array.from(heartIcons).forEach(heart => {
-                    heart.addEventListener('click', (e) => {
-                        e.preventDefault();
-
-                        const pId = heart.closest('.product-item').dataset.index;
-                        // Process to call HttpRequest
-                        processUpdateWishList(pId, heart, renderWishList);
-                    });
-                });
-            }
-
-            // Function to update view
-            function renderWishList(res, heart) {
-                const headerHeartIcon = $(headerHeart);
-                const headerHeartText = headerHeartIcon.querySelector('.icon_heart_alt + span');
-                headerHeartText.innerHTML = res.totalWishlist;
-                const heartIcon = heart.querySelector('i');
-                if (res.action === 'add') {
-                    heartIcon.classList.replace('fa-heart-o', 'fa-heart');
-                } else {
-                    heartIcon.classList.replace('fa-heart', 'fa-heart-o');
-                }
-            }
-
-            // Process to call HttpRequest to update WishList
-            function processUpdateWishList(pId, heart, cb) {
-                const url = '{{ Route('updateWishlist') }}';
-                const params = {
-                    pId,
-                    _token: '{{ csrf_token() }}',
-                };
-
-                const ajaxReq = new XMLHttpRequest();
-
-                ajaxReq.onreadystatechange = () => {
-                    if (ajaxReq.readyState == 4 && ajaxReq.status == 200) {
-                        const res = JSON.parse(ajaxReq.responseText);
-                        if (res.status === 'aborted') {
-                            import('{{ asset('/js/KienJs/ConfirmDialog.js') }}').then((mDialog) => {
-                                const confirmWishlist = mDialog.ConfirmDialog({
-                                    route: '{{ Route('login') }}',
-                                    message: 'Before adding or removing items in the Wishlist, please try to login first. Thank you.',
-                                    btnLabel: 'Login'
-                                });
-                                confirmWishlist.showDialog();
-                            });
-                        } else {
-                            import('{{ asset('/js/KienJs/toast.js') }}').then((mToast) => {
-                                const type = {
-                                    'add': 'Item has been ADDED to your Wishlist successfully.',
-                                    'remove': 'Item has been REMOVED from your Wishlist successfully.',
-                                }
-                                cb(res, heart);
-                                mToast.showSuccessToast({
-                                    message: type[res.action]
-                                })
-                            });
-                        }
-                    }
-                };
-
-                ajaxReq.open("POST", url, true);
-                ajaxReq.setRequestHeader(
-                    "Content-type",
-                    "application/json;charset=UTF-8"
-                );
-                ajaxReq.send(JSON.stringify(params));
-            }
-            return {
-                init,
-            }
-        }
-    </script><!-- End TuJs -->
+    <script src="{{ asset('/js/TuJs/wishList.js') }}"></script>
+    <!-- End TuJs -->
 
     <script src="{{ asset('frontend/js/jquery-ui.min.js') }}"></script>
 
     <!-- KienJs -->
     <script src="{{ asset('/js/KienJs/searchProduct.js') }}"></script>
     <script>
-        /*-------------------
-                                                                                                                                                                                                                                                                                                                                    Range Slider
-                                                                                                                                                                                                                                                                                                                                    --------------------- */
+        /*--- Range Slider --- */
         jQuery(document).ready(function($) {
             const rangeSlider = $(".price-range"),
                 minamount = $("#minamount"),
@@ -427,7 +345,11 @@
                 minPrice = rangeSlider.data("min"),
                 maxPrice = rangeSlider.data("max");
 
-            const wishList = new wishListHandler({});
+            const wishList = new WishListHandler({
+                url: '{{ Route('updateWishlist') }}',
+                token: '{{ csrf_token() }}',
+                loginUrl: '{{ Route('login') }}',
+            });
             const productSearch = new SearchHandler({
                 price: {
                     priceMin: minPrice,

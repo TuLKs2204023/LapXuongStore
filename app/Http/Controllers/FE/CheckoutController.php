@@ -20,7 +20,7 @@ class CheckoutController extends HomeController
     public function checkout()
     {
         $total = HomeController::totalCart();
-        $cities = City::all();
+        $cities = City::orderBy('name', 'ASC')->get();
         $res = array(
             'totalAmt' => $total['value'],
             'totalVal' => number_format($total['value'], 0, ',', '.'),

@@ -16,14 +16,6 @@
 
     <!-- Start Main Section -->
     <section class="section">
-        @if (auth()->user()->role == 'Customer')
-            <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-                <h2>Sorry ! The page you are looking only availabled for Admin and Manager !</h2>
-                <img src="{{ asset('assets/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
-
-            </section>
-        @endif
-        @if (auth()->user()->role !== 'Customer')
             <!-- card -->
             <div class="card">
                 <div class="card-header">
@@ -70,12 +62,7 @@
                                     <td>{{ $item->subName() }}</td>
                                     <td>
                                         @if ($item->countRates() > 0)
-                                            @for ($i = 0; $i< $item->avgRates(); $i++)
-                                                <i class="fa fa-star"></i>
-                                            @endfor
-                                            @for ($i = 0; $i < 5 - $item->avgRates(); $i++)
-                                                <i class="fa fa-star-o"></i>
-                                            @endfor
+                                        {{$item->avgRates()}} <i style="color: #FAC451" class="fa fa-star"></i>
                                         @endif
                                     </td>
                                     <td>{{ $item->cpu->name }}</td>
@@ -147,7 +134,6 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
-        @endif
     </section><!-- End Main Section -->
 @endsection
 
@@ -158,10 +144,11 @@
             import('{{ asset('/js/KienJs/initializeTable.js') }}').then((module) => {
                 const delParams = {
                     sourceJs: '{{ asset('/js/KienJs/itemsDelete.js') }}',
+                    handler: 'ItemsDeleteHandler',
                     url: '{{ Route('admin.product.destroy') }}',
                     token: '{{ csrf_token() }}',
                 }
-                module.initTable("#productsMgmt", '', delParams);
+                module.initTable("#productsMgmt", delParams);
             });
         });
     </script><!-- End KienJs -->

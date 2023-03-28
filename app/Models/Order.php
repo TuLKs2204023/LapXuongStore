@@ -110,18 +110,36 @@ class Order extends Model
     //Process name
     public function statusProcessing()
     {
+        $statusProcess = 'Cancelled';
         if ($this->status == 1) {
             if ($this->statusByTime() >= 0 && $this->statusByTime() < 1) {
-                return '<span class="badge rounded-pill bg-primary">Order confirmed</span>';
+                return $statusProcess = 'Order confirmed';
             } elseif ($this->statusByTime() >= 1 && $this->statusByTime() < 3) {
-                return '<span class="badge rounded-pill bg-info">Picked by courier</span>';
+                return $statusProcess = 'Picked by courier';
             } elseif ($this->statusByTime() >= 3 && $this->statusByTime() < 7) {
-                return '<span class="badge rounded-pill bg-warning">On the way</span>';
+                return $statusProcess = 'On the way';
             } else {
-                return '<span class="badge rounded-pill bg-success">Ready for pickup</span>';
+                return $statusProcess = 'Ready for pickup';
             }
         } else {
-            return '<span class="badge rounded-pill bg-danger">Cancelled</span>';
+            return $statusProcess;
+        }
+    }
+    public function statusProcessingWithBadge()
+    {
+        $statusProcess = $this->statusProcessing();
+        if ($this->status == 1) {
+            if ($this->statusByTime() >= 0 && $this->statusByTime() < 1) {
+                return '<span class="badge rounded-pill bg-primary">' . $statusProcess . '</span>';
+            } elseif ($this->statusByTime() >= 1 && $this->statusByTime() < 3) {
+                return '<span class="badge rounded-pill bg-info">' . $statusProcess . '</span>';
+            } elseif ($this->statusByTime() >= 3 && $this->statusByTime() < 7) {
+                return '<span class="badge rounded-pill bg-warning">' . $statusProcess . '</span>';
+            } else {
+                return '<span class="badge rounded-pill bg-success">' . $statusProcess . '</span>';
+            }
+        } else {
+            return '<span class="badge rounded-pill bg-danger">' . $statusProcess . '</span>';
         }
     }
     public function timeOrder()
@@ -131,5 +149,20 @@ class Order extends Model
         return $durationPro;
     }
 
+    //send code to order greater than 100 millions vnd
+    public function giftForOrder(){
+        if($this->totalAfterDiscount() > 100000000){
+            $promotion = Promotion::where('status', '1')->inRandomOrder()->limit(1)->get()->first();
+            if($promotion){
+                return 'Your gift promotion code is: \'' .$promotion->code . '\''; 
+            }
+            else{
+                return "No Gift";
+            }
+        }
+        else{
+            return "No Gift";
+        }
+    }
     // ------------------------------------------------------------------------Tú viết-------------------------------------------------------------------------
 }
