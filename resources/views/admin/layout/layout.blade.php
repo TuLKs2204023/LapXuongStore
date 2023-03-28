@@ -194,6 +194,7 @@
         });
     </script><!-- End KienJs -->
 
+    {{-- logout confirm : Dự --}}
     <script>
         jQuery(document).ready(function($) {
             const logOut = $(".du-log-out").get(0);
@@ -216,6 +217,8 @@
             })
         })
     </script>
+    {{-- End Logout confirm : Dự --}}
+    
     @yield('myJs')
 
     <!-- Loading effect -->

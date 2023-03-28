@@ -8,6 +8,7 @@ use App\Models\HistoryProduct;
 use App\Models\HistoryUser;
 use App\Models\Cates\Manufacture;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Rating;
 use App\Models\Stock;
 use Carbon\Carbon;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use Illuminate\Cache\NullStore;
+use PhpParser\Node\Stmt\Echo_;
 
 use function PHPUnit\Framework\isNull;
 
@@ -42,7 +44,7 @@ class AdminHomeController extends Controller
         if (auth()->user()->role !== 'Customer') {
 
             // reccent orders of LapXuongStore
-            $order = Order::all()->sortByDesc('created_at');
+            $order = OrderDetail::all()->sortByDesc('created_at');
 
             //warning if yesterday no orders
             $orderWarning = Order::where('created_at', '>', Carbon::yesterday())
@@ -93,65 +95,74 @@ class AdminHomeController extends Controller
 
             // Data amount sale of products for the chart
             $productData = [];
-            $proToday = DB::table('stocks')
-                ->where('created_at', '>', Carbon::today())
-                ->sum('out_qty');
-            $productData[0] = $proToday;
 
-            $proYes = DB::table('stocks')
+            $proToday = OrderDetail::all()->where('created_at', '>', Carbon::today());
+            $countTo = 0;
+            foreach ($proToday as $key => $val) {
+                    $count = $val->PrintQuantity();
+                    $countTo += $count;
+            }
+            $productData[0] = $countTo;
+            $proYes = OrderDetail::all()
                 ->where('created_at', '>', Carbon::yesterday())
-                ->where('created_at', '<', Carbon::today())
-                ->sum('out_qty');
-
-            $productData[1] = $proYes;
+                ->where('created_at', '<', Carbon::today());
+            $countYes = 0;
+            foreach ($proYes as $key => $val) {
+                    $count = $val->printQuantity();
+                    $countYes += $count;
+            }
+            $productData[1] = $countYes;
 
             for ($i = 1; $i <= 5; $i++) {
-                $data = 0;
-                $data = DB::table('stocks')
+                $data = OrderDetail::all()
                     ->where('created_at', '>', Carbon::yesterday()->subDays($i))
-                    ->where('created_at', '<', Carbon::today()->subDays($i))
-                    ->sum('out_qty');
-                $productData[$i + 1] = $data;
+                    ->where('created_at', '<', Carbon::today()->subDays($i));
+                $countPro = 0;
+                foreach ($data as $key => $val) {
+                        $count = $val->printQuantity();
+                        $countPro += $count;
+                }
+                $productData[$i + 1] = $countPro;
             }
+
             // dd($productData);
             // End Data product for the chart
 
 
             //  Data revenue for the chart
             $revenue = [];
-            $today = Stock::where('created_at', '>', Carbon::today())->where('out_qty', '>', 0)->get();
-
+            $today = OrderDetail::all()->where('created_at', '>', Carbon::today());
+            // dd($today);
             $revToday = 0;
-            foreach ($today as $key => $item) {
-                $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
-                $revToday += $rev;
+            foreach ($today as $key => $val) {
+                    $rev = $val->printRevenue();
+                    $revToday += $rev;
             }
-
+            // dd($revToday);
             $revenue[0] = $revToday;
-            $yesDay = Stock::where('created_at', '>', Carbon::yesterday())
-                ->where('created_at', '<', Carbon::today())
-                ->where('out_qty', '>', 0)
-                ->get();
+            $yesDay = OrderDetail::all()
+                ->where('created_at', '>', Carbon::yesterday())
+                ->where('created_at', '<', Carbon::today());
 
             $revYesDay = 0;
-            foreach ($yesDay as $key => $item) {
-                $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
-                $revYesDay += $rev;
+            foreach ($yesDay as $key => $val) {
+                    $rev = $val->printRevenue();
+                    $revYesDay += $rev;
+
             }
             $revenue[1] = $revYesDay;
+            // dd($revenue);
             for ($i = 1; $i <= 5; $i++) {
-                $out = Stock::where('created_at', '>', Carbon::yesterday()->subDays($i))
-                    ->where('created_at', '<', Carbon::today()->subDays($i))
-                    ->where('out_qty', '>', 0)
-                    ->get();
+                $out = OrderDetail::all()
+                    ->where('created_at', '>', Carbon::yesterday()->subDays($i))
+                    ->where('created_at', '<', Carbon::today()->subDays($i));
                 if (!$out) {
                     $revenue[$i] = '0';
                 } else {
-
                     $revP = 0;
-                    foreach ($out as $key => $item) {
-                        $rev = $item->out_qty * isset($item->price->sale_discounted) ? $item->price->sale_discounted : '0';
-                        $revP += $rev;
+                    foreach ($out as $key => $val) {
+                            $rev = $val->printRevenue();
+                            $revP += $rev;
                     }
                 }
                 $revenue[$i + 1] = $revP;
@@ -201,7 +212,7 @@ class AdminHomeController extends Controller
                 ->where('created_at', '>', Carbon::today()->subDays(30))
                 ->count();
             //dd($totalItem);
-            
+
             //count all product
             $totalProduct = DB::table('products')->count();
             //dd($totalProduct);

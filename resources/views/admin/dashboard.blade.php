@@ -53,7 +53,7 @@
                                 </div>
                             </div><!-- End Orders Card -->
 
-                            <!-- Revenue Card -->
+                            <!-- All Product Card -->
                             <div class="col-xxl-4 col-md-6">
                                 <div class="card info-card revenue-card">
                                     <div class="card-body">
@@ -73,7 +73,7 @@
                                     </div>
 
                                 </div>
-                            </div><!-- Product Card -->
+                            </div><!-- All Product Card -->
 
                             <!-- Customers Card -->
                             <div class="col-xxl-4 col-xl-12">
@@ -179,17 +179,17 @@
                                                         categories: day,
                                                     },
                                                     yaxis: {
-                                                            labels: {
-                                                                formatter: function(value) {
-                                                                    return new Intl.NumberFormat("vi-VN").format(value);
-                                                                    // return value + " VND";
-                                                                }
+                                                        labels: {
+                                                            formatter: function(value) {
+                                                                return new Intl.NumberFormat("vi-VN").format(value);
+                                                                // return value + " VND";
                                                             }
-                                                        },
+                                                        }
+                                                    },
                                                     tooltip: {
                                                         x: {
                                                             format: 'dd/MM/yy HH:mm'
-                                                        }, 
+                                                        },
                                                     }
                                                 }).render();
                                             });
@@ -233,25 +233,23 @@
                                             <tbody>
 
                                                 @foreach ($order as $key => $item)
-                                                    @foreach ($item->details as $ip)
-                                                        <tr>
-                                                            <th scope="row"> {{ $item->created_at->format('d/m/Y') }}
-                                                            </th>
-                                                            <td>{{ $item->name }}</td>
-                                                            <td><a href="{{ Route('product.details', $ip->product->slug) }}"
-                                                                    class="text-primary fw-bold">{{ $ip->product->name }}</a>
-                                                            </td>
-                                                            <td>{{ number_format($ip->product->salePrice(), 0, ',', '.') }}
-                                                            </td>
-                                                            <td>
-                                                                <span>
-                                                                    @php
-                                                                        echo $item->statusProcessing();
-                                                                    @endphp
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                    <tr>
+                                                        <th scope="row"> {{ $item->created_at->format('d/m/Y') }}
+                                                        </th>
+                                                        <td>{{ $item->order->name }}</td>
+                                                        <td><a href="{{ Route('product.details', $item->product->slug) }}"
+                                                                class="text-primary fw-bold">{{ $item->product->name }}</a>
+                                                        </td>
+                                                        <td>{{ number_format($item->product->salePrice(), 0, ',', '.') }}
+                                                        </td>
+                                                        <td>
+                                                            <span>
+                                                                @php
+                                                                    echo $item->order->statusProcessing();
+                                                                @endphp
+                                                            </span>
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -292,17 +290,20 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($allproduct as $key => $row)
-                                                    <tr>
-                                                        <th scope="row"><a
-                                                                href="{{ Route('product.details', $row->slug) }}"><img
-                                                                    src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
-                                                                    alt=""></a></th>
-                                                        <td><a href="{{ Route('product.details', $row->slug) }}"
-                                                                class="text-primary fw-bold">{{ $row->name }}</a></td>
-                                                        <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
-                                                        <td class="fw-bold">{{ $row->topSale() }}</td>
-                                                        <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
-                                                    </tr>
+                                                    @if ($row->topSale() !== 0)
+                                                        <tr>
+                                                            <th scope="row"><a
+                                                                    href="{{ Route('product.details', $row->slug) }}"><img
+                                                                        src="{{ isset($row->oldestImage->url) ? asset('images/' . $row->oldestImage->url) : '' }}"
+                                                                        alt=""></a></th>
+                                                            <td><a href="{{ Route('product.details', $row->slug) }}"
+                                                                    class="text-primary fw-bold">{{ $row->name }}</a>
+                                                            </td>
+                                                            <td>{{ number_format($row->salePrice(), 0, ',', '.') }}</td>
+                                                            <td class="fw-bold">{{ $row->topSale() }}</td>
+                                                            <td>{{ number_format($row->revenue(), 0, ',', '.') }}</td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>

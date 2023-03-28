@@ -58,7 +58,10 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>
-                                        <img src="images/{{ $row->image }}" class="picture-box" style="height:50px">
+                                        <img src="{{ isset($row->image)
+                                            ? asset('images/' . $row->image)
+                                            : 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png' }}"
+                                        class="picture-box" style="height:50px">
 
                                     </td>
                                     <td>{{ $row->name }}</td>
