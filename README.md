@@ -27,11 +27,6 @@
         <td>Lê Văn Kỳ Dự</td>
         <td>Student1378432</td>
     </tr>
-    <tr>
-        <td>4</td>
-        <td>Đào Đức Bình</td>
-        <td>Student1378435</td>
-    </tr>
 </table>
 <hr>
 
