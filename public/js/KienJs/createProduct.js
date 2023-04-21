@@ -3,16 +3,13 @@ export { seriesHandler };
 
 const $ = document.querySelector.bind(document);
 
-function seriesHandler({
-    url = "",
-    token = "",
-    selectors: {
-        formSelector = "#createProduct",
-        brandSelector = "#manufacture_id-custom",
-        seriesSelector = "#series_id",
-    },
-}) {
-    const selectors = { formSelector, brandSelector, seriesSelector };
+function seriesHandler({ url = "", token = "", selectors }) {
+    selectors = {
+        formSelector: "#createProduct",
+        brandSelector: "#manufacture_id-custom",
+        seriesSelector: "#series_id",
+        ...selectors,
+    };
     const formElement = $(selectors.formSelector);
     if (!formElement) return false;
 

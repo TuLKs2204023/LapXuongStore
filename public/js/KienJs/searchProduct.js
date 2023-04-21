@@ -3,23 +3,17 @@ $ = document.querySelector.bind(document);
 function SearchHandler({
     paginateConfigs: { pageDefaultItems = 16, pageDefaultSort = 0 },
     price: { priceMin = 0, priceMax = 500000000 },
-    selectors: {
-        sidebarSelector = ".produts-sidebar-filter",
-        productListSelector = ".product-search",
-        paginateSelector = ".loading-more",
-        paginateConfigSelector = ".product-show-option",
-        paginateShowSelector = ".nice-select.p-show",
-        paginateSortSelector = ".sorting.nice-select",
-    },
+    selectors,
     wishList,
 }) {
-    const selectors = {
-        sidebarSelector,
-        productListSelector,
-        paginateSelector,
-        paginateConfigSelector,
-        paginateShowSelector,
-        paginateSortSelector,
+    selectors = {
+        sidebarSelector: ".produts-sidebar-filter",
+        productListSelector: ".product-search",
+        paginateSelector: ".loading-more",
+        paginateConfigSelector: ".product-show-option",
+        paginateShowSelector: ".nice-select.p-show",
+        paginateSortSelector: ".sorting.nice-select",
+        ...selectors,
     };
     const pageConfigCont = $(selectors.paginateConfigSelector);
     const currentUrl = getCurrentUrlInfo();

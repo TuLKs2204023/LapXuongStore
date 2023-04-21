@@ -5,16 +5,12 @@ export { ItemsDeleteHandler };
 
 const $ = document.querySelector.bind(document);
 
-function ItemsDeleteHandler({
-    url = "",
-    token = "",
-    cateTable,
-    selectors: {
-        tableSelector = "#productsMgmt tbody",
-        deleteBtnSelector = "item-delete-btn",
-    },
-}) {
-    const selectors = { tableSelector, deleteBtnSelector };
+function ItemsDeleteHandler({ url = "", token = "", cateTable, selectors }) {
+    selectors = {
+        tableSelector: "#productsMgmt tbody",
+        deleteBtnSelector: "item-delete-btn",
+        ...selectors,
+    };
     const tableElement = $(selectors.tableSelector);
 
     if (!tableElement) return false;

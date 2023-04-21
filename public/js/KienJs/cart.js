@@ -15,26 +15,18 @@ function CartHandler({
     token = "",
     isUpdate = false,
     inputName = "product-quantity",
-    selectors: {
-        cartOrBtnSelector = ".add-to-cart",
-        cartItemSelector = "",
-        summaryContSelector = "",
-        summariesSelector = "",
-        headerCartSelector = ".minicart",
-        headerCartItemsSelector = ".cart-header-list",
-        headerCartCheckoutSelector = ".checkout-btn",
-        checkoutBtnSelector = ".proceed-checkout-btn",
-    },
+    selectors,
 }) {
-    const selectors = {
-        cartOrBtnSelector,
-        cartItemSelector,
-        summaryContSelector,
-        summariesSelector,
-        headerCartSelector,
-        headerCartItemsSelector,
-        headerCartCheckoutSelector,
-        checkoutBtnSelector,
+    selectors = {
+        cartOrBtnSelector: ".add-to-cart",
+        cartItemSelector: "",
+        summaryContSelector: "",
+        summariesSelector: "",
+        headerCartSelector: ".minicart",
+        headerCartItemsSelector: ".cart-header-list",
+        headerCartCheckoutSelector: ".checkout-btn",
+        checkoutBtnSelector: ".proceed-checkout-btn",
+        ...selectors,
     };
 
     const cartContainer = $(selectors.cartOrBtnSelector);

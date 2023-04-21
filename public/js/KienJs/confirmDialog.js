@@ -179,31 +179,19 @@ function ConfirmDialog({
     };
 }
 
-function DeleteDialog({
-    processUrl = "",
-    processToken = "",
-    selectors: {
-        rowsContainer = ".products-cart",
-        selectedContainer = ".pr-cart-item",
-        deleteBtn = "a.btn.btn-delete",
-        summaryContSelector = ".order-summary",
-        summariesSelector = ".ajax-summary",
-        headerCartSelector = ".minicart",
-        headerCartItemsSelector = ".cart-header-list",
-        checkoutBtnSelector = ".proceed-checkout-btn",
-    },
-}) {
-    const selectors = {
-        rowsContainer,
-        selectedContainer,
-        deleteBtn,
-        cartOrBtnSelector: rowsContainer,
-        summaryContSelector,
-        summariesSelector,
-        headerCartSelector,
-        headerCartItemsSelector,
-        checkoutBtnSelector,
+function DeleteDialog({ processUrl = "", processToken = "", selectors }) {
+    selectors = {
+        rowsContainer: ".products-cart",
+        selectedContainer: ".pr-cart-item",
+        deleteBtn: "a.btn.btn-delete",
+        summaryContSelector: ".order-summary",
+        summariesSelector: ".ajax-summary",
+        headerCartSelector: ".minicart",
+        headerCartItemsSelector: ".cart-header-list",
+        checkoutBtnSelector: ".proceed-checkout-btn",
+        ...selectors,
     };
+    selectors.cartOrBtnSelector = selectors.rowsContainer;
 
     const selectedItm = {
         code: "",

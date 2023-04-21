@@ -44,20 +44,16 @@ function GroupHandler({
     }
 }
 
-function CateGroupsHandler({
-    url = "",
-    token = "",
-    cateTable,
-    selectors: {
-        tableBodySelector = "#catesMgmt tbody",
-        navSelector = "showOnNav",
-        searchSelector = "showOnSearch",
-    },
-}) {
-    const selectors = { tableBodySelector, navSelector, searchSelector };
+function CateGroupsHandler({ url = "", token = "", cateTable, selectors }) {
+    selectors = {
+        tableBodySelector: "#catesMgmt tbody",
+        navSelector: "showOnNav",
+        searchSelector: "showOnSearch",
+        ...selectors,
+    };
     const tableElement = $(selectors.tableBodySelector);
     if (!tableElement) return false;
-    
+
     tableElement.addEventListener("click", (e) => {
         const cateData = cateTable.row(e.target.closest("tr")).data();
         const cateId = e.target.closest("tr").dataset.id;

@@ -94,19 +94,12 @@ function MyStickyNav({
     });
 }
 
-function HeaderCartHandler({
-    url = "",
-    token = "",
-    selectors: {
-        headerCartSelector = ".minicart",
-        headerCartItemsSelector = ".select-items",
-        headerCartCheckoutSelector = ".checkout-btn",
-    },
-}) {
-    const selectors = {
-        headerCartSelector,
-        headerCartItemsSelector,
-        headerCartCheckoutSelector,
+function HeaderCartHandler({ url = "", token = "", selectors }) {
+    selectors = {
+        headerCartSelector: ".minicart",
+        headerCartItemsSelector: ".select-items",
+        headerCartCheckoutSelector: ".checkout-btn",
+        ...selectors,
     };
 
     const headerCart = $(selectors.headerCartSelector);

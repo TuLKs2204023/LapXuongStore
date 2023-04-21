@@ -8,12 +8,7 @@ function CouponHandler({
     token = "",
     couponContSelector = ".discount-coupon",
     couponBtnSelector = ".coupon-btn",
-    orderSummary: {
-        orderCont = ".order-table",
-        orderSubtotal = ".order-product-subtotal",
-        orderDiscount = ".total-discount",
-        orderTotal = ".total-price",
-    },
+    orderSummary,
 }) {
     const couponCont = $(couponContSelector);
     if (!couponCont) return false;
@@ -21,11 +16,12 @@ function CouponHandler({
     const couponBtn = couponCont.querySelector(couponBtnSelector);
     if (!couponBtn) return false;
 
-    const orderSummary = {
-        orderCont,
-        orderSubtotal,
-        orderDiscount,
-        orderTotal,
+    orderSummary = {
+        orderCont: ".order-table",
+        orderSubtotal: ".order-product-subtotal",
+        orderDiscount: ".total-discount",
+        orderTotal: ".total-price",
+        ...orderSummary,
     };
 
     // Add event to 'Apply' button for checking coupon Code
@@ -188,15 +184,12 @@ function CouponHandler({
     }
 }
 
-function CheckoutHandler({
-    url = "",
-    token = "",
-    selectors: {
-        checkoutBtnSelector = ".place-btn",
-        checkoutSummarySelector = ".order-summaries",
-    },
-}) {
-    const selectors = { checkoutBtnSelector, checkoutSummarySelector };
+function CheckoutHandler({ url = "", token = "", selectors }) {
+    selectors = {
+        checkoutBtnSelector: ".place-btn",
+        checkoutSummarySelector: ".order-summaries",
+        ...selectors,
+    };
     const checkoutSummary = $(selectors.checkoutSummarySelector);
     if (!checkoutSummary) return false;
 
